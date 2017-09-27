@@ -1,0 +1,91 @@
+UC1	Log in to application
+	1-Create login screen user/pw
+	2-Create authentication to server
+
+UC2	Browse customers
+	1-Create scrollable/clickable list of customers
+
+UC3	View customer information
+	1-Display Customer info
+
+UC4	Add new customer
+	1-Create new customer button
+	2-Link button to customer info page
+
+UC5	View project
+	1-Create scrollable/clickable list of projects/quotes
+	2-Link project to show info
+
+UC6	Modify project
+	1-Edit info with clicked
+
+UC7	Add fence
+	1-Add fence to drawing 
+	2-Server end estimate for fence 
+
+UC8 Remove fence
+	1-Remove fence from drawing
+	2-Server end estimate update
+
+UC9 Modify fence
+	1-Change fence attributes
+	2-Server end estimate update
+
+UC10 Add gate
+	1-Add gate to drawing
+	2-Server end estimate update
+
+UC11 Remove gate
+	1-Remove gate to drawing
+	2-Server end estimate update
+
+UC12 Modify gate
+	1-Modify gate attributes
+	2-Server end estimate update
+
+UC13 Add a building
+	1-Add building icon to drawing house/garage
+
+UC14 Remove building
+	2-Remove building icon from drawing house/garage
+
+UC15 Modify quote
+	1-Allow user to edit quote
+	2-Apply discounts on server end
+
+UC16 Add note
+	1-Add textbox for user to add note
+	2-Save note server end
+
+UC17 Change status
+	1-Give project new, inprogress, or complete status
+	2-Update the status in server
+
+UC18 View project summary
+	1-Display all project info
+
+UC19 Send email to customer and supplier
+	1-Create button for customer
+	2-Create button for supplier
+	3-Send email
+
+UC20 View accounting summary
+	1-Create button to view accounting summary
+	2-View all accounting info
+
+UC21 Export accounting summary
+	1-Create button to export accounting summary
+	2-Export into file type (excel)
+
+UC22 View fencing attributes
+	1-Create button to view fencing attributes
+	2-Display in new page list of materials, colors, styles, cost
+
+UC23 Import fencing attributes
+	1-Create button for import of excel files
+	2-Display 
+
+UC24 Add project picture
+	1-Create button for option to take picture
+	2-Capture picture from camera and display on screen
+	
