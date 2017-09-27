@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   sodipodi:docname="customerView.svg"
+   inkscape:export-filename="/Users/oahmad/Desktop/customerList.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.50689534"
+     inkscape:cx="396.85039"
+     inkscape:cy="561.25984"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g72"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="751"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#329664;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.16164573;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect935"
+       width="209.8313"
+       height="24.532515"
+       x="-0.021594075"
+       y="-0.021605281" />
+    <g
+       id="g933"
+       transform="translate(0,51.85836)">
+      <path
+         inkscape:connector-curvature="0"
+         id="path14"
+         d="M 0.6371169,57.748634 210.63654,58.297447"
+         style="fill:none;stroke:#969696;stroke-width:0.23772693px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <flowRoot
+         transform="matrix(0.26458333,0,0,0.26458333,-25.65254,-52.337275)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         id="flowRoot35"
+         xml:space="preserve"><flowRegion
+           id="flowRegion37"><rect
+             y="341.29333"
+             x="118.36763"
+             height="165.71468"
+             width="633.26685"
+             id="rect39" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium'"
+           id="flowPara41">Project 1</flowPara></flowRoot>      <path
+         style="fill:none;stroke:#969696;stroke-width:0.23772693px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 0.6371169,29.173616 210.63654,29.722429"
+         id="path32"
+         inkscape:connector-curvature="0" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot34"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#7d7d7d;fill-opacity:1;stroke:none"
+         transform="matrix(0.26458333,0,0,0.26458333,-45.529309,-60.209854)"><flowRegion
+           id="flowRegion36"
+           style="fill:#7d7d7d;fill-opacity:1"><rect
+             id="rect38"
+             width="376.80362"
+             height="124.28601"
+             x="197.27939"
+             y="144.01395"
+             style="fill:#7d7d7d;fill-opacity:1" /></flowRegion><flowPara
+           id="flowPara40"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#7d7d7d;fill-opacity:1">Jane Doe</flowPara></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot847"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.26458333,0,0,0.26458333,-39.39326,-59.209109)"><flowRegion
+           id="flowRegion849"><rect
+             id="rect851"
+             width="467.55212"
+             height="90.74852"
+             x="173.60585"
+             y="195.30658" /></flowRegion><flowPara
+           id="flowPara853"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:26.66666794px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium'">doe@email.com</flowPara></flowRoot>      <flowRoot
+         transform="matrix(0.26458333,0,0,0.26458333,-39.39326,-48.625769)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         id="flowRoot861"
+         xml:space="preserve"><flowRegion
+           id="flowRegion857"><rect
+             y="195.30658"
+             x="173.60585"
+             height="90.74852"
+             width="467.55212"
+             id="rect855" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:26.66666794px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium'"
+           id="flowPara859">(555) 555-5555</flowPara></flowRoot>      <flowRoot
+         xml:space="preserve"
+         id="flowRoot877"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.26458333,0,0,0.26458333,-39.39326,-38.571596)"><flowRegion
+           id="flowRegion873"><rect
+             id="rect871"
+             width="467.55212"
+             height="90.74852"
+             x="173.60585"
+             y="195.30658" /></flowRegion><flowPara
+           id="flowPara875"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:26.66666794px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium'">123 456 Avenue</flowPara></flowRoot>    </g>
+    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,-41.2427,-151.8856)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       id="flowRoot893"
+       xml:space="preserve"><flowRegion
+         style="fill:#ffffff;fill-opacity:1"
+         id="flowRegion895"><rect
+           style="fill:#ffffff;fill-opacity:1"
+           y="587.89258"
+           x="177.55144"
+           height="116.39484"
+           width="266.32718"
+           id="rect897" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1"
+         id="flowPara899">←</flowPara></flowRoot>    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,33.848387,-160.23709)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       id="flowRoot901"
+       xml:space="preserve"><flowRegion
+         style="fill:#ffffff;fill-opacity:1"
+         id="flowRegion903"><rect
+           style="fill:#ffffff;fill-opacity:1"
+           y="623.40283"
+           x="171.63306"
+           height="270.27277"
+           width="455.71536"
+           id="rect905" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1"
+         id="flowPara907">Projects</flowPara></flowRoot>    <g
+       id="g72"
+       transform="translate(0,105.83343)">
+      <path
+         style="fill:none;stroke:#969696;stroke-width:0.23772693px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 0.6371169,32.348616 210.63654,32.897429"
+         id="path62"
+         inkscape:connector-curvature="0" />
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot70"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.26458333,0,0,0.26458333,-25.65254,-77.737293)"><flowRegion
+           id="flowRegion66"><rect
+             id="rect64"
+             width="633.26685"
+             height="165.71468"
+             x="118.36763"
+             y="341.29333" /></flowRegion><flowPara
+           id="flowPara68"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium'">Project 2</flowPara></flowRoot>    </g>
+    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,163.58172,-86.5893)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;"
+       id="flowRoot82"
+       xml:space="preserve"><flowRegion
+         style="fill:#ffffff;fill-opacity:1;"
+         id="flowRegion78"><rect
+           style="fill:#ffffff;fill-opacity:1;"
+           y="341.29333"
+           x="118.36763"
+           height="165.71468"
+           width="633.26685"
+           id="rect76" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1;"
+         id="flowPara80">+</flowPara></flowRoot>  </g>
+</svg>
