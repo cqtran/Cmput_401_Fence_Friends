@@ -1,0 +1,31 @@
+2017-09-22 Meeting with Diego
+------------------------------------------------------
+State progress of the week. Three questions to
+answer every week:
+	What did you do?
+	What are you doing in the future?
+	What are the problems?
+
+Created questions for the client (On Github wiki)
+
+Problems: Figure out what platform to use for development since
+	we are not familiar with IOS and was suggested (by Victor) to use Android
+	May require more time to develop the app on IOS due to lack of knowledge
+
+No web services requirements from client. May recieve 
+	extra requirements to provide web services
+
+The complex is the drawing and we should break down drawing task.
+	Need to come with a mockup for the drawing aspect of the application
+
+Licensing depends on client. Client may not want open source project
+	If the repository is required to be private, 
+	then talk to TA to ask about a private repository
+
+UML Diagrams/class diagram
+	Do not try to include all classes, at most do important classes
+
+High level architecture diagram
+	Interations with APIs and functionality
+
+Sprit 1, code wire frames is the high level diagram. Should define main functions
