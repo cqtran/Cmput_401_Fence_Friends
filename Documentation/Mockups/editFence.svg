@@ -482,12 +482,6 @@
          style="fill:none;stroke:#c8c8c8;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
     <circle
-       style="opacity:1;fill:#000006;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path110"
-       cx="59.765381"
-       cy="96.303162"
-       r="2.3488576" />
-    <circle
        r="2.3488576"
        cy="96.303162"
        cx="134.92883"
@@ -498,12 +492,6 @@
        id="circle919"
        cx="136.49474"
        cy="155.80756"
-       r="2.3488576" />
-    <circle
-       style="opacity:1;fill:#000006;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="circle923"
-       cx="107.2645"
-       cy="115.61599"
        r="2.3488576" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.46551722;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
