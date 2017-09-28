@@ -55,7 +55,7 @@
      inkscape:cx="396.8504"
      inkscape:cy="561.25985"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g61"
      showgrid="false"
      inkscape:window-width="1280"
      inkscape:window-height="751"
@@ -210,7 +210,7 @@
        transform="translate(11.398951,7.5538805)"
        id="g925">
       <rect
-         style="opacity:1;fill:#329664;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.63030046;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431373"
+         style="opacity:1;fill:#329664;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.63;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431373"
          id="rect878"
          width="132.36969"
          height="24.369699"
@@ -231,5 +231,31 @@
              style="fill:#329664;fill-opacity:1" /></flowRegion><flowPara
            id="flowPara908"
            style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">Save</flowPara></flowRoot>    </g>
+    <g
+       id="g61"
+       transform="translate(11.398951,42.478901)"
+       style="display:inline">
+      <rect
+         y="165.78432"
+         x="27.416204"
+         height="24.369699"
+         width="132.36969"
+         id="rect51"
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#4b4b4b;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <flowRoot
+         transform="matrix(0.26458333,0,0,0.26458333,34.646914,-63.06459)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#329664;fill-opacity:1;stroke:none"
+         id="flowRoot59"
+         xml:space="preserve"><flowRegion
+           style="fill:#329664;fill-opacity:1"
+           id="flowRegion55"><rect
+             style="fill:#329664;fill-opacity:1"
+             y="881.83887"
+             x="140.06836"
+             height="149.93233"
+             width="437.96024"
+             id="rect53" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#4b4b4b;fill-opacity:1"
+           id="flowPara57">Delete</flowPara></flowRoot>    </g>
   </g>
 </svg>
