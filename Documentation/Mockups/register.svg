@@ -36,7 +36,7 @@
      inkscape:cx="396.85039"
      inkscape:cy="561.25984"
      inkscape:document-units="mm"
-     inkscape:current-layer="g954"
+     inkscape:current-layer="g925"
      showgrid="false"
      inkscape:snap-global="false"
      inkscape:window-width="1175"
@@ -173,7 +173,7 @@
          id="rect878"
          style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.63030046;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431373" />
       <flowRoot
-         transform="matrix(0.26458333,0,0,0.26458333,43.274024,-63.06459)"
+         transform="matrix(0.26458333,0,0,0.26458333,13.710475,-63.06459)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#329664;fill-opacity:1;stroke:none"
          id="flowRoot902"
          xml:space="preserve"><flowRegion
@@ -186,7 +186,7 @@
              width="437.96024"
              id="rect906" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#329664;fill-opacity:1"
-           id="flowPara908">Sign up</flowPara></flowRoot>    </g>
+           id="flowPara908">Request account</flowPara></flowRoot>    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot860"
