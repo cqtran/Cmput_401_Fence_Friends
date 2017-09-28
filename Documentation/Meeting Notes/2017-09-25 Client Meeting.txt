@@ -1,0 +1,62 @@
+2017-09-25 Meeting with Jon
+------------------------------------------------------
+Went through 'Questions for the Client'
+
+Internet connectivity? Mainly email
+
+Is login screen required? Can do server based login
+
+Other contractors can use the application.
+Can deploy it on AWS database to store information to 
+and be able to access it from multiple devices
+
+Usage of the GPS?
+Can do pinpointing with the gps, may not be too accurate
+Not required in the app
+
+Clarification of the 2D map:
+	Define fence; style, color, height
+		Fences are not always right angles, but are always straight
+	Color: Customers may combine colors. Borders may be be one color
+		and the panels may be another color.
+	Styles: Different Styles; full privacy and semi privacy 
+		(Would be nice to define the gap between panels. Default is 3 or 2.5 inches)
+
+Drawing of objects can be done using click-and-drag or defining positions
+	Good to edit objects such as change materials and sizing
+	Each line will have a length associated with it
+
+Fencing jobs may be related. Example: fences may be shared with neighbours and they may split costs
+Removal of existing fencing (can use checkboxes). Would be good to checkbox which existing fences to remove
+
+Drawing to scale?
+Easy to have in 1 to 1 scale. Possible grid system to zoom in and out.
+
+Would be good to have a summary page to review details before sending.
+Once the customer approves a quote, then can send the supplier an email.
+After saving, send one email containing Quote to customer.
+Send another email of materials, cost, and profit? to supplier. (Multiple suppliers?)
+Each job has a status to them.
+
+Each fencing company may use a main account, possible sub-accounts
+	to access the same data on the accounts
+
+Github: prefered private repository. doesnt matter about licensing. 
+(The repository will be private due to course requirements)
+
+Storyboard: Good
+
+Clients may want more than one quote. Possible to have multiple projects?
+
+Firebase as a possible tool for hosting database
+
+Preferences to have web app. 
+	Store locally and then when connected, update database
+
+Orientation of the map. Optional to rotate
+
+What to include in the accounting section of the app?
+	Summary for the year, profit loss/gain on each job,
+	summary of gst, summary for the season
+
+Need to provide cost of materials, look into AWS (let him know if we want another service)
