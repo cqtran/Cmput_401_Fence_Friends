@@ -43,7 +43,7 @@
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
-     inkscape:snap-global="true" />
+     inkscape:snap-global="false" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -103,7 +103,7 @@
          style="fill:#7d7d7d;fill-opacity:1;stroke:none" />
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#6464ff;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
        d="m 61.592266,114.99861 -1.043937,43.32347 48.021091,-0.52197 -1.56591,-43.32347 z"
        id="path83"
        inkscape:connector-curvature="0" />
@@ -124,11 +124,11 @@
        x="-0.021594075"
        y="272.46747" />
     <rect
-       style="opacity:1;fill:#329664;fill-opacity:0.39215687;fill-rule:nonzero;stroke:none;stroke-width:1.34285665;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#329664;fill-opacity:0.39215686;fill-rule:nonzero;stroke:none;stroke-width:1.42857099;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1070"
-       width="24.532503"
-       height="24.532503"
-       x="-0.021594075"
+       width="26.098408"
+       height="26.098408"
+       x="46.015926"
        y="272.46747" />
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,-37.009364,122.191)"
@@ -159,7 +159,7 @@
            style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
          id="flowPara1019"
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">_/</flowPara></flowRoot>    <flowRoot
-       transform="matrix(0.26458333,0,0,0.26458333,4.7948205,122.191)"
+       transform="matrix(0.26458333,0,0,0.26458333,5.3239872,122.191)"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
        id="flowRoot1078"
        xml:space="preserve"><flowRegion
@@ -200,7 +200,7 @@
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next';fill:#ffffff;fill-opacity:1">Snap</flowPara></flowRoot>    </g>
     <g
        id="g1170"
-       transform="translate(0,-1.5875)">
+       transform="translate(24.870843,-1.5875)">
       <flowRoot
          transform="matrix(0.26458333,0,0,0.26458333,26.490664,122.191)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
@@ -481,5 +481,36 @@
          d="M -17.224956,272.79704 H 248.45694"
          style="fill:none;stroke:#c8c8c8;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
+    <circle
+       style="opacity:1;fill:#000006;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path110"
+       cx="59.765381"
+       cy="96.303162"
+       r="2.3488576" />
+    <circle
+       r="2.3488576"
+       cy="96.303162"
+       cx="134.92883"
+       id="circle917"
+       style="opacity:1;fill:#000006;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       style="opacity:1;fill:#000006;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle919"
+       cx="136.49474"
+       cy="155.80756"
+       r="2.3488576" />
+    <circle
+       style="opacity:1;fill:#000006;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle923"
+       cx="107.2645"
+       cy="115.61599"
+       r="2.3488576" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.46551722;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect925"
+       width="14.093144"
+       height="14.093144"
+       x="78.376312"
+       y="278.54489" />
   </g>
 </svg>
