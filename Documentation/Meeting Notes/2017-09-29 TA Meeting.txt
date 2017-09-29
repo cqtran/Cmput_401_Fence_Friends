@@ -1,0 +1,39 @@
+2017-09-29 Meeting with Diego
+------------------------------------------------------
+
+Comments from TA:
+	Good high level class design. Would be better to include a more higher level design for the client
+	Use cases good, can split use cases if needed
+	Storyboard and mockups good
+	Release planning: lots of use cases and not alot of people. one use case can have many activities
+		Second sprint has 8 use cases rather than 5. Should be more split up, possibly by priority?
+		All use cases need a test
+	Glossary is good
+
+Project changed from IOS app into web app
+Platform will be Python Flask, bootstrap, web service
+For drawing functionality, we will use javascript
+
+Summary of progress this week
+Brandon:
+	Worked on high level design
+	Next week start on login
+	Client is user
+Eric:
+	Worked on use cases
+	Next week start on UC 26 and login authentication
+Omar:
+	Worked on mockups and storyboard
+	Next week start on UI and data classes for viewing customer information
+Greg: 
+	Worked on code wireframes, issues, glossary
+	Work on adding a new customer
+Cameron:
+	Did release planning
+	UC2 and UC5 browsing client and viewing project
+
+Drawing functionality summary:
+	Client wants to be able to click/drag or click to put fence
+	Include objects like buildings, fences, gates into drawing
+	Drawing should have grid like background
+	Close to scale as possible and will specify the lines
