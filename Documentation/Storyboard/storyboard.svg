@@ -797,7 +797,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <g
-       transform="translate(111.39463,128.20526)"
+       transform="translate(127.26973,128.20526)"
        id="g7587">
       <circle
          style="opacity:1;fill:#963f32;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.20634808;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -946,11 +946,11 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path195"
-       d="m 247.26659,101.44585 0.39973,26.30821"
+       d="m 263.14169,101.44585 0.39973,26.30821"
        style="fill:none;stroke:#963f32;stroke-width:0.29948077;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6419)" />
     <path
        style="fill:none;stroke:#963f32;stroke-width:0.29948077;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6419)"
-       d="m 263.74065,108.15528 0.39973,19.56882"
+       d="m 243.10302,108.15528 -31.05074,20.56725"
        id="path197"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
