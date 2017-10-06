@@ -1,7 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
-# Import python files with other functionality such as accessing the database
-#import Python.db as DB
+# Import python files with functionality
+import Python.accounts as Accounts
 
 app = Flask(__name__, template_folder = "HTML", static_folder = "CSS")
 
@@ -15,9 +15,19 @@ def showSignUp():
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Access MySQL and authorize
+    # Get form information
+    username = request.form['username']
+    password = request.form['password']
+    print("Username: " + username)
+    print("Password: " + password)
+
+    # Authenticate the username/password
+    authorized = Accounts.authenticate(username, password)
     
-    return render_template("home.html")
+    if authorized:
+        return render_template("home.html")
+    else:
+        return render_template("login.html")
 
 if __name__ == "__main__":
     app.run()
