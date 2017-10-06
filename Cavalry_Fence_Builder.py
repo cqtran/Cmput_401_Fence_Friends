@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
-# Import python files with other functionality such as accessing the database
-#import Python.db as DB
+# Import python files with functionality
+import Python.accounts as Accounts
 
 app = Flask(__name__, template_folder = "HTML", static_folder = "CSS")
 
@@ -20,24 +20,14 @@ def login():
     password = request.form['password']
     print("Username: " + username)
     print("Password: " + password)
-    
-    # Access MySQL and authorize
-    
-    #connection = DB.getConnection()
-    #cursor = connection.cursor()
-    
-    #statement = "SELECT * FROM accounts WHERE Username = '" + username + "' AND Password = '" + password + "'"
-    #numrows = cursor.query(statement)
-    
-    #cursor.close()
-    #connection.close()
-    
-    return render_template("home.html")
 
-    #if numrows == 1:
-    #    return render_template("home.html")
-    #else:
-    #    return render_template("login.html")
+    # Authenticate the username/password
+    authorized = Accounts.authenticate(username, password)
+    
+    if authorized:
+        return render_template("home.html")
+    else:
+        return render_template("login.html")
 
 if __name__ == "__main__":
     app.run()
