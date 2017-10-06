@@ -10,8 +10,6 @@
 
     <link rel="stylesheet" href="../CSS/home.css">
 	
-	<script type="text/javascript" src="../JavaScript/login.js"></script>
-	
   </head>
   
   <body>
@@ -19,7 +17,7 @@
 	
 	<p> Login to use app features </p>
 
-	<form id = "login" onsubmit = "authenticate()">
+	<form action="{{ 'login' }}" method="post">
 	  <p> Username: </p>
 	  <input type = "text" name = "username">
 	  <p> Password: </p>
@@ -27,8 +25,7 @@
 	  <input type = "submit" value = "submit">
 	</form>
 
-
-	<a href=""> <p> Click here to create a signup </p> </a>
+	<a href="showSignUp"> <p> Click here to create a signup </p> </a>
 	
   </body>
  </html>
