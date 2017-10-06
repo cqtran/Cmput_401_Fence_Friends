@@ -6,7 +6,8 @@ DROP TABLE customers;
 CREATE TABLE accounts (
 	AcctID		INT NOT NULL AUTO_INCREMENT,
 	Username	VARCHAR(20),
-	Password	VARCHAR(20)
+	Password	VARCHAR(20),
+	PRIMARY KEY (AcctID)
 );
 
 CREATE TABLE customers (
@@ -15,5 +16,6 @@ CREATE TABLE customers (
 	Lastname	VARCHAR(20),
 	Email		VARCHAR(50),
 	Homephone	VARCHAR(20),
-	Cellphone	VARCHAR(20)
+	Cellphone	VARCHAR(20),
+	PRIMARY KEY (CustID)
 );
