@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function getCust() {
+    var cust = prompt("Enter new customer: ");
+    var option = document.createElement("option");
+    option.text = cust;
+    option.value = ""
+    var select = document.getElementById("list_item");
+    select.appendChild(option);
+
+
+    <!-- #var makeText = document.createTextNode(cust); !-->
+    <!-- #document.getElementById('list_item').appendChild(makeLi).appendChild(makeText); !-->
+}
+</script>
+</head>
+
+<body>
+
+<h2>Customers</h2>
+<select id=list_item size=6> </select>
+
+<button type="button" onclick="getCust()">Add a customer +</button>
+
+</body>
+</html>

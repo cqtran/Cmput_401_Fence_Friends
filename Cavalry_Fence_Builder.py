@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 # Import python files with functionality
-import Python.accounts as Accounts
+# import Python.accounts as Accounts
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 
@@ -28,6 +28,12 @@ def login():
         return render_template("home.html")
     else:
         return render_template("login.html")
+
+
+
+@app.route('/customers')
+def customers():
+    return render_template("customer.html")
 
 if __name__ == "__main__":
     app.run()
