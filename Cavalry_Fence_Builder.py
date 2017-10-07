@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 # Import python files with functionality
 import Python.accounts as Accounts
 
-app = Flask(__name__, template_folder = "HTML", static_folder = "CSS")
+app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 
 @app.route("/")
 def main():
