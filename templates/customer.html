@@ -8,15 +8,12 @@
 <body>
 <script>
 function addCustomer() {
-    var cust = name;
-    alert(cust)
-    //var cust = prompt("Enter new customer: ");
+    var cust = prompt("Enter new customer: ");
     var option = document.createElement("option");
     option.text = cust;
     option.value = ""
     var select = document.getElementById("list_item");
     select.appendChild(option);
-    alert("hasdfadsfadfsafdsi");
 
 
     <!-- #var makeText = document.createTextNode(cust); !-->
@@ -34,7 +31,7 @@ function addCustomer() {
     </div>
 </div>
 
-<!-- <button class="button" onclick="getCust()">Add a customer +</button> !-->
+<button class="button" onclick="addCustomer()">This is only to test the scrollable list</button>
 <form action="{{ 'newcustomer' }}">
     	  <input type = "submit" value = "Add a customer +">
 	</form>
