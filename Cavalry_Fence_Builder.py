@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 # Import python files with functionality
-#import Python.accounts as Accounts
+import Python.accounts as Accounts
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 
@@ -13,6 +13,29 @@ def main():
 def showSignUp():
     return render_template("signup.html")
 
+@app.route('/signup', methods=['POST'])
+def signup():
+    # Get form information
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
+    confirmPassword = request.form['confirmPassword']
+    
+    print("Username: " + username)
+    print("email: " + email)
+    print("password: " + password)
+    print("confirmPassword: " + confirmPassword)
+    
+    if(password != confirmPassword):
+        return render_template("signup.html", error = "Password and confirmed password do not match")
+    
+    success = Accounts.requestAccount(username, email, password)
+    
+    if success:
+        return render_template("login.html", note = "Request sucessful")
+    else:
+        return render_template("signup.html", error = "An error has occurred. Try again later.")
+
 @app.route('/login', methods=['POST'])
 def login():
     # Get form information
@@ -22,14 +45,12 @@ def login():
     print("Password: " + password)
 
     # Authenticate the username/password
-    authorized = Accounts.authenticate(username, password)
+    success = Accounts.authenticate(username, password)
     
-    if authorized:
+    if success:
         return render_template("home.html")
     else:
-        return render_template("login.html")
-
-
+        return render_template("login.html", error = "Invalid username or password")
 
 @app.route('/customers')
 def customers():

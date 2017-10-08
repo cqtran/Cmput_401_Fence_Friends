@@ -19,5 +19,11 @@ def authenticate(username, password):
         return True   
     return False
 
-def create():
+def createAccount():
     # TODO
+    return
+
+def requestAccount(username, email, password):
+    # TODO
+    
+    return
