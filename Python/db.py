@@ -2,7 +2,6 @@
 import MySQLdb
 
 def getConnection():
-
     hostname = 'localhost'
     username = 'root@localhost'
     password = 'cmput401F3nc1ng'

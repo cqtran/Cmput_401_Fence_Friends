@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 # Import python files with functionality
-#import Python.accounts as Accounts
+import Python.accounts as Accounts
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 
@@ -13,11 +13,11 @@ def main():
 def showSignUp():
     return render_template("signup.html")
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     # Get form information
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form.get('username', "")
+    password = request.form.get('password', "")
     print("Username: " + username)
     print("Password: " + password)
 
@@ -40,4 +40,4 @@ def projects():
     return render_template("projects.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

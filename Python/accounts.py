@@ -1,4 +1,4 @@
-import db as DB
+import Python.db as DB
 
 def authenticate(username, password):
     # Access MySQL and authenticate the username/password
@@ -20,4 +20,5 @@ def authenticate(username, password):
     return False
 
 def create():
+    pass
     # TODO
