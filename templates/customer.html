@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
+
 <head>
 <script>
 function getCust() {
@@ -18,11 +20,14 @@ function getCust() {
 </head>
 
 <body>
-
 <h2>Customers</h2>
-<select id=list_item size=6> </select>
+<div class="wrapper">
+    <div class="list_item">
+        <select id=list_item size=6> </select>
+    </div>
+</div>
 
-<button type="button" onclick="getCust()">Add a customer +</button>
+<button class="button" onclick="getCust()">Add a customer +</button>
 
 </body>
 </html>
