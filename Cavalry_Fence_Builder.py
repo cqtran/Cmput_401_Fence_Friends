@@ -35,5 +35,9 @@ def login():
 def customers():
     return render_template("customer.html")
 
+@app.route('/projects')
+def projects():
+    return render_template("projects.html")
+
 if __name__ == "__main__":
     app.run()
