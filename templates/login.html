@@ -16,7 +16,11 @@
     <h1> Cavalry Fence Builder Login </h1>
 	
 	<p> Login to use app features </p>
-
+	
+	{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+	{% if note %}<p class=note> {{ note }} {% endif %}
+	
+	<!-- <form action="{{ 'login' }}" method="post"> -->
 	<form action="{{ 'login' }}" method="get">
 	  <p> Username: </p>
 	  <input type = "text" id = "username" name = "username">

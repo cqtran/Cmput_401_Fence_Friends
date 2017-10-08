@@ -1,0 +1,23 @@
+2017-10-06 Meeting with Diego
+------------------------------------------------------
+
+Comments from TA about sprint 1:
+	Use cases for forgot and change password are missing
+	Forgot to include exceptions for empty values
+	No use cases for undo redo
+	Consistent naming convention should be used
+
+Brandon:
+	Setup vm
+	Authentication
+Eric:
+	Creating account
+	Login Authentication
+Omar:
+	Displaying customer
+Greg
+	Adding customer
+Cameron:
+	Browse customer
+
+Little progress this week due to other courses, expects more progress next week
