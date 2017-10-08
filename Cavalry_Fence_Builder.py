@@ -52,9 +52,22 @@ def login():
     else:
         return render_template("login.html", error = "Invalid username or password")
 
-@app.route('/customers')
+@app.route('/customers', methods=['GET', 'POST'])
 def customers():
-    return render_template("customer.html")
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        pn = request.form['pn']
+        address = request.form['address']
+        print(type(name))
+
+        return render_template("customer.html", name = name, email = email, pn=pn, address = address)
+    else:
+        return render_template("customer.html")
+
+@app.route('/newcustomer', methods=['GET', 'POST'])
+def newcustomer():
+    return render_template("newcustomer.html")
 
 @app.route('/projects')
 def projects():
