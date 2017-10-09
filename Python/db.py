@@ -7,4 +7,4 @@ def getConnection():
         'mysql://root:cmput401F3nc1ng@localhost/401TEST'
     )
 
-    return engine.raw_connection()
+    return engine
