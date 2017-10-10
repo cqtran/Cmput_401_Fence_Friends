@@ -4,7 +4,8 @@ import sqlalchemy
 def getConnection():
 
     engine = sqlalchemy.create_engine(
-        'mysql://root:cmput401F3nc1ng@localhost/401TEST'
+    	#change password to your db password and root to your db username
+        'mysql+mysqlconnector://root:password@localhost/data'
     )
 
     return engine
