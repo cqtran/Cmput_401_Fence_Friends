@@ -25,12 +25,12 @@ def authenticate(username, password):
 
 def createAccount(username, email, password):
     # Access MySQL and add in account
-    db = DB.getConnection()
-    metadata = MetaData(db)
-    accounts = Table('accounts', metadata, autoload = True)
+    #db = DB.getConnection()
+    #metadata = MetaData(db)
+    #accounts = Table('accounts', metadata, autoload = True)
     
-    i = accounts.insert().values(Username = username, Password = password)
-    i.execute()
+    #i = accounts.insert().values(Username = username, Password = password)
+    #i.execute()
     
     return True
 
