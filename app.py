@@ -13,6 +13,7 @@ def main():
 def showSignUp():
     return render_template("signup.html")
 
+
 @app.route('/signup', methods=['POST'])
 def signup():
     # Get form information
@@ -36,11 +37,12 @@ def signup():
     else:
         return render_template("signup.html", error = "An error has occurred. Try again later.")
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
+#@app.route('/login', methods=['POST'])
 def login():
     # Get form information
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form.get('username', "")
+    password = request.form.get('password', "")
     print("Username: " + username)
     print("Password: " + password)
 
@@ -74,4 +76,4 @@ def projects():
     return render_template("projects.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
