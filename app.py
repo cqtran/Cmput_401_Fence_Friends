@@ -16,28 +16,31 @@ def showSignUp():
     return render_template("signup.html")
 
 
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    # Get form information
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
-    confirmPassword = request.form['confirmPassword']
-    
-    print("Username: " + username)
-    print("email: " + email)
-    print("password: " + password)
-    print("confirmPassword: " + confirmPassword)
-    
-    if(password != confirmPassword):
-        return render_template("signup.html", error = "Password and confirmed password do not match")
-    
-    success = Accounts.requestAccount(username, email, password)
-    
-    if success:
-        return render_template("login.html", note = "Request sucessful")
+    if request.method == 'POST':
+        # Get form information
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        confirmPassword = request.form['confirmPassword']
+        
+        print("Username: " + username)
+        print("email: " + email)
+        print("password: " + password)
+        print("confirmPassword: " + confirmPassword)
+        
+        if(password != confirmPassword):
+            return render_template("signup.html", error = "Password and confirmed password do not match")
+        
+        success = Accounts.requestAccount(username, email, password)
+        
+        if success:
+            return render_template("login.html", note = "Request sucessful")
+        else:
+            return render_template("signup.html", error = "An error has occurred. Try again later.")
     else:
-        return render_template("signup.html", error = "An error has occurred. Try again later.")
+        return render_template("signup.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 #@app.route('/login', methods=['POST'])
