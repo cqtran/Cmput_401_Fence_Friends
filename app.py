@@ -59,21 +59,17 @@ def login():
         
         if success:
             cmpy_ID = Accounts.getCompany(username)
+           # customers(company=cmpy_ID)
+
             return render_template("customer.html", company = cmpy_ID)
         else:
             return render_template("login.html", error = "Invalid username or password")
-    # Authenticate the username/password
-    success = Accounts.authenticate(username, password)
-    
-    if success:
-        cmpy_ID = Accounts.getCompany(username)
-        test = cmpy_ID
-        return render_template("customer.html", company = cmpy_ID)
     else:
         return render_template("login.html")
 
 @app.route('/customers', methods=['GET', 'POST'])
 def customers():
+    print("nigga we made it")
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
