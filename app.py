@@ -7,6 +7,8 @@ import Python.projects as Projects
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 
+test = 0
+
 @app.route("/")
 def main():
     return render_template("login.html")
@@ -60,6 +62,13 @@ def login():
             return render_template("customer.html", company = cmpy_ID)
         else:
             return render_template("login.html", error = "Invalid username or password")
+    # Authenticate the username/password
+    success = Accounts.authenticate(username, password)
+    
+    if success:
+        cmpy_ID = Accounts.getCompany(username)
+        test = cmpy_ID
+        return render_template("customer.html", company = cmpy_ID)
     else:
         return render_template("login.html")
 
@@ -72,8 +81,12 @@ def customers():
         address = request.form['address']
         print(type(name))
         success = Customers.addCustomer(name, email, pn, address)
-
-        return render_template("customer.html", name = name, email = email, pn=pn, address = address)
+        test = 1
+        list_customers = Customers.displayCustomers(test)
+        print("This is test value")
+        print(test)
+        return render_template("customer.html", name = name, email = email, pn=pn,
+                               address = address, listcust = list_customers)
     else:
         return render_template("customer.html")
 
