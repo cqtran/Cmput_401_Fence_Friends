@@ -79,5 +79,9 @@ def newcustomer():
 def projects():
     return render_template("projects.html")
 
+@app.route('/newproject')
+def newproject():
+    return render_template("newproject.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
