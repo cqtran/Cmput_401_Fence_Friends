@@ -58,7 +58,7 @@ CREATE TABLE Customers (
 
 CREATE TABLE Status (
 	Status_ID	INTEGER NOT NULL,
-	Status_name VARCHAR(20),
+	Status_name VARCHAR(30),
 	PRIMARY KEY (Status_ID)
 );
 
