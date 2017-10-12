@@ -50,7 +50,7 @@ def login():
     success = Accounts.authenticate(username, password)
     
     if success:
-        return render_template("home.html")
+        return render_template("customer.html")
     else:
         return render_template("login.html", error = "Invalid username or password")
 
