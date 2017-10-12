@@ -42,20 +42,23 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 #@app.route('/login', methods=['POST'])
 def login():
-    # Get form information
-    username = request.form.get('username', "")
-    password = request.form.get('password', "")
-    print("Username: " + username)
-    print("Password: " + password)
+    if request.method == 'POST':
+        # Get form information
+        username = request.form['username']
+        password = request.form['password']
+        print("Username: " + username)
+        print("Password: " + password)
 
-    # Authenticate the username/password
-    success = Accounts.authenticate(username, password)
-    
-    if success:
-        cmpy_ID = Accounts.getCompany(username)
-        return render_template("customer.html", company = cmpy_ID)
+        # Authenticate the username/password
+        success = Accounts.authenticate(username, password)
+        
+        if success:
+            cmpy_ID = Accounts.getCompany(username)
+            return render_template("customer.html", company = cmpy_ID)
+        else:
+            return render_template("login.html", error = "Invalid username or password")
     else:
-        return render_template("login.html", error = "Invalid username or password")
+        return render_template("login.html")
 
 @app.route('/customers', methods=['GET', 'POST'])
 def customers():
