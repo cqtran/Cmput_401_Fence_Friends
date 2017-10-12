@@ -15,7 +15,6 @@ function addCustomer() {
     var select = document.getElementById("list_item");
     select.appendChild(option);
 
-
     <!-- #var makeText = document.createTextNode(cust); !-->
     <!-- #document.getElementById('list_item').appendChild(makeLi).appendChild(makeText); !-->
 }
@@ -26,6 +25,7 @@ function addCustomer() {
     <p>Email: {{email}}</p>
     <p>Phone number: {{pn}}</p>
     <p>Address: {{address}}</p>
+    <p>Listofcustomers: {{ listcust }}</p>
     <div class="list_item">
         <select id=list_item size=6> </select>
     </div>

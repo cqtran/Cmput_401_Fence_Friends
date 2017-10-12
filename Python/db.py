@@ -8,4 +8,5 @@ def getConnection():
         'mysql+mysqlconnector://root:password@localhost/data'
     )
 
+
     return engine
