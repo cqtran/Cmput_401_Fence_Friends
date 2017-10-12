@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 
 # Import python files with functionality
 import Python.accounts as Accounts
+import Python.customers as Customers
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 
@@ -62,6 +63,7 @@ def customers():
         pn = request.form['pn']
         address = request.form['address']
         print(type(name))
+        success = Customers.addCustomer(name, email, pn, address)
 
         return render_template("customer.html", name = name, email = email, pn=pn, address = address)
     else:
