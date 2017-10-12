@@ -51,7 +51,8 @@ def login():
     success = Accounts.authenticate(username, password)
     
     if success:
-        return render_template("customer.html")
+        cmpy_ID = Accounts.getCompany(username)
+        return render_template("customer.html", company = cmpy_ID)
     else:
         return render_template("login.html", error = "Invalid username or password")
 
