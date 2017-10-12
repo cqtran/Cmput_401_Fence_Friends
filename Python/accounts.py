@@ -39,15 +39,15 @@ def requestAccount(username, email, password):
     return
 
 
-def getCompany(username):
-    db = DB.connection()
-    metadata = MetaData(db)
-    accounts = Tables('Accounts', metadata, autoload=True)
-    s = accounts.select(and_ (accounts.c.Username == username, accouts.c.Company_ID))
-    rs = s.execute()
+# def getCompany(username):
+#     db = DB.connection()
+#     metadata = MetaData(db)
+#     accounts = Tables('Accounts', metadata, autoload=True)
+#     s = accounts.select(and_ (accounts.c.Username == username, accouts.c.Company_ID))
+#     rs = s.execute()
 
-    for row in rs:
-        print(row.Username, row.Company_ID)
-        return Company_ID
-    return False
+#     for row in rs:
+#         print(row.Username, row.Company_ID)
+#         return Company_ID
+#     return False
 
