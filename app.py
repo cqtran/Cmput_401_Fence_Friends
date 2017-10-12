@@ -81,6 +81,10 @@ def customers():
 def newcustomer():
     return render_template("newcustomer.html")
 
+@app.route('/editcustomer', methods=['GET', 'POST'])
+def editcustomer():
+    return render_template("editcustomer.html")
+
 @app.route('/projects')
 def projects():
     return render_template("projects.html")
