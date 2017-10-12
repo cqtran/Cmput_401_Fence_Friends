@@ -6,10 +6,10 @@ def authenticate(username, password):
     
     db = DB.getConnection()
     metadata = MetaData(db)
-    accounts = Table('accounts', metadata, autoload=True)
+    accounts = Table('Accounts', metadata, autoload=True)
 	
     s = accounts.select(and_(accounts.c.Username == username, accounts.c.Password == password))
-    rs = s.execute()    
+    rs = s.execute()
 
     numrows = 0
     for row in rs:
@@ -23,14 +23,14 @@ def authenticate(username, password):
         return True
     return False
 
-def createAccount(username, email, password):
-    # Access MySQL and add in account
-    #db = DB.getConnection()
-    #metadata = MetaData(db)
-    #accounts = Table('accounts', metadata, autoload = True)
+def createAccount(username, password, email):
+    #Access MySQL and add in account
+    db = DB.getConnection()
+    metadata = MetaData(db)
+    accounts = Table('Accounts', metadata, autoload = True)
     
-    #i = accounts.insert().values(Username = username, Password = password)
-    #i.execute()
+    i = accounts.insert().values(Username = username, Password = password, Email = email)
+    i.execute()
     
     return True
 
