@@ -1,0 +1,30 @@
+2017-10-13 Meeting with Diego
+------------------------------------------------------
+
+Next week is sprint 2 deadline
+Some use cases have been touched but not closed 
+	because of the need to work on the interface
+
+Need to work on the visuals
+
+Brandon:
+	Did server sided things, customer
+	Next week: Help on displaying a list of projects of a specific customer
+Eric:
+	Did database schema and creating account
+	Next week: Displaying info on a single project
+Omar:
+	Projects page and displaying of customer information
+	Create acocunt page
+	Next week: Show account create on screen but may finish that early
+Greg:
+	Worked on setting up master and VM on the server
+	Next week: Rework security and html visual
+Cameron:
+	Customer and add new customer page
+	Next week: Link to customer info and list of related projects
+
+15% wildcard marks to assign to a section of the rubric
+Need tests for every use case
+
+Changes in documentation should reflect sprint 2
