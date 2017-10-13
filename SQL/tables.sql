@@ -1,13 +1,13 @@
 -- Drop Existing Tables
-DROP TABLE Quotes;
-DROP TABLE Projects;
-DROP TABLE Status;
-DROP TABLE Customers;
-DROP TABLE Accounts;
-DROP TABLE Requests;
-DROP TABLE Permissions;
-DROP TABLE Companies;
-DROP TABLE Materials;
+DROP TABLE IF EXISTS Quotes;
+DROP TABLE IF EXISTS Projects;
+DROP TABLE IF EXISTS Status;
+DROP TABLE IF EXISTS Customers;
+DROP TABLE IF EXISTS Accounts;
+DROP TABLE IF EXISTS Requests;
+DROP TABLE IF EXISTS Permissions;
+DROP TABLE IF EXISTS Companies;
+DROP TABLE IF EXISTS Materials;
 
 -- Create Tables
 CREATE TABLE Companies (
