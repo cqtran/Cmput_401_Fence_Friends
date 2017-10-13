@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-
+from flask_bootstrap import Bootstrap
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from Python.db import dbSession, init_db
@@ -14,6 +14,7 @@ app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
+Bootstrap(app)
 
 
 # Setup Flask-Security
@@ -21,13 +22,6 @@ userDatastore = SQLAlchemySessionUserDatastore(dbSession,
                                                 User, Role)
 security = Security(app, userDatastore)
 
-
-# Create a user to test with only run once
-@app.before_first_request
-def create_user():
-    init_db()
-    user_datastore.create_user(email='greg@greg.com', password='password')
-    db_session.commit()
 
 test = 0
 
