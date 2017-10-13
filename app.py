@@ -1,17 +1,31 @@
 from flask import Flask, render_template, request
 
+from flask_security import Security, login_required, \
+     SQLAlchemySessionUserDatastore
+from Python.db import dbSession, init_db
+from Python.models import User, Role
+
 # Import python files with functionality
 import Python.accounts as Accounts
 import Python.customers as Customers
 import Python.projects as Projects
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
+app.config['DEBUG'] = True
+app.config['SECRET_KEY'] = 'super-secret'
+app.config['SECURITY_PASSWORD_SALT'] = 'testing'
+
+
+# Setup Flask-Security
+userDatastore = SQLAlchemySessionUserDatastore(dbSession,
+                                                User, Role)
+security = Security(app, userDatastore)
 
 test = 0
 
-@app.route("/")
-def main():
-    return render_template("login.html")
+#@app.route("/")
+#def main():
+#    return render_template("login.html")
 
 @app.route('/showSignUp')
 def showSignUp():
@@ -67,10 +81,12 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route('/customers', methods=['GET', 'POST'])
+#@app.route('/customers', methods=['GET', 'POST'])
+@app.route('/')
+@login_required
 def customers():
     print("nigga we made it")
-    if request.method == 'POST':
+    '''if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
         pn = request.form['pn']
@@ -84,7 +100,8 @@ def customers():
         return render_template("customer.html", name = name, email = email, pn=pn,
                                address = address, listcust = list_customers)
     else:
-        return render_template("customer.html")
+        return render_template("customer.html")'''
+    return render_template("customer.html")
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
 def newcustomer():
