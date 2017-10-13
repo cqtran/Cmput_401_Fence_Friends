@@ -94,8 +94,14 @@ def newcustomer():
 def editcustomer():
     return render_template("editcustomer.html")
 
-@app.route('/projects')
+@app.route('/projects', methods=['GET', 'POST'])
 def projects():
+
+    if request.method == 'POST':
+        customerId = request.form['customer']
+        customer = Customers.getCustomer(customerId)
+        print(customer)
+
     return render_template("projects.html")
 
 @app.route('/newproject')
