@@ -21,6 +21,14 @@ userDatastore = SQLAlchemySessionUserDatastore(dbSession,
                                                 User, Role)
 security = Security(app, userDatastore)
 
+
+# Create a user to test with only run once
+@app.before_first_request
+def create_user():
+    init_db()
+    user_datastore.create_user(email='greg@greg.com', password='password')
+    db_session.commit()
+
 test = 0
 
 #@app.route("/")
