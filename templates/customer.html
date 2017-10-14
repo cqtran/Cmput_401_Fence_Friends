@@ -1,8 +1,11 @@
-{% extends "base.html" %}
-{% block title %}This is an example page{% endblock %}
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
 
+<head>
+</head>
 
-{% block content %}
+<body>
 <script>
 function addCustomer() {
     var cust = prompt("Enter new customer: ");
@@ -32,4 +35,6 @@ function addCustomer() {
 <form action="{{ 'newcustomer' }}">
     	  <input type = "submit" value = "Add a customer +">
 	</form>
-{% endblock %}
+
+</body>
+</html>
