@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request
-
+from flask import Flask, render_template, request, session, redirect, url_for
+import os
 # Import python files with functionality
 import Python.accounts as Accounts
 import Python.customers as Customers
 import Python.projects as Projects
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
+app.secret_key = os.urandom(24) # used for sessions
 
-test = 0
 
 @app.route("/")
 def main():
@@ -60,8 +60,10 @@ def login():
         if success:
             cmpy_ID = Accounts.getCompany(username)
            # customers(company=cmpy_ID)
+            session['companyid'] = cmpy_ID
 
-            return render_template("customer.html", company = cmpy_ID)
+
+            return redirect(url_for('customers'))#render_template("customer.html", company = cmpy_ID), redirect(url_for('customers'))
         else:
             return render_template("login.html", error = "Invalid username or password")
     else:
@@ -69,22 +71,28 @@ def login():
 
 @app.route('/customers', methods=['GET', 'POST'])
 def customers():
-    print("nigga we made it")
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
         pn = request.form['pn']
         address = request.form['address']
-        print(type(name))
-        success = Customers.addCustomer(name, email, pn, address)
-        test = 1
-        list_customers = Customers.displayCustomers(test)
-        print("This is test value")
-        print(test)
+        getcmpyid = session.get('companyid', None)
+
+        success = Customers.addCustomer(name, email, pn, address, getcmpyid)
+
+        list_customers = Customers.displayCustomers(getcmpyid)
+        #print("This is company id")
+        #print(getcmpyid)
+
         return render_template("customer.html", name = name, email = email, pn=pn,
                                address = address, listcust = list_customers)
     else:
-        return render_template("customer.html")
+        #print("This is company id")
+        getcmpyid = session.get('companyid', None)
+        #print(getcmpyid)
+        list_customers = Customers.displayCustomers(getcmpyid)
+
+        return render_template("customer.html", listcust = list_customers)
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
 def newcustomer():
