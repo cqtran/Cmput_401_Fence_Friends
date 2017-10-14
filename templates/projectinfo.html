@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project info</title>
+</head>
+<body>
+<p>Send note to server</p>
+<form method="post" action="{{ url_for('projectinfo') }}">
+<textarea name="note" cols="50" rows="5">
+Enter some text...
+</textarea>
+<br />
+<input type="submit" />
+</form>
+
+<p>Just for test display note.. {{ note }}</p>
+
+</body>
+</html>

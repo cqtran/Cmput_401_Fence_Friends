@@ -116,5 +116,20 @@ def projects():
 def newproject():
     return render_template("newproject.html")
 
+
+# delete later, just for testing note
+@app.route('/projectinfo', methods=['GET', 'POST'])
+def projectinfo():
+    if request.method == 'POST':
+        notes = request.form['note']
+
+        # get project ID and display note
+        return render_template("projectinfo.html", note = notes)
+
+    else:
+        return render_template("projectinfo.html")
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
