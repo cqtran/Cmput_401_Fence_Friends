@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from flask_bootstrap import Bootstrap
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from Python.db import dbSession, init_db
