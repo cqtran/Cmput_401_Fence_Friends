@@ -13,7 +13,6 @@ app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
-Bootstrap(app)
 
 
 # Setup Flask-Security
@@ -32,7 +31,7 @@ test = 0
 def showSignUp():
     return render_template("signup.html")
 
-
+'''
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -58,8 +57,9 @@ def signup():
             return render_template("signup.html", error = "An error has occurred. Try again later.")
     else:
         return render_template("signup.html")
+'''
 
-@app.route('/login', methods=['GET', 'POST'])
+'''@app.route('/login', methods=['GET', 'POST'])
 #@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -81,6 +81,7 @@ def login():
             return render_template("login.html", error = "Invalid username or password")
     else:
         return render_template("login.html")
+'''
 
 #@app.route('/customers', methods=['GET', 'POST'])
 @app.route('/')
