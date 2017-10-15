@@ -14,6 +14,10 @@ app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 
+app.config['SECURITY_REGISTERABLE'] = True
+app.config['SECURITY_RECOVERABLE'] = True
+# change to true after implemented
+app.config['SECURITY_CONFIRMABLE'] = False
 
 # Setup Flask-Security
 userDatastore = SQLAlchemySessionUserDatastore(dbSession,
