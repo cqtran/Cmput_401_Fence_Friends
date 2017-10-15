@@ -1,5 +1,61 @@
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 {% include "security/_messages.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Cavalry Fence Builder</title>
+  <!-- Bootstrap core CSS-->
+  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="../static/css/sb-admin.css" rel="stylesheet">
+  <link href="../static/css/authenticate-styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-green text-white">
+  <div class="container">
+    <div class="card bg-green card-login mx-auto mt-5 no-border">
+      <div class="container">
+      	<h1>{{ _('Cavalry Fence Builder') }}</h1>
+      </div>
+      <div class="card-body">
+        <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
+          {{ register_user_form.hidden_tag() }}
+          {{ render_field_with_errors(register_user_form.username, class="form-control no-border", type="username", placeholder="Enter company name") }}
+          {{ render_field_with_errors(register_user_form.email, class="form-control no-border", type="email", placeholder="Enter email") }}
+          {{ render_field_with_errors(register_user_form.password, class="form-control no-border", type="password", placeholder="Password") }}
+		  {% if register_user_form.password_confirm %}
+		    {{ render_field_with_errors(register_user_form.password_confirm, class="form-control no-border", type="password", placeholder="Password") }}
+		  {% endif %}
+		  {{ render_field(register_user_form.submit, class="btn btn-primary btn-block") }}
+        </form>
+        <div class="text-center">
+		  <a class="d-block small mt-3 text-white" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Login') }}</a>
+          {% if security.confirmable %}
+          <a class="d-block small text-white" href="{{ url_for_security('send_confirmation') }}">{{ _('Confirm account') }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="../static/vendor/jquery/jquery.min.js"></script>
+  <script src="../static/vendor/popper/popper.min.js"></script>
+  <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+</body>
+
+</html>
+
+<!--
 <h1>{{ _('Register') }}</h1>
 <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
   {{ register_user_form.hidden_tag() }}
@@ -9,5 +65,4 @@
     {{ render_field_with_errors(register_user_form.password_confirm) }}
   {% endif %}
   {{ render_field(register_user_form.submit) }}
-</form>
-{% include "security/_menu.html" %}
+</form>-->

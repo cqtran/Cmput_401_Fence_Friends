@@ -3,13 +3,17 @@ from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from Python.db import dbSession, init_db
 from Python.models import User, Role
+from flask_mail import Mail
+from flask_security.core import current_user
 
 # Import python files with functionality
 import Python.accounts as Accounts
 import Python.customers as Customers
 import Python.projects as Projects
+from Python.extendedRegisterForm import *
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
+
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
@@ -17,15 +21,40 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = False
+app.config['SECURITY_CONFIRMABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
+
+app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
+app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'cmput401fence@gmail.com'
+app.config['MAIL_PASSWORD'] = 'fencing401'
+app.config['SECURITY_EMAIL_SENDER'] = 'cmput401fence@gmail.com'
+
+mail = Mail(app)
+
 # Setup Flask-Security
 userDatastore = SQLAlchemySessionUserDatastore(dbSession,
                                                 User, Role)
-security = Security(app, userDatastore)
+
+security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm)
 
 
 test = 0
+# TODO: implement fresh login for password change
+
+# Create a user to test with only run once
+@app.before_first_request
+def create_user():
+    init_db()
+    dbSession.commit()
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    dbSession.remove()
 
 #@app.route("/")
 #def main():
@@ -91,6 +120,7 @@ def login():
 @app.route('/')
 @login_required
 def customers():
+    user = dbSession.query(User).filter(User.id == current_user.id).one()
     '''if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -106,7 +136,7 @@ def customers():
                                address = address, listcust = list_customers)
     else:
         return render_template("customer.html")'''
-    return render_template("customer.html")
+    return render_template("customer.html", company=user.username)
 
 @app.route('/users')
 @login_required
