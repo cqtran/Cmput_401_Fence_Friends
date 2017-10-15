@@ -30,11 +30,11 @@ test = 0
 #@app.route("/")
 #def main():
 #    return render_template("login.html")
-
+'''
 @app.route('/showSignUp')
 def showSignUp():
     return render_template("signup.html")
-
+'''
 '''
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -119,18 +119,22 @@ def accountrequests():
     return render_template("accountrequests.html")
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
+@login_required
 def newcustomer():
     return render_template("newcustomer.html")
 
 @app.route('/editcustomer', methods=['GET', 'POST'])
+@login_required
 def editcustomer():
     return render_template("editcustomer.html")
 
 @app.route('/projects')
+@login_required
 def projects():
     return render_template("projects.html")
 
 @app.route('/newproject')
+@login_required
 def newproject():
     return render_template("newproject.html")
 
