@@ -104,14 +104,14 @@ def customers():
 @login_required
 @roles_required('admin')
 def users():
-    users = dbSession.query(User).filter(User.active == True)
+    users = dbSession.query(User).filter(User.active == True).all()
     return render_template("users.html", company = "Admin", users = users)
 
 @app.route('/accountrequests')
 @login_required
 @roles_required('admin')
 def accountrequests():
-    users = dbSession.query(User).filter(User.active == False)
+    users = dbSession.query(User).filter(User.active == False).all()
     return render_template("accountrequests.html", company = "Admin", users = users)
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
