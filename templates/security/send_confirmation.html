@@ -16,12 +16,15 @@
   <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="../static/css/sb-admin.css" rel="stylesheet">
+  <link href="../static/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bg-dark">
   <div class="container">
-    <div class="card card-login mx-auto mt-5">
-      <div class="card-header">Confirm Account</div>
+    <div class="card bg-green card-login mx-auto mt-5 no-border">
+      <div class="container">
+      	<h1>{{ _('Cavalry Fence Builder') }}</h1>
+      </div>
       <div class="card-body">
         <div class="text-center mt-4 mb-5">
           <h4>Resend Comfirmation email</h4>
@@ -29,13 +32,13 @@
         </div>
         <form action="{{ url_for_security('send_confirmation') }}" method="POST" name="send_confirmation_form">
           {{ send_confirmation_form.hidden_tag() }}
-          {{ render_field_with_errors(send_confirmation_form.email, class="form-control", type="email", placeholder="Enter email address") }}
+          {{ render_field_with_errors(send_confirmation_form.email, class="form-control no-border", type="email", placeholder="Enter email address") }}
   		  {{ render_field(send_confirmation_form.submit, class="btn btn-primary btn-block") }}
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Login') }}</a>
-          <a class="d-block small" href="{{ url_for_security('register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Request Account') }}</a>
-          <a class="d-block small" href="{{ url_for_security('forgot_password') }}">{{ _('Forgot password?') }}</a>
+          <a class="d-block small mt-3 text-white" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Login') }}</a>
+          <a class="d-block small text-white" href="{{ url_for_security('register') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Request Account') }}</a>
+          <a class="d-block small text-white" href="{{ url_for_security('forgot_password') }}">{{ _('Forgot password?') }}</a>
         </div>
       </div>
     </div>
