@@ -5,6 +5,8 @@ from Python.db import dbSession, init_db
 from Python.models import User, Role
 from flask_mail import Mail
 from flask_security.core import current_user
+from flask_security.signals import user_registered
+from flask_security.decorators import roles_required
 
 # Import python files with functionality
 import Python.accounts as Accounts
@@ -36,10 +38,13 @@ app.config['SECURITY_EMAIL_SENDER'] = 'cmput401fence@gmail.com'
 
 mail = Mail(app)
 
+
+
 # Setup Flask-Security
 userDatastore = SQLAlchemySessionUserDatastore(dbSession,
                                                 User, Role)
-userDatastore.create_role(name = 'admin')
+
+dbSession.commit()
 
 security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm)
 
@@ -49,73 +54,23 @@ test = 0
 
 # Create a user to test with only run once
 @app.before_first_request
-def create_user():
+def setup_db():
     init_db()
+    userDatastore.find_or_create_role(name = 'admin')
+    userDatastore.find_or_create_role(name = 'primary')
+    userDatastore.find_or_create_role(name = 'secondary')
     dbSession.commit()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbSession.remove()
 
-#@app.route("/")
-#def main():
-#    return render_template("login.html")
-'''
-@app.route('/showSignUp')
-def showSignUp():
-    return render_template("signup.html")
-'''
-'''
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        # Get form information
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        confirmPassword = request.form['confirmPassword']
-        
-        print("Username: " + username)
-        print("email: " + email)
-        print("password: " + password)
-        print("confirmPassword: " + confirmPassword)
-        
-        if(password != confirmPassword):
-            return render_template("signup.html", error = "Password and confirmed password do not match")
-        
-        success = Accounts.requestAccount(username, email, password)
-        
-        if success:
-            return render_template("login.html", note = "Request sucessful")
-        else:
-            return render_template("signup.html", error = "An error has occurred. Try again later.")
-    else:
-        return render_template("signup.html")
-'''
-
-'''@app.route('/login', methods=['GET', 'POST'])
-#@app.route('/login', methods=['POST'])
-def login():
-    if request.method == 'POST':
-        # Get form information
-        username = request.form['username']
-        password = request.form['password']
-        print("Username: " + username)
-        print("Password: " + password)
-
-        # Authenticate the username/password
-        success = Accounts.authenticate(username, password)
-        
-        if success:
-            cmpy_ID = Accounts.getCompany(username)
-           # customers(company=cmpy_ID)
-
-            return render_template("customer.html", company = cmpy_ID)
-        else:
-            return render_template("login.html", error = "Invalid username or password")
-    else:
-        return render_template("login.html")
-'''
+#deactivates new users
+@user_registered.connect_via(app)
+def user_registered_sighandler(app, user, confirm_token):
+    #userDatastore.deactivate_user(user)
+    userDatastore.add_role_to_user(user, 'primary')
+    dbSession.commit()
 
 #@app.route('/customers', methods=['GET', 'POST'])
 @app.route('/')
@@ -137,35 +92,49 @@ def customers():
                                address = address, listcust = list_customers)
     else:
         return render_template("customer.html")'''
-    return render_template("customer.html", company=current_user.username)
+    #x = userDatastore.deactivate_user(current_user)
+    #dbSession.commit()
+    if current_user.has_role('admin'):
+        users = dbSession.query(User).filter(User.active == True).filter(User.role == 'primary')
+        return render_template("users.html", company = "Admin", users = users)
+    else:
+        return render_template("customer.html", company = current_user.username) #change to companyname
 
 @app.route('/users')
 @login_required
+@roles_required('admin')
 def users():
-    return render_template("users.html")
+    users = dbSession.query(User).filter(User.active == True)
+    return render_template("users.html", company = "Admin", users = users)
 
 @app.route('/accountrequests')
 @login_required
+@roles_required('admin')
 def accountrequests():
-    return render_template("accountrequests.html")
+    users = dbSession.query(User).filter(User.active == False)
+    return render_template("accountrequests.html", company = "Admin", users = users)
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
 @login_required
+@roles_required('primary', 'secondary')
 def newcustomer():
     return render_template("newcustomer.html")
 
 @app.route('/editcustomer', methods=['GET', 'POST'])
 @login_required
+@roles_required('primary', 'secondary')
 def editcustomer():
     return render_template("editcustomer.html")
 
 @app.route('/projects')
 @login_required
+@roles_required('primary', 'secondary')
 def projects():
     return render_template("projects.html")
 
 @app.route('/newproject')
 @login_required
+@roles_required('primary', 'secondary')
 def newproject():
     return render_template("newproject.html")
 
