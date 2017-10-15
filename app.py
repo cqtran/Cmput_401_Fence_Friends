@@ -39,6 +39,7 @@ mail = Mail(app)
 # Setup Flask-Security
 userDatastore = SQLAlchemySessionUserDatastore(dbSession,
                                                 User, Role)
+userDatastore.create_role(name = 'admin')
 
 security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm)
 
@@ -120,7 +121,7 @@ def login():
 @app.route('/')
 @login_required
 def customers():
-    user = dbSession.query(User).filter(User.id == current_user.id).one()
+    #user = dbSession.query(User).filter(User.id == current_user.id).one()
     '''if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -136,7 +137,7 @@ def customers():
                                address = address, listcust = list_customers)
     else:
         return render_template("customer.html")'''
-    return render_template("customer.html", company=user.username)
+    return render_template("customer.html", company=current_user.username)
 
 @app.route('/users')
 @login_required
