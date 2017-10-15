@@ -18,7 +18,7 @@ app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
 app.config['SECURITY_CONFIRMABLE'] = False
-
+app.config['SECURITY_CHANGEABLE'] = True
 # Setup Flask-Security
 userDatastore = SQLAlchemySessionUserDatastore(dbSession,
                                                 User, Role)
@@ -91,7 +91,6 @@ def login():
 @app.route('/')
 @login_required
 def customers():
-    print("nigga we made it")
     '''if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -108,6 +107,16 @@ def customers():
     else:
         return render_template("customer.html")'''
     return render_template("customer.html")
+
+@app.route('/users')
+@login_required
+def users():
+    return render_template("users.html")
+
+@app.route('/accountrequests')
+@login_required
+def accountrequests():
+    return render_template("accountrequests.html")
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
 def newcustomer():

@@ -1,9 +1,11 @@
-{% extends "base.html" %}
-{% block head %}
-  {{ super() }}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
-{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
+
+<head>
+</head>
+
+<body>
 <script>
 function addCustomer() {
     var cust = prompt("Enter new customer: ");
@@ -31,6 +33,8 @@ function addCustomer() {
 
 <button class="button" onclick="addCustomer()">This is only to test the scrollable list</button>
 <form action="{{ 'newcustomer' }}">
-    <input type = "submit" value = "Add a customer +">
-</form>
-{% endblock %}
+    	  <input type = "submit" value = "Add a customer +">
+	</form>
+
+</body>
+</html>

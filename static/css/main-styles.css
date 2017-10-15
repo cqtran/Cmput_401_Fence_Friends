@@ -1,0 +1,49 @@
+* {
+  border-radius: 0 !important;
+}
+
+h1 {
+	font-weight: bold;
+}
+
+.btn-primary {
+  color: #329664;
+  background-color: #ffffff;
+  border: 0;
+  font-weight: bold;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  color: #329664;
+  background-color: #D3D3D3;
+}
+
+.btn-secondary {
+  color: #ce0000;
+  background-color: #ffffff;
+  border: 0;
+  font-weight: bold;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #ce0000;
+  background-color: #D3D3D3;
+}
+
+.no-border {
+	border: 0;
+}
+
+.bg-green {
+	background-color: #329664;
+}
+
+.text-green {
+  color: #329664;
+}
+
+.bg-darkgreen {
+  background-color: #26754e;
+}
