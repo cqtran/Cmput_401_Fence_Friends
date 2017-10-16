@@ -69,6 +69,10 @@ function makeA(array) {
         item.setAttribute('href', '#')
         item.setAttribute('class', 'list-group-item list-group-item-action');
 
+        // this is where you want to go when you click
+        item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+
+
         // Set its contents:
         var content = array[i];
         item.appendChild(document.createTextNode(content));
