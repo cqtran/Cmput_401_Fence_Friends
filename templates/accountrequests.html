@@ -5,7 +5,7 @@
 
       {% for user in users %}
         <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#acceptModal">
-          <strong>{{ user.username }}</strong>
+          <strong>{{ user.company_id }}</strong>
           <div class="text-muted smaller">Requested {{ user.confirmed_at }}</div>
         </a>
       {% endfor %}

@@ -98,7 +98,7 @@ def customers():
         users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
     else:
-        return render_template("customer.html", company = current_user.username) #change to companyname
+        return render_template("customer.html", company = current_user.company_id) #change to companyname
 
 @app.route('/users')
 @login_required
