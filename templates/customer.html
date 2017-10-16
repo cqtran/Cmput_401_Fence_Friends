@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
-
+<style>
+</style>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 </head>
 
 <body>
+
+<h2>Customers</h2>
+<!--
+<div class="wrapper">
+    <p>Name: {{name}}</p>
+    <p>Email: {{email}}</p>
+    <p>Phone number: {{pn}}</p>
+    <p>Address: {{address}}</p>
+    <p>Listofcustomers: {{ listcust }}</p>
+    <div class="list_item">
+        <select id=list_item size=6> </select>
+    </div>
+</div>
+<button class="button" onclick="addCustomer()">This is only to test the scrollable list</button>
+-->
+<form action="{{ 'newcustomer' }}">
+    	  <input type = "submit" value = "Add a customer +">
+	</form>
+<!--
+<button class="button" onclick="makeUL({{ listcust }})">test</button>
+-->
+<div class="list-group" id="customerlist">
+    <form action="{{ 'newcustomer' }}">
+    	  <input type = "submit" value = "Add a customer +">
+	</form>
+</div>
+
+</body>
+
+
+
 <script>
 function addCustomer() {
     var cust = prompt("Enter new customer: ");
@@ -18,23 +52,35 @@ function addCustomer() {
     <!-- #var makeText = document.createTextNode(cust); !-->
     <!-- #document.getElementById('list_item').appendChild(makeLi).appendChild(makeText); !-->
 }
+function test_data(listcust){
+    console.log(listcust)
+}
+
+function makeA(array) {
+    // Create the list element:
+    var list = document.createElement('a');
+    list.setAttribute('href', '#')
+    list.setAttribute('class', 'list-group-item active')
+    list.appendChild(document.createTextNode("Customer List"))
+
+    for(var i = 0; i < array.length; i++) {
+        // Create the list item:
+        var item = document.createElement('a');
+        item.setAttribute('href', '#')
+        item.setAttribute('class', 'list-group-item list-group-item-action');
+
+        // Set its contents:
+        var content = array[i];
+        item.appendChild(document.createTextNode(content));
+
+        // Add it to the list:
+        list.appendChild(item);
+    }
+
+    // Finally, return the constructed list:
+    return list;
+}
+document.getElementById('customerlist').appendChild(makeA({{ listcust|safe }}));
+
 </script>
-<h2>Customers</h2>
-<div class="wrapper">
-    <p>Name: {{name}}</p>
-    <p>Email: {{email}}</p>
-    <p>Phone number: {{pn}}</p>
-    <p>Address: {{address}}</p>
-    <p>Listofcustomers: {{ listcust }}</p>
-    <div class="list_item">
-        <select id=list_item size=6> </select>
-    </div>
-</div>
-
-<button class="button" onclick="addCustomer()">This is only to test the scrollable list</button>
-<form action="{{ 'newcustomer' }}">
-    	  <input type = "submit" value = "Add a customer +">
-	</form>
-
-</body>
 </html>

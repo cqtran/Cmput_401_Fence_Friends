@@ -22,6 +22,16 @@
 </style>
 </head>
 <body>
+<div class="list-group">
+  <a href="#" class="list-group-item active">
+    Customer list
+  </a>
+  <a href="#" class="list-group-item list-group-item-action">Cameron Tran</a>
+  <a href="#" class="list-group-item list-group-item-action">Eric Wong</a>
+  <a href="#" class="list-group-item list-group-item-action">gdbaker</a>
+  <a href="#" class="list-group-item list-group-item-action disabled">omar</a>
+</div>
+
 <p>Send note to server</p>
 <form method="post" action="{{ url_for('projectinfo') }}">
 <textarea name="note" cols="50" rows="5">

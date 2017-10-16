@@ -4,6 +4,7 @@ import os
 import Python.accounts as Accounts
 import Python.customers as Customers
 import Python.projects as Projects
+import json
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.secret_key = os.urandom(24) # used for sessions
@@ -92,7 +93,7 @@ def customers():
         #print(getcmpyid)
         list_customers = Customers.displayCustomers(getcmpyid)
 
-        return render_template("customer.html", listcust = list_customers)
+        return render_template("customer.html", listcust = json.dumps(list_customers))
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
 def newcustomer():
