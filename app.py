@@ -116,25 +116,25 @@ def accountrequests():
 
 @app.route('/newcustomer', methods=['GET', 'POST'])
 @login_required
-@roles_required('primary', 'secondary')
+@roles_required('primary')
 def newcustomer():
     return render_template("newcustomer.html")
 
 @app.route('/editcustomer', methods=['GET', 'POST'])
 @login_required
-@roles_required('primary', 'secondary')
+@roles_required('primary')
 def editcustomer():
     return render_template("editcustomer.html")
 
 @app.route('/projects')
 @login_required
-@roles_required('primary', 'secondary')
+@roles_required('primary')
 def projects():
     return render_template("projects.html")
 
 @app.route('/newproject')
 @login_required
-@roles_required('primary', 'secondary')
+@roles_required('primary')
 def newproject():
     return render_template("newproject.html")
 
