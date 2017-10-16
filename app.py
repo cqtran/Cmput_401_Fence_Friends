@@ -95,7 +95,7 @@ def customers():
     #x = userDatastore.deactivate_user(current_user)
     #dbSession.commit()
     if current_user.has_role('admin'):
-        users = dbSession.query(User).filter(User.active == True).filter(User.role == 'primary')
+        users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
     else:
         return render_template("customer.html", company = current_user.username) #change to companyname
