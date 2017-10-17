@@ -103,10 +103,12 @@ def customers():
     else:
         customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
         s = []
+        id = []
         for i in customers:
             s.append(i.first_name)
+            id.append(i.customer_id)
 
-        return render_template("customer.html", company = current_user.company_name, listcust = json.dumps(s)) #change to companyname
+        return render_template("customer.html", company = current_user.company_name, listcust = json.dumps(s), custid = json.dumps(id)) #change to companyname
 
 @app.route('/users')
 @login_required
