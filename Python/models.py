@@ -5,6 +5,8 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, \
                        String, ForeignKey, Numeric, LargeBinary
 
+from flask.json import JSONEncoder
+
 class RolesUsers(Base):
     __tablename__ = 'roles_users'
     id = Column(Integer(), primary_key=True)
@@ -47,6 +49,14 @@ class Customer(Base):
     last_name = Column(String(255))
     cellphone = Column(String(20))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+
+    #def __int__(self, customer_id, email, first_name, last_name, cellphone, company_name):
+        #self.customer_id = customer_id
+        #self.email = email
+        #self.first_name = first_name
+        #self.last_name = last_name
+        #self.cellphone = cellphone
+        #self.company_name = company_name
     
 class Status (Base):
     __tablename__ = 'status'
@@ -76,3 +86,5 @@ class Material(Base):
     material_id = Column(Integer, primary_key=True)
     material_name = Column(String(255))
     cost = Column(Numeric)
+
+

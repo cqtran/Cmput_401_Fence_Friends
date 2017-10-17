@@ -1,11 +1,13 @@
 from flask.json import JSONEncoder
+from Python.models import Customer
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, EqltByGene):
+        if isinstance(obj, Customer):
             return {
-                'gene_id': obj.gene_id, 
-                'gene_symbol': obj.gene_symbol,
-                'p_value': obj.p_value,
+                'email': obj.email,
+                'first_name': obj.first_name,
+                'cellphone': obj.cellphone,
             }
         return super(MyJSONEncoder, self).default(obj)
+

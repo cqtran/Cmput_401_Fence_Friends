@@ -17,8 +17,13 @@ import Python.projects as Projects
 from Python.extendedRegisterForm import *
 
 import json
+from Python.jsonifyObjects import MyJSONEncoder
+from flask.json import jsonify
+
+
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
+app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
 
@@ -97,7 +102,13 @@ def customers():
         return render_template("users.html", company = "Admin", users = users)
     else:
         customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
-        return render_template("customer.html", company = current_user.company_name, listcust = json.dumps(customers)) #change to companyname
+        print(customers[0].first_name)
+        print(customers[1].first_name)
+        s = []
+        for i in customers:
+            s.append(i.first_name)
+
+        return render_template("customer.html", company = current_user.company_name, listcust = json.dumps(s)) #change to companyname
 
 @app.route('/users')
 @login_required
@@ -117,7 +128,20 @@ def accountrequests():
 @login_required
 @roles_required('primary')
 def newcustomer():
-    return render_template("newcustomer.html")
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        pn = request.form['pn']
+        address = request.form['address']
+
+        success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
+        print(success)
+
+        return redirect(url_for('customers'))
+
+
+    else:
+        return render_template("newcustomer.html")
 
 @app.route('/editcustomer', methods=['GET', 'POST'])
 @login_required
@@ -133,7 +157,7 @@ def projects():
     if request.method == 'POST':
         customerId = request.form['customer']
         customer = Customers.getCustomer(customerId)
-        print(customer)
+        print(str(customer))
 
     return render_template("projects.html")
 
@@ -146,6 +170,8 @@ def newproject():
 
 # delete later, just for testing note
 @app.route('/projectinfo', methods=['GET', 'POST'])
+@login_required
+@roles_required('primary')
 def projectinfo():
     if request.method == 'POST':
         notes = request.form['note']

@@ -1,15 +1,20 @@
 import Python.db as DB
 from sqlalchemy import *
+from Python.db import dbSession, init_db
+from Python.models import Customer
 
-def addCustomer(name, email, ph, addr, cid):
-    db = DB.getConnection()
-    metadata = MetaData(db)
-    customers = Table('Customers', metadata, autoload=True)
-    add = customers.insert().values(First_name = name, Email = email, Cellphone = ph, Last_name = addr
-									,Company_ID = cid)
-    add.execute()
+def addCustomer(name, email, ph, addr, cname):
+
+    customer = Customer(email = email, first_name = name, cellphone = ph, company_name = cname)
+    dbSession.add(customer)
+    dbSession.commit()
 
     return True
+
+
+
+
+
 
 def displayCustomers(company_id):
     db = DB.getConnection()
