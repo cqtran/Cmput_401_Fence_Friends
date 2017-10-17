@@ -102,8 +102,6 @@ def customers():
         return render_template("users.html", company = "Admin", users = users)
     else:
         customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
-        print(customers[0].first_name)
-        print(customers[1].first_name)
         s = []
         for i in customers:
             s.append(i.first_name)
@@ -157,7 +155,6 @@ def projects():
     if request.method == 'POST':
         customerId = request.form['customer']
         customer = Customers.getCustomer(customerId)
-        print(str(customer))
 
     return render_template("projects.html")
 
