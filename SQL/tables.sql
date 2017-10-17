@@ -1,92 +1,99 @@
 -- Drop Existing Tables
-DROP TABLE IF EXISTS Quotes;
-DROP TABLE IF EXISTS Projects;
-DROP TABLE IF EXISTS Status;
-DROP TABLE IF EXISTS Customers;
-DROP TABLE IF EXISTS Accounts;
-DROP TABLE IF EXISTS Requests;
-DROP TABLE IF EXISTS Permissions;
-DROP TABLE IF EXISTS Companies;
-DROP TABLE IF EXISTS Materials;
+DROP TABLE IF EXISTS quote;
+DROP TABLE IF EXISTS project;
+DROP TABLE IF EXISTS status;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS roles_users;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS company;
+DROP TABLE IF EXISTS material;
 
 -- Create Tables
-CREATE TABLE Companies (
-	Company_ID	INTEGER NOT NULL AUTO_INCREMENT,
-	Name		VARCHAR(20),
-	Email		VARCHAR(40),
-	PRIMARY KEY (Company_ID)
+CREATE TABLE company (
+	company_id	INTEGER AUTO_INCREMENT,
+	name		VARCHAR(255),
+	email		VARCHAR(255) UNIQUE,
+	PRIMARY KEY (company_id)
 );
 
-CREATE TABLE Permissions (
-	Permission_ID 	INTEGER NOT NULL,
-	Permission_name	VARCHAR(20),
-	PRIMARY KEY (Permission_ID)
+CREATE TABLE role (
+	id 			INTEGER NOT NULL,
+	name 		VARCHAR(80) UNIQUE,
+	description	VARCHAR(255),
+	PRIMARY KEY (id)
 );
 
-CREATE TABLE Accounts (
-	Account_ID	INTEGER NOT NULL AUTO_INCREMENT,
-	Username	VARCHAR(20) UNIQUE,
-	Password	VARCHAR(20),
-	Email		VARCHAR(40),
-	Company_ID	INTEGER NOT NULL,
-	Permission_ID	 INTEGER NOT NULL,
-	PRIMARY KEY (Account_ID),
-	FOREIGN KEY (Company_ID) REFERENCES Companies(Company_ID),
-	FOREIGN KEY (Permission_ID) REFERENCES Permissions(Permission_ID)
+CREATE TABLE user (
+	id			INTEGER,
+	email		VARCHAR(255) UNIQUE,
+	username	VARCHAR(255),
+	password	VARCHAR(255),
+	last_login_at	DATETIME,
+    current_login_at DATETIME,
+    last_login_ip 	VARCHAR(100),
+    current_login_ip VARCHAR(100),
+    login_count INTEGER,
+    active 		BOOLEAN,
+    confirmed_at DATETIME,
+	company_id		INTEGER NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (company_id) REFERENCES company(company_id)
 );
 
-CREATE TABLE Requests (
-	Request_ID	INTEGER NOT NULL AUTO_INCREMENT,
-	Username	VARCHAR(20) UNIQUE,
-	Password	VARCHAR(20),
-	Email		VARCHAR(40),
-	Company_ID	INTEGER NOT NULL,
-	PRIMARY KEY (Request_ID),
-	FOREIGN KEY (Company_ID) REFERENCES Companies(Company_ID)
+CREATE TABLE roles_users (
+	id				INTEGER,
+	user_id 		INTEGER,
+	role_id			INTEGER,
+	PRIMARY KEY (id),
+	FOREIGN KEY (user_id) REFERENCES user(id),
+	FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
-CREATE TABLE Customers (
-	Customer_ID	INTEGER NOT NULL AUTO_INCREMENT,
-	First_name	VARCHAR(20),
-	Last_name	VARCHAR(20),
-	Email		VARCHAR(40),
-	Cellphone	VARCHAR(15),
-	Company_ID	INTEGER NOT NULL,
-	PRIMARY KEY (Customer_ID),
-	FOREIGN KEY (Company_ID) REFERENCES Companies(Company_ID)
+
+CREATE TABLE customer (
+	customer_id	INTEGER NOT NULL AUTO_INCREMENT,
+	first_name	VARCHAR(255),
+	last_name	VARCHAR(255),
+	email		VARCHAR(255) UNIQUE,
+	cellphone	VARCHAR(20),
+	company_id	INTEGER NOT NULL,
+	PRIMARY KEY (customer_id),
+	FOREIGN KEY (company_id) REFERENCES company(company_id)
 );
 
-CREATE TABLE Status (
-	Status_ID	INTEGER NOT NULL,
-	Status_name VARCHAR(30),
-	PRIMARY KEY (Status_ID)
+CREATE TABLE status (
+	status_id	INTEGER AUTO_INCREMENT,
+	status_name VARCHAR(100),
+	PRIMARY KEY (status_id)
 );
 
-CREATE TABLE Projects (
-	Project_ID	INTEGER NOT NULL AUTO_INCREMENT,
-	Customer_ID INTEGER NOT NULL,
-	Status_ID	INTEGER NOT NULL,
-	Address		VARCHAR(30),
-	Note		VARCHAR(250),
-	Start_date	DATETIME,
-	PRIMARY KEY (Project_ID),
-	FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID),
-	FOREIGN KEY (Status_ID) REFERENCES Status(Status_ID)
+CREATE TABLE project (
+	project_id	INTEGER NOT NULL AUTO_INCREMENT,
+	customer_id INTEGER NOT NULL,
+	status_id	INTEGER NOT NULL,
+	address		VARCHAR(100),
+	start_date	DATETIME,
+	end_date 	DATETIME,
+	PRIMARY KEY (project_id),
+	FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+	FOREIGN KEY (status_id) REFERENCES status(status_id)
 );
 
-CREATE TABLE Quotes (
-	Quote_ID 	INTEGER NOT NULL AUTO_INCREMENT,
-	Project_ID 	INTEGER NOT NULL,
-	Quote		DECIMAL,
-	Project_info BLOB,
-	Last_modified	DATETIME,
-	PRIMARY KEY (Quote_ID),
-	FOREIGN KEY (Project_ID) REFERENCES Projects(Project_ID)
+CREATE TABLE quote (
+	quote_id 	INTEGER NOT NULL AUTO_INCREMENT,
+	project_id 	INTEGER NOT NULL,
+	quote		DECIMAL,
+	project_info BLOB,
+	note		VARCHAR(250),
+	last_modified	DATETIME,
+	PRIMARY KEY (quote_id),
+	FOREIGN KEY (project_id) REFERENCES project(project_id)
 );
 
-CREATE TABLE Materials (
-	Material_ID	INTEGER NOT NULL,
-	Material_Name VARCHAR(40),
-	COST		DECIMAL,
-	PRIMARY KEY (Material_ID)	
+CREATE TABLE material (
+	material_id	INTEGER NOT NULL,
+	material_name VARCHAR(255),
+	cost		DECIMAL,
+	PRIMARY KEY (material_id)	
 );

@@ -1,0 +1,41 @@
+* {
+  border-radius: 0 !important;
+}
+
+h1 {
+	font-weight: bold;
+  color: #329664;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #329664;
+  border: 0;
+  font-weight: bold;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  color: #ffffff;
+  background-color: #2b724f;
+}
+
+.no-border {
+	border: 0;
+}
+
+.bg-green {
+	background-color: #329664;
+}
+
+.text-green {
+  color: #329664;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.bg-darkgreen {
+  background-color: #26754e;
+}

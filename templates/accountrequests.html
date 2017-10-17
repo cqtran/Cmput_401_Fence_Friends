@@ -1,0 +1,34 @@
+{% extends "basemaster.html" %}
+{% block content %}
+  <h1>Account Requests</h1>
+    <div class="list-group list-group-flush small" id="genereate-users">
+      {% for user in users %}
+        <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#acceptModal">
+          <strong>{{ user.company_name }}</strong>
+          <div class="text-muted smaller">Requested {{ user.confirmed_at }}</div>
+        </a>
+      {% endfor %}
+    </div>
+{% endblock %}
+{% block content2 %}
+	<div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="acceptModalLabel">Accept user?</h5>
+	        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">×</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">Clicking accept will accept the account request and activate the account.</div>
+	      <div class="modal-footer">
+	        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+	        <a class="btn btn-primary" href="#">Accept</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script type="text/javascript">
+		var users = {{users}};
+	</script>
+{% endblock %}

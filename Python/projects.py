@@ -14,3 +14,16 @@ def createProject(customerId, statusId, address, note, startDate):
     
     return True
 
+
+def savenote(note, pid):
+
+    #TODO
+    customer = Customer(email = email, first_name = name, cellphone = ph, company_name = cname)
+    dbSession.add(customer)
+    dbSession.commit()
+
+    return True
+
+
+
+

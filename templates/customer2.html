@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
+
+<head>
+</head>
+
+<body>
+<script>
+function addCustomer() {
+    var cust = prompt("Enter new customer: ");
+    var option = document.createElement("option");
+    option.text = cust;
+    option.value = ""
+    var select = document.getElementById("list_item");
+    select.appendChild(option);
+
+    <!-- #var makeText = document.createTextNode(cust); !-->
+    <!-- #document.getElementById('list_item').appendChild(makeLi).appendChild(makeText); !-->
+}
+</script>
+<h2>Customers</h2>
+<div class="wrapper">
+    <p>Name: {{name}}</p>
+    <p>Email: {{email}}</p>
+    <p>Phone number: {{pn}}</p>
+    <p>Address: {{address}}</p>
+    <p>Listofcustomers: {{ listcust }}</p>
+    <div class="list_item">
+        <select id=list_item size=6> </select>
+    </div>
+</div>
+
+<button class="button" onclick="addCustomer()">This is only to test the scrollable list</button>
+<form action="{{ 'newcustomer' }}">
+    	  <input type = "submit" value = "Add a customer +">
+	</form>
+
+</body>
+</html>

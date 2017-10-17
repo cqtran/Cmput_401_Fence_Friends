@@ -1,32 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="../static/home.css">
-	
-  </head>
-  
-  <body>
+<h2>Projects</h2>
 
-      <h1> Projects </h1>
+<form action="{{ 'projectinfo' }}">
+    <input type = "submit" value = "Add a customer +">
+</form>
 
-      <h2 id="customerName">{{name}}</h2>
-      <p id="customerInfo">
-        {{email}}<br>
-        {{phone}}<br>
-        {{address}}
-      </p>
-      <a href="editcustomer"> <button> Edit </button> </a>
+<p>{{ items }}</p>
+    <p>{{ listcust }}</p>
+<div class="list-group" id="customerlist">
+  <a href="#" class="list-group-item list-group-item-action" onclick=window.location.href="{{ url_for('projectinfo') }}">Project 1</a>
+  <a href="#" class="list-group-item list-group-item-action" onclick=window.location.href="{{ url_for('projectinfo') }}">Project 2</a>
+  <a href="#" class="list-group-item list-group-item-action" onclick=window.location.href="{{ url_for('projectinfo') }}">Project 3</a>
 
-      <form action="{{ 'newproject' }}">
-    	  <input type = "submit" value = "Add a project +">
-	    </form>
-	
-  </body>
- </html>
+</div>
+
+
+
+<script>
+function test_data(listcust){
+    console.log(listcust)
+}
+
+function makeA(array) {
+    // Create the list element:
+    var list = document.createElement('a');
+    list.setAttribute('href', '#')
+    list.setAttribute('class', 'list-group-item active')
+    list.appendChild(document.createTextNode("Customer List"))
+
+    for(var i = 0; i < array.length; i++) {
+        // Create the list item:
+        var item = document.createElement('a');
+        item.setAttribute('href', '#')
+        item.setAttribute('class', 'list-group-item list-group-item-action');
+
+        // this is where you want to go when you click
+        item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+
+
+        // Set its contents:
+        var content = array[i];
+        item.appendChild(document.createTextNode(content));
+
+        // Add it to the list:
+        list.appendChild(item);
+    }
+
+    // Finally, return the constructed list:
+    return list;
+}
+
+document.getElementById('customerlist').appendChild(makeA({{ listcust|safe }}));
+
+</script>
+{% endblock %}
