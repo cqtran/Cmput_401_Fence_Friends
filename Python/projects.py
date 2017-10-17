@@ -1,3 +1,7 @@
+import Python.db as DB
+from sqlalchemy import *
+
+
 def createProject(customerId, statusId, address, note, startDate):
     #Access MySQL and add in account
     db = DB.getConnection()
@@ -9,3 +13,4 @@ def createProject(customerId, statusId, address, note, startDate):
     i.execute()
     
     return True
+

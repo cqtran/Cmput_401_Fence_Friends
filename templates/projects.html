@@ -14,12 +14,14 @@
   
   <body>
 
-      <script src="../static/projects.js"></script>
-
       <h1> Projects </h1>
 
-      <h2 id="customerName"></h2>
-      <p id="customerInfo"></p>
+      <h2 id="customerName">{{name}}</h2>
+      <p id="customerInfo">
+        {{email}}<br>
+        {{phone}}<br>
+        {{address}}
+      </p>
       <a href="editcustomer"> <button> Edit </button> </a>
 
       <form action="{{ 'newproject' }}">

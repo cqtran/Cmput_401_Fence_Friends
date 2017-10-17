@@ -4,6 +4,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
 {% endblock %}
 {% block content %}
+
 <script>
 function addCustomer() {
     var cust = prompt("Enter new customer: ");
@@ -13,24 +14,61 @@ function addCustomer() {
     var select = document.getElementById("list_item");
     select.appendChild(option);
 
-    <!-- #var makeText = document.createTextNode(cust); !-->
-    <!-- #document.getElementById('list_item').appendChild(makeLi).appendChild(makeText); !-->
-}
 </script>
-<h2>Customers</h2>
-<div class="wrapper">
-    <p>Name: {{name}}</p>
-    <p>Email: {{email}}</p>
-    <p>Phone number: {{pn}}</p>
-    <p>Address: {{address}}</p>
-    <p>Listofcustomers: {{ listcust }}</p>
-    <div class="list_item">
-        <select id=list_item size=6> </select>
-    </div>
-</div>
 
-<button class="button" onclick="addCustomer()">This is only to test the scrollable list</button>
+
+<h2>Customers</h2>
+
 <form action="{{ 'newcustomer' }}">
     <input type = "submit" value = "Add a customer +">
 </form>
+
+
+    	  <input type = "submit" value = "Add a customer +">
+</form>
+
+<div class="list-group" id="customerlist">
+    <form action="{{ 'newcustomer' }}">
+    	  <input type = "submit" value = "Add a customer +">
+	</form>
+</div>
+
+
+
+<script>
+function test_data(listcust){
+    console.log(listcust)
+}
+
+function makeA(array) {
+    // Create the list element:
+    var list = document.createElement('a');
+    list.setAttribute('href', '#')
+    list.setAttribute('class', 'list-group-item active')
+    list.appendChild(document.createTextNode("Customer List"))
+
+    for(var i = 0; i < array.length; i++) {
+        // Create the list item:
+        var item = document.createElement('a');
+        item.setAttribute('href', '#')
+        item.setAttribute('class', 'list-group-item list-group-item-action');
+
+        // this is where you want to go when you click
+        item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+
+
+        // Set its contents:
+        var content = array[i];
+        item.appendChild(document.createTextNode(content));
+
+        // Add it to the list:
+        list.appendChild(item);
+    }
+
+    // Finally, return the constructed list:
+    return list;
+}
+document.getElementById('customerlist').appendChild(makeA({{ listcust|safe }}));
+
+</script>
 {% endblock %}

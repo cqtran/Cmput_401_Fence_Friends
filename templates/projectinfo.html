@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project info</title>
+
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+    body{
+        background: url('../static/images/bg.jpg');
+        background-size: cover;
+
+    }
+    p{
+        color: white;
+        align: center;
+    }
+    form{
+        align: center;
+    }
+</style>
+</head>
+<body>
+<div class="list-group">
+  <a href="#" class="list-group-item active">
+    Customer list
+  </a>
+  <a href="#" class="list-group-item list-group-item-action">Cameron Tran</a>
+  <a href="#" class="list-group-item list-group-item-action">Eric Wong</a>
+  <a href="#" onclick=window.location.href="{{ url_for('login') }}";
+ class="list-group-item list-group-item-action">gdbaker</a>
+  <a href="#" class="list-group-item list-group-item-action disabled">omar</a>
+</div>
+
+<p>Send note to server</p>
+<form method="post" action="{{ url_for('projectinfo') }}">
+<textarea name="note" cols="50" rows="5">
+Enter some text...
+</textarea>
+<br />
+<input type="submit" />
+</form>
+
+<p>Just for test display note.. {{ note }}</p>
+
+</body>
+</html>

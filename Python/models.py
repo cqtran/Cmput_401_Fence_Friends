@@ -23,7 +23,7 @@ class User(Base, UserMixin):
     email = Column(String(255), unique=True)
     username = Column(String(255))
     password = Column(String(255))
-    company_id = Column('company_id', Integer(), ForeignKey('company.company_id'))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     last_login_at = Column(DateTime())
     current_login_at = Column(DateTime())
     last_login_ip = Column(String(100))
@@ -36,8 +36,7 @@ class User(Base, UserMixin):
     
 class Company(Base):
     __tablename__ = 'company'
-    company_id = Column(Integer, primary_key=True)
-    name = Column(String(255))
+    company_name = Column(String(255), primary_key=True)
     email = Column(String(255), unique=True)
 
 class Customer(Base):
@@ -47,7 +46,7 @@ class Customer(Base):
     first_name = Column(String(255))
     last_name = Column(String(255))
     cellphone = Column(String(20))
-    company_id = Column('company_id', Integer(), ForeignKey('company.company_id'))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     
 class Status (Base):
     __tablename__ = 'status'
