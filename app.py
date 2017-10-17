@@ -69,7 +69,7 @@ def shutdown_session(exception=None):
 @user_registered.connect_via(app)
 def user_registered_sighandler(app, user, confirm_token):
     #userDatastore.deactivate_user(user)
-    userDatastore.add_role_to_user(user, 'primary')
+    userDatastore.add_role_to_user(user, 'admin')
     dbSession.commit()
 
 #@app.route('/customers', methods=['GET', 'POST'])
