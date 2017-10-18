@@ -13,8 +13,9 @@
 </form>
 
 <p>{{ items }}</p>
-    <p>{{ listcust }}</p>
-<div class="list-group" id="customerlist">
+    <p>{{ listproj }}</p>
+	<p>{{ company }} {{customer}} </p>
+<div class="list-group" id="projectlist">
   <a href="#" class="list-group-item list-group-item-action" onclick=window.location.href="{{ url_for('projectinfo') }}">Project 1</a>
   <a href="#" class="list-group-item list-group-item-action" onclick=window.location.href="{{ url_for('projectinfo') }}">Project 2</a>
   <a href="#" class="list-group-item list-group-item-action" onclick=window.location.href="{{ url_for('projectinfo') }}">Project 3</a>
@@ -24,8 +25,8 @@
 
 
 <script>
-function test_data(listcust){
-    console.log(listcust)
+function test_data(listproj){
+    console.log(listproj)
 }
 
 function makeA(array) {
@@ -33,7 +34,7 @@ function makeA(array) {
     var list = document.createElement('a');
     list.setAttribute('href', '#')
     list.setAttribute('class', 'list-group-item active')
-    list.appendChild(document.createTextNode("Customer List"))
+    list.appendChild(document.createTextNode("Project List"))
 
     for(var i = 0; i < array.length; i++) {
         // Create the list item:
@@ -42,12 +43,11 @@ function makeA(array) {
         item.setAttribute('class', 'list-group-item list-group-item-action');
 
         // this is where you want to go when you click
-        item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-
-
+        //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+		item.setAttribute('onclick', 'projectClicked('+array[i]+')')
+		
         // Set its contents:
-        var content = array[i];
-        item.appendChild(document.createTextNode(content));
+        item.appendChild(document.createTextNode('Project id ' + array[i]));
 
         // Add it to the list:
         list.appendChild(item);
@@ -57,7 +57,11 @@ function makeA(array) {
     return list;
 }
 
-document.getElementById('customerlist').appendChild(makeA({{ listcust|safe }}));
+document.getElementById('projectlist').appendChild(makeA({{ listproj|safe }}));
+
+function projectClicked(id) {
+	window.location.href= '/projectinfo?proj_id='+id
+}
 
 </script>
 {% endblock %}

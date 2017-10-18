@@ -39,8 +39,9 @@ function makeA(array,id) {
         item.setAttribute('class', 'list-group-item list-group-item-action');
 
         // this is where you want to go when you click
-        item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-        item.setAttribute('cust_id', id[i])
+        //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+        item.setAttribute('onclick', 'customerClicked('+id[i]+')')
+		item.setAttribute('cust_id', id[i])
 
 
         // Set its contents:
@@ -56,6 +57,10 @@ function makeA(array,id) {
 }
 
 document.getElementById('customerlist').appendChild(makeA({{ listcust|safe }}, {{ custid|safe }}));
+
+function customerClicked(id) {
+	window.location.href= '/projects?cust_id='+id
+}
 
 </script>
 {% endblock %}

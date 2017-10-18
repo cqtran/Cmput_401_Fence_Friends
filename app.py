@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from Python.db import dbSession, init_db
-from Python.models import User, Role, Company, Customer
+from Python.models import User, Role, Company, Customer, Project
 from flask_mail import Mail
 from flask_security.core import current_user
 from flask_security.signals import user_registered
@@ -153,12 +153,33 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
+    # Get the argument 'cust_id' if it is given
+    customer_id = request.args.get('cust_id')
+    print(customer_id)
+    
+    # Start a query on Project
+    projects= dbSession.query(Project)
+    
+    # If the current user is an admin, then allow them to look at all projects
+    if current_user.has_role('admin'):
+        pass
+    # Otherwise, find projects in the same company as the logged in user
+    else:
+        projects = projects.filter(Customer.company_name == current_user.company_name)
+    
+    # If an customer id is given, then filter projects on the customer
+    if customer_id is not None:
+        projects = projects.filter(customer_id == Project.customer_id)
 
-    if request.method == 'POST':
-        customerId = request.form['customer']
-        customer = Customers.getCustomer(customerId)
-
-    return render_template("projects.html")
+    # Filter projects with matching customer_ids and execute query
+    projects = projects.filter(Customer.customer_id == Project.customer_id).all()
+    
+    # Get the result of the query
+    results = []
+    for i in projects:
+        results.append(i.project_id)
+    print(results)
+    return render_template("projects.html", listproj = json.dumps(results))
 
 @app.route('/newproject')
 @login_required
