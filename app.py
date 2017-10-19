@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from Python.db import dbSession, init_db, fieldExists
-from Python.models import User, Role, Company, Customer, Project
+from Python.models import User, Role, Company, Customer, Project, Status
 from flask_mail import Mail
 from flask_security.core import current_user
 from flask_security.signals import user_registered
