@@ -6,17 +6,9 @@
 {% block content %}
 
 
-<h2>Customers</h2>
+<h1>Customers</h1>
 
-<form action="{{ 'newcustomer' }}">
-    <input type = "submit" value = "Add a customer +">
-</form>
-
-<p>{{ items }}</p>
-    <p>{{ listcust }}</p>
-<div class="list-group" id="customerlist">
-
-</div>
+<div class="list-group list-group-flush" id="customerlist"></div>
 
 
 
@@ -27,10 +19,7 @@ function test_data(listcust){
 
 function makeA(array,id) {
     // Create the list element:
-    var list = document.createElement('a');
-    list.setAttribute('href', '#')
-    list.setAttribute('class', 'list-group-item active')
-    list.appendChild(document.createTextNode("Customer List"))
+    var list = document.getElementById('customerlist');
 
     for(var i = 0; i < array.length; i++) {
         // Create the list item:
@@ -56,7 +45,7 @@ function makeA(array,id) {
     return list;
 }
 
-document.getElementById('customerlist').appendChild(makeA({{ listcust|safe }}, {{ custid|safe }}));
+makeA({{ listcust|safe }}, {{ custid|safe }});
 
 function customerClicked(id) {
 	window.location.href= '/projects?cust_id='+id
