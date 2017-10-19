@@ -78,22 +78,22 @@ class Customer(Base):
     
 class Status (Base):
     __tablename__ = 'status'
-    status_id = Column(Integer, primary_key=True)
-    status_name = Column(String(100))
+
+    status_name = Column(String(100), primary_key = True)
 
 class Project(Base):
     __tablename__ = 'project'
     project_id = Column(Integer, primary_key=True)
     customer_id = Column('customer_id', Integer(), ForeignKey('customer.customer_id'))
-    status_id = Column('status_id', Integer(), ForeignKey('status.status_id'))
+    status_id = Column('status_id', String(100), ForeignKey('status.status_name'))
     address = Column(String(100))
     start_date = Column(DateTime())
     end_date = Column(DateTime())
     
-    def __init__(self, project_id, customer_id, status_id, address, start_date, end_date):
+    def __init__(self, project_id, customer_id, status_namme, address, start_date, end_date):
         self.project_id = project_id
         self.customer_id = customer_id
-        self.status_id = status_id
+        self.status_name = status_name
         self.address = address
         self.start_date = start_date
         self.end_date = end_date
@@ -104,7 +104,7 @@ class Project(Base):
         return {
             'project_id'         : self.project_id,
             'customer_id'        : self.customer_id,
-            'status_id'          : self.status_id,
+            'status_name'        : self.status_name,
             'address'            : self.address,
             'start_date'         : dump_datetime(self.start_date),
             'end_date'           : dump_datetime(self.end_date)

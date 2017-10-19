@@ -86,6 +86,11 @@ def setup_db():
         userDatastore.activate_user(newUser)
         dbSession.commit()
 
+    if not fieldExists(dbSession, Status.status_name, "Not Reached"):
+        newStatus = Status(status_name = "Not Reached")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
 
 
 
@@ -208,6 +213,13 @@ def projects():
 @login_required
 @roles_required('primary')
 def newproject():
+    if request.method == 'POST':
+        status = request.form['status']
+        email = request.form['email']
+        pn = request.form['pn']
+        address = request.form['address']
+
+        success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
     return render_template("newproject.html")
 
 
