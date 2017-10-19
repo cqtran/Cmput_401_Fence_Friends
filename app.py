@@ -234,20 +234,18 @@ def newproject():
 
 
 # delete later, just for testing note
-@app.route('/projectinfo', methods=['GET', 'POST'])
+@app.route('/projectinfo')
 @login_required
 @roles_required('primary')
 def projectinfo():
-    if request.method == 'POST':
-        notes = request.form['note']
-
-        # get project ID and display note
-        return render_template("projectinfo.html", note = notes)
-
-    else:
-        return render_template("projectinfo.html")
-
-
+    project_id = request.args.get('proj_id')
+    
+    if customer_id is not None:
+        project = dbSession.query(Project)
+        project = project.filter(Project.project_id == project_id).one()
+        return render_template("projectinfo.html", proj = json.dumps(project.serialize))
+    
+    return render_template("projectinfo.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
