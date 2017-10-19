@@ -89,6 +89,9 @@ def setup_db():
     if not fieldExists(dbSession, Customer.customer_id, 1):
         newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy",
                 last_name = "John", cellphone = "1234567", company_name = "Fence")
+        dbSession.add(newCustomer)
+        dbSession.commit()
+
 
     if not fieldExists(dbSession, Status.status_name, "Not Reached"):
         newStatus = Status(status_name = "Not Reached")
@@ -97,7 +100,7 @@ def setup_db():
 
     if not fieldExists(dbSession, Project.project_id, 1):
         newProject = Project(project_id = 1, customer_id = 1, address = "1234",
-                             start_date =  "2017-08-19")
+            status_name = "Not Reached", start_date =  "2017-08-19", end_date = None)
         dbSession.add(newProject)
         dbSession.commit()
 

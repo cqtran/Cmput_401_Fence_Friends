@@ -85,7 +85,7 @@ class Project(Base):
     __tablename__ = 'project'
     project_id = Column(Integer, primary_key=True)
     customer_id = Column('customer_id', Integer(), ForeignKey('customer.customer_id'))
-    status_id = Column('status_id', String(100), ForeignKey('status.status_name'))
+    status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
     address = Column(String(100))
     start_date = Column(DateTime())
     end_date = Column(DateTime())
