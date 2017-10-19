@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<body>
-    <h1>New Customer</h1>
-    <form id="custinfo" method="post" action="{{ url_for('newcustomer') }}">
-        <p>Name</p>
-        <input class="form-control no-border" type="username" placeholder="Enter Name" id="name" name="name" type="text" size="20">
-        <p>Email</p>
-        <input id="email" name="email" type="text" size="20">
-        <p>Phone Number</p>
-        <input id="phone_number" name="pn" type="text" size="20">
-        <p>Address</p>
-        <input id="address" name="address" type="text" size="20">
-        <p></p>
-        <input type="submit" value="Create">
-    </form>
-
-
-
-
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h1>New Customer</h1>
+<form id="custinfo" method="post" action="{{ url_for('newcustomer') }}">
+    <p>Name</p>
+    <input class="form-control" type="username" placeholder="Enter Name" id="name" name="name" size="20">
+    <p>Email</p>
+    <input class="form-control" type="email" placeholder="Enter Email"id="email" name="email" size="20">
+    <p>Phone Number</p>
+    <input class="form-control" type="tel" placeholder="Enter Phone Number"id="phone_number" name="pn" size="20">
+    <p>Address</p>
+    <input class="form-control" type="text" placeholder="Enter Address" id="address" name="address" size="20">
+    <p></p>
+    <input class="btn btn-primary btn-block" type="submit" value="Create">
+</form>
+{% endblock %}
