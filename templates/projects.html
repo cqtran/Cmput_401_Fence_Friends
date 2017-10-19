@@ -5,7 +5,6 @@
 {% endblock %}
 {% block content %}
 
-<br>
 <h1>Projects</h1>
 
 <h2>{{name}}</h2>
@@ -13,10 +12,7 @@
 {{phone}}<br>
 {{email}}</p>
 
-<p>{{ items }}</p>
-<div class="list-group" id="projectlist">
-</div>
-
+<div class="list-group list-group-flush" id="projectlist"></div>
 
 
 <script>
@@ -26,10 +22,7 @@ function test_data(listproj){
 
 function makeA(array) {
     // Create the list element:
-    var list = document.createElement('a');
-    list.setAttribute('href', '#')
-    list.setAttribute('class', 'list-group-item active')
-    list.appendChild(document.createTextNode("Project List"))
+    var list = document.getElementById('projectlist');
 
     for(var i = 0; i < array.length; i++) {
         // Create the list item:
@@ -52,7 +45,7 @@ function makeA(array) {
     return list;
 }
 
-document.getElementById('projectlist').appendChild(makeA({{ listproj|safe }}));
+makeA({{ listproj|safe }});
 
 function projectClicked(id) {
 	window.location.href= '/projectinfo?proj_id='+id
