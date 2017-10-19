@@ -218,7 +218,7 @@ def projects():
     
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
-        return render_template("projects.html", listproj = json.dumps(json_list), name = customer.first_name + " " + customer.last_name, company = customer.company_name, phone = customer.cellphone, email = customer.email)
+        return render_template("projects.html", listproj = json.dumps(json_list), name = customer.first_name, company = customer.company_name, phone = customer.cellphone, email = customer.email)
 
 @app.route('/newproject')
 @login_required
