@@ -35,7 +35,7 @@ function makeA(array) {
 		item.setAttribute('onclick', 'projectClicked('+array[i].project_id+')')
 		
         // Set its contents:
-        item.appendChild(document.createTextNode('Project id ' + array[i].project_id + ' started on ' +array[i].start_date));
+        item.appendChild(document.createTextNode(array[i].project_name));
 
         // Add it to the list:
         list.appendChild(item);
