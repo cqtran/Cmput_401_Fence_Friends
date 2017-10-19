@@ -37,6 +37,7 @@
 		  {{ render_field(register_user_form.submit, class="btn btn-primary btn-block") }}
         </form>
         <div class="text-center">
+          <p>An email Confirmation will be sent</p>
 		  <a class="d-block small mt-3 text-white" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Login') }}</a>
           {% if security.confirmable %}
           <a class="d-block small text-white" href="{{ url_for_security('send_confirmation') }}">{{ _('Confirm account') }}</a>
