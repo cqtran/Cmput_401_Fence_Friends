@@ -28,13 +28,14 @@ app.secret_key = os.urandom(24) # used for sessions
 
 
 app.config['DEBUG'] = True
+app.config['TESTING'] = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
 
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
@@ -74,6 +75,25 @@ def setup_db():
         dbSession.add(newCompany)
 
     dbSession.commit()
+
+
+    # Test data
+    if not fieldExists(dbSession, User.id, 1):
+        newUser = User(id = 1, email = 'test@test.null', username = 'test', 
+            password = 'password', company_name = 'Fence', active = 1)
+        dbSession.add(newUser)
+        userDatastore.add_role_to_user(newUser, 'primary')
+        userDatastore.activate_user(newUser)
+        dbSession.commit()
+
+
+
+
+    # if not fieldExists(dbSession, roles_users.id, 1):
+    #     newRoleUser = Roles_users(id = 1, user_id = 1, role_id = 2)
+    #     dbSession.add(newRoleUser)
+    #     dbSession.commit()
+
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
