@@ -5,12 +5,13 @@
 {% endblock %}
 {% block content %}
 
+<br>
+<h1>Projects</h1>
 
-<h2>Projects</h2>
-
-<form action="{{ 'newproject' }}">
-    <input type = "submit" value = "Add a project +">
-</form>
+<h2>{{name}}</h2>
+<p>{{company}}<br>
+{{phone}}<br>
+{{email}}</p>
 
 <p>{{ items }}</p>
     <p>{{ listproj }}</p>
