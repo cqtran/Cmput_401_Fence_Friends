@@ -7,7 +7,6 @@ from flask_mail import Mail
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
-from sqlalchemy import exists
 
 import os
 # Import python files with functionality
