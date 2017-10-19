@@ -91,7 +91,7 @@ class Project(Base):
     end_date = Column(DateTime())
     note = Column('Note', String(400))
     
-    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note:
+    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note):
         self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
