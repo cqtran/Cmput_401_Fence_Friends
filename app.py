@@ -86,9 +86,19 @@ def setup_db():
         userDatastore.activate_user(newUser)
         dbSession.commit()
 
+    if not fieldExists(dbSession, Customer.customer_id, 1):
+        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy",
+                last_name = "John", cellphone = "1234567", company_name = "Fence")
+
     if not fieldExists(dbSession, Status.status_name, "Not Reached"):
         newStatus = Status(status_name = "Not Reached")
         dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExist(dbSession, Project.project_id, 1):
+        newProject = Project(project_id = 1, customer_id = 1, status_name = "Not Reached",
+                             address = "1234", start_date =  "2017-08-19")
+        dbSession.add(newProject)
         dbSession.commit()
 
 
