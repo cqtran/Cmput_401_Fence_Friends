@@ -177,7 +177,6 @@ def editcustomer():
 def projects():
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
-    print('\ncustomer_id: ' + customer_id)
     
     # Start a query on Project
     projects= dbSession.query(Project)
@@ -192,6 +191,7 @@ def projects():
     # If an customer id is given, then filter projects on the customer
     if customer_id is not None:
         projects = projects.filter(customer_id == Project.customer_id)
+        print('\ncustomer_id: ' + customer_id)
 
     # Filter projects with matching customer_ids and execute query
     projects = projects.filter(Customer.customer_id == Project.customer_id).all()
