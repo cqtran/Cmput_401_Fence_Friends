@@ -7,7 +7,7 @@ def getConnection():
 
     engine = create_engine(
     	#change password to your db password and root to your db username
-        'mysql+mysqlconnector://root:password@localhost/data'
+        'mysql+mysqlconnector://ubuntuvm:cmput401F3ncing@localhost/data'
     )
 
     print(engine.table_names())
@@ -21,7 +21,7 @@ def getConnection():
 
 engine = create_engine(
 	#change password to your db password and root to your db username
-    'mysql+mysqlconnector://root:password@localhost/testData'
+    'mysql+mysqlconnector://ubuntuvm:cmput401F3ncing@localhost/data'
 )
 
 dbSession = scoped_session(sessionmaker(autocommit=False,
