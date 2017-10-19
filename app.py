@@ -56,7 +56,7 @@ userDatastore = SQLAlchemySessionUserDatastore(dbSession,
 
 dbSession.commit()
 
-security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm)
+security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm, register_form=ExtendedRegisterForm)
 
 
 test = 0
