@@ -104,7 +104,7 @@ class Project(Base):
         return {
             'project_id'         : self.project_id,
             'customer_id'        : self.customer_id,
-            'status_naeme'        : self.status_name,
+            'status_name'        : self.status_name,
             'address'            : self.address,
             'start_date'         : dump_datetime(self.start_date),
             'end_date'           : dump_datetime(self.end_date)
