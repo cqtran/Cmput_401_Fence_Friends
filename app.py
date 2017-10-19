@@ -105,14 +105,6 @@ def setup_db():
         dbSession.commit()
 
 
-
-
-    # if not fieldExists(dbSession, roles_users.id, 1):
-    #     newRoleUser = Roles_users(id = 1, user_id = 1, role_id = 2)
-    #     dbSession.add(newRoleUser)
-    #     dbSession.commit()
-
-
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbSession.remove()
