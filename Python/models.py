@@ -90,8 +90,10 @@ class Project(Base):
     start_date = Column(DateTime())
     end_date = Column(DateTime())
     note = Column('Note', String(400))
+    project_name = Column("project_name", String(50))
     
-    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note):
+    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note,
+                 project_name):
         self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
@@ -99,6 +101,7 @@ class Project(Base):
         self.start_date = start_date
         self.end_date = end_date
         self.note = note
+        self.project_name = project_name
     
     @property
     def serialize(self):
@@ -109,7 +112,9 @@ class Project(Base):
             'status_name'        : self.status_name,
             'address'            : self.address,
             'start_date'         : dump_datetime(self.start_date),
-            'end_date'           : dump_datetime(self.end_date)
+            'end_date'           : dump_datetime(self.end_date),
+            'note'               : self.note,
+            'project_name'       : self.project_name
         }
     
 class Quote(Base):

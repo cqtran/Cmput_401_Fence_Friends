@@ -3,14 +3,6 @@
 
 <h1>Project Details</h1>
 <img src="../static/images/Mock Drawing Image.png" height = 250 width = 350>
-
-<div>
-	<p> {{ proj }} </p>
-	<p> {{ proj.status_name }} </p>
-	<p> {{ proj.start_date }} </p>
-	<p> {{ proj.end_date }} </p>
-</div>
-
 <form method = "post" action="{{url_for('projectinfo') }} ">
 	<textarea id="note" rows="3" cols="30">Notes</textarea>
 	<input type="submit" value = "Save Note"/>
