@@ -1,8 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<body>
-    <h1>New Project</h1>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h1>New Project</h1>
+<form id="projinfo" method="post" action="{{ url_for('newproject') }}">
+<p>Name</p>
+<input id="name name="name" type="text" size="20">
+<p>Email</p>
+<input id="email" name="email" type="text" size="20">
+<p>Phone Number</p>
+<input id="phone_number" name="pn" type="text" size="20">
+<p>Address</p>
+<input id="address" name="address" type="text" size="20">
+<p></p>
+<input type="submit" value="Create">
+</form>
+{% endblock %} 
