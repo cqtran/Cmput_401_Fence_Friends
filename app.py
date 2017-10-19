@@ -157,7 +157,7 @@ def editcustomer():
 def projects():
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
-    print(customer_id)
+    print('\ncustomer_id: ' + customer_id)
     
     # Start a query on Project
     projects= dbSession.query(Project)
@@ -176,12 +176,13 @@ def projects():
     # Filter projects with matching customer_ids and execute query
     projects = projects.filter(Customer.customer_id == Project.customer_id).all()
     
-    # Get the result of the query
-    results = []
-    for i in projects:
-        results.append(i.project_id)
-    print(results)
-    return render_template("projects.html", listproj = json.dumps(results))
+    # Serialize results
+    json_list=[i.serialize for i in projects]
+    print('Projects found: ')
+    print(json_list)
+    print('\n')
+    
+    return render_template("projects.html", listproj = json.dumps(json_list))
 
 @app.route('/newproject')
 @login_required

@@ -7,6 +7,12 @@ from sqlalchemy import Boolean, DateTime, Column, Integer, \
 
 from flask.json import JSONEncoder
 
+def dump_datetime(value):
+    """Deserialize datetime object into string form for JSON processing."""
+    if value is None:
+        return None
+    return [value.strftime("%Y-%m-%d")]
+
 class RolesUsers(Base):
     __tablename__ = 'roles_users'
     id = Column(Integer(), primary_key=True)
@@ -50,13 +56,25 @@ class Customer(Base):
     cellphone = Column(String(20))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    #def __int__(self, customer_id, email, first_name, last_name, cellphone, company_name):
-        #self.customer_id = customer_id
-        #self.email = email
-        #self.first_name = first_name
-        #self.last_name = last_name
-        #self.cellphone = cellphone
-        #self.company_name = company_name
+    def __int__(self, customer_id, email, first_name, last_name, cellphone, company_name):
+        self.customer_id = customer_id
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+        self.cellphone = cellphone
+        self.company_name = company_name
+        
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'customer_id'        : self.customer_id,
+            'email'              : self.email,
+            'first_name'         : self.first_name,
+            'last_name'          : self.last_name,
+            'cellphone'          : self.cellphone,
+            'company_name'       : self.company_name
+        }    
     
 class Status (Base):
     __tablename__ = 'status'
@@ -72,6 +90,26 @@ class Project(Base):
     start_date = Column(DateTime())
     end_date = Column(DateTime())
     
+    def __init__(self, project_id, customer_id, status_id, address, start_date, end_date):
+        self.project_id = project_id
+        self.customer_id = customer_id
+        self.status_id = status_id
+        self.address = address
+        self.start_date = start_date
+        self.end_date = end_date
+    
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'project_id'         : self.project_id,
+            'customer_id'        : self.customer_id,
+            'status_id'          : self.status_id,
+            'address'            : self.address,
+            'start_date'         : dump_datetime(self.start_date),
+            'end_date'           : dump_datetime(self.end_date)
+        }
+    
 class Quote(Base):
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
@@ -80,6 +118,26 @@ class Quote(Base):
     project_info = Column(LargeBinary)
     note = Column(String(255))
     last_modified = Column(DateTime())
+    
+    def __init__(self, quote_id, project_id, quote, project_info, note, last_modified):
+        self.quote_id = quote_id
+        self.project_id = project_id
+        self.quote = quote
+        self.project_info = project_info
+        self.note = note
+        self.last_modified = last_modified
+    
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'quote_id'                : self.quote_id,
+            'project_id'              : self.project_id,
+            'quote'                   : self.quote,
+            'project_info'            : self.project_info,
+            'note'                    : self.note,
+            'last_modified'           : dump_datetime(self.last_modified)
+        }
     
 class Material(Base):
     __tablename__ = 'material'
