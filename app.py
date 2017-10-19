@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
-from Python.db import dbSession, init_db
+from Python.db import dbSession, init_db, fieldExists
 from Python.models import User, Role, Company, Customer, Project
 from flask_mail import Mail
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
+from sqlalchemy import exists
 
 import os
 # Import python files with functionality
@@ -69,8 +70,10 @@ def setup_db():
     userDatastore.find_or_create_role(name = 'primary')
     userDatastore.find_or_create_role(name = 'secondary')
 
-    newCompany = Company(company_name = "Fence", email = "e@e.c")
-    #dbSession.add(newCompany)
+    if not fieldExists(dbSession, Company.company_name, "Fence"):
+        newCompany = Company(company_name = "Fence", email = "e@e.c")
+        dbSession.add(newCompany)
+
     dbSession.commit()
 
 @app.teardown_appcontext

@@ -1,8 +1,7 @@
 #!/usr/bin/python
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, exists
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import MetaData
 
 def getConnection():
 
@@ -35,3 +34,6 @@ Base.query = dbSession.query_property()
 def init_db():
 	import Python.models
 	Base.metadata.create_all(bind=engine)
+
+def fieldExists(session, fieldName, fieldValue):
+    return session.query(exists().where(fieldName == fieldValue)).scalar()
