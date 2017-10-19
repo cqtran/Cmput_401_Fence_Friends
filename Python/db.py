@@ -3,21 +3,6 @@ from sqlalchemy import create_engine, MetaData, exists
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-def getConnection():
-
-    engine = create_engine(
-    	#change password to your db password and root to your db username
-        'mysql+mysqlconnector://root:password@localhost/data'
-    )
-
-    print(engine.table_names())
-    meta = MetaData()
-
-    meta.reflect(bind=engine)
-
-    print(meta.tables.keys())
-
-    return engine
 
 engine = create_engine(
 	#change password to your db password and root to your db username
