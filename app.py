@@ -243,7 +243,7 @@ def newproject():
 def projectinfo():
     project_id = request.args.get('proj_id')
     
-    if customer_id is not None:
+    if project_id is not None:
         project = dbSession.query(Project)
         project = project.filter(Project.project_id == project_id).one()
         return render_template("projectinfo.html", proj = json.dumps(project.serialize))
