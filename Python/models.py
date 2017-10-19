@@ -90,7 +90,7 @@ class Project(Base):
     start_date = Column(DateTime())
     end_date = Column(DateTime())
     
-    def __init__(self, project_id, customer_id, status_namme, address, start_date, end_date):
+    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date):
         self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
@@ -104,7 +104,7 @@ class Project(Base):
         return {
             'project_id'         : self.project_id,
             'customer_id'        : self.customer_id,
-            'status_name'        : self.status_name,
+            'status_naeme'        : self.status_name,
             'address'            : self.address,
             'start_date'         : dump_datetime(self.start_date),
             'end_date'           : dump_datetime(self.end_date)

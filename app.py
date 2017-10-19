@@ -95,9 +95,9 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
-    if not fieldExist(dbSession, Project.project_id, 1):
-        newProject = Project(project_id = 1, customer_id = 1, status_name = "Not Reached",
-                             address = "1234", start_date =  "2017-08-19")
+    if not fieldExists(dbSession, Project.project_id, 1):
+        newProject = Project(project_id = 1, customer_id = 1, address = "1234",
+                             start_date =  "2017-08-19")
         dbSession.add(newProject)
         dbSession.commit()
 
