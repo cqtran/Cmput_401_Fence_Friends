@@ -240,28 +240,28 @@ def newproject():
 @login_required
 @roles_required('primary')
 def projectinfo():
-
-
-
+    project_id = request.args.get('proj_id')
 
     if request.method == "POST":
-      #  project_id = request.args.get('proj_id')
+
         note = request.form['note']
-      #  savenote = Projects.savenote(note, project_id)
+        pid = request.form['projectvalue']
+        print("this is pid" + pid)
+        savenote = Projects.savenote(note, pid)
+        print(savenote)
         print("hallo")
+        project_id = pid
+       # return render_template("projectinfo.html", notes = note)
 
-        return render_template("projectinfo.html", notes = note)
+    if project_id is not None:
+        project = dbSession.query(Project)
+        project = project.filter(Project.project_id == project_id).all()
+        json_list = [i.serialize for i in project]
+        print(json_list)
+        return render_template("projectinfo.html", proj = json.dumps(json_list))#, projid = project_id)
+
     else:
-        project_id = request.args.get('proj_id')
-        if project_id is not None:
-            project = dbSession.query(Project)
-            project = project.filter(Project.project_id == project_id).all()
-            json_list = [i.serialize for i in project]
-            print(json_list)
-            return render_template("projectinfo.html", proj = json.dumps(json_list))#, projid = project_id)
-
-        else:
-            return render_template("projectinfo.html")
+        return render_template("projectinfo.html")
 
 
 

@@ -18,8 +18,11 @@ def createProject(customerId, statusId, address, note, startDate):
 def savenote(note, pid):
 
     #TODO
-
-    savenoteintoserver = update(Project).where(Project.project_id == pid).values(Note = note)
+    project = dbSession.query(Project)
+    project = project.filter(Project.project_id == pid).all()
+    project[0].note = note
+    dbSession.commit()
+    #savenoteintoserver = update(Project).where(Project.project_id == pid).values(Note = note)
 
     return True
 
