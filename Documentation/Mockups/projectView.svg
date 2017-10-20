@@ -24,6 +24,37 @@
     <style
        type="text/css"
        id="style962">.fil0 {fill:#36BC9B} .fil3 {fill:white;fill-rule:nonzero} .fil1 {fill:#36BC9B;fill-opacity:0.501961} .fil2 {fill:url(#a)}</style>
+    <style
+       id="style962-38"
+       type="text/css">.fil0 {fill:#36BC9B} .fil3 {fill:white;fill-rule:nonzero} .fil1 {fill:#36BC9B;fill-opacity:0.501961} .fil2 {fill:url(#a)}</style>
+    <style
+       type="text/css"
+       id="style1024">.fil0 {fill:#36BC9B} .fil3 {fill:white;fill-rule:nonzero} .fil1 {fill:#36BC9B;fill-opacity:0.501961} .fil2 {fill:url(#a)}</style>
+    <linearGradient
+       id="a"
+       x1="10043"
+       x2="-898.9"
+       y1="6303"
+       y2="2841"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#48CFAE"
+         offset="0"
+         id="stop1026" />
+      <stop
+         stop-color="#4FC0E8"
+         offset="1"
+         id="stop1028" />
+    </linearGradient>
+    <style
+       id="style962-3"
+       type="text/css">.fil0 {fill:#36BC9B} .fil3 {fill:white;fill-rule:nonzero} .fil1 {fill:#36BC9B;fill-opacity:0.501961} .fil2 {fill:url(#a)}</style>
+    <style
+       type="text/css"
+       id="style1024-7">.fil0 {fill:#36BC9B} .fil3 {fill:white;fill-rule:nonzero} .fil1 {fill:#36BC9B;fill-opacity:0.501961} .fil2 {fill:url(#a)}</style>
+    <style
+       id="style962-9"
+       type="text/css">.fil0 {fill:#36BC9B} .fil3 {fill:white;fill-rule:nonzero} .fil1 {fill:#36BC9B;fill-opacity:0.501961} .fil2 {fill:url(#a)}</style>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -39,7 +70,7 @@
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1280"
-     inkscape:window-height="751"
+     inkscape:window-height="755"
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
@@ -60,80 +91,28 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <g
-       id="g945">
-      <rect
-         y="-0.021605281"
-         x="-0.021594075"
-         height="24.532515"
-         width="209.8313"
-         id="rect935"
-         style="opacity:1;fill:#329664;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.16164573;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <flowRoot
-         xml:space="preserve"
-         id="flowRoot893"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
-         transform="matrix(0.26458333,0,0,0.26458333,-41.2427,-151.8856)"><flowRegion
-           id="flowRegion895"
-           style="fill:#ffffff;fill-opacity:1"><rect
-             id="rect897"
-             width="266.32718"
-             height="116.39484"
-             x="177.55144"
-             y="587.89258"
-             style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
-           id="flowPara899"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">←</flowPara></flowRoot>      <flowRoot
-         xml:space="preserve"
-         id="flowRoot901"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
-         transform="matrix(0.26458333,0,0,0.26458333,32.274999,-160.23709)"><flowRegion
-           id="flowRegion903"
-           style="fill:#ffffff;fill-opacity:1"><rect
-             id="rect905"
-             width="455.71536"
-             height="270.27277"
-             x="171.63306"
-             y="623.40283"
-             style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
-           id="flowPara907"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">Project 1</flowPara></flowRoot>      <g
-         id="g11556"
-         transform="matrix(0.03605632,0,0,0.03605632,198.94337,36.617647)"
-         style="fill:#7d7d7d;fill-opacity:1;stroke:none">
-        <g
-           style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:11.99913025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           transform="matrix(-0.16897837,0.15206231,-0.15206231,-0.16897837,125.86667,-794.53867)"
-           id="g113">
-          <path
-             style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:11.99913025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             inkscape:connector-curvature="0"
-             d="M 0,0 H 31 V 210 H 0 Z"
-             id="path90" />
-          <path
-             style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:11.99913025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             inkscape:connector-curvature="0"
-             d="M 31,0 H 45 V 210 H 31 Z"
-             id="path92" />
-          <path
-             style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:11.99913025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             inkscape:connector-curvature="0"
-             d="m 1560.2,0 c 63.981,25.53 129.49,52 184.12,74.62 -0.7,20.13 -0.27,40.28 -0.32,60.42 -60.57,24.75 -120.95,50.68 -181.74,74.86 -10.22,-10.28 -27.33,-13.18 -39.7,-21.25 12.59,-8.47 26.27,-15.19 39.43,-22.73 -0.07,-1.25 -0.13,-2.5 -0.16,-3.74 -13.03,-5.67 -26.45,-10.44 -39.29,-16.52 12.98,-7.22 26.3,-13.84 39.47,-20.74 -0.08,-1.24 -0.14,-2.49 -0.19,-3.73 -13.13,-5.29 -26.3,-10.55 -39.16,-16.46 12.53,-8.26 26.45,-14.08 39.3,-21.82 -0.08,-1.22 -0.14,-2.43 -0.19,-3.65 -13.27,-5.14 -26.26,-10.98 -39.14,-17 12.95,-6.15 26.28,-11.49 39.38,-17.33 -0.11,-1.21 -0.2,-2.43 -0.27,-3.65 -12.92,-7.52 -26.59,-13.76 -39.1,-21.95 12.4,-6.68 25.3,-12.39 37.56,-19.33 z"
-             id="path94" />
-          <path
-             style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:11.99913025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             inkscape:connector-curvature="0"
-             d="m 1744.4,74.62 c 24.66,9.56 48.94,20.03 73.65,29.46 v 0.82 c -24.63,10.12 -49.29,20.16 -73.97,30.14 0.05,-20.14 -0.38,-40.29 0.32,-60.42 z"
-             id="path96" />
-          <path
-             style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:11.99913025;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             inkscape:connector-curvature="0"
-             d="m 45,0 h 1515.2 c -12.26,6.94 -25.16,12.65 -37.56,19.33 12.51,8.19 26.18,14.43 39.1,21.95 0.07,1.22 0.16,2.44 0.27,3.65 -13.1,5.84 -26.43,11.18 -39.38,17.33 12.88,6.02 25.87,11.86 39.14,17 0.05,1.22 0.11,2.43 0.19,3.65 -12.85,7.74 -26.77,13.56 -39.3,21.82 12.86,5.91 26.03,11.17 39.16,16.46 0.05,1.24 0.11,2.49 0.19,3.73 -13.17,6.9 -26.49,13.52 -39.47,20.74 12.84,6.08 26.26,10.85 39.29,16.52 0.03,1.24 0.09,2.49 0.16,3.74 -13.16,7.54 -26.84,14.26 -39.43,22.73 12.37,8.07 29.48,10.24 39.7,20.52 l -0.04,0.83 H 45.02 V 0 Z"
-             id="path98" />
-        </g>
-      </g>
-    </g>
+    <rect
+       style="opacity:1;fill:#329664;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.16164573;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect935"
+       width="209.8313"
+       height="24.532515"
+       x="-0.021594075"
+       y="-0.021605281" />
     <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,32.274999,-160.23709)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       id="flowRoot901"
+       xml:space="preserve"><flowRegion
+         style="fill:#ffffff;fill-opacity:1"
+         id="flowRegion903"><rect
+           style="fill:#ffffff;fill-opacity:1"
+           y="623.40283"
+           x="171.63306"
+           height="270.27277"
+           width="455.71536"
+           id="rect905" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1"
+         id="flowPara907">Project 1</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot71"
        style="font-style:normal;font-weight:normal;font-size:40.00000381px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#7d7d7d;fill-opacity:1;stroke:none"
@@ -399,5 +378,26 @@
              style="fill:#000000;fill-opacity:1" /></flowRegion><flowPara
            id="flowPara940"
            style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#000000;fill-opacity:1">Shared with neighbor</flowPara></flowRoot>    </g>
-  </g>
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.36896259;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect858-5"
+       width="19.631037"
+       height="14.631038"
+       x="186.47455"
+       y="4.7408948" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot846"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,143.23589,-151.80564)"><flowRegion
+         id="flowRegion842"
+         style="fill:#ffffff;fill-opacity:1"><rect
+           id="rect840"
+           width="266.32718"
+           height="116.39484"
+           x="177.55144"
+           y="587.89258"
+           style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara844"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">☰</flowPara></flowRoot>  </g>
 </svg>
