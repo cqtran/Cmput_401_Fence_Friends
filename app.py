@@ -235,14 +235,24 @@ def autocomplete():
 @login_required
 @roles_required('primary')
 def newproject():
+    print("new project" + request.method)
     if request.method == 'POST':
-        status = request.form['status']
-        email = request.form['email']
-        pn = request.form['pn']
-        address = request.form['address']
-
-        success = Projects.addProject(status, email, pn, address) 
-    return render_template("newproject.html")
+        #customer = request.form["customer"]
+        #print()
+        #customer = request.args.get('customer')
+        customer = request.form["customer"]
+        customerId = customer[1]
+        print(customer)
+        projectname = request.form["name"]
+        print(projectname)
+        address = request.form["address"]
+        print(address)
+        # cid = request.form[]
+        #print(customer)
+        success = Projects.addProject(customer, name, address) 
+        return redirect(url_for('projects'))
+    else:
+        return render_template("newproject.html")
 
 
 # delete later, just for testing note

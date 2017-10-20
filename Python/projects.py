@@ -7,6 +7,7 @@ from Python.models import Project
 
 def createProject(customerId, statusId, address, note, startDate):
     #Access MySQL and add in account
+
     project = Project(customer_id = customerId, status_id = statusId, address = address,
                       start_date =  sqlalchemy.DateTime())
     dbSession.add(project)
@@ -26,7 +27,7 @@ def savenote(note, pid):
 
     return True
 
-
+#def newcreateProject(customer, name, address):
 
 
 
