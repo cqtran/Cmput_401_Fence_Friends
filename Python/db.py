@@ -20,4 +20,7 @@ def init_db():
 	Base.metadata.create_all(bind=engine)
 
 def fieldExists(session, fieldName, fieldValue):
+	# Return whether a field with the given value exists
+	# eg. fieldExists(dbSession, Company.company_name, "Fence") returns whether
+	# the table Company has a row with the company_name field equal to "Fence"
 	return session.query(exists().where(fieldName == fieldValue)).scalar()
