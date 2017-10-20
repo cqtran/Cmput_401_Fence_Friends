@@ -3,7 +3,7 @@ import unittest
  
 from flask import Flask
 from Python.db import dbSession, Base, init_db, fieldExists, engine
-from Python.models import Customer, Project
+from Python.models import Customer, Project, Company, Status
 
 import Python.accounts as Accounts
 import Python.customers as Customers
@@ -24,7 +24,7 @@ class TestCase(unittest.TestCase):
         newCompany = Company(company_name = "Fence", email = "e@e.c")
         newStatus = Status(status_name = "Not Reached")
         dbSession.add(newCompany)
-        dbSession.addStatus(newStatus)
+        dbSession.add(newStatus)
         dbSession.commit()
     
     def tearDown(self):
@@ -38,13 +38,13 @@ class TestCase(unittest.TestCase):
         noCustomerTest = dbSession.query(Customer).all()
         assert len(noCustomerTest) == 0
         
-        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Fence')
+        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Place','Fence')
         oneCustomerTest = dbSession.query(Customer).all()
         assert len(oneCustomerTest) == 1
         assert oneCustomerTest[0].serialize == ' '
         
     def test_createProject(self):
-        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Fence')
+        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Place', 'Fence')
         
         noProjectTest = dbSession.query(Project).all()
         assert len(noProjectTest)  == 0
@@ -54,7 +54,7 @@ class TestCase(unittest.TestCase):
         assert len(oneProjectTest) == 1
         
     def test_savingNote(self):
-        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Fence')
+        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Place', 'Fence')
         Projects.createProject(1, 'Not Reached', 'Somewhere Ave', 'Fence', 'A fun fencing project')
         
         assert oneProjectTest[0].note == None
