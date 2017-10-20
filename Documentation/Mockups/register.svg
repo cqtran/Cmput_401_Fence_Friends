@@ -36,7 +36,7 @@
      inkscape:cx="396.85039"
      inkscape:cy="561.25984"
      inkscape:document-units="mm"
-     inkscape:current-layer="g925"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-global="false"
      inkscape:window-width="1175"
@@ -62,38 +62,18 @@
      inkscape:groupmode="layer"
      id="layer1"
      style="display:inline">
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot825"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:100px;line-height:1.25;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       transform="matrix(0.26458333,0,0,0.26458333,28.820258,11.54809)"><flowRegion
-         id="flowRegion827"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:100px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Bold'"><rect
-           id="rect829"
-           width="617.48444"
-           height="140.06837"
-           x="9.8639688"
-           y="19.727938"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:100px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Bold'" /></flowRegion><flowPara
-         id="flowPara831"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Semi-Bold';fill:#ffffff;fill-opacity:1">Fencey That</flowPara></flowRoot>    <g
+    <g
        id="g887"
-       transform="translate(0,-35.454183)">
+       transform="translate(0,15.875004)">
       <rect
-         y="100.79439"
+         y="105.4633"
          x="38.5"
-         height="25"
+         height="18.214411"
          width="133"
          id="rect10"
-         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.75883222;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         style="clip-rule:evenodd;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.00340136;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
-         inkscape:connector-curvature="0"
-         class="fil3"
-         d="M 51.845566,121.05046 H 42.15509 c -0.163266,0 -0.29932,-0.13265 -0.29932,-0.29932 0,-1.91497 0.183674,-3.06463 1.061225,-3.94218 0.82653,-0.82993 2.244897,-1.35715 4.704081,-2.02381 v -0.53742 c -0.819728,-0.42516 -1.435374,-1.44558 -1.721088,-2.62584 -0.176871,-0.72789 -0.231293,-1.52382 -0.129252,-2.27551 0.102041,-0.76531 0.367347,-1.4898 0.823129,-2.06803 0.588436,-0.74149 1.489796,-1.22789 2.761905,-1.22789 1.272109,0 2.173469,0.4864 2.761904,1.22789 0.455783,0.57823 0.721089,1.30272 0.82313,2.06803 0.10204,0.75169 0.04762,1.54762 -0.129251,2.27551 -0.285715,1.18026 -0.901362,2.20068 -1.721089,2.62584 v 0.53742 c 2.459184,0.66666 3.877551,1.19388 4.704082,2.02381 0.877551,0.87755 1.061224,2.02721 1.061224,3.94218 0,0.16667 -0.136054,0.29932 -0.29932,0.29932 z m -9.387755,-0.59863 h 13.795918 c -0.017,-1.57143 -0.193878,-2.53402 -0.884354,-3.2211 -0.755101,-0.7585 -2.156462,-1.25851 -4.639456,-1.92517 -0.136053,-0.0272 -0.238095,-0.14625 -0.238095,-0.29252 v -0.95578 c 0,-0.11904 0.07143,-0.23469 0.190476,-0.27891 0.721089,-0.28231 1.282314,-1.20408 1.547619,-2.29592 0.159864,-0.65986 0.210885,-1.37755 0.119049,-2.05783 -0.08844,-0.66326 -0.312926,-1.28571 -0.700681,-1.7721 -0.479591,-0.60544 -1.22449,-1.00341 -2.292517,-1.00341 -1.068028,0 -1.812925,0.39797 -2.292517,1.00341 -0.387755,0.48639 -0.612245,1.10884 -0.70068,1.7721 -0.09184,0.68028 -0.04081,1.39797 0.119047,2.05783 0.261905,1.08503 0.819728,2 1.534014,2.28911 0.119048,0.0408 0.204082,0.15306 0.204082,0.28572 v 0.95578 c 0,0.13265 -0.08844,0.25511 -0.221089,0.28912 -2.493197,0.67006 -3.897959,1.17007 -4.656463,1.92857 -0.690476,0.68708 -0.867346,1.64967 -0.884353,3.2211 z"
-         id="path1007" />
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.35484791;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <flowRoot
-         transform="matrix(0.26458333,0,0,0.26458333,30.796134,40.191564)"
+         transform="matrix(0.26458333,0,0,0.26458333,6.9836208,41.249898)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:0.49019608;stroke:none"
          id="flowRoot826"
          xml:space="preserve"><flowRegion
@@ -106,49 +86,20 @@
              width="512.92639"
              id="rect830" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#000000;fill-opacity:0.49019608"
-           id="flowPara832">Username</flowPara></flowRoot>      <path
-         inkscape:connector-curvature="0"
-         id="path834"
-         d="m 59.504394,104.92284 0.521967,16.18102"
-         style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.12941176" />
-    </g>
+           id="flowPara832">Enter email</flowPara></flowRoot>    </g>
     <g
        id="g898"
-       transform="translate(0,-7.4083335)">
+       transform="translate(0,10.054167)">
       <rect
          transform="scale(-1)"
          y="-166.51199"
          x="-171.5"
-         height="25"
+         height="18.214001"
          width="133"
          id="rect823"
-         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.77047563;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <g
-         transform="matrix(0.12769628,0,0,0.12769628,39.77167,145.36772)"
-         id="g956"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:4.34822416;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
-        <rect
-           style="fill:none;stroke:#000000;stroke-width:4.34822416;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="rect952"
-           ry="0.5"
-           rx="0.5"
-           height="66.259003"
-           width="85.602997"
-           y="58.859001"
-           x="15.375" />
-        <path
-           style="fill:none;stroke:#000000;stroke-width:4.34822416;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           id="path954"
-           d="M 58.301,12 C 38.229,12 22.07,26.891 22.07,45.389 V 57.488 H 32.134 V 45.389 c 0,-13.359 11.67,-24.114 26.167,-24.114 14.496,0 26.167,10.755 26.167,24.114 V 57.48 H 94.532 V 45.389 C 94.532,26.892 78.373,12 58.301,12 Z"
-           inkscape:connector-curvature="0" />
-      </g>
-      <path
-         inkscape:connector-curvature="0"
-         id="path856"
-         d="m 59.504292,146.70734 v 16.19"
-         style="fill:none;stroke:#000000;stroke-width:0.29470927px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.12941176" />
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.65764505;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <flowRoot
-         transform="matrix(0.26458333,0,0,0.26458333,29.177285,-51.674868)"
+         transform="matrix(0.26458333,0,0,0.26458333,5.3647727,-47.970699)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000005;fill-opacity:0.49019608;stroke:none"
          id="flowRoot870"
          xml:space="preserve"><flowRegion
@@ -164,7 +115,7 @@
            id="flowPara876">Password</flowPara></flowRoot>    </g>
     <g
        id="g925"
-       transform="translate(0,38.100018)">
+       transform="translate(0,54.504195)">
       <rect
          y="165.78432"
          x="38.815147"
@@ -173,7 +124,7 @@
          id="rect878"
          style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.63030046;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431373" />
       <flowRoot
-         transform="matrix(0.26458333,0,0,0.26458333,13.710475,-63.06459)"
+         transform="matrix(0.26458333,0,0,0.26458333,40.7682,-63.06459)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#329664;fill-opacity:1;stroke:none"
          id="flowRoot902"
          xml:space="preserve"><flowRegion
@@ -186,112 +137,143 @@
              width="437.96024"
              id="rect906" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:53.33333588px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#329664;fill-opacity:1"
-           id="flowPara908">Request account</flowPara></flowRoot>    </g>
+           id="flowPara908">Register</flowPara></flowRoot>    </g>
     <flowRoot
        xml:space="preserve"
-       id="flowRoot860"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e1e1e1;fill-opacity:1;stroke:none"
-       transform="matrix(0.26458333,0,0,0.26458333,4.5422571,-7.0898958)"><flowRegion
-         id="flowRegion862"
-         style="fill:#e1e1e1;fill-opacity:1"><rect
-           id="rect864"
-           width="570.13739"
-           height="114.42204"
-           x="155.85071"
-           y="915.37634"
-           style="fill:#e1e1e1;fill-opacity:1" /></flowRegion><flowPara
-         id="flowPara866"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">Have an account? <flowSpan
-   style="fill:#0000ee;fill-opacity:1"
-   id="flowSpan858">Log in</flowSpan></flowPara></flowRoot>    <g
-       id="g936"
-       transform="translate(0,27.516678)">
+       id="flowRoot50"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-0.58674933,-216.12371)"><flowRegion
+         id="flowRegion52"><rect
+           id="rect54"
+           width="747.68884"
+           height="317.61981"
+           x="33.537495"
+           y="842.38293" /></flowRegion><flowPara
+         id="flowPara56"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:100px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Semi-Bold';fill:#ffffff;fill-opacity:1">Cavalry Fence</flowPara><flowPara
+         id="flowPara58"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:100px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Semi-Bold';fill:#ffffff;fill-opacity:1">Builder</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot868"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-1.2063986,33.337515)"><flowRegion
+         id="flowRegion870"><rect
+           id="rect872"
+           width="528.70874"
+           height="144.01393"
+           x="142.04115"
+           y="830.5462" /></flowRegion><flowPara
+         id="flowPara874"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:33.33333206px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">An email confirmation will be sent</flowPara></flowRoot>    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,58.295151,50.270859)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot882"
+       xml:space="preserve"><flowRegion
+         id="flowRegion878"><rect
+           y="830.5462"
+           x="142.04115"
+           height="149.93233"
+           width="432.04184"
+           id="rect876" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:26.66666794px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1"
+         id="flowPara880">Login</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot884"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-5.205287,-130.53155)"><flowRegion
+         id="flowRegion886"><rect
+           id="rect888"
+           width="432.04184"
+           height="122.31322"
+           x="165.71468"
+           y="903.53955" /></flowRegion><flowPara
+         id="flowPara890"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">Email Address</flowPara></flowRoot>    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,-5.205287,-93.489689)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot898"
+       xml:space="preserve"><flowRegion
+         id="flowRegion894"><rect
+           y="903.53955"
+           x="165.71468"
+           height="122.31322"
+           width="432.04184"
+           id="rect892" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1"
+         id="flowPara896">Password</flowPara></flowRoot>    <g
+       id="g63"
+       transform="translate(0,46.56669)">
       <rect
-         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.77047563;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect918"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.65764505;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect53"
          width="133"
-         height="25"
+         height="18.214001"
          x="-171.5"
          y="-166.51199"
          transform="scale(-1)" />
-      <g
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:4.34822416;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="g924"
-         transform="matrix(0.12769628,0,0,0.12769628,39.77167,145.36772)">
-        <rect
-           x="15.375"
-           y="58.859001"
-           width="85.602997"
-           height="66.259003"
-           rx="0.5"
-           ry="0.5"
-           id="rect920"
-           style="fill:none;stroke:#000000;stroke-width:4.34822416;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           d="M 58.301,12 C 38.229,12 22.07,26.891 22.07,45.389 V 57.488 H 32.134 V 45.389 c 0,-13.359 11.67,-24.114 26.167,-24.114 14.496,0 26.167,10.755 26.167,24.114 V 57.48 H 94.532 V 45.389 C 94.532,26.892 78.373,12 58.301,12 Z"
-           id="path922"
-           style="fill:none;stroke:#000000;stroke-width:4.34822416;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      </g>
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.29470927px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.12941176"
-         d="m 59.504292,146.70734 v 16.19"
-         id="path926"
-         inkscape:connector-curvature="0" />
       <flowRoot
          xml:space="preserve"
-         id="flowRoot934"
+         id="flowRoot61"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000005;fill-opacity:0.49019608;stroke:none"
-         transform="matrix(0.26458333,0,0,0.26458333,29.177285,-51.674868)"><flowRegion
+         transform="matrix(0.26458333,0,0,0.26458333,5.3647727,-47.970699)"><flowRegion
            style="fill:#000005;fill-opacity:0.49019608"
-           id="flowRegion930"><rect
+           id="flowRegion57"><rect
              style="fill:#000005;fill-opacity:0.49019608"
-             id="rect928"
+             id="rect55"
              width="548.43671"
              height="145.98674"
              x="145.98674"
              y="755.58002" /></flowRegion><flowPara
-           id="flowPara932"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#000005;fill-opacity:0.49019608">Confirm password</flowPara></flowRoot>    </g>
-    <g
-       transform="translate(0,-1.0583331)"
-       id="g954">
+           id="flowPara59"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#000005;fill-opacity:0.49019608">Password</flowPara></flowRoot>    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot71"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-5.205287,-56.977166)"><flowRegion
+         id="flowRegion67"><rect
+           id="rect65"
+           width="432.04184"
+           height="122.31322"
+           x="165.71468"
+           y="903.53955" /></flowRegion><flowPara
+         id="flowPara69"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1">Retype Password</flowPara></flowRoot>    <g
+       id="g83"
+       transform="translate(0,-21.166674)">
       <rect
-         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.75883222;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect940"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.35484791;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect73"
          width="133"
-         height="25"
+         height="18.214411"
          x="38.5"
-         y="100.79439" />
+         y="105.4633" />
       <flowRoot
          xml:space="preserve"
-         id="flowRoot950"
+         id="flowRoot81"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:0.49019608;stroke:none"
-         transform="matrix(0.26458333,0,0,0.26458333,30.796134,40.191564)"><flowRegion
-           id="flowRegion946"
+         transform="matrix(0.26458333,0,0,0.26458333,6.9836208,41.249898)"><flowRegion
+           id="flowRegion77"
            style="fill:#000000;fill-opacity:0.49019608"><rect
-             id="rect944"
+             id="rect75"
              width="512.92639"
              height="100.61249"
              x="140.06836"
              y="256.4632"
              style="fill:#000000;fill-opacity:0.49019608" /></flowRegion><flowPara
-           id="flowPara948"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#000000;fill-opacity:0.49019608">Email</flowPara></flowRoot>      <path
-         style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.12941176"
-         d="m 59.504394,104.92284 0.521967,16.18102"
-         id="path952"
-         inkscape:connector-curvature="0" />
-      <g
-         id="g92"
-         transform="matrix(0.01875,0,0,0.01875,41.36175,98.485633)"
-         style="fill:#404040;stroke:#000000;stroke-opacity:1;stroke-width:16.00000003;stroke-miterlimit:4;stroke-dasharray:none">
-        <path
-           id="path90"
-           style="color:#000000;isolation:auto;mix-blend-mode:normal;solid-color:#000000;fill:#404040;color-rendering:auto;image-rendering:auto;shape-rendering:auto;stroke:#000000;stroke-opacity:1;stroke-width:16.00000003;stroke-miterlimit:4;stroke-dasharray:none"
-           d="m 0,553.37 v 499 h 800 v -499 z m 11.702,12.587 h 2.9475 l 275.71,236.91 -275.71,236.91 h -2.952 v -473.82 z m 773.98,0 h 2.6156 v 473.82 h -2.62 l -269.47,-236.91 -111.63,98.136 381.1,-335.05 z m -756.55,0.0708 h 741.73 l -366.62,322.32 z m 267.44,243.91 107.74,92.577 105.31,-92.577 261.43,229.84 H 29.082 Z"
-           inkscape:connector-curvature="0" />
-      </g>
-    </g>
-  </g>
+           id="flowPara79"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#000000;fill-opacity:0.49019608">Enter company name</flowPara></flowRoot>    </g>
+    <flowRoot
+       transform="matrix(0.26458333,0,0,0.26458333,-5.205287,-167.57345)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       id="flowRoot91"
+       xml:space="preserve"><flowRegion
+         id="flowRegion87"><rect
+           y="903.53955"
+           x="165.71468"
+           height="122.31322"
+           width="432.04184"
+           id="rect85" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next Medium';fill:#ffffff;fill-opacity:1"
+         id="flowPara89">Company Name</flowPara></flowRoot>  </g>
 </svg>
