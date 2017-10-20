@@ -44,7 +44,12 @@ class TestCase(unittest.TestCase):
         Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Place','Fence')
         oneCustomerTest = dbSession.query(Customer).all()
         assert len(oneCustomerTest) == 1
-        assert oneCustomerTest[0].serialize == ' '
+
+        result = oneCustomerTest[0].serialize
+        assert result['first_name'] == 'Kat'
+        assert result['email'] == 'Kat@gmail.com'
+        assert result['cellphone'] == '555-555-5555'
+        assert result['company_name'] == 'Fence'
 
     def test_createProject(self):
         newCustomer = Customer(customer_id = 1, first_name = 'Kat', email = 'Kat@gmail.com', cellphone = '555-555-5555', company_name = 'Fence')
@@ -57,6 +62,11 @@ class TestCase(unittest.TestCase):
         oneProjectTest = dbSession.query(Project).all()
         assert len(oneProjectTest) == 1
 
+        result = oneProjectTest[0].serialize
+        assert result['status_name'] == 'Not Reached'
+        assert result['address'] == 'Somewhere Ave'
+        assert result['project_name'] == 'A fun fencing project'
+
     def test_savingNote(self):
         newCustomer = Customer(customer_id = 1, first_name = 'Kat', email = 'Kat@gmail.com', cellphone = '555-555-5555', company_name = 'Fence')
         dbSession.add(newCustomer)
@@ -65,13 +75,14 @@ class TestCase(unittest.TestCase):
         Projects.createProject(1, 'Not Reached', 'Somewhere Ave', 'Fence', 'A fun fencing project')
 
         oneProjectTest = dbSession.query(Project).all()
-        assert oneProjectTest[0].note == None
-        assert len(oneProjectTest) == 1
+        result = oneProjectTest[0].serialize
+        assert result['note'] == None
 
         Projects.savenote('This is a new note', oneProjectTest[0].project_id)
         oneProjectTest = dbSession.query(Project).all()
-        assert oneProjectTest[0].note != None
-        assert oneProjectTest[0].note == 'This is a new note'
+
+        result = oneProjectTest[0].serialize
+        assert result['note'] == 'This is a new note'
 
 if __name__ == '__main__':
     unittest.main()
