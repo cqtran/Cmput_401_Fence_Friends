@@ -9,7 +9,7 @@
 	<p id="address"></p>
 	<p id="start_date"></p>
 	<p id="end_date">End Date: Ongoing</p>
-	<form method = "post" action="{{url_for('projectinfo') }} ">
+	<form method = "post" id = "note">
 		<textarea class='form-control' id="note" rows="3" cols="30">Notes</textarea>
 		<input class='form-control' type="submit" value = "Save Note"/>
 	</form>
@@ -22,9 +22,14 @@ function projectClicked(proj) {
 	document.getElementById('start_date').innerHTML = 'Start Date: ' + proj[0].start_date;
 	if (proj[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = 'End Date: ' + proj[0].end_date;
-		}
+	}
+	document.getElementById('note').action = 'noteSaved('+array[i].project_id+')';
 }
 
 projectClicked({{ proj|safe }});
+
+function noteSaved(id) {
+	window.location.href= '/projectinfo?proj_id='+id
+}
 </script>
 {% endblock %}
