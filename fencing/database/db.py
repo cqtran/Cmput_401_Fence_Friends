@@ -16,7 +16,7 @@ Base = declarative_base()
 Base.query = dbSession.query_property()
 
 def init_db():
-	import Python.models
+	import database.models
 	Base.metadata.create_all(bind=engine)
 
 def fieldExists(session, fieldName, fieldValue):

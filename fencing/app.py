@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
-from fencing.database.db import dbSession, init_db, fieldExists
-from fencing.database.models import User, Role, Company, Customer, Project, Status
+from database.db import dbSession, init_db, fieldExists
+from database.models import User, Role, Company, Customer, Project, Status
 from flask_mail import Mail
 from flask_security.core import current_user
 from flask_security.signals import user_registered
@@ -10,18 +10,16 @@ from flask_security.decorators import roles_required
 
 import os
 # Import python files with functionality
-import fencing.api.accounts as Accounts
-import fencing.api.customers as Customers
-import fencing.api.projects as Projects
+import api.customers as Customers
+import api.projects as Projects
 
-from fencing.api.forms.extendedRegisterForm import *
+from api.forms.extendedRegisterForm import *
 
 import json
-from fencing.api.jsonifyObjects import MyJSONEncoder
+from api.jsonifyObjects import MyJSONEncoder
 from flask.json import jsonify
 
 import argparse
-
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.json_encoder = MyJSONEncoder

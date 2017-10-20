@@ -1,6 +1,6 @@
 from sqlalchemy import *
-from fencing.database.db import dbSession, init_db
-from fencing.database.models import Project
+from database.db import dbSession, init_db
+from database.models import Project
 
 
 
