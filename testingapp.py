@@ -28,7 +28,10 @@ class TestCase(unittest.TestCase):
         dbSession.commit()
 
     def tearDown(self):
+        for tbl in reversed (Base.metadata.sorted_tables):
+            engine.execute(tbl.delete())
         dbSession.remove()
+
 
     def test_assert(self):
         test = 'test'
@@ -59,9 +62,13 @@ class TestCase(unittest.TestCase):
         dbSession.add(newCustomer)
         dbSession.commit()
 
-        Projects.createProject(1, 'Not Reached', 'Somewhere Ave', 'Fence', 'A fun fencing project')
+        newProject = Project(project_id = 1, customer_id = 1, address = "Somewhere Ave", status_name = "Not Reached", end_date = None, note = None, project_name = "A fun fencing project", company_name = "Fence")
+        dbSession.add(newProject)
+        dbSession.commit()
 
+        oneProjectTest = dbSession.query(Project).all()
         assert oneProjectTest[0].note == None
+
         Projects.savenote('This is a new note', 1)
         oneProjectTest = dbSession.query(Project).all()
         assert oneProjectTest[0].note != None
