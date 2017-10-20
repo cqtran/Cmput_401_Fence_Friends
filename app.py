@@ -127,19 +127,11 @@ def user_registered_sighandler(app, user, confirm_token):
 @app.route('/')
 @login_required
 def customers():
-    #user = dbSession.query(User).filter(User.id == current_user.id).one()
-
-        #print("This is company id")
-        #print(getcmpyid)
-
-        #return render_template("customer.html", listcust = list_customers)
-
-    #x = userDatastore.deactivate_user(current_user)
-    #dbSession.commit()
     if current_user.has_role('admin'):
         users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
     else:
+        # gets customers and display
         customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
         s = []
         id = []
@@ -172,7 +164,7 @@ def newcustomer():
         email = request.form['email']
         pn = request.form['pn']
         address = request.form['address']
-
+        # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
         print(success)
 
@@ -216,9 +208,6 @@ def projects():
     
     # Serialize results
     json_list=[i.serialize for i in projects]
-    print('Projects found: ')
-    print(json_list)
-    print('\n')
     
     if customer_id is None:
         return render_template("projects.html", listproj = json.dumps(json_list), company = current_user.company_name)
@@ -231,6 +220,7 @@ def projects():
 
 @app.route('/autocomplete', methods=["GET"])
 def autocomplete():
+    # pulls in customers to populate dropdown table in new project
     search = request.args.get("q")
     print(search)
     customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
@@ -270,17 +260,15 @@ def projectinfo():
     project_id = request.args.get('proj_id')
 
     if request.method == "POST":
-
         note = request.form['note']
         pid = request.form['projectvalue']
-        print("this is pid" + pid)
+
+        # takes note from textbox and adds to database
         savenote = Projects.savenote(note, pid)
-        print(savenote)
-        print("hallo")
         project_id = pid
-       # return render_template("projectinfo.html", notes = note)
 
     if project_id is not None:
+        # get project info to pass to html and display
         project = dbSession.query(Project)
         project = project.filter(Project.project_id == project_id).all()
         json_list = [i.serialize for i in project]
@@ -289,8 +277,6 @@ def projectinfo():
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
-
-
 
 
 if __name__ == "__main__":
