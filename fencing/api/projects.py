@@ -1,7 +1,6 @@
-import Python.db as DB
 from sqlalchemy import *
-from Python.db import dbSession, init_db
-from Python.models import Project
+from fencing.database.db import dbSession, init_db
+from fencing.database.models import Project
 
 
 def createProject(customerId, statusId, address, note, startDate):

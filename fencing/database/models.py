@@ -1,4 +1,4 @@
-from Python.db import Base
+from fencing.database.db import Base
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, backref

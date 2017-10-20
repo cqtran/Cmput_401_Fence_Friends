@@ -1,7 +1,6 @@
-import Python.db as DB
 from sqlalchemy import *
-from Python.db import dbSession, init_db
-from Python.models import Customer
+from fencing.database.db import dbSession, init_db
+from fencing.database.models import Customer
 
 def addCustomer(name, email, ph, addr, cname):
 
