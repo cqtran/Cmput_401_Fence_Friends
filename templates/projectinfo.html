@@ -9,11 +9,15 @@
 	<p id="address"></p>
 	<p id="start_date"></p>
 	<p id="end_date">End Date: Ongoing</p>
-	<form method = "post" action="{{url_for('projectinfo') }} ">
-		<textarea class='form-control' id="note" rows="3" cols="30">Notes</textarea>
-		<input class='form-control' type="submit" value = "Save Note"/>
-	</form>
+<form method = "post" action="{{url_for('projectinfo') }} ">
+	<textarea id="note" name="note" rows="3" cols="30">Notes</textarea>
+	<input type="submit" value = "Save Note"/>
+</form>
+
+    <p>{{ notes }}</p>
 </div>
+
+
 
 <script>
 function projectClicked(proj) {
