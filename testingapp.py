@@ -44,8 +44,8 @@ class TestCase(unittest.TestCase):
         assert oneCustomerTest[0].serialize == ' '
         
     def test_createProject(self):
-        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Place', 'Fence')
-        
+        newCustomer(1, 'Kat', 'Kat@gmail.com', '555-555-5555', 'Place', 'Fence')
+        dbSession.commit()
         noProjectTest = dbSession.query(Project).all()
         assert len(noProjectTest)  == 0
         
@@ -54,7 +54,9 @@ class TestCase(unittest.TestCase):
         assert len(oneProjectTest) == 1
         
     def test_savingNote(self):
-        Customers.addCustomer('Kat', 'Kat@gmail.com', '555-555-5555', 'Place', 'Fence')
+        newCustomer(1, 'Kat', 'Kat@gmail.com', '555-555-5555', 'Place', 'Fence')
+        dbSession.commit()
+        
         Projects.createProject(1, 'Not Reached', 'Somewhere Ave', 'Fence', 'A fun fencing project')
         
         assert oneProjectTest[0].note == None
