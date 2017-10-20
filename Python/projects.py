@@ -5,11 +5,12 @@ import datetime
 
 
 
-def createProject(customerId, statusId, address, note, startDate, companyName):
+def createProject(customerId, statusId, address, companyName, project_name):
     #Access MySQL and add in account
 
     project = Project(customer_id = customerId, status_id = statusId, address = address,
-                      start_date =  sqlalchemy.DateTime(), company_name = companyName)
+                      start_date =  sqlalchemy.DateTime(), company_name = companyName, 
+                      project_name = project_name)
     dbSession.add(project)
     dbSession.commit()
 

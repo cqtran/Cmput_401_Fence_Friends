@@ -255,7 +255,8 @@ def newproject():
         print(address)
         # cid = request.form[]
         #print(customer)
-        success = Projects.addProject(customer, name, address) 
+        success = Projects.createProject(customerId, "Not Reached",  address,
+                                         current_user.company_name, projectname) 
         return redirect(url_for('projects'))
     else:
         return render_template("newproject.html")
