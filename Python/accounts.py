@@ -40,6 +40,7 @@ def requestAccount(username, email, password):
 
 
 def getCompany(username):
+    # Get the company associated with the given username
     db = DB.getConnection()
     metadata = MetaData(db)
     accounts = Table('Accounts', metadata, autoload=True)
