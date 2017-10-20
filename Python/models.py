@@ -69,7 +69,6 @@ class Customer(Base):
             'customer_id'        : self.customer_id,
             'email'              : self.email,
             'first_name'         : self.first_name,
-            'last_name'          : self.last_name,
             'cellphone'          : self.cellphone,
             'company_name'       : self.company_name
         }    
