@@ -2,14 +2,22 @@
 {% block content %}
 <h1>New Customer</h1>
 <form id="custinfo" method="post" action="{{ url_for('newcustomer') }}">
-    <p>Name</p>
-    <input class="form-control" type="username" placeholder="Enter Name" id="name" name="name" size="20">
-    <p>Email</p>
-    <input class="form-control" type="email" placeholder="Enter Email"id="email" name="email" size="20">
-    <p>Phone Number</p>
-    <input class="form-control" type="tel" placeholder="Enter Phone Number"id="phone_number" name="pn" size="20">
-    <p>Address</p>
-    <input class="form-control" type="text" placeholder="Enter Address" id="address" name="address" size="20">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input class="form-control" type="username" placeholder="Enter Name" id="name" name="name" size="20">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input class="form-control" type="email" placeholder="Enter Email"id="email" name="email" size="20">
+    </div>
+    <div class="form-group">
+        <label for="phone_number">Phone Number</label>
+        <input class="form-control" type="tel" placeholder="Enter Phone Number"id="phone_number" name="pn" size="20">
+    </div>
+    <div class="form-group">
+        <label for="address">Address</label>
+        <input class="form-control" type="text" placeholder="Enter Address" id="address" name="address" size="20">
+    </div>
     <p></p>
     <input class="btn btn-primary btn-block" type="submit" value="Create">
 </form>

@@ -9,22 +9,42 @@
 	<p id="address"></p>
 	<p id="start_date"></p>
 	<p id="end_date">End Date: Ongoing</p>
-	<form method = "post" action="{{url_for('projectinfo') }} ">
-		<textarea class='form-control' id="note" rows="3" cols="30">Notes</textarea>
-		<input class='form-control' type="submit" value = "Save Note"/>
-	</form>
+    <p id="savednote">Note</p>
+
 </div>
+
+<form method = "post"  action="{{url_for('projectinfo') }} ">
+    <input type="hidden" name="projectvalue" id="projectvalue" />
+	<textarea id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
+	<input type="submit" value = "Save Note"/>
+</form>
+
+
+
+
 
 <script>
 function projectClicked(proj) {
 	document.getElementById('status').innerHTML = 'Status: ' + proj[0].status_name;
 	document.getElementById('address').innerHTML = 'Address: ' + proj[0].address;
 	document.getElementById('start_date').innerHTML = 'Start Date: ' + proj[0].start_date;
+
+	// SAVES PROJECT ID AND SENDS TO '/projectinfo'
+	document.getElementById('projectvalue').setAttribute('value', proj[0].project_id);
+
 	if (proj[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = 'End Date: ' + proj[0].end_date;
 		}
+    if (proj[0].note != null) {
+    document.getElementById('savednote').innerHTML = proj[0].note;
+    }
+
 }
 
 projectClicked({{ proj|safe }});
+
+
+
+
 </script>
 {% endblock %}
