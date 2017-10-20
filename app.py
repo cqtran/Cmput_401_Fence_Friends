@@ -62,9 +62,9 @@ security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmReg
 test = 0
 # TODO: implement fresh login for password change
 
-# Create a user to test with only run once
 @app.before_first_request
 def setup_db():
+    """Create a user to test with only run once"""
     init_db()
     userDatastore.find_or_create_role(name = 'admin')
     userDatastore.find_or_create_role(name = 'primary')
@@ -110,9 +110,9 @@ def setup_db():
 def shutdown_session(exception=None):
     dbSession.remove()
 
-#deactivates new users
 @user_registered.connect_via(app)
 def user_registered_sighandler(app, user, confirm_token):
+    """Deactivates new users"""
     changeUser = dbSession.query(User).filter(User.id == user.id).one()
     newCompany = Company(company_name = user.username, email = user.email)
     dbSession.add(newCompany)
