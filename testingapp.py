@@ -26,7 +26,7 @@ class TestCase(unittest.TestCase):
         dbSession.add(newCompany)
         dbSession.addStatus(newStatus)
         dbSession.commit()
-        
+    
     def tearDown(self):
         dbSession.remove()
     
