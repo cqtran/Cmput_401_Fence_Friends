@@ -217,6 +217,8 @@ def projects():
                  phone = customer.cellphone, email = customer.email, cid = customer_id)
 
 @app.route('/autocomplete', methods=["GET"])
+@login_required
+@roles_required('primary')
 def autocomplete():
     # pulls in customers to populate dropdown table in new project
     search = request.args.get("q")
