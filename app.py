@@ -113,7 +113,7 @@ def shutdown_session(exception=None):
 #deactivates new users
 @user_registered.connect_via(app)
 def user_registered_sighandler(app, user, confirm_token):
-    #userDatastore.deactivate_user(user)
+    userDatastore.deactivate_user(user)
     userDatastore.add_role_to_user(user, 'primary')
     dbSession.commit()
 
@@ -186,6 +186,7 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
+
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
     
@@ -235,20 +236,35 @@ def newproject():
 
 
 # delete later, just for testing note
-@app.route('/projectinfo')
+@app.route('/projectinfo', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def projectinfo():
-    project_id = request.args.get('proj_id')
-    
-    if project_id is not None:
-        project = dbSession.query(Project)
-        project = project.filter(Project.project_id == project_id).all()
-        json_list = [i.serialize for i in project]
-        print(json_list)
-        return render_template("projectinfo.html", proj = json.dumps(json_list))
+
+
+
+
+    if request.method == "POST":
+      #  project_id = request.args.get('proj_id')
+        note = request.form['note']
+      #  savenote = Projects.savenote(note, project_id)
+        print("hallo")
+
+        return render_template("projectinfo.html", notes = note)
     else:
-        return render_template("projectinfo.html")
+        project_id = request.args.get('proj_id')
+        if project_id is not None:
+            project = dbSession.query(Project)
+            project = project.filter(Project.project_id == project_id).all()
+            json_list = [i.serialize for i in project]
+            print(json_list)
+            return render_template("projectinfo.html", proj = json.dumps(json_list))#, projid = project_id)
+
+        else:
+            return render_template("projectinfo.html")
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
