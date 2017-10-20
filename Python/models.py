@@ -52,7 +52,6 @@ class Customer(Base):
     customer_id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True)
     first_name = Column(String(255))
-    last_name = Column(String(255))
     cellphone = Column(String(20))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
