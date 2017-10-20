@@ -19,7 +19,7 @@ class TestCase(unittest.TestCase):
         app.config['DEBUG'] = False
         init_db()
         for tbl in reversed (Base.metadata.sorted_tables):
-            engine.execute(tble.delete())
+            engine.execute(tbl.delete())
     
     def tearDown(self):
         dbSession.remove()
