@@ -1,4 +1,3 @@
-import Python.db as DB
 from sqlalchemy import *
 from Python.db import dbSession, init_db
 from Python.models import Customer
