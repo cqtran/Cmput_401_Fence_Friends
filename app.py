@@ -120,7 +120,7 @@ def user_registered_sighandler(app, user, confirm_token):
     changeUser.company_name = user.username
 
     #userDatastore.deactivate_user(user)
-    userDatastore.add_role_to_user(user, 'secondary')
+    userDatastore.add_role_to_user(user, 'primary')
     dbSession.commit()
 
 #@app.route('/customers', methods=['GET', 'POST'])
