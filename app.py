@@ -170,11 +170,11 @@ def newcustomer():
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
         print(success)
 
-        return redirect(url_for('customers'))
+        return redirect(url_for('customers', company = current_user.company_name))
 
 
     else:
-        return render_template("newcustomer.html")
+        return render_template("newcustomer.html", company = current_user.company_name)
 
 @app.route('/editcustomer', methods=['GET', 'POST'])
 @login_required
@@ -215,7 +215,7 @@ def projects():
     print('\n')
     
     if customer_id is None:
-        return render_template("projects.html", listproj = json.dumps(json_list))
+        return render_template("projects.html", listproj = json.dumps(json_list), company = current_user.company_name)
     
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
@@ -232,7 +232,7 @@ def newproject():
         address = request.form['address']
 
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
-    return render_template("newproject.html")
+    return render_template("newproject.html", company = current_user.company_name)
 
 
 # delete later, just for testing note
@@ -258,10 +258,10 @@ def projectinfo():
         project = project.filter(Project.project_id == project_id).all()
         json_list = [i.serialize for i in project]
         print(json_list)
-        return render_template("projectinfo.html", proj = json.dumps(json_list))#, projid = project_id)
+        return render_template("projectinfo.html", proj = json.dumps(json_list), company = current_user.company_name)#, projid = project_id)
 
     else:
-        return render_template("projectinfo.html")
+        return render_template("projectinfo.html", company = current_user.company_name)
 
 
 
