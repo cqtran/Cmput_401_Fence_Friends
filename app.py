@@ -87,7 +87,8 @@ def setup_db():
         dbSession.commit()
 
     if not fieldExists(dbSession, Customer.customer_id, 1):
-        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy", cellphone = "1234567", company_name = "Fence")
+        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy"
+                                ,cellphone = "1234567", company_name = "Fence")
         dbSession.add(newCustomer)
         dbSession.commit()
 
