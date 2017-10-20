@@ -5,10 +5,12 @@
 {% endblock %}
 {% block content %}
 
+{% if not name %}
 <h1>Projects</h1>
+{% else %}
+<h1>{{name}}</h1>
+{% endif %}
 
-<h2>{{name}}</h2>
-<p>{{company}}<br>
 {{phone}}<br>
 {{email}}</p>
 <div class="list-group list-group-flush" id="projectlist"></div>
