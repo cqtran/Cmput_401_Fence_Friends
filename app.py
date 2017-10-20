@@ -113,8 +113,14 @@ def shutdown_session(exception=None):
 #deactivates new users
 @user_registered.connect_via(app)
 def user_registered_sighandler(app, user, confirm_token):
-    userDatastore.deactivate_user(user)
-    userDatastore.add_role_to_user(user, 'primary')
+    changeUser = dbSession.query(User).filter(User.id == user.id).one()
+    newCompany = Company(company_name = user.username, email = user.email)
+    dbSession.add(newCompany)
+    dbSession.commit()
+    changeUser.company_name = user.username
+
+    #userDatastore.deactivate_user(user)
+    userDatastore.add_role_to_user(user, 'secondary')
     dbSession.commit()
 
 #@app.route('/customers', methods=['GET', 'POST'])
