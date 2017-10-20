@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, \
                        String, ForeignKey, Numeric, LargeBinary
 
+from sqlalchemy.sql import func
 from flask.json import JSONEncoder
 
 def dump_datetime(value):
@@ -85,18 +86,16 @@ class Project(Base):
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
-    start_date = Column(DateTime())
+    start_date = Column(DateTime(), server_default = func.now())
     end_date = Column(DateTime())
     note = Column('Note', String(400))
     project_name = Column("project_name", String(50))
     
-    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note,
+    def __init__(self, customer_id, status_name, address, end_date, note,
                  project_name, company_name):
-        self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
         self.address = address
-        self.start_date = start_date
         self.end_date = end_date
         self.note = note
         self.project_name = project_name

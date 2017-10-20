@@ -99,8 +99,8 @@ def setup_db():
         dbSession.commit()
 
     if not fieldExists(dbSession, Project.project_id, 1):
-        newProject = Project(project_id = 1, customer_id = 1, address = "1234",
-            status_name = "Not Reached", start_date =  "2017-08-19", end_date = None, note = None,
+        newProject = Project(customer_id = 1, address = "1234",
+            status_name = "Not Reached", end_date = None, note = None,
             project_name = "Andy's Project", company_name = "Fence")
         dbSession.add(newProject)
         dbSession.commit()
@@ -237,6 +237,8 @@ def newproject():
         #print()
         #customer = request.args.get('customer')
         customer = request.form["customer"]
+        customer = customer.split("-")
+        print(customer)
         customerId = customer[1]
         print(customer)
         projectname = request.form["name"]

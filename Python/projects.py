@@ -4,14 +4,13 @@ from Python.models import Project
 import datetime
 
 
+def createProject(customerId, statusName, address, companyName, project_name):
+    #Access MySQL and add in account
+    newProject = Project(customer_id = customerId, address = address,
+            status_name = statusName, end_date = None, note = None,
+            project_name = project_name, company_name = companyName)
 
-def createProject(customerId, statusId, address, companyName, project_name):
-    """Access MySQL and add in account"""
-
-    project = Project(customer_id = customerId, status_id = statusId, address = address,
-                      start_date =  DateTime(), company_name = companyName, 
-                      project_name = project_name)
-    dbSession.add(project)
+    dbSession.add(newProject)
     dbSession.commit()
 
     return True
