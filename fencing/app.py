@@ -20,6 +20,7 @@ import json
 from fencing.api.jsonifyObjects import MyJSONEncoder
 from flask.json import jsonify
 
+import argparse
 
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
@@ -281,4 +282,14 @@ def projectinfo():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    parser = argparse.ArgumentParser(description = 'Run Cavalry Fence Builder')
+    parser.add_argument('-debug', action = 'store_true')
+    parser.add_argument('-public', action = 'store_true')
+    args = parser.parse_args()
+
+    if args.public:
+        app.run(host = '0.0.0.0', debug = False)
+
+    else:
+        app.run(debug = args.debug)
