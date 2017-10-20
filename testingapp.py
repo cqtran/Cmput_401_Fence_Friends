@@ -18,7 +18,7 @@ class TestCase(unittest.TestCase):
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
         init_db()
-        for tbl in reversed (Base.meta.sorted_tables):
+        for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tble.delete())
     
     def tearDown(self):
@@ -46,7 +46,8 @@ class TestCase(unittest.TestCase):
         assert len(oneProjectTest) == 1
         
     def test_savingNote(self):
-        pass
+        oneProjectTest = dbSession.query(Project).all()
+        assert oneProjectTest[0].note == None
     
 if __name__ == '__main__':
     unittest.main()
