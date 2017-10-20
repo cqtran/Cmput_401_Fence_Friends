@@ -86,6 +86,7 @@ class Project(Base):
     project_id = Column(Integer, primary_key=True)
     customer_id = Column('customer_id', Integer(), ForeignKey('customer.customer_id'))
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
     start_date = Column(DateTime())
     end_date = Column(DateTime())
@@ -93,7 +94,7 @@ class Project(Base):
     project_name = Column("project_name", String(50))
     
     def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note,
-                 project_name):
+                 project_name, company_name):
         self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
@@ -102,6 +103,7 @@ class Project(Base):
         self.end_date = end_date
         self.note = note
         self.project_name = project_name
+        self.company_name = company_name
     
     @property
     def serialize(self):

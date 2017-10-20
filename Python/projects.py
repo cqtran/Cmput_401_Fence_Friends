@@ -1,15 +1,15 @@
-import Python.db as DB
 from sqlalchemy import *
 from Python.db import dbSession, init_db
 from Python.models import Project
+import datetime
 
 
 
-def createProject(customerId, statusId, address, note, startDate):
+def createProject(customerId, statusId, address, note, startDate, companyName):
     #Access MySQL and add in account
 
     project = Project(customer_id = customerId, status_id = statusId, address = address,
-                      start_date =  sqlalchemy.DateTime())
+                      start_date =  sqlalchemy.DateTime(), company_name = companyName)
     dbSession.add(project)
     dbSession.commit()
 
@@ -26,8 +26,5 @@ def savenote(note, pid):
     #savenoteintoserver = update(Project).where(Project.project_id == pid).values(Note = note)
 
     return True
-
-#def newcreateProject(customer, name, address):
-
 
 
