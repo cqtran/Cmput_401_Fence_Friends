@@ -3,7 +3,7 @@
 <h1>New Project</h1>
 <form id="projinfo" method="post" action="{{ url_for('newproject') }}">
   <p>Select a Customer</p>
-  <input class="form-control" type="text" id="customer" list="json-datalist" placeholder="Customer" name="customer">
+  <input class="form-control" type="text" id="customer" list="json-datalist" placeholder="Customer" name="customer" autocomplete="off">
   <datalist id="json-datalist"></datalist>
 	<div class="form-group">
 		<label for="name">Name</label>
