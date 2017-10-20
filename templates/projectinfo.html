@@ -14,9 +14,10 @@
 </div>
 
 <form method = "post"  action="{{url_for('projectinfo') }} ">
-    <input type="hidden" name="projectvalue" id="projectvalue" />
-	<textarea id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
-	<input type="submit" value = "Save Note"/>
+    <input class="form-control" type="hidden" name="projectvalue" id="projectvalue" />
+	<textarea class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
+	<br>
+	<input class="btn btn-primary btn-block" type="submit" value = "Save Note"/>
 </form>
 
 
