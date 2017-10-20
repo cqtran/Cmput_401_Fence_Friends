@@ -2,7 +2,7 @@ import Python.db as DB
 from sqlalchemy import *
 
 def authenticate(username, password):
-    # Access MySQL and authenticate the username/password
+    """Access MySQL and authenticate the username/password"""
     
     db = DB.getConnection()
     metadata = MetaData(db)
@@ -24,7 +24,7 @@ def authenticate(username, password):
     return False
 
 def createAccount(username, password, email):
-    #Access MySQL and add in account
+    """Access MySQL and add in account"""
     db = DB.getConnection()
     metadata = MetaData(db)
     accounts = Table('Accounts', metadata, autoload = True)
@@ -40,7 +40,7 @@ def requestAccount(username, email, password):
 
 
 def getCompany(username):
-    # Get the company associated with the given username
+    """Get the company associated with the given username"""
     db = DB.getConnection()
     metadata = MetaData(db)
     accounts = Table('Accounts', metadata, autoload=True)

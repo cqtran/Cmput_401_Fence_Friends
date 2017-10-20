@@ -6,7 +6,7 @@ import datetime
 
 
 def createProject(customerId, statusId, address, companyName, project_name):
-    #Access MySQL and add in account
+    """Access MySQL and add in account"""
 
     project = Project(customer_id = customerId, status_id = statusId, address = address,
                       start_date =  DateTime(), company_name = companyName, 
@@ -18,7 +18,7 @@ def createProject(customerId, statusId, address, companyName, project_name):
 
 
 def savenote(note, pid):
-
+    """Save the given note to the database"""
     #TODO
     project = dbSession.query(Project)
     project = project.filter(Project.project_id == pid).all()
