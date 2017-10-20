@@ -26,7 +26,7 @@ app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
 app.config['DEBUG'] = True
-app.config['TESTING'] = True
+app.config['TESTING'] = False
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 
