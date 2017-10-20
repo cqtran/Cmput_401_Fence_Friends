@@ -218,9 +218,19 @@ def projects():
     
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
-        return render_template("projects.html", listproj = json.dumps(json_list), name = customer.first_name, company = customer.company_name, phone = customer.cellphone, email = customer.email)
+        return render_template("projects.html", listproj = json.dumps(json_list),
+                 name = customer.first_name, company = customer.company_name, 
+                 phone = customer.cellphone, email = customer.email, cid = customer_id)
 
-@app.route('/newproject')
+@app.route('/autocomplete', methods=["GET"])
+def autocomplete():
+    search = request.args.get("q")
+    print(search)
+    customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
+    return jsonify(customers)
+
+
+@app.route('/newproject', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def newproject():
@@ -230,7 +240,7 @@ def newproject():
         pn = request.form['pn']
         address = request.form['address']
 
-        success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
+        success = Projects.addProject(status, email, pn, address) 
     return render_template("newproject.html")
 
 
