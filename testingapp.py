@@ -62,14 +62,13 @@ class TestCase(unittest.TestCase):
         dbSession.add(newCustomer)
         dbSession.commit()
 
-        newProject = Project(project_id = 1, customer_id = 1, address = "Somewhere Ave", status_name = "Not Reached", end_date = None, note = None, project_name = "A fun fencing project", company_name = "Fence")
-        dbSession.add(newProject)
-        dbSession.commit()
+        Projects.createProject(1, 'Not Reached', 'Somewhere Ave', 'Fence', 'A fun fencing project')
 
         oneProjectTest = dbSession.query(Project).all()
         assert oneProjectTest[0].note == None
+        assert len(oneProjectTest) == 1
 
-        Projects.savenote('This is a new note', 1)
+        Projects.savenote('This is a new note', oneProjectTest[0].project_id)
         oneProjectTest = dbSession.query(Project).all()
         assert oneProjectTest[0].note != None
         assert oneProjectTest[0].note == 'This is a new note'
