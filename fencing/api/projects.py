@@ -3,25 +3,28 @@ from fencing.database.db import dbSession, init_db
 from fencing.database.models import Project
 
 
-def createProject(customerId, statusId, address, note, startDate):
+
+def createProject(customerId, statusName, address, companyName, project_name):
     #Access MySQL and add in account
-    project = Project(customer_id = customerId, status_id = statusId, address = address,
-                      start_date =  sqlalchemy.DateTime())
-    dbSession.add(project)
+    newProject = Project(customer_id = customerId, address = address,
+            status_name = statusName, end_date = None, note = None,
+            project_name = project_name, company_name = companyName)
+
+    dbSession.add(newProject)
     dbSession.commit()
 
     return True
 
 
 def savenote(note, pid):
-
+    """Save the given note to the database"""
     #TODO
-    customer = Customer(email = email, first_name = name, cellphone = ph, company_name = cname)
-    dbSession.add(customer)
+    project = dbSession.query(Project)
+    project = project.filter(Project.project_id == pid).all()
+    project[0].note = note
     dbSession.commit()
+    #savenoteintoserver = update(Project).where(Project.project_id == pid).values(Note = note)
 
     return True
-
-
 
 

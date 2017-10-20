@@ -5,10 +5,11 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, \
                        String, ForeignKey, Numeric, LargeBinary
 
+from sqlalchemy.sql import func
 from flask.json import JSONEncoder
 
 def dump_datetime(value):
-    """Deserialize datetime object into string form for JSON processing."""
+    """Deserialize datetime object into string form for JSON processing"""
     if value is None:
         return None
     return [value.strftime("%Y-%m-%d")]
@@ -52,15 +53,13 @@ class Customer(Base):
     customer_id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True)
     first_name = Column(String(255))
-    last_name = Column(String(255))
     cellphone = Column(String(20))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __int__(self, customer_id, email, first_name, last_name, cellphone, company_name):
+    def __int__(self, customer_id, email, first_name, cellphone, company_name):
         self.customer_id = customer_id
         self.email = email
         self.first_name = first_name
-        self.last_name = last_name
         self.cellphone = cellphone
         self.company_name = company_name
         
@@ -71,7 +70,6 @@ class Customer(Base):
             'customer_id'        : self.customer_id,
             'email'              : self.email,
             'first_name'         : self.first_name,
-            'last_name'          : self.last_name,
             'cellphone'          : self.cellphone,
             'company_name'       : self.company_name
         }    
@@ -86,22 +84,22 @@ class Project(Base):
     project_id = Column(Integer, primary_key=True)
     customer_id = Column('customer_id', Integer(), ForeignKey('customer.customer_id'))
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
-    start_date = Column(DateTime())
+    start_date = Column(DateTime(), server_default = func.now())
     end_date = Column(DateTime())
     note = Column('Note', String(400))
     project_name = Column("project_name", String(50))
     
-    def __init__(self, project_id, customer_id, status_name, address, start_date, end_date, note,
-                 project_name):
-        self.project_id = project_id
+    def __init__(self, customer_id, status_name, address, end_date, note,
+                 project_name, company_name):
         self.customer_id = customer_id
         self.status_name = status_name
         self.address = address
-        self.start_date = start_date
         self.end_date = end_date
         self.note = note
         self.project_name = project_name
+        self.company_name = company_name
     
     @property
     def serialize(self):

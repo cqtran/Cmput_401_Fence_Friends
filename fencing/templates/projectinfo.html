@@ -2,11 +2,50 @@
 {% block content %}
 
 <h1>Project Details</h1>
-<img src="../static/images/Mock Drawing Image.png" height = 250 width = 350>
-<form method = "post" action="{{url_for('projectinfo') }} ">
-	<textarea id="note" rows="3" cols="30">Notes</textarea>
-	<input type="submit" value = "Save Note"/>
+
+<div class="container">
+	<img src="../static/images/Mock Drawing Image.png" height = 250 width = 350>
+	<p id="status"></p>
+	<p id="address"></p>
+	<p id="start_date"></p>
+	<p id="end_date">End Date: Ongoing</p>
+    <p id="savednote">Note</p>
+
+</div>
+
+<form method = "post"  action="{{url_for('projectinfo') }} ">
+    <input class="form-control" type="hidden" name="projectvalue" id="projectvalue" />
+	<textarea class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
+	<br>
+	<input class="btn btn-primary btn-block" type="submit" value = "Save Note"/>
 </form>
 
 
+
+
+
+<script>
+function projectClicked(proj) {
+	document.getElementById('status').innerHTML = 'Status: ' + proj[0].status_name;
+	document.getElementById('address').innerHTML = 'Address: ' + proj[0].address;
+	document.getElementById('start_date').innerHTML = 'Start Date: ' + proj[0].start_date;
+
+	// SAVES PROJECT ID AND SENDS TO '/projectinfo'
+	document.getElementById('projectvalue').setAttribute('value', proj[0].project_id);
+
+	if (proj[0].end_date != null) {
+		document.getElementById('end_date').innerHTML = 'End Date: ' + proj[0].end_date;
+		}
+    if (proj[0].note != null) {
+    document.getElementById('savednote').innerHTML = proj[0].note;
+    }
+
+}
+
+projectClicked({{ proj|safe }});
+
+
+
+
+</script>
 {% endblock %}

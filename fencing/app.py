@@ -61,9 +61,9 @@ security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmReg
 test = 0
 # TODO: implement fresh login for password change
 
-# Create a user to test with only run once
 @app.before_first_request
 def setup_db():
+    """Create a user to test with only run once"""
     init_db()
     userDatastore.find_or_create_role(name = 'admin')
     userDatastore.find_or_create_role(name = 'primary')
@@ -86,8 +86,8 @@ def setup_db():
         dbSession.commit()
 
     if not fieldExists(dbSession, Customer.customer_id, 1):
-        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy",
-                last_name = "John", cellphone = "1234567", company_name = "Fence")
+        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy"
+                                ,cellphone = "1234567", company_name = "Fence")
         dbSession.add(newCustomer)
         dbSession.commit()
 
@@ -98,9 +98,9 @@ def setup_db():
         dbSession.commit()
 
     if not fieldExists(dbSession, Project.project_id, 1):
-        newProject = Project(project_id = 1, customer_id = 1, address = "1234",
-            status_name = "Not Reached", start_date =  "2017-08-19", end_date = None, note = None,
-            project_name = "Andy's Project")
+        newProject = Project(customer_id = 1, address = "1234",
+            status_name = "Not Reached", end_date = None, note = None,
+            project_name = "Andy's Project", company_name = "Fence")
         dbSession.add(newProject)
         dbSession.commit()
 
@@ -109,9 +109,15 @@ def setup_db():
 def shutdown_session(exception=None):
     dbSession.remove()
 
-#deactivates new users
 @user_registered.connect_via(app)
 def user_registered_sighandler(app, user, confirm_token):
+    """Deactivates new users"""
+    changeUser = dbSession.query(User).filter(User.id == user.id).one()
+    newCompany = Company(company_name = user.username, email = user.email)
+    dbSession.add(newCompany)
+    dbSession.commit()
+    changeUser.company_name = user.username
+
     #userDatastore.deactivate_user(user)
     userDatastore.add_role_to_user(user, 'primary')
     dbSession.commit()
@@ -120,19 +126,11 @@ def user_registered_sighandler(app, user, confirm_token):
 @app.route('/')
 @login_required
 def customers():
-    #user = dbSession.query(User).filter(User.id == current_user.id).one()
-
-        #print("This is company id")
-        #print(getcmpyid)
-
-        #return render_template("customer.html", listcust = list_customers)
-
-    #x = userDatastore.deactivate_user(current_user)
-    #dbSession.commit()
     if current_user.has_role('admin'):
         users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
     else:
+        # gets customers and display
         customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
         s = []
         id = []
@@ -165,15 +163,15 @@ def newcustomer():
         email = request.form['email']
         pn = request.form['pn']
         address = request.form['address']
-
+        # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
         print(success)
 
-        return redirect(url_for('customers'))
+        return redirect(url_for('customers', company = current_user.company_name))
 
 
     else:
-        return render_template("newcustomer.html")
+        return render_template("newcustomer.html", company = current_user.company_name)
 
 @app.route('/editcustomer', methods=['GET', 'POST'])
 @login_required
@@ -185,6 +183,7 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
+
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
     
@@ -208,44 +207,78 @@ def projects():
     
     # Serialize results
     json_list=[i.serialize for i in projects]
-    print('Projects found: ')
-    print(json_list)
-    print('\n')
     
     if customer_id is None:
-        return render_template("projects.html", listproj = json.dumps(json_list))
+        return render_template("projects.html", listproj = json.dumps(json_list), company = current_user.company_name)
     
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
-        return render_template("projects.html", listproj = json.dumps(json_list), name = customer.first_name + " " + customer.last_name, company = customer.company_name, phone = customer.cellphone, email = customer.email)
+        return render_template("projects.html", listproj = json.dumps(json_list),
+                 name = customer.first_name, company = customer.company_name, 
+                 phone = customer.cellphone, email = customer.email, cid = customer_id)
 
-@app.route('/newproject')
+@app.route('/autocomplete', methods=["GET"])
+def autocomplete():
+    # pulls in customers to populate dropdown table in new project
+    search = request.args.get("q")
+    print(search)
+    customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
+    return jsonify(customers)
+
+
+@app.route('/newproject', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def newproject():
+    print("new project" + request.method)
     if request.method == 'POST':
-        status = request.form['status']
-        email = request.form['email']
-        pn = request.form['pn']
-        address = request.form['address']
-
-        success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
-    return render_template("newproject.html")
+        #customer = request.form["customer"]
+        #print()
+        #customer = request.args.get('customer')
+        customer = request.form["customer"]
+        customer = customer.split("-")
+        print(customer)
+        customerId = customer[1]
+        print(customer)
+        projectname = request.form["name"]
+        print(projectname)
+        address = request.form["address"]
+        print(address)
+        # cid = request.form[]
+        #print(customer)
+        success = Projects.createProject(customerId, "Not Reached",  address,
+                                         current_user.company_name, projectname) 
+        return redirect(url_for('projects'))
+    else:
+        return render_template("newproject.html")
 
 
 # delete later, just for testing note
-@app.route('/projectinfo')
+@app.route('/projectinfo', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def projectinfo():
     project_id = request.args.get('proj_id')
-    
+
+    if request.method == "POST":
+        note = request.form['note']
+        pid = request.form['projectvalue']
+
+        # takes note from textbox and adds to database
+        savenote = Projects.savenote(note, pid)
+        project_id = pid
+
     if project_id is not None:
+        # get project info to pass to html and display
         project = dbSession.query(Project)
-        project = project.filter(Project.project_id == project_id).one()
-        return render_template("projectinfo.html", proj = json.dumps(project.serialize))
-    
-    return render_template("projectinfo.html")
+        project = project.filter(Project.project_id == project_id).all()
+        json_list = [i.serialize for i in project]
+        print(json_list)
+        return render_template("projectinfo.html", proj = json.dumps(json_list), company = current_user.company_name)#, projid = project_id)
+
+    else:
+        return render_template("projectinfo.html", company = current_user.company_name)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
