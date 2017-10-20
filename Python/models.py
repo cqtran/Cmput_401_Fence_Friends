@@ -55,11 +55,10 @@ class Customer(Base):
     cellphone = Column(String(20))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __int__(self, customer_id, email, first_name, last_name, cellphone, company_name):
+    def __int__(self, customer_id, email, first_name, cellphone, company_name):
         self.customer_id = customer_id
         self.email = email
         self.first_name = first_name
-        self.last_name = last_name
         self.cellphone = cellphone
         self.company_name = company_name
         
