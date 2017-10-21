@@ -2,12 +2,11 @@ import os
 import unittest
 
 from flask import Flask
-from Python.db import dbSession, Base, init_db, fieldExists, engine
-from Python.models import Customer, Project, Company, Status
+from database.db import dbSession, Base, init_db, fieldExists, engine
+from database.models import Customer, Project, Company, Status
 
-import Python.accounts as Accounts
-import Python.customers as Customers
-import Python.projects as Projects
+import api.customers as Customers
+import api.projects as Projects
 
 app = Flask(__name__)
 

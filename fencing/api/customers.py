@@ -1,6 +1,6 @@
 from sqlalchemy import *
-from Python.db import dbSession, init_db
-from Python.models import Customer
+from database.db import dbSession, init_db
+from database.models import Customer
 
 def addCustomer(name, email, ph, addr, cname):
     """Add a customer to the database with the given field values"""

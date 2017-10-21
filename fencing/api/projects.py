@@ -1,7 +1,7 @@
 from sqlalchemy import *
-from Python.db import dbSession, init_db
-from Python.models import Project
-import datetime
+from database.db import dbSession, init_db
+from database.models import Project
+
 
 
 def createProject(customerId, statusName, address, companyName, project_name):

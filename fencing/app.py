@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
-from Python.db import dbSession, init_db, fieldExists
-from Python.models import User, Role, Company, Customer, Project, Status
+from database.db import dbSession, init_db, fieldExists
+from database.models import User, Role, Company, Customer, Project, Status
 from flask_mail import Mail
 from flask_security.core import current_user
 from flask_security.signals import user_registered
@@ -10,33 +10,30 @@ from flask_security.decorators import roles_required
 
 import os
 # Import python files with functionality
-import Python.accounts as Accounts
-import Python.customers as Customers
-import Python.projects as Projects
+import api.customers as Customers
+import api.projects as Projects
 
-from Python.extendedRegisterForm import *
+from api.forms.extendedRegisterForm import *
 
 import json
-from Python.jsonifyObjects import MyJSONEncoder
+from api.jsonifyObjects import MyJSONEncoder
 from flask.json import jsonify
 
 import argparse
-
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
-
 app.config['DEBUG'] = True
-app.config['TESTING'] = True
+app.config['TESTING'] = False
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = False
+app.config['SECURITY_CONFIRMABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
@@ -120,7 +117,7 @@ def user_registered_sighandler(app, user, confirm_token):
     dbSession.commit()
     changeUser.company_name = user.username
 
-    #userDatastore.deactivate_user(user)
+    userDatastore.deactivate_user(user)
     userDatastore.add_role_to_user(user, 'primary')
     dbSession.commit()
 
@@ -220,6 +217,8 @@ def projects():
                  phone = customer.cellphone, email = customer.email, cid = customer_id)
 
 @app.route('/autocomplete', methods=["GET"])
+@login_required
+@roles_required('primary')
 def autocomplete():
     # pulls in customers to populate dropdown table in new project
     search = request.args.get("q")
