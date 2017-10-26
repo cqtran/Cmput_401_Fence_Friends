@@ -281,7 +281,7 @@ def projectinfo():
         return render_template("projectinfo.html", company = current_user.company_name)
 
 
-@app.route('/testdraw')
+@app.route('/testdraw',  methods = ['GET', 'POST'])
 def testdraw():
     return render_template("self-editing-embed.html")
 
