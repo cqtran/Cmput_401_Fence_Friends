@@ -255,7 +255,7 @@ def newproject():
 
 
 # delete later, just for testing note
-@app.route('/projectinfo', methods = ['GET', 'POST'])
+@app.route('/projectinfo', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
