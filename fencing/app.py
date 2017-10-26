@@ -281,6 +281,12 @@ def projectinfo():
         return render_template("projectinfo.html", company = current_user.company_name)
 
 
+@app.route('/testdraw')
+def testdraw():
+    return render_template("self-editing-embed.html")
+
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description = 'Run Cavalry Fence Builder')
