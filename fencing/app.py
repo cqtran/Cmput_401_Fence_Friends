@@ -77,7 +77,7 @@ def setup_db():
 
     # Test data
     if not fieldExists(dbSession, User.id, 1):
-        newUser = User(id = 1, email = 'test@test.null', username = 'test', 
+        newUser = User(id = 1, email = 'test@test.null', username = 'test',
             password = 'password', company_name = 'Fence', active = 1)
         dbSession.add(newUser)
         userDatastore.add_role_to_user(newUser, 'primary')
@@ -185,17 +185,17 @@ def projects():
 
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
-    
+
     # Start a query on Project
     projects= dbSession.query(Project)
-    
+
     # If the current user is an admin, then allow them to look at all projects
     if current_user.has_role('admin'):
         pass
     # Otherwise, find projects in the same company as the logged in user
     else:
         projects = projects.filter(Customer.company_name == current_user.company_name)
-    
+
     # If an customer id is given, then filter projects on the customer
     if customer_id is not None:
         projects = projects.filter(customer_id == Project.customer_id)
@@ -203,17 +203,17 @@ def projects():
 
     # Filter projects with matching customer_ids and execute query
     projects = projects.filter(Customer.customer_id == Project.customer_id).all()
-    
+
     # Serialize results
     json_list=[i.serialize for i in projects]
-    
+
     if customer_id is None:
         return render_template("projects.html", listproj = json.dumps(json_list), company = current_user.company_name)
-    
+
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
         return render_template("projects.html", listproj = json.dumps(json_list),
-                 name = customer.first_name, company = customer.company_name, 
+                 name = customer.first_name, company = customer.company_name,
                  phone = customer.cellphone, email = customer.email, cid = customer_id)
 
 @app.route('/autocomplete', methods=["GET"])
@@ -248,7 +248,7 @@ def newproject():
         # cid = request.form[]
         #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
-                                         current_user.company_name, projectname) 
+                                         current_user.company_name, projectname)
         return redirect(url_for('projects'))
     else:
         return render_template("newproject.html")
@@ -260,7 +260,7 @@ def newproject():
 @roles_required('primary')
 def projectinfo():
     project_id = request.args.get('proj_id')
-
+    
     if request.method == "POST":
         note = request.form['note']
         pid = request.form['projectvalue']

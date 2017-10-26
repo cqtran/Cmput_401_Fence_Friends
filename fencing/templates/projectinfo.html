@@ -20,7 +20,10 @@
 	<input class="btn btn-primary btn-block" type="submit" value = "Save Note"/>
 </form>
 
-
+ <form method = "post" action="{{ url_for('projectinfo') }}" >
+  <input type="file" name="pic" accept="image/*">
+  <input type="submit" value = "Upload picture">
+</form>
 
 
 
@@ -42,8 +45,12 @@ function projectClicked(proj) {
 
 }
 
-projectClicked({{ proj|safe }});
+function displayPictures(pictures) {
 
+}
+
+projectClicked({{ proj|safe }});
+// displayPictures({{ pictures|safe }});
 
 
 
