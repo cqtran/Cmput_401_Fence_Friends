@@ -157,8 +157,8 @@ class Picture(Base):
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
     path = Column(String(100))
 
-    def __init__(self, picture_id, project_id, path):
-        self.picture_id = picture_id
+    def __init__(self, project_id, path):
+        #self.picture_id = picture_id
         self.project_id = project_id
         self.path = path
 

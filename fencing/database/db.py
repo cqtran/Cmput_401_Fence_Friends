@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine(
 	#change password to your db password and root to your db username
-    'mysql+mysqlconnector://root:password@localhost/testdata'
+    'mysql+mysqlconnector://ubuntuvm:cmput401F3ncing@localhost/data'
 )
 
 dbSession = scoped_session(sessionmaker(autocommit=False,

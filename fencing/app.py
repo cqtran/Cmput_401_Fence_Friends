@@ -290,8 +290,10 @@ def uploadPicture():
     if request.method == 'POST':
         project_id = request.form['proj_id']
         picture = request.files['picture']
-        print(project_id)
-        print(picture.filename)
+
+        print('\nProject ID: ' + project_id)
+        print('File name: ' + picture.filename)
+        
         Pictures.addPicture(app.root_path, project_id, picture)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
