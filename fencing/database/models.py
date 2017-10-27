@@ -155,12 +155,12 @@ class Picture(Base):
     __tablename__ = 'picture'
     picture_id = Column(Integer, primary_key=True)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
-    path = Column(String(100))
+    file_name = Column(String(100))
 
-    def __init__(self, project_id, path):
+    def __init__(self, project_id, file_name):
         #self.picture_id = picture_id
         self.project_id = project_id
-        self.path = path
+        self.file_name = file_name
 
     @property
     def serialize(self):
@@ -168,5 +168,5 @@ class Picture(Base):
         return {
             'picture_id'                : self.picture_id,
             'project_id'                : self.project_id,
-            'path'                      : self.path
+            'file_name'                 : self.file_name
         }

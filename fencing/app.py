@@ -276,7 +276,18 @@ def projectinfo():
         project = project.filter(Project.project_id == project_id).all()
         json_list = [i.serialize for i in project]
         print(json_list)
-        return render_template("projectinfo.html", proj = json.dumps(json_list), company = current_user.company_name)#, projid = project_id)
+
+        # Get project pictures to display
+        json_pictures = Pictures.getPictures(project_id)
+        print(json_pictures)
+
+        # Get relative path to project pictures
+        imgPath = repr(os.path.join('..', Pictures.directory, ''))
+        print('Relative Path: ' + imgPath)
+
+        return render_template("projectinfo.html", proj = json.dumps(json_list),
+            company = current_user.company_name, images = json.dumps(json_pictures),
+            path = imgPath)
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
@@ -293,7 +304,7 @@ def uploadPicture():
 
         print('\nProject ID: ' + project_id)
         print('File name: ' + picture.filename)
-        
+
         Pictures.addPicture(app.root_path, project_id, picture)
 
         return redirect(url_for('projectinfo', proj_id = project_id))

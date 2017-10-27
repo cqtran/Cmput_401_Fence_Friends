@@ -4,7 +4,7 @@ from database.models import Picture
 import os
 from werkzeug.utils import secure_filename
 
-directory = 'static/images'
+directory = os.path.join('static', 'images')
 
 def addPicture(root_path, pid, picture):
     """ Saves the image and adds the picture name to a related project """
@@ -17,7 +17,7 @@ def addPicture(root_path, pid, picture):
         picture.save(absolutePath)
 
         # Store filepath into the database
-        newPicture = Picture(project_id = pid, path = filename)
+        newPicture = Picture(project_id = pid, file_name = filename)
         dbSession.add(newPicture)
         dbSession.commit()
         return True
@@ -27,6 +27,6 @@ def addPicture(root_path, pid, picture):
 def getPictures(pid):
     """ Returns a list of picture names to a related project """
     pictures = dbSession.query(Picture)
-    pictures = pictures.filter(Picture.picture_id == pid).all()
-
-    return pictures
+    pictures = pictures.filter(Picture.project_id == pid).all()
+    json_response = [i.serialize for i in pictures]
+    return json_response

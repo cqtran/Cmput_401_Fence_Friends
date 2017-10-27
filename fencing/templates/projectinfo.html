@@ -22,13 +22,13 @@
 	<input class="btn btn-primary btn-block" type="submit" value = "Save Note"/>
 </form>
 -->
- <form method = "post" action="{{ url_for('uploadPicture') }}" enctype=multipart/form-data >
+<div class="row" id = 'projectPictures'></div>
+
+<form method = "post" action="{{ url_for('uploadPicture') }}" enctype=multipart/form-data >
 	<input class="form-control" type="hidden" name="proj_id" id="projectvalue" />
   <input type="file" name="picture" accept="image/*">
   <input type="submit" value = "Upload picture">
 </form>
-
-
 
 <script>
 function projectClicked(proj) {
@@ -48,14 +48,33 @@ function projectClicked(proj) {
 
 }
 
-function displayPictures(pictures) {
+function displayPictures(images, path) {
+	var div = document.getElementById('projectPictures');
+	if (images.length == 0) {
+		var img = document.createElement('img');
+		img.src =  path + 'No_picture_available.png';
+		img.alt =  'No pictures available';
+		img.height = '150';
+		img.width = '150';
+		div.appendChild(img);
+	}
 
+	for(var i = 0; i < images.length; i++) {
+			// Create the list item:
+			var img = document.createElement('img');
+			img.src =  path + images[i].file_name;
+			img.alt =  images[i].file_name + ' not found';
+			img.height = '150';
+			img.width = '150';
+			// Add it to the list:
+			div.appendChild(img);
+	}
+
+	return div
 }
 
 projectClicked({{ proj|safe }});
-// displayPictures({{ pictures|safe }});
-
-
+displayPictures({{ images|safe }}, {{ path|safe }});
 
 </script>
 {% endblock %}
