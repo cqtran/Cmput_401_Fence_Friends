@@ -1,0 +1,12 @@
+2017-10-19 Meeting with Jon
+------------------------------------------------------
+Demoed the application to client
+
+Good looking UI
+Need Jon to get us the following data/materials:
+	- Logo
+	- Company email address for app usage
+	- Pricing csv
+	- Possible URL/domain name?
+	- Rules and formulas for fence building and fence quotation calculations
+	- Better name of the app?
