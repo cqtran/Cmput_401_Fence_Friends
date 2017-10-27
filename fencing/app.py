@@ -3,7 +3,7 @@ from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -45,6 +45,7 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'cmput401fence@gmail.com'
 app.config['MAIL_PASSWORD'] = 'fencing401'
 app.config['SECURITY_EMAIL_SENDER'] = 'cmput401fence@gmail.com'
+app.config['MAIL_SUPPRESS_SEND'] = False
 
 mail = Mail(app)
 
@@ -253,6 +254,17 @@ def newproject():
     else:
         return render_template("newproject.html")
 
+# For testing sending emails
+@app.route('/testSendEmail', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def testSendEmail():
+    message = Message("This is the subject",
+        sender=("My Name", "cmput401fence@gmail.com"),
+        recipients=["cmput401fence@gmail.com"])
+    message.html = "<b>This is some bolded HTML text</b>"
+    mail.send(message)
+    return render_template("projects.html")
 
 # delete later, just for testing note
 @app.route('/projectinfo', methods = ['GET', 'POST'])
