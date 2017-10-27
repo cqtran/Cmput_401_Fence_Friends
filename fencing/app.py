@@ -12,6 +12,7 @@ import os
 # Import python files with functionality
 import api.customers as Customers
 import api.projects as Projects
+import api.pictures as Pictures
 
 from api.forms.extendedRegisterForm import *
 
@@ -260,7 +261,7 @@ def newproject():
 @roles_required('primary')
 def projectinfo():
     project_id = request.args.get('proj_id')
-    
+
     if request.method == "POST":
         note = request.form['note']
         pid = request.form['projectvalue']
@@ -280,6 +281,20 @@ def projectinfo():
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
 
+@app.route('/uploadPicture', methods = ['GET', 'POST'])
+@login_required
+@roles_required('primary')
+def uploadPicture():
+    from werkzeug.utils import secure_filename
+
+    if request.method == 'POST':
+        project_id = request.form['proj_id']
+        picture = request.files['picture']
+        print(project_id)
+        print(picture.filename)
+        Pictures.addPicture(app.root_path, project_id, picture)
+
+        return redirect(url_for('projectinfo', proj_id = project_id))
 
 if __name__ == "__main__":
 

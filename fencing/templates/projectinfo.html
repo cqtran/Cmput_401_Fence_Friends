@@ -13,15 +13,18 @@
 
 </div>
 
-<form method = "post"  action="{{url_for('projectinfo') }} ">
+<!--
+	TODO: Group this form into Modify Project (UC6)
+	<form method = "post"  action="{{url_for('projectinfo') }} ">
     <input class="form-control" type="hidden" name="projectvalue" id="projectvalue" />
 	<textarea class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
 	<br>
 	<input class="btn btn-primary btn-block" type="submit" value = "Save Note"/>
 </form>
-
- <form method = "post" action="{{ url_for('projectinfo') }}" >
-  <input type="file" name="pic" accept="image/*">
+-->
+ <form method = "post" action="{{ url_for('uploadPicture') }}" enctype=multipart/form-data >
+	<input class="form-control" type="hidden" name="proj_id" id="projectvalue" />
+  <input type="file" name="picture" accept="image/*">
   <input type="submit" value = "Upload picture">
 </form>
 

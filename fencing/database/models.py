@@ -7,6 +7,7 @@ from sqlalchemy import Boolean, DateTime, Column, Integer, \
 
 from sqlalchemy.sql import func
 from flask.json import JSONEncoder
+import datetime
 
 def dump_datetime(value):
     """Deserialize datetime object into string form for JSON processing"""
@@ -86,7 +87,7 @@ class Project(Base):
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
-    start_date = Column(DateTime(), server_default = func.now())
+    start_date = Column(DateTime(), default = datetime.datetime.utcnow)
     end_date = Column(DateTime())
     note = Column('Note', String(400))
     project_name = Column("project_name", String(50))
@@ -154,12 +155,12 @@ class Picture(Base):
     __tablename__ = 'picture'
     picture_id = Column(Integer, primary_key=True)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
-    image = Column(LargeBinary)
+    path = Column(String(100))
 
-    def __init__(self, picture_id, project_id, image):
+    def __init__(self, picture_id, project_id, path):
         self.picture_id = picture_id
         self.project_id = project_id
-        self.image = image
+        self.path = path
 
     @property
     def serialize(self):
@@ -167,5 +168,5 @@ class Picture(Base):
         return {
             'picture_id'                : self.picture_id,
             'project_id'                : self.project_id,
-            'image'                     : self.image
+            'path'                      : self.path
         }
