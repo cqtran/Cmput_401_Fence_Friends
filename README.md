@@ -9,4 +9,6 @@ Core features of this app are:
 * Generate material lists for suppliers (based on diagrams)
 * Email material lists to suppliers
 * View a list of projects and filter by status
+* View and edit project information
+* View and edit customer information
 * View a summary of the current year's profits/losses
