@@ -267,7 +267,7 @@ def testSendEmail():
     return render_template("projects.html")
 
 # delete later, just for testing note
-@app.route('/projectinfo', methods = ['GET', 'POST'])
+@app.route('/projectinfo', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
@@ -291,6 +291,12 @@ def projectinfo():
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
+
+
+@app.route('/testdraw',  methods = ['GET', 'POST'])
+def testdraw():
+    return render_template("self-editing-embed.html")
+
 
 
 if __name__ == "__main__":
