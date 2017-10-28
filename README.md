@@ -1,9 +1,12 @@
-# CMPUT401-FenceFriends
-Cavalry Fence Builder is a web app for fencing companies, that allows a fence business to create a quote for a customer.  
+# Cavalry Fence Builder
+
+Cavalry Fence Builder is a web app for fence installation companies that allows a fence business to track projects and financial data.
+
 Core features of this app are:
 * Draw fence diagrams
-* Generate a quote for a customer (based on diagrams)
-* Ability to email quote to a customer
-* Ability to email quote to supplier
-* Show current list of quotes and status
-* Create a summary of the current years profits/losses
+* Generate quotes for customers (based on diagrams)
+* Email quotes to customers
+* Generate material lists for suppliers (based on diagrams)
+* Email material lists to suppliers
+* View a list of projects and filter by status
+* View a summary of the current year's profits/losses
