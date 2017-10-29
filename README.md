@@ -8,10 +8,11 @@ Core features of this app are:
 * Email quotes to customers
 * Generate material lists for suppliers (based on diagrams)
 * Email material lists to suppliers
-* Manually edit quotes and material lists
+* Manually edit quotes
 * Calculate costs and profits (based on diagrams)
 * View a list of projects and filter by status
 * View and edit project information (such as diagrams, quotes, pictures, and notes)
 * View and edit customer information
 * View a summary of the current year's profits/losses
 * Import/export tables (such as for accounting, customer information, and material lists)
+* View and edit prices for fence materials
