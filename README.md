@@ -16,3 +16,4 @@ Core features of this app are:
 * View a summary of the current year's profits/losses
 * Import/export tables (such as for accounting, customer information, and material lists)
 * View and edit prices for fence materials
+* Create individual accounts and associate them with companies
