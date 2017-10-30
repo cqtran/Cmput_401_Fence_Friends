@@ -2,7 +2,15 @@ from sqlalchemy import *
 from database.db import dbSession, init_db
 from database.models import Project
 
+def getProject(project_id):
+    """ Returns the project of the given project id """
+    project = dbSession.query(Project)
+    project = project.filter(Project.project_id == project_id).all()
+    json_response = [i.serialize for i in project]
+    return json_response
 
+def getCompanyProjects(companyName):
+    pass
 
 def createProject(customerId, statusName, address, companyName, project_name):
     #Access MySQL and add in account
@@ -26,5 +34,3 @@ def savenote(note, pid):
     #savenoteintoserver = update(Project).where(Project.project_id == pid).values(Note = note)
 
     return True
-
-

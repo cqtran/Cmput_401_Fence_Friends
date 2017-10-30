@@ -260,44 +260,32 @@ def newproject():
 @login_required
 @roles_required('primary')
 def projectinfo():
-    project_id = request.args.get('proj_id')
+    if request.method == "GET":
+        project_id = request.args.get('proj_id')
+        if project_id is not None:
+            # get project info to pass to html and display
+            json_projectinfo = Projects.getProject(project_id)
+            print(json_projectinfo)
 
-    if request.method == "POST":
-        note = request.form['note']
-        pid = request.form['projectvalue']
+            # Get project pictures to display
+            json_pictures = Pictures.getPictures(project_id)
+            print(json_pictures)
 
-        # takes note from textbox and adds to database
-        savenote = Projects.savenote(note, pid)
-        project_id = pid
+            # Get relative path to project pictures
+            imgPath = repr(os.path.join('..', Pictures.directory, ''))
+            print('Relative Path: ' + imgPath)
 
-    if project_id is not None:
-        # get project info to pass to html and display
-        project = dbSession.query(Project)
-        project = project.filter(Project.project_id == project_id).all()
-        json_list = [i.serialize for i in project]
-        print(json_list)
-
-        # Get project pictures to display
-        json_pictures = Pictures.getPictures(project_id)
-        print(json_pictures)
-
-        # Get relative path to project pictures
-        imgPath = repr(os.path.join('..', Pictures.directory, ''))
-        print('Relative Path: ' + imgPath)
-
-        return render_template("projectinfo.html", proj = json.dumps(json_list),
-            company = current_user.company_name, images = json.dumps(json_pictures),
-            path = imgPath)
+            return render_template("projectinfo.html", proj = json.dumps(json_projectinfo),
+                company = current_user.company_name, images = json.dumps(json_pictures),
+                path = imgPath)
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
 
-@app.route('/uploadPicture', methods = ['GET', 'POST'])
+@app.route('/uploadpicture', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
-def uploadPicture():
-    from werkzeug.utils import secure_filename
-
+def uploadpicture():
     if request.method == 'POST':
         project_id = request.form['proj_id']
         picture = request.files['picture']
@@ -308,6 +296,28 @@ def uploadPicture():
         Pictures.addPicture(app.root_path, project_id, picture)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.route('/editprojectinfo', methods = ['GET', 'POST'])
+@login_required
+@roles_required('primary')
+def editprojectinfo():
+    if request.method == "GET":
+        project_id = request.args.get('proj_id')
+        if project_id is not None:
+            json_projectinfo = Projects.getProject(project_id)
+            print(json_projectinfo)
+            return render_template("editproject.html", proj = json.dumps(json_projectinfo), company = current_user.company_name)
+        else:
+            pass
+    if request.method == "POST":
+        #project_id = request.form['project_id']
+        #project_name = request.form['project_name']
+        #address = request.form['address']
+        #status = request.form['Status']
+        #note = request.form['note']
+
+        #savenote = Projects.savenote(note, pid)
+        pass
 
 if __name__ == "__main__":
 
