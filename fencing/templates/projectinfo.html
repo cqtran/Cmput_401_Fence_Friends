@@ -38,9 +38,8 @@
 		if (proj[0].end_date != null) {
 			document.getElementById('end_date').innerHTML = 'End Date: ' + proj[0].end_date;
 		}
-	  if (proj[0].note != null) {
-	    document.getElementById('savednote').innerHTML = proj[0].note;
-	  }
+
+		document.getElementById('savednote').innerHTML = 'Notes: ' + proj[0].note;
 	}
 
 	function displayPictures(images, path) {

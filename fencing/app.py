@@ -99,7 +99,7 @@ def setup_db():
 
     if not fieldExists(dbSession, Project.project_id, 1):
         newProject = Project(customer_id = 1, address = "1234",
-            status_name = "Not Reached", end_date = None, note = None,
+            status_name = "Not Reached", end_date = None, note = '',
             project_name = "Andy's Project", company_name = "Fence")
         dbSession.add(newProject)
         dbSession.commit()
@@ -292,7 +292,7 @@ def uploadpicture():
 
         print('\nProject ID: ' + project_id)
         print('File name: ' + picture.filename)
-
+        # Store the picture in the database
         Pictures.addPicture(app.root_path, project_id, picture)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
@@ -304,20 +304,33 @@ def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
         if project_id is not None:
+            # Grab project information to set into the editing form
             json_projectinfo = Projects.getProject(project_id)
             print(json_projectinfo)
-            return render_template("editproject.html", proj = json.dumps(json_projectinfo), company = current_user.company_name)
-        else:
-            pass
-    if request.method == "POST":
-        #project_id = request.form['project_id']
-        #project_name = request.form['project_name']
-        #address = request.form['address']
-        #status = request.form['Status']
-        #note = request.form['note']
 
-        #savenote = Projects.savenote(note, pid)
-        pass
+            # Grab the list of statuses to set into the dropdown list
+            # TODO: Refactor this into an API
+            statuses = dbSession.query(Status).all()
+            json_statuses = [i.serialize for i in statuses]
+            print(json_statuses)
+
+            return render_template("editproject.html", proj = json.dumps(json_projectinfo),
+                statuses = json.dumps(json_statuses), company = current_user.company_name)
+        else:
+            # Error handling
+            pass
+
+    if request.method == "POST":
+        project_id = request.form['project_id']
+        project_name = request.form['project_name']
+        address = request.form['address']
+        status = request.form['status']
+        note = request.form['note']
+
+        Projects.updateProjectInfo(project_id = project_id, project_name = project_name,
+            address = address, status = status, note = note)
+
+        return redirect(url_for('projectinfo', proj_id = project_id))
 
 if __name__ == "__main__":
 

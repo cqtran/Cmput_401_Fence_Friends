@@ -36,6 +36,7 @@ class TestCase(unittest.TestCase):
         dbSession.remove()
 
     def test_addCustomer(self):
+        """ Test for adding a customer """
         # Test if there are no customers
         noCustomerTest = dbSession.query(Customer).all()
         assert len(noCustomerTest) == 0
@@ -54,6 +55,7 @@ class TestCase(unittest.TestCase):
         assert result['company_name'] == 'Fence'
 
     def test_createProject(self):
+        """ Test for creating a project """
         newCustomer = Customer(customer_id = 1, first_name = 'Kat', email = 'Kat@gmail.com', cellphone = '555-555-5555', company_name = 'Fence')
         dbSession.add(newCustomer)
         dbSession.commit()
@@ -76,6 +78,7 @@ class TestCase(unittest.TestCase):
         assert result['project_name'] == 'A fun fencing project'
 
     def test_savingNote(self):
+        # TODO: This function may be deprecated
         newCustomer = Customer(customer_id = 1, first_name = 'Kat', email = 'Kat@gmail.com', cellphone = '555-555-5555', company_name = 'Fence')
         dbSession.add(newCustomer)
         dbSession.commit()
@@ -93,6 +96,26 @@ class TestCase(unittest.TestCase):
         # Test if the not has changed
         result = oneProjectTest[0].serialize
         assert result['note'] == 'This is a new note'
+
+    def test_getProject(self):
+        """ Test for getting a project of a project id """
+        pass
+
+    def test_getCompanyProjects(self):
+        """ Test for getting all projects of a company """
+        pass
+
+    def test_updateProjectInfo(self):
+        """ Test the updating of project information """
+        pass
+
+    def test_addPicture(self):
+        """ Test adding a picture to a project """
+        pass
+
+    def test_getPictures(self):
+        """ Test getting pictures of a project """
+        pass
 
 if __name__ == '__main__':
     unittest.main()

@@ -77,8 +77,17 @@ class Customer(Base):
 
 class Status (Base):
     __tablename__ = 'status'
-
     status_name = Column(String(100), primary_key = True)
+
+    def __init__(self, status_name):
+        self.status_name = status_name
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'status_name'         : self.status_name
+        }
 
 class Project(Base):
     __tablename__ = 'project'
