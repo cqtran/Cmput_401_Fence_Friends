@@ -1,0 +1,26 @@
+2017-10-20 Meeting with Diego
+------------------------------------------------------
+
+Demo sprint 2
+Liked the demo, major improvements since last meeting
+Detailed design and UML - Try to seperate by classes or functionality
+Will you be running the code? Difficult to run due to dependencies
+15% mark, focus on code security
+	Security features: different user roles, hashing passwords, email authentication
+
+Brandon:
+	Implement drawing api
+	
+Eric:
+	Storing & saving picture
+	Changing project status
+	
+Omar:
+	Implement drawing api
+	Send email 
+	
+Greg: 
+	Work with Brandon with the drawing api
+	
+Cameron: 
+	Implement drawing api

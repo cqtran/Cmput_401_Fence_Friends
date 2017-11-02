@@ -1,0 +1,31 @@
+2017-10-27 Meeting with Diego
+------------------------------------------------------
+Need to sign aggreement form with client
+
+Sprint 2 marks summary:
+	No class called based in code; Base class come from databse.db module.
+	TA will recheck UML diagrams and adjust marks if needed
+	
+	App.py is a large file. Should split up that class
+	Combine config and db info into 1 file for easy use
+	modles.py should be split up
+	
+	API are methods in the modles
+	Need better documentation
+	Need to ensure edge cases are covered
+	
+Brandon:
+	Looked at implementation of drawing. Found draw.io. Need functionality of saving it
+	Next week continue working with Draw.IO for functionality and saving it
+Eric:
+	Worked on upload/saving picture to database
+	Next week work on displaying pictures and edit project description
+Omar:
+	Worked on sending email as quotes
+	Next week try to look at extracting data from Draw.IO image to do calculations
+Greg:
+	Sick this week
+	Next week will refactor code, continue working on drawing
+Cameron:
+	Worked as a pair Brandon
+	Next week continue working on drawing

@@ -12,6 +12,7 @@ import os
 # Import python files with functionality
 import api.customers as Customers
 import api.projects as Projects
+import api.pictures as Pictures
 
 from api.forms.extendedRegisterForm import *
 
@@ -78,7 +79,7 @@ def setup_db():
 
     # Test data
     if not fieldExists(dbSession, User.id, 1):
-        newUser = User(id = 1, email = 'test@test.null', username = 'test', 
+        newUser = User(id = 1, email = 'test@test.null', username = 'test',
             password = 'password', company_name = 'Fence', active = 1)
         dbSession.add(newUser)
         userDatastore.add_role_to_user(newUser, 'primary')
@@ -99,7 +100,7 @@ def setup_db():
 
     if not fieldExists(dbSession, Project.project_id, 1):
         newProject = Project(customer_id = 1, address = "1234",
-            status_name = "Not Reached", end_date = None, note = None,
+            status_name = "Not Reached", end_date = None, note = '',
             project_name = "Andy's Project", company_name = "Fence")
         dbSession.add(newProject)
         dbSession.commit()
@@ -186,17 +187,17 @@ def projects():
 
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
-    
+
     # Start a query on Project
     projects= dbSession.query(Project)
-    
+
     # If the current user is an admin, then allow them to look at all projects
     if current_user.has_role('admin'):
         pass
     # Otherwise, find projects in the same company as the logged in user
     else:
         projects = projects.filter(Customer.company_name == current_user.company_name)
-    
+
     # If an customer id is given, then filter projects on the customer
     if customer_id is not None:
         projects = projects.filter(customer_id == Project.customer_id)
@@ -204,17 +205,17 @@ def projects():
 
     # Filter projects with matching customer_ids and execute query
     projects = projects.filter(Customer.customer_id == Project.customer_id).all()
-    
+
     # Serialize results
     json_list=[i.serialize for i in projects]
-    
+
     if customer_id is None:
         return render_template("projects.html", listproj = json.dumps(json_list), company = current_user.company_name)
-    
+
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
         return render_template("projects.html", listproj = json.dumps(json_list),
-                 name = customer.first_name, company = customer.company_name, 
+                 name = customer.first_name, company = customer.company_name,
                  phone = customer.cellphone, email = customer.email, cid = customer_id)
 
 @app.route('/autocomplete', methods=["GET"])
@@ -249,7 +250,7 @@ def newproject():
         # cid = request.form[]
         #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
-                                         current_user.company_name, projectname) 
+                                         current_user.company_name, projectname)
         return redirect(url_for('projects'))
     else:
         return render_template("newproject.html")
@@ -271,27 +272,77 @@ def testSendEmail():
 @login_required
 @roles_required('primary')
 def projectinfo():
-    project_id = request.args.get('proj_id')
+    if request.method == "GET":
+        project_id = request.args.get('proj_id')
+        if project_id is not None:
+            # get project info to pass to html and display
+            json_projectinfo = Projects.getProject(project_id)
+            print(json_projectinfo)
 
-    if request.method == "POST":
-        note = request.form['note']
-        pid = request.form['projectvalue']
+            # Get project pictures to display
+            json_pictures = Pictures.getPictures(project_id)
+            print(json_pictures)
 
-        # takes note from textbox and adds to database
-        savenote = Projects.savenote(note, pid)
-        project_id = pid
+            # Get relative path to project pictures
+            imgPath = repr(os.path.join('..', Pictures.directory, ''))
+            print('Relative Path: ' + imgPath)
 
-    if project_id is not None:
-        # get project info to pass to html and display
-        project = dbSession.query(Project)
-        project = project.filter(Project.project_id == project_id).all()
-        json_list = [i.serialize for i in project]
-        print(json_list)
-        return render_template("projectinfo.html", proj = json.dumps(json_list), company = current_user.company_name)#, projid = project_id)
+            return render_template("projectinfo.html", proj = json.dumps(json_projectinfo),
+                company = current_user.company_name, images = json.dumps(json_pictures),
+                path = imgPath)
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
 
+@app.route('/uploadpicture', methods = ['GET', 'POST'])
+@login_required
+@roles_required('primary')
+def uploadpicture():
+    if request.method == 'POST':
+        project_id = request.form['proj_id']
+        picture = request.files['picture']
+
+        print('\nProject ID: ' + project_id)
+        print('File name: ' + picture.filename)
+        # Store the picture in the database
+        Pictures.addPicture(app.root_path, project_id, picture)
+
+        return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.route('/editprojectinfo', methods = ['GET', 'POST'])
+@login_required
+@roles_required('primary')
+def editprojectinfo():
+    if request.method == "GET":
+        project_id = request.args.get('proj_id')
+        if project_id is not None:
+            # Grab project information to set into the editing form
+            json_projectinfo = Projects.getProject(project_id)
+            print(json_projectinfo)
+
+            # Grab the list of statuses to set into the dropdown list
+            # TODO: Refactor this into an API
+            statuses = dbSession.query(Status).all()
+            json_statuses = [i.serialize for i in statuses]
+            print(json_statuses)
+
+            return render_template("editproject.html", proj = json.dumps(json_projectinfo),
+                statuses = json.dumps(json_statuses), company = current_user.company_name)
+        else:
+            # Error handling
+            pass
+
+    if request.method == "POST":
+        project_id = request.form['project_id']
+        project_name = request.form['project_name']
+        address = request.form['address']
+        status = request.form['status']
+        note = request.form['note']
+
+        Projects.updateProjectInfo(project_id = project_id, project_name = project_name,
+            address = address, status = status, note = note)
+
+        return redirect(url_for('projectinfo', proj_id = project_id))
 
 @app.route('/testdraw',  methods = ['GET', 'POST'])
 def testdraw():

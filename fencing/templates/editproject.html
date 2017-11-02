@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1> Editing Project Information </h1>
+
+<form method = "post"  action="{{url_for('editprojectinfo') }} ">
+  <input class="form-control" id="project_id" type="hidden" name="project_id"/>
+  <input class="form-control" id="project_name" type="text" name="project_name" value="Project Name">
+  <input class="form-control" id="address" type="text" name="address" value="Address">
+  <select id = "status" name = "status"></select>
+  <textarea class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
+  <br>
+  <input class="btn btn-primary btn-block" type="submit" value = "Save Information"/>
+  <a> * Any unsaved information will be lost </a>
+</form>
+
+<script>
+  function fillStatusOptions(statuses, selectedStatus) {
+    var list = document.getElementById('status');
+
+    for(var i = 0; i < statuses.length; i++) {
+        // Create the list item:
+        var item = document.createElement('option');
+        item.setAttribute('value', statuses[i].status_name);
+        item.innerHTML = statuses[i].status_name;
+
+        // Set the default choice of the status dropdown to the current status
+        if (selectedStatus == statuses[i].status_name) {
+          item.setAttribute('selected', 'selected')
+        }
+        // Add it to the list:
+        list.appendChild(item);
+    }
+    // Finally, return the constructed list:
+    return list;
+  }
+
+  function displayProjectInfo(proj, statuses) {
+    // Set all values of the form to the project information
+    document.getElementById('project_id').value = proj[0].project_id;
+    document.getElementById('project_name').value = proj[0].project_name;
+		document.getElementById('address').value = proj[0].address;
+    fillStatusOptions(statuses, proj[0].status_name);
+	  document.getElementById('note').value = proj[0].note;
+  }
+
+  displayProjectInfo({{ proj|safe }}, {{ statuses|safe }});
+
+</script>
+
+{% endblock %}

@@ -43,7 +43,7 @@ class User(Base, UserMixin):
     confirmed_at = Column(DateTime())
     roles = relationship('Role', secondary='roles_users',
                          backref=backref('users', lazy='dynamic'))
-    
+
 class Company(Base):
     __tablename__ = 'company'
     company_name = Column(String(255), primary_key=True)
@@ -63,7 +63,7 @@ class Customer(Base):
         self.first_name = first_name
         self.cellphone = cellphone
         self.company_name = company_name
-        
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -73,12 +73,21 @@ class Customer(Base):
             'first_name'         : self.first_name,
             'cellphone'          : self.cellphone,
             'company_name'       : self.company_name
-        }    
-    
+        }
+
 class Status (Base):
     __tablename__ = 'status'
-
     status_name = Column(String(100), primary_key = True)
+
+    def __init__(self, status_name):
+        self.status_name = status_name
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'status_name'         : self.status_name
+        }
 
 class Project(Base):
     __tablename__ = 'project'
@@ -87,11 +96,11 @@ class Project(Base):
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
-    start_date = Column(DateTime(), default = datetime.datetime.utcnow())
+    start_date = Column(DateTime(), default = datetime.datetime.utcnow)
     end_date = Column(DateTime())
     note = Column('Note', String(400))
     project_name = Column("project_name", String(50))
-    
+
     def __init__(self, customer_id, status_name, address, end_date, note,
                  project_name, company_name):
         self.customer_id = customer_id
@@ -101,7 +110,7 @@ class Project(Base):
         self.note = note
         self.project_name = project_name
         self.company_name = company_name
-    
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -115,7 +124,7 @@ class Project(Base):
             'note'               : self.note,
             'project_name'       : self.project_name
         }
-    
+
 class Quote(Base):
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
@@ -124,7 +133,7 @@ class Quote(Base):
     project_info = Column(LargeBinary)
     note = Column(String(255))
     last_modified = Column(DateTime())
-    
+
     def __init__(self, quote_id, project_id, quote, project_info, note, last_modified):
         self.quote_id = quote_id
         self.project_id = project_id
@@ -132,7 +141,7 @@ class Quote(Base):
         self.project_info = project_info
         self.note = note
         self.last_modified = last_modified
-    
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -144,11 +153,29 @@ class Quote(Base):
             'note'                    : self.note,
             'last_modified'           : dump_datetime(self.last_modified)
         }
-    
+
 class Material(Base):
     __tablename__ = 'material'
     material_id = Column(Integer, primary_key=True)
     material_name = Column(String(255))
     cost = Column(Numeric)
 
+class Picture(Base):
+    __tablename__ = 'picture'
+    picture_id = Column(Integer, primary_key=True)
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
+    file_name = Column(String(100))
 
+    def __init__(self, project_id, file_name):
+        #self.picture_id = picture_id
+        self.project_id = project_id
+        self.file_name = file_name
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'picture_id'                : self.picture_id,
+            'project_id'                : self.project_id,
+            'file_name'                 : self.file_name
+        }
