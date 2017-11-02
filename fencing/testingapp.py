@@ -54,6 +54,18 @@ class TestCase(unittest.TestCase):
         assert result['cellphone'] == '555-555-5555'
         assert result['company_name'] == 'Fence'
 
+    def test_getCustomer(self):
+        """ Test for getting a customer of a customer id """
+        pass
+
+    def test_getCompanyCustomers(self):
+        """ Test for getting all customers of company """
+        pass
+
+    def test_updateCustomerInfo(self):
+        """ Test for updating customer information """
+        pass
+
     def test_createProject(self):
         """ Test for creating a project """
         newCustomer = Customer(customer_id = 1, first_name = 'Kat', email = 'Kat@gmail.com', cellphone = '555-555-5555', company_name = 'Fence')
@@ -116,6 +128,7 @@ class TestCase(unittest.TestCase):
     def test_getPictures(self):
         """ Test getting pictures of a project """
         pass
+
 
 if __name__ == '__main__':
     unittest.main()

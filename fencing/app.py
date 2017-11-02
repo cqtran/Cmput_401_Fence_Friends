@@ -187,34 +187,14 @@ def projects():
 
     # Get the argument 'cust_id' if it is given
     customer_id = request.args.get('cust_id')
-
-    # Start a query on Project
-    projects= dbSession.query(Project)
-
-    # If the current user is an admin, then allow them to look at all projects
-    if current_user.has_role('admin'):
-        pass
-    # Otherwise, find projects in the same company as the logged in user
-    else:
-        projects = projects.filter(Customer.company_name == current_user.company_name)
-
-    # If an customer id is given, then filter projects on the customer
-    if customer_id is not None:
-        projects = projects.filter(customer_id == Project.customer_id)
-        print('\ncustomer_id: ' + customer_id)
-
-    # Filter projects with matching customer_ids and execute query
-    projects = projects.filter(Customer.customer_id == Project.customer_id).all()
-
-    # Serialize results
-    json_list=[i.serialize for i in projects]
+    json_companyProjects = Projects.getCompanyProjects(current_user.company_name, customer_id)
 
     if customer_id is None:
-        return render_template("projects.html", listproj = json.dumps(json_list), company = current_user.company_name)
+        return render_template("projects.html", listproj = json.dumps(json_companyProjects), company = current_user.company_name)
 
     else:
         customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
-        return render_template("projects.html", listproj = json.dumps(json_list),
+        return render_template("projects.html", listproj = json.dumps(json_companyProjects),
                  name = customer.first_name, company = customer.company_name,
                  phone = customer.cellphone, email = customer.email, cid = customer_id)
 
