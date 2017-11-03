@@ -31,19 +31,19 @@ class MyJSONEncoder(JSONEncoder):
 
         if isinstance(obj, Quote):
             return {
-                'quote_id'                : self.quote_id,
-                'project_id'              : self.project_id,
-                'quote'                   : self.quote,
-                'project_info'            : self.project_info,
-                'note'                    : self.note,
-                'last_modified'           : dump_datetime(self.last_modified)
+                'quote_id'                : obj.quote_id,
+                'project_id'              : obj.project_id,
+                'quote'                   : obj.quote,
+                'project_info'            : obj.project_info,
+                'note'                    : obj.note,
+                'last_modified'           : dump_datetime(obj.last_modified)
             }
 
         if isinstance(obj, Picture):
             return {
-                'picture_id'                : self.picture_id,
-                'project_id'                : self.project_id,
-                'file_name'                 : self.file_name
+                'picture_id'                : obj.picture_id,
+                'project_id'                : obj.project_id,
+                'file_name'                 : obj.file_name
             }
 
         if isinstance(obj, Material):
