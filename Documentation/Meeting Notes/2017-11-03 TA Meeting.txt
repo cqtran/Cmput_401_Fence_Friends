@@ -1,0 +1,30 @@
+2017-11-03 Meeting with Diego
+------------------------------------------------------
+Draw.IO handles a majority of the issues on Github. We will close issues after
+	we modify Draw.IO to what we require. Client will use a pre-set of shapes to
+	identify objects such as boxes -> buildings, lines -> fences, gates -> gate object
+	(There are a set of Draw.IO shapes called 'Floorplan' we can use)
+
+Small progress demo:
+	Change project information/description
+	Upload and view images
+	Draw.IO to display a project
+
+IP agreement signed by all members and client. We will email the IP agreement
+ 	to Diego shortly after the meeting
+
+Brandon:
+	More on Draw.IO. Displaying in webpage
+	Next week open Draw.IO on a different webpage, ease of use
+Eric:
+	Display pictures and edit project description
+	Next week work on test cases, refactor, and UI
+Omar:
+	Figured out how to extract xml from Draw.IO. Send emails
+	Next week: Modify Draw.IO to display line length, format emails
+Greg:
+	Figured out how to host Draw.IO, can modify source code
+	Next week: Modify Draw.IO to display line length, UI, and refactor
+Cameron:
+	More on Draw.IO. Displaying in webpage
+	Next week open Draw.IO on a different webpage, ease of use
