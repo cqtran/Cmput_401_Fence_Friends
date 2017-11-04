@@ -132,14 +132,9 @@ def customers():
         return render_template("users.html", company = "Admin", users = users)
     else:
         # gets customers and display
-        customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
-        s = []
-        id = []
-        for i in customers:
-            s.append(i.first_name)
-            id.append(i.customer_id)
+        json_companyCust = Customers.getCompanyCustomers(current_user.company_name)
 
-        return render_template("customer.html", company = current_user.company_name, listcust = json.dumps(s), custid = json.dumps(id)) #change to companyname
+        return render_template("customer.html", listcust = json.dumps(json_companyCust), company = current_user.company_name)
 
 @app.route('/users')
 @login_required
@@ -193,10 +188,10 @@ def projects():
         return render_template("projects.html", listproj = json.dumps(json_companyProjects), company = current_user.company_name)
 
     else:
-        customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).first()
+        customer = Customers.getCustomer(customer_id)
         return render_template("projects.html", listproj = json.dumps(json_companyProjects),
-                 name = customer.first_name, company = customer.company_name,
-                 phone = customer.cellphone, email = customer.email, cid = customer_id)
+                 customer = json.dumps(customer), company = current_user.company_name
+                 )
 
 @app.route('/autocomplete', methods=["GET"])
 @login_required

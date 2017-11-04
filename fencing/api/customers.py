@@ -20,7 +20,7 @@ def getCustomer(customer_id):
 def getCompanyCustomers(company_name):
     """ Returns a json list of all customers to a given company """
     customers = dbSession.query(Customer)
-    customers = customer.filter(Customer.company_name == company_name).all()
+    customers = customers.filter(Customer.company_name == company_name).all()
     json_response = [i.serialize for i in customers]
     return json_response
 

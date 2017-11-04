@@ -17,7 +17,7 @@ function test_data(listcust){
     console.log(listcust)
 }
 
-function makeA(array,id) {
+function makeA(array) {
     // Create the list element:
     var list = document.getElementById('customerlist');
 
@@ -29,13 +29,9 @@ function makeA(array,id) {
 
         // this is where you want to go when you click
         //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-        item.setAttribute('onclick', 'customerClicked('+id[i]+')')
-		item.setAttribute('cust_id', id[i])
+        item.setAttribute('onclick', 'customerClicked('+array[i].customer_id+')')
 
-
-        // Set its contents:
-        var content = array[i];
-        item.appendChild(document.createTextNode(content));
+        item.appendChild(document.createTextNode(array[i].first_name));
 
         // Add it to the list:
         list.appendChild(item);
@@ -45,7 +41,7 @@ function makeA(array,id) {
     return list;
 }
 
-makeA({{ listcust|safe }}, {{ custid|safe }});
+makeA({{ listcust|safe }});
 
 function customerClicked(id) {
 	window.location.href= '/projects?cust_id='+id

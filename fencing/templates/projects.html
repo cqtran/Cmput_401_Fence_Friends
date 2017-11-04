@@ -5,14 +5,10 @@
 {% endblock %}
 {% block content %}
 
-{% if not name %}
-<h1>Projects</h1>
-{% else %}
-<h1>{{name}}</h1>
-{% endif %}
+<h1 id="title">Projects</h1>
+<p id="phone"></p>
+<p id="email"></p>
 
-{{phone}}<br>
-{{email}}</p>
 <div class="list-group list-group-flush" id="projectlist"></div>
 
 
@@ -34,7 +30,7 @@ function makeA(array) {
         // this is where you want to go when you click
         //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
 		item.setAttribute('onclick', 'projectClicked('+array[i].project_id+')')
-		
+
         // Set its contents:
         item.appendChild(document.createTextNode(array[i].project_name));
 
@@ -46,7 +42,14 @@ function makeA(array) {
     return list;
 }
 
+function fillHeader(info) {
+    document.getElementById('title').innerHTML = info[0].first_name;
+    document.getElementById('phone').innerHTML = info[0].cellphone;
+    document.getElementById('email').innerHTML = info[0].email;
+}
+
 makeA({{ listproj|safe }});
+fillHeader({{  customer|safe }})
 
 function projectClicked(id) {
 	window.location.href= '/projectinfo?proj_id='+id
