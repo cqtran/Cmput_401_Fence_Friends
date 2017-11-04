@@ -3,6 +3,7 @@ from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
+from diagram.DiagramParser import DiagramParser
 from flask_mail import Mail, Message
 from flask_security.core import current_user
 from flask_security.signals import user_registered
