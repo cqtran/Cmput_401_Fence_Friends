@@ -124,7 +124,6 @@ def user_registered_sighandler(app, user, confirm_token):
     userDatastore.add_role_to_user(user, 'primary')
     dbSession.commit()
 
-#@app.route('/customers', methods=['GET', 'POST'])
 @app.route('/')
 @login_required
 def customers():
@@ -142,21 +141,21 @@ def customers():
 
         return render_template("customer.html", company = current_user.company_name, listcust = json.dumps(s), custid = json.dumps(id)) #change to companyname
 
-@app.route('/users')
+@app.route('/users/')
 @login_required
 @roles_required('admin')
 def users():
     users = dbSession.query(User).filter(User.active == True).all()
     return render_template("users.html", company = "Admin", users = users)
 
-@app.route('/accountrequests')
+@app.route('/accountrequests/')
 @login_required
 @roles_required('admin')
 def accountrequests():
     users = dbSession.query(User).filter(User.active == False).all()
     return render_template("accountrequests.html", company = "Admin", users = users)
 
-@app.route('/newcustomer', methods=['GET', 'POST'])
+@app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def newcustomer():
@@ -175,13 +174,13 @@ def newcustomer():
     else:
         return render_template("newcustomer.html", company = current_user.company_name)
 
-@app.route('/editcustomer', methods=['GET', 'POST'])
+@app.route('/editcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def editcustomer():
     return render_template("editcustomer.html")
 
-@app.route('/projects')
+@app.route('/projects/')
 @login_required
 @roles_required('primary')
 def projects():
@@ -219,7 +218,7 @@ def projects():
                  name = customer.first_name, company = customer.company_name,
                  phone = customer.cellphone, email = customer.email, cid = customer_id)
 
-@app.route('/autocomplete', methods=["GET"])
+@app.route('/autocomplete/', methods=["GET"])
 @login_required
 @roles_required('primary')
 def autocomplete():
@@ -230,7 +229,7 @@ def autocomplete():
     return jsonify(customers)
 
 
-@app.route('/newproject', methods=['GET', 'POST'])
+@app.route('/newproject/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def newproject():
@@ -257,7 +256,7 @@ def newproject():
         return render_template("newproject.html")
 
 # For testing sending emails
-@app.route('/testSendEmail', methods = ['POST'])
+@app.route('/testSendEmail/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def testSendEmail():
@@ -269,7 +268,7 @@ def testSendEmail():
     return render_template("projects.html")
 
 # delete later, just for testing note
-@app.route('/projectinfo', methods = ['GET', 'POST', 'PUT'])
+@app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
@@ -295,7 +294,7 @@ def projectinfo():
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
 
-@app.route('/uploadpicture', methods = ['GET', 'POST'])
+@app.route('/uploadpicture/', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def uploadpicture():
@@ -310,7 +309,7 @@ def uploadpicture():
 
         return redirect(url_for('projectinfo', proj_id = project_id))
 
-@app.route('/editprojectinfo', methods = ['GET', 'POST'])
+@app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def editprojectinfo():
@@ -345,7 +344,7 @@ def editprojectinfo():
 
         return redirect(url_for('projectinfo', proj_id = project_id))
 
-@app.route('/testdraw',  methods = ['GET', 'POST'])
+@app.route('/testdraw/',  methods = ['GET', 'POST'])
 def testdraw():
     return render_template("self-editing-embed.html")
 
