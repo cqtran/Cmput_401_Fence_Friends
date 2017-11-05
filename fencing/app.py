@@ -255,11 +255,23 @@ def newproject():
     else:
         return render_template("newproject.html")
 
-# For testing sending emails
-@app.route('/testSendEmail/', methods = ['POST'])
+@app.route('/sendQuote/', methods = ['POST'])
 @login_required
 @roles_required('primary')
-def testSendEmail():
+def sendQuote():
+    """Email a quote to a customer"""
+    message = Message("This is the subject",
+        sender=("My Name", "cmput401fence@gmail.com"),
+        recipients=["cmput401fence@gmail.com"])
+    message.html = "<b>This is some bolded HTML text</b>"
+    mail.send(message)
+    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
+
+@app.route('/sendMaterialList/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def sendMaterialList():
+    """Email a material list to a supplier"""
     message = Message("This is the subject",
         sender=("My Name", "cmput401fence@gmail.com"),
         recipients=["cmput401fence@gmail.com"])

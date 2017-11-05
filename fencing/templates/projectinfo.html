@@ -24,8 +24,14 @@
   <input type="submit" value = "Upload picture">
 </form>
 
-<form method="post" action="{{url_for('testSendEmail', proj_id=request.args.get('proj_id'))}}">
-	<input class="btn btn-primary btn-block" type="submit" value = "Send Test Email"/>
+<br>
+<form method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}">
+	<input class="btn btn-primary btn-block" style="background-color:#DADA00;" type="submit" value = "Send Quote ►"/>
+</form>
+
+<br>
+<form method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}">
+	<input class="btn btn-primary btn-block" style="background-color:#DA0000;" type="submit" value = "Send Material List ►"/>
 </form>
 
 <script type="text/javascript">
