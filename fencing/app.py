@@ -262,13 +262,23 @@ def newproject():
 @roles_required('primary')
 def sendQuote():
     """Email a quote to a customer"""
-    message = Message("This is the subject",
-        sender=("My Name", SENDER_EMAIL),
-        recipients=["cmput401fence@gmail.com"])
-    message.html = "<b>This is some bolded HTML text</b>"
-    mail.send(message)
-    flash("SENT!!!", "success")
-    flash("Errors look like this", "danger")
+    try:
+        message = Message("This is the subject",
+            sender=("My Name", SENDER_EMAIL),
+            recipients=["cmput401fence@gmail.com"])
+        message.html = "<b>This is some bolded HTML text</b>"
+        mail.send(message)
+        flash("Quote sent", "success")
+
+    except SMTPAuthenticationError, e:
+        flash("Error sending quote (SMTP Authentication Error)", "danger")
+    
+    except SMTPServerDisconnected, e:
+        flash("Error sending quote (SMTP Server Disconnected)", "danger")
+    
+    except SMTPException, e:
+        flash("Error sending quote (SMTP Exception)", "danger")
+
     return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
