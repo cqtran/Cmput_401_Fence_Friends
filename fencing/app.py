@@ -41,12 +41,13 @@ app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
 
+SENDER_EMAIL = 'cmput401fence@gmail.com'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cmput401fence@gmail.com'
+app.config['MAIL_USERNAME'] = SENDER_EMAIL
 app.config['MAIL_PASSWORD'] = 'fencing401'
-app.config['SECURITY_EMAIL_SENDER'] = 'cmput401fence@gmail.com'
+app.config['SECURITY_EMAIL_SENDER'] = SENDER_EMAIL
 app.config['MAIL_SUPPRESS_SEND'] = False
 
 mail = Mail(app)
@@ -261,7 +262,7 @@ def newproject():
 def sendQuote():
     """Email a quote to a customer"""
     message = Message("This is the subject",
-        sender=("My Name", "cmput401fence@gmail.com"),
+        sender=("My Name", SENDER_EMAIL),
         recipients=["cmput401fence@gmail.com"])
     message.html = "<b>This is some bolded HTML text</b>"
     mail.send(message)
@@ -273,7 +274,7 @@ def sendQuote():
 def sendMaterialList():
     """Email a material list to a supplier"""
     message = Message("This is the subject",
-        sender=("My Name", "cmput401fence@gmail.com"),
+        sender=("My Name", SENDER_EMAIL),
         recipients=["cmput401fence@gmail.com"])
     message.html = "<b>This is some bolded HTML text</b>"
     mail.send(message)
