@@ -265,7 +265,7 @@ def testSendEmail():
         recipients=["cmput401fence@gmail.com"])
     message.html = "<b>This is some bolded HTML text</b>"
     mail.send(message)
-    return render_template("projects.html")
+    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
 # delete later, just for testing note
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])

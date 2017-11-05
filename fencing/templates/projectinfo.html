@@ -24,7 +24,7 @@
   <input type="submit" value = "Upload picture">
 </form>
 
-<form method="post" action="{{url_for('testSendEmail')}}">
+<form method="post" action="{{url_for('testSendEmail', proj_id=request.args.get('proj_id'))}}">
 	<input class="btn btn-primary btn-block" type="submit" value = "Send Test Email"/>
 </form>
 
