@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, \
+    flash
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
+from diagram.DiagramParser import DiagramParser
 from flask_mail import Mail, Message
 from flask_security.core import current_user
 from flask_security.signals import user_registered
@@ -40,12 +42,13 @@ app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
 
+SENDER_EMAIL = 'cmput401fence@gmail.com'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cmput401fence@gmail.com'
+app.config['MAIL_USERNAME'] = SENDER_EMAIL
 app.config['MAIL_PASSWORD'] = 'fencing401'
-app.config['SECURITY_EMAIL_SENDER'] = 'cmput401fence@gmail.com'
+app.config['SECURITY_EMAIL_SENDER'] = SENDER_EMAIL
 app.config['MAIL_SUPPRESS_SEND'] = False
 
 mail = Mail(app)
@@ -123,7 +126,6 @@ def user_registered_sighandler(app, user, confirm_token):
     userDatastore.add_role_to_user(user, 'primary')
     dbSession.commit()
 
-#@app.route('/customers', methods=['GET', 'POST'])
 @app.route('/')
 @login_required
 def customers():
@@ -136,21 +138,21 @@ def customers():
 
         return render_template("customer.html", listcust = json.dumps(json_companyCust), company = current_user.company_name)
 
-@app.route('/users')
+@app.route('/users/')
 @login_required
 @roles_required('admin')
 def users():
     users = dbSession.query(User).filter(User.active == True).all()
     return render_template("users.html", company = "Admin", users = users)
 
-@app.route('/accountrequests')
+@app.route('/accountrequests/')
 @login_required
 @roles_required('admin')
 def accountrequests():
     users = dbSession.query(User).filter(User.active == False).all()
     return render_template("accountrequests.html", company = "Admin", users = users)
 
-@app.route('/newcustomer', methods=['GET', 'POST'])
+@app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def newcustomer():
@@ -169,13 +171,13 @@ def newcustomer():
     else:
         return render_template("newcustomer.html", company = current_user.company_name)
 
-@app.route('/editcustomer', methods=['GET', 'POST'])
+@app.route('/editcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def editcustomer():
     return render_template("editcustomer.html")
 
-@app.route('/projects')
+@app.route('/projects/')
 @login_required
 @roles_required('primary')
 def projects():
@@ -193,7 +195,7 @@ def projects():
                  customer = json.dumps(customer), company = current_user.company_name
                  )
 
-@app.route('/autocomplete', methods=["GET"])
+@app.route('/autocomplete/', methods=["GET"])
 @login_required
 @roles_required('primary')
 def autocomplete():
@@ -204,7 +206,7 @@ def autocomplete():
     return jsonify(customers)
 
 
-@app.route('/newproject', methods=['GET', 'POST'])
+@app.route('/newproject/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def newproject():
@@ -230,20 +232,44 @@ def newproject():
     else:
         return render_template("newproject.html")
 
-# For testing sending emails
-@app.route('/testSendEmail', methods = ['POST'])
+@app.route('/sendQuote/', methods = ['POST'])
 @login_required
 @roles_required('primary')
-def testSendEmail():
+def sendQuote():
+    """Email a quote to a customer"""
+    try:
+        message = Message("This is the subject",
+            sender=("My Name", SENDER_EMAIL),
+            recipients=["cmput401fence@gmail.com"])
+        message.html = "<b>This is some bolded HTML text</b>"
+        mail.send(message)
+        flash("Quote sent", "success")
+
+    except SMTPAuthenticationError, e:
+        flash("Error sending quote (SMTP Authentication Error)", "danger")
+    
+    except SMTPServerDisconnected, e:
+        flash("Error sending quote (SMTP Server Disconnected)", "danger")
+    
+    except SMTPException, e:
+        flash("Error sending quote (SMTP Exception)", "danger")
+
+    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
+
+@app.route('/sendMaterialList/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def sendMaterialList():
+    """Email a material list to a supplier"""
     message = Message("This is the subject",
-        sender=("My Name", "cmput401fence@gmail.com"),
+        sender=("My Name", SENDER_EMAIL),
         recipients=["cmput401fence@gmail.com"])
     message.html = "<b>This is some bolded HTML text</b>"
     mail.send(message)
-    return render_template("projects.html")
+    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
 # delete later, just for testing note
-@app.route('/projectinfo', methods = ['GET', 'POST', 'PUT'])
+@app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
@@ -269,7 +295,7 @@ def projectinfo():
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
 
-@app.route('/uploadpicture', methods = ['GET', 'POST'])
+@app.route('/uploadpicture/', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def uploadpicture():
@@ -284,7 +310,7 @@ def uploadpicture():
 
         return redirect(url_for('projectinfo', proj_id = project_id))
 
-@app.route('/editprojectinfo', methods = ['GET', 'POST'])
+@app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
 def editprojectinfo():
@@ -319,7 +345,7 @@ def editprojectinfo():
 
         return redirect(url_for('projectinfo', proj_id = project_id))
 
-@app.route('/testdraw',  methods = ['GET', 'POST'])
+@app.route('/testdraw/',  methods = ['GET', 'POST'])
 def testdraw():
     return render_template("self-editing-embed.html")
 
