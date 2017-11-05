@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, \
+    flash
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
@@ -266,6 +267,8 @@ def sendQuote():
         recipients=["cmput401fence@gmail.com"])
     message.html = "<b>This is some bolded HTML text</b>"
     mail.send(message)
+    flash("SENT!!!", "success")
+    flash("Errors look like this", "danger")
     return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
