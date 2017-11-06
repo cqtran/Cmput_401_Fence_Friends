@@ -5,7 +5,9 @@ from flask_security import Security, login_required, \
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
-from flask_mail import Mail, Message
+from flask_mail import Mail
+from api.email.Email import SENDER_EMAIL, Email
+from api.email.Messages import Messages
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -42,7 +44,6 @@ app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
 
-SENDER_EMAIL = 'cmput401fence@gmail.com'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
@@ -237,36 +238,33 @@ def newproject():
 @roles_required('primary')
 def sendQuote():
     """Email a quote to a customer"""
-    try:
-        message = Message("This is the subject",
-            sender=("My Name", SENDER_EMAIL),
-            recipients=["cmput401fence@gmail.com"])
-        message.html = "<b>This is some bolded HTML text</b>"
-        mail.send(message)
-        flash("Quote sent", "success")
-
-    except SMTPAuthenticationError, e:
-        flash("Error sending quote (SMTP Authentication Error)", "danger")
-    
-    except SMTPServerDisconnected, e:
-        flash("Error sending quote (SMTP Server Disconnected)", "danger")
-    
-    except SMTPException, e:
-        flash("Error sending quote (SMTP Exception)", "danger")
-
-    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
+    proj_id = request.args.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    message = Messages.quoteMessage(customer, company)
+    attachment = Messages.quoteAttachment(project, customer)
+    Email.send(app, mail, project.company_name, customer.email, "Your quote",
+        message, "Quote", attachment, True)
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def sendMaterialList():
     """Email a material list to a supplier"""
-    message = Message("This is the subject",
-        sender=("My Name", SENDER_EMAIL),
-        recipients=["cmput401fence@gmail.com"])
-    message.html = "<b>This is some bolded HTML text</b>"
-    mail.send(message)
-    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
+    proj_id = request.args.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    message = Messages.materialListMessage(project)
+    Email.send(app, mail, project.company_name, customer.email, "Material list",
+        message, "Material list")
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
