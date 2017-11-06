@@ -3,13 +3,16 @@ from weasyprint import HTML
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
-	def quoteMessage(customer):
+	def quoteMessage(customer, company):
 		"""Generate a quote email message"""
 
 		return f"""
 			Dear {customer.first_name},<br>
 			<br>
-			Please find your attached quote.
+			Please find your attached quote.<br>
+			<br>
+			Please do not respond to this email. You can contact us at
+			{company.email}
 			"""
 
 	def quoteAttachment(project, customer):

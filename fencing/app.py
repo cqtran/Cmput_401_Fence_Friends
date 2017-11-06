@@ -268,7 +268,9 @@ def sendQuote():
         Project.project_id == proj_id).one()
     customer = dbSession.query(Customer).filter(
         Customer.customer_id == project.customer_id).one()
-    message = Messages.quoteMessage(customer)
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    message = Messages.quoteMessage(customer, company)
     attachment = Messages.quoteAttachment(project, customer)
     Email.send(app, mail, project.company_name, customer.email, "Your quote",
         message, "Quote", attachment, True)
