@@ -9,13 +9,6 @@ SENDER_EMAIL = 'cmput401fence@gmail.com'
 class Email:
 	"""Send emails"""
 
-	def getCustomerInfo(dbSession, projectId):
-		"""Return customer info given a project ID"""
-		project = dbSession.query(Project).filter(
-			Project.project_id == projectId).one()
-		return dbSession.query(Customer).filter(
-			Customer.customer_id == project.customer_id).one()
-
 	def send(mail, senderName, recipientEmail, subject, message, kind):
 		"""Send an email"""
 		errorMessage = "Error sending " + kind.lower()

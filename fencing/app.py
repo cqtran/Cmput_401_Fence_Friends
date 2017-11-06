@@ -7,6 +7,7 @@ from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
+from api.email.Messages import Messages
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -263,8 +264,11 @@ def newproject():
 def sendQuote():
     """Email a quote to a customer"""
     proj_id = request.args.get('proj_id')
-    customer = Email.getCustomerInfo(dbSession, proj_id)
-    message = "<b>This is some bolded HTML text</b>"
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    message = Messages.quote(project, customer)
     Email.send(mail, "My Name", customer.email, "This is the subject", message,
         "Quote")
     return redirect(url_for("projectinfo", proj_id=proj_id))
@@ -275,8 +279,11 @@ def sendQuote():
 def sendMaterialList():
     """Email a material list to a supplier"""
     proj_id = request.args.get('proj_id')
-    customer = Email.getCustomerInfo(dbSession, proj_id)
-    message = "<b>This is some bolded HTML text</b>"
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    message = Messages.materialList(project, customer)
     Email.send(mail, "My Name", customer.email, "This is the subject", message,
         "Material list")
     return redirect(url_for("projectinfo", proj_id=proj_id))
