@@ -43,6 +43,10 @@ class Email:
 			flash(errorMessage + " (SMTPException)", "danger")
 			print(str(e))
 		
+		except OSError as e:
+			flash(errorMessage + " (OSError)", "danger")
+			print(str(e))
+		
 		except BaseException as e:
 			flash(errorMessage + " (unknown exception)", "danger")
 			print(str(e))
