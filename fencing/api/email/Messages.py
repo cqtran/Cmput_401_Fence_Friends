@@ -1,7 +1,36 @@
-from weasyprint import HTML
+from weasyprint import HTML, CSS
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
+
+	_stylesheets=[CSS(string="""
+		table {
+			width: 100%;
+		}
+
+        table, th, .bordered {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+		th {
+			color: #FFF;
+			background-color: #999;
+		}
+
+		.right {
+			text-align: right;
+		}
+
+		.tableBreak {
+			border-bottom: 5px solid #999;
+		}
+
+		.greyCell {
+			background-color: #BBB;
+			border: none;
+		}
+		""")]
 
 	def quoteMessage(customer, company):
 		"""Generate a quote email message"""
@@ -18,35 +47,6 @@ class Messages:
 	def quoteAttachment(project, customer):
 		"""Generate a quote PDF attachment and return the filename"""
 		message = """
-			<style>
-				table {
-					width: 100%;
-				}
-
-                table, th, .bordered {
-                    border-collapse: collapse;
-                    border: 1px solid black;
-                }
-
-				th {
-					color: #FFF;
-					background-color: #999;
-				}
-
-				.right {
-					text-align: right;
-				}
-
-				.tableBreak {
-					border-bottom: 5px solid #999;
-				}
-
-				.greyCell {
-					background-color: #BBB;
-					border: none;
-				}
-			</style>
-		
 			<div style="float:left; width:25%;">
 				HELLO
 			</div>
@@ -87,7 +87,7 @@ class Messages:
 			"""
 		
 		path = "quote.pdf"
-		HTML(string=message).write_pdf(path)
+		HTML(string=message).write_pdf(path, stylesheets=Messages._stylesheets)
 		return path
 	
 	def materialListMessage(project):
