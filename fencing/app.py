@@ -262,20 +262,24 @@ def newproject():
 @roles_required('primary')
 def sendQuote():
     """Email a quote to a customer"""
+    proj_id = request.args.get('proj_id')
+    customer = Email.getCustomerInfo(dbSession, proj_id)
     message = "<b>This is some bolded HTML text</b>"
-    Email.send(mail, "My Name", "cmput401fence@gmail.com",
-        "This is the subject", message, "Quote")
-    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
+    Email.send(mail, "My Name", customer.email, "This is the subject", message,
+        "Quote")
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def sendMaterialList():
     """Email a material list to a supplier"""
+    proj_id = request.args.get('proj_id')
+    customer = Email.getCustomerInfo(dbSession, proj_id)
     message = "<b>This is some bolded HTML text</b>"
-    Email.send(mail, "My Name", "cmput401fence@gmail.com",
-        "This is the subject", message, "Quote")
-    return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
+    Email.send(mail, "My Name", customer.email, "This is the subject", message,
+        "Material list")
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
