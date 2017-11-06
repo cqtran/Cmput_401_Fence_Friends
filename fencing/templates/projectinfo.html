@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+<script src="../static/js/projectinfo.js"></script>
+
 <!--
 From:
 https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
@@ -37,17 +39,17 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <form method = "post" action="{{ url_for('uploadpicture') }}" enctype=multipart/form-data >
 	<input class="form-control" type="hidden" name="proj_id" id="project_id" />
   <input type="file" name="picture" accept="image/*">
-  <input type="submit" value = "Upload picture">
+  <input type="submit" value="Upload picture">
 </form>
 
 <br>
-<form method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}">
-	<input class="btn btn-primary btn-block" style="background-color:#DADA00;" type="submit" value = "Send Quote ►"/>
+<form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}">
+	<input id="sendQuoteButton" class="btn btn-primary btn-block" style="background-color:#DADA00;" type="submit" value="Send Quote ►"/>
 </form>
 
 <br>
-<form method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}">
-	<input class="btn btn-primary btn-block" style="background-color:#DA0000;" type="submit" value = "Send Material List ►"/>
+<form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}">
+	<input id="sendMaterialListButton" class="btn btn-primary btn-block" style="background-color:#DA0000;" type="submit" value="Send Material List ►"/>
 </form>
 
 <script type="text/javascript">
