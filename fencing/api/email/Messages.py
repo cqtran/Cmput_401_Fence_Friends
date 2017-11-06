@@ -8,10 +8,10 @@ class Messages:
 			width: 100%;
 		}
 
-        table, th, .bordered {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
+		table, th, .bordered {
+			border-collapse: collapse;
+			border: 1px solid black;
+		}
 
 		th {
 			color: #FFF;
