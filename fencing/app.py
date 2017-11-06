@@ -268,9 +268,10 @@ def sendQuote():
         Project.project_id == proj_id).one()
     customer = dbSession.query(Customer).filter(
         Customer.customer_id == project.customer_id).one()
-    message = Messages.quote(project, customer)
-    Email.send(mail, project.company_name, customer.email, "Your quote",
-        message, "Quote")
+    message = Messages.quoteMessage(customer)
+    attachment = Messages.quoteAttachment(project, customer)
+    Email.send(app, mail, project.company_name, customer.email, "Your quote",
+        message, "Quote", attachment, True)
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
@@ -283,8 +284,8 @@ def sendMaterialList():
         Project.project_id == proj_id).one()
     customer = dbSession.query(Customer).filter(
         Customer.customer_id == project.customer_id).one()
-    message = Messages.materialList(project)
-    Email.send(mail, project.company_name, customer.email, "Material list",
+    message = Messages.materialListMessage(project)
+    Email.send(app, mail, project.company_name, customer.email, "Material list",
         message, "Material list")
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
