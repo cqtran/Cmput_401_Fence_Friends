@@ -5,9 +5,8 @@ from flask_security import Security, login_required, \
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
-from flask_mail import Mail, Message
-from smtplib import SMTPAuthenticationError, SMTPServerDisconnected, \
-    SMTPException
+from flask_mail import Mail
+from api.email.Email import SENDER_EMAIL, Email
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -44,7 +43,6 @@ app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
 
-SENDER_EMAIL = 'cmput401fence@gmail.com'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
@@ -264,26 +262,9 @@ def newproject():
 @roles_required('primary')
 def sendQuote():
     """Email a quote to a customer"""
-    try:
-        message = Message("This is the subject",
-            sender=("My Name", SENDER_EMAIL),
-            recipients=["cmput401fence@gmail.com"])
-        message.html = "<b>This is some bolded HTML text</b>"
-        mail.send(message)
-        flash("Quote sent", "success")
-
-    except SMTPAuthenticationError as e:
-        flash("Error sending quote (SMTPAuthenticationError)", "danger")
-    
-    except SMTPServerDisconnected as e:
-        flash("Error sending quote (SMTPServerDisconnected)", "danger")
-    
-    except SMTPException as e:
-        flash("Error sending quote (SMTPException)", "danger")
-    
-    except:
-        flash("Error sending quote (unknown exception)", "danger")
-
+    message = "<b>This is some bolded HTML text</b>"
+    Email.send(mail, "My Name", "cmput401fence@gmail.com",
+        "This is the subject", message, "Quote")
     return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
@@ -291,11 +272,9 @@ def sendQuote():
 @roles_required('primary')
 def sendMaterialList():
     """Email a material list to a supplier"""
-    message = Message("This is the subject",
-        sender=("My Name", SENDER_EMAIL),
-        recipients=["cmput401fence@gmail.com"])
-    message.html = "<b>This is some bolded HTML text</b>"
-    mail.send(message)
+    message = "<b>This is some bolded HTML text</b>"
+    Email.send(mail, "My Name", "cmput401fence@gmail.com",
+        "This is the subject", message, "Quote")
     return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
 # delete later, just for testing note
