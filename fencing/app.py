@@ -6,6 +6,8 @@ from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
 from flask_mail import Mail, Message
+from smtplib import SMTPAuthenticationError, SMTPServerDisconnected, \
+    SMTPException
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -270,14 +272,17 @@ def sendQuote():
         mail.send(message)
         flash("Quote sent", "success")
 
-    except SMTPAuthenticationError, e:
-        flash("Error sending quote (SMTP Authentication Error)", "danger")
+    except SMTPAuthenticationError as e:
+        flash("Error sending quote (SMTPAuthenticationError)", "danger")
     
-    except SMTPServerDisconnected, e:
-        flash("Error sending quote (SMTP Server Disconnected)", "danger")
+    except SMTPServerDisconnected as e:
+        flash("Error sending quote (SMTPServerDisconnected)", "danger")
     
-    except SMTPException, e:
-        flash("Error sending quote (SMTP Exception)", "danger")
+    except SMTPException as e:
+        flash("Error sending quote (SMTPException)", "danger")
+    
+    except:
+        flash("Error sending quote (unknown exception)", "danger")
 
     return redirect(url_for("projectinfo", proj_id=request.args.get('proj_id')))
 
