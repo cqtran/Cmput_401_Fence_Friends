@@ -305,7 +305,9 @@ def projectinfo():
 
             # Get project pictures to display
             json_pictures = Pictures.getPictures(project_id)
+            json_quotepic = Projects.getdrawiopic(project_id)
             print(json_pictures)
+            print(json_quotepic)
 
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
@@ -313,7 +315,7 @@ def projectinfo():
 
             return render_template("projectinfo.html", proj = json.dumps(json_projectinfo),
                 company = current_user.company_name, images = json.dumps(json_pictures),
-                path = imgPath)
+                path = imgPath, drawiopic = json.dumps(json_quotepic))
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)

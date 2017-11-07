@@ -1,6 +1,7 @@
 from database.db import Base
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import create_engine
+from sqlalchemy import *
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, \
                        String, ForeignKey, Numeric, LargeBinary
@@ -129,18 +130,18 @@ class Quote(Base):
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
-    quote = Column(Numeric)
-    project_info = Column(LargeBinary)
+    quote = Column(Integer)
+    project_info = Column(TEXT)
     note = Column(String(255))
-    last_modified = Column(DateTime())
+    last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
 
-    def __init__(self, quote_id, project_id, quote, project_info, note, last_modified):
-        self.quote_id = quote_id
+    def __init__(self, project_id, quote, project_info, note):
+        #self.quote_id = quote_id
         self.project_id = project_id
         self.quote = quote
         self.project_info = project_info
         self.note = note
-        self.last_modified = last_modified
+        #self.last_modified = last_modified
 
     @property
     def serialize(self):
