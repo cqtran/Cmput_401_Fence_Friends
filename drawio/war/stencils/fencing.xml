@@ -1,0 +1,66 @@
+<shapes name="mxgraph.fencing">
+
+<shape name="Fence" h="10" w="92" aspect="variable" strokewidth="inherit">
+<connections>
+<constraint x="0.5" y="0" perimeter="0" name="N"/>
+<constraint x="0.5" y="1" perimeter="0" name="S"/>
+<constraint x="0" y="0.5" perimeter="0" name="W"/>
+<constraint x="1" y="0.5" perimeter="0" name="E"/>
+</connections>
+<background>
+<path>
+<move x="0" y="5"/>
+<line x="92" y="5"/>
+</path>
+</background>
+<foreground>
+<fillstroke/>
+</foreground>
+</shape>
+
+<shape name="Gate" h="10" w="92" aspect="variable" strokewidth="inherit">
+<connections>
+<constraint x="0.5" y="0" perimeter="0" name="N"/>
+<constraint x="0.5" y="1" perimeter="0" name="S"/>
+<constraint x="0" y="0.5" perimeter="0" name="W"/>
+<constraint x="1" y="0.5" perimeter="0" name="E"/>
+</connections>
+<background>
+<path>
+<move x="0" y="5"/>
+<line x="92" y="5"/>
+<move x="46" y="0"/>
+<line x="46" y="10"/>
+<move x="23" y="0"/>
+<line x="23" y="10"/>
+<move x="69" y="0"/>
+<line x="69" y="10"/>
+</path>
+</background>
+<foreground>
+<fillstroke/>
+</foreground>
+</shape>
+
+<shape name="Building" h="92" w="92" aspect="variable" strokewidth="inherit">
+<connections>
+<constraint x="0.5" y="0" perimeter="0" name="N"/>
+<constraint x="0.5" y="1" perimeter="0" name="S"/>
+<constraint x="0" y="0.5" perimeter="0" name="W"/>
+<constraint x="1" y="0.5" perimeter="0" name="E"/>
+</connections>
+<background>
+<path>
+<move x="0" y="0"/>
+<line x="92" y="0"/>
+<line x="92" y="92"/>
+<line x="0" y="92"/>
+<close/>
+</path>
+</background>
+<foreground>
+<fillstroke/>
+</foreground>
+</shape>
+
+</shapes>
