@@ -3,29 +3,35 @@ from database.db import dbSession, init_db
 from database.models import Project, Customer
 from flask.json import jsonify
 
+from flask import Blueprint, request
+from flask.json import jsonify
+from flask_security.core import current_user
+from flask_security import login_required
+from flask_security.decorators import roles_required
+
+projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
+
+@projectBlueprint.route('/getProjectList/', defaults={'customer_id': None}, methods=['GET'])
+@projectBlueprint.route('/getProjectList/<int:customer_id>', methods=['GET'])
+@login_required
+@roles_required('primary')
+def getProjectList(customer_id):
+    if request.method == 'GET':
+        projectList = dbSession.query(Project)
+        projectList = projectList.filter(Customer.company_name == current_user.company_name)
+        if customer_id is not None:
+            projectList = projectList.filter(customer_id == Project.customer_id)
+        projectList = projectList.filter(Customer.customer_id == Project.customer_id).all()
+        return jsonify(projectList)
+
+@projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
+@login_required
+@roles_required('primary')
 def getProject(project_id):
-    """ Returns the project information of the given project id """
-    project = dbSession.query(Project)
-    project = project.filter(Project.project_id == project_id).all()
-    json_response = [i.serialize for i in project]
-    return json_response
-
-def getCompanyProjects(companyName, customer_id = None):
-    """ Returns a json list of all projects to a given company """
-    projects = dbSession.query(Project)
-
-    # Filter projects to the company
-    projects = projects.filter(Customer.company_name == companyName)
-
-    # Filter projects on a given customer_id if provided
-    if customer_id is not None:
-        projects = projects.filter(customer_id == Project.customer_id)
-
-    # Filter projects with matching customer_ids and execute query
-    projects = projects.filter(Customer.customer_id == Project.customer_id).all()
-
-    json_response = [i.serialize for i in projects]
-    return json_response
+    if request.method == "GET":
+        project = dbSession.query(Project)
+        project = project.filter(Project.project_id == project_id).all()
+        return jsonify(project)
 
 def updateProjectInfo(project_id, project_name, address, status, note):
     """ Updates the project information of a given project id """
@@ -33,7 +39,7 @@ def updateProjectInfo(project_id, project_name, address, status, note):
 
     project[0].project_name = project_name
     project[0].address = address
-    project[0].status = status
+    project[0].status_name = status
     project[0].note = note
 
     dbSession.commit()

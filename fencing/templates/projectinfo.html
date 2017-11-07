@@ -53,52 +53,75 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 </form>
 
 <script type="text/javascript">
-	function displayProjectInfo(proj) {
-		document.getElementById('project_name').innerHTML = proj[0].project_name;
-		document.getElementById('status').innerHTML = 'Status: ' + proj[0].status_name;
-		document.getElementById('address').innerHTML = 'Address: ' + proj[0].address;
-		document.getElementById('start_date').innerHTML = 'Start Date: ' + proj[0].start_date;
 
-		// Sets the project_id into the uploadpicture form
-		document.getElementById('project_id').setAttribute('value', proj[0].project_id);
+var imgPath = {{ path|safe }}
+var pictureList = document.getElementById('projectPictures');
 
-		document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+proj[0].project_id+')')
+var url = new URL(window.location.href);
+var proj_id = url.searchParams.get("proj_id");
 
-		if (proj[0].end_date != null) {
-			document.getElementById('end_date').innerHTML = 'End Date: ' + proj[0].end_date;
-		}
+var requestProj = new XMLHttpRequest();
+requestProj.onreadystatechange = function(response) {
+  if (requestProj.readyState === 4) {
+    if (requestProj.status === 200) {
+      // Parse the JSON
+      var project = JSON.parse(requestProj.responseText);
+      document.getElementById('project_name').innerHTML = project[0].project_name;
+  		document.getElementById('status').innerHTML = 'Status: ' + project[0].status_name;
+  		document.getElementById('address').innerHTML = 'Address: ' + project[0].address;
+  		document.getElementById('start_date').innerHTML = 'Start Date: ' + project[0].start_date;
 
-		document.getElementById('savednote').innerHTML = 'Notes: ' + proj[0].note;
-	}
+  		// Sets the project_id into the uploadpicture form
+  		document.getElementById('project_id').setAttribute('value', project[0].project_id);
 
-	function displayPictures(images, path) {
-		var div = document.getElementById('projectPictures');
-		if (images.length == 0) {
-			var img = document.createElement('img');
-			img.src =  path + 'No_picture_available.png';
-			img.alt =  'No pictures available';
-			img.height = '150';
-			img.width = '150';
-			div.appendChild(img);
-		}
+  		document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+project[0].project_id+')')
 
-		for(var i = 0; i < images.length; i++) {
-				// Create the list item:
-				var img = document.createElement('img');
-				img.src =  path + images[i].file_name;
-				img.alt =  images[i].file_name + ' not found';
+  		if (project[0].end_date != null) {
+  			document.getElementById('end_date').innerHTML = 'End Date: ' + project[0].end_date;
+  		}
+
+  		document.getElementById('savednote').innerHTML = 'Notes: ' + project[0].note;
+    }
+  }
+}
+
+requestProj.open('GET', '/getProject/' + proj_id, true);
+requestProj.send()
+
+var request = new XMLHttpRequest();
+request.onreadystatechange = function(response) {
+
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      // Parse the JSON
+      var jsonOptions = JSON.parse(request.responseText);
+      if (jsonOptions.length == 0) {
+        var img = document.createElement('img');
+        img.src =  imgPath + 'No_picture_available.png';
+        img.alt =  'No pictures available';
+        img.height = '150';
+        img.width = '150';
+        pictureList.appendChild(img);
+      }
+      jsonOptions.forEach(function(picture) {
+        var img = document.createElement('img');
+				img.src =  imgPath + picture.file_name;
+				img.alt =  picture.file_name + ' not found';
+        console.log(imgPath + picture.file_name)
 				img.height = '150';
 				img.width = '150';
 				img.className += 'img-thumbnail'
 				// Add it to the list:
-				div.appendChild(img);
-		}
+				pictureList.appendChild(img);
+      })
+    }
+  }
+}
+request.open('GET', '/getPictureList/' + proj_id, true);
+request.send()
 
-	return div
-	}
-
-	displayProjectInfo({{ proj|safe }});
-	displayPictures({{ images|safe }}, {{ path|safe }});
+	//displayProjectInfo({{ proj|safe }});
+	//displayPictures({{ images|safe }}, {{ path|safe }});
 
 	function projectClicked(id) {
 		window.location.href= '/editprojectinfo?proj_id='+id

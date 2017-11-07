@@ -12,44 +12,67 @@
 <div class="list-group list-group-flush" id="projectlist"></div>
 
 
-<script>
-function test_data(listproj){
-    console.log(listproj)
-}
+<script type="text/javascript">
+  // Get the project list element
+  var projectList = document.getElementById('projectlist');
 
-function makeA(array) {
-    // Create the list element:
-    var list = document.getElementById('projectlist');
+  // Create a new XMLHttpRequest to get projects
+  var request = new XMLHttpRequest();
 
-    for(var i = 0; i < array.length; i++) {
-        // Create the list item:
+  request.onreadystatechange = function(response) {
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      // Parse the JSON
+      var jsonOptions = JSON.parse(request.responseText);
+
+      // Loop over the JSON array.
+      jsonOptions.forEach(function(project) {
         var item = document.createElement('a');
         item.setAttribute('href', '#')
         item.setAttribute('class', 'list-group-item list-group-item-action');
 
         // this is where you want to go when you click
         //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-		item.setAttribute('onclick', 'projectClicked('+array[i].project_id+')')
+        item.setAttribute('onclick', 'projectClicked('+project.project_id+')')
 
-        // Set its contents:
-        item.appendChild(document.createTextNode(array[i].project_name));
+        item.appendChild(document.createTextNode(project.project_name));
 
         // Add it to the list:
-        list.appendChild(item);
+        projectList.appendChild(item);
+      });
+
+    } else {
+      var item = document.createElement('a');
+      item.appendChild(document.createTextNode('An error has occurred'));
+      projectList.appendChild(item);
     }
+  }
+  };
 
-    // Finally, return the constructed list:
-    return list;
-}
+  var requestCustomer = new XMLHttpRequest();
+  requestCustomer.onreadystatechange = function(response) {
+    if (requestCustomer.readyState === 4) {
+      if (requestCustomer.status === 200) {
+        // Parse the JSON
+        var customer = JSON.parse(requestCustomer.responseText);
+        document.getElementById('title').innerHTML = customer[0].first_name;
+        document.getElementById('phone').innerHTML = 'Cellphone: ' + customer[0].cellphone;
+        document.getElementById('email').innerHTML = 'Email: ' + customer[0].email;
+      }
+    }
+  }
 
-function fillHeader(info) {
-    document.getElementById('title').innerHTML = info[0].first_name;
-    document.getElementById('phone').innerHTML = info[0].cellphone;
-    document.getElementById('email').innerHTML = info[0].email;
-}
-
-makeA({{ listproj|safe }});
-fillHeader({{  customer|safe }})
+  // Set up and make the request.
+  var url = new URL(window.location.href);
+  var cust_id = url.searchParams.get("cust_id");
+  if(cust_id == null) {
+    request.open('GET', '/getProjectList', true);
+  } else {
+    request.open('GET', '/getProjectList/' + cust_id, true);
+    requestCustomer.open('GET', '/getCustomer/' + cust_id, true);
+    requestCustomer.send()
+  }
+  request.send();
 
 function projectClicked(id) {
 	window.location.href= '/projectinfo?proj_id='+id

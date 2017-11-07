@@ -12,40 +12,52 @@
 
 
 
-<script>
-function test_data(listcust){
-    console.log(listcust)
-}
+<script type="text/javascript">
 
-function makeA(array) {
-    // Create the list element:
-    var list = document.getElementById('customerlist');
+  // Get the <datalist> and <input> elements.
+  var customerList = document.getElementById('customerlist');
 
-    for(var i = 0; i < array.length; i++) {
-        // Create the list item:
+  // Create a new XMLHttpRequest.
+  var request = new XMLHttpRequest();
+
+  // Handle state changes for the request.
+  request.onreadystatechange = function(response) {
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      // Parse the JSON
+      var jsonOptions = JSON.parse(request.responseText);
+
+      // Loop over the JSON array.
+      jsonOptions.forEach(function(customer) {
         var item = document.createElement('a');
         item.setAttribute('href', '#')
         item.setAttribute('class', 'list-group-item list-group-item-action');
 
         // this is where you want to go when you click
         //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-        item.setAttribute('onclick', 'customerClicked('+array[i].customer_id+')')
+        item.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
 
-        item.appendChild(document.createTextNode(array[i].first_name));
+        item.appendChild(document.createTextNode(customer.first_name));
 
         // Add it to the list:
-        list.appendChild(item);
+        customerList.appendChild(item);
+      });
+
+    } else {
+      var item = document.createElement('a');
+      item.appendChild(document.createTextNode('An error has occurred'));
+      customerList.appendChild(item);
     }
+  }
+  };
 
-    // Finally, return the constructed list:
-    return list;
-}
+  // Set up and make the request.
+  request.open('GET', '/getCustomerList', true);
+  request.send();
 
-makeA({{ listcust|safe }});
-
-function customerClicked(id) {
-	window.location.href= '/projects?cust_id='+id
-}
+  function customerClicked(id) {
+  	window.location.href= '/projects?cust_id='+id
+  }
 
 </script>
 {% endblock %}

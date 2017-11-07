@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, \
+from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, \
     flash
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
@@ -17,6 +17,7 @@ import os
 import api.customers as Customers
 import api.projects as Projects
 import api.pictures as Pictures
+import api.statuses as Statuses
 
 from api.forms.extendedRegisterForm import *
 
@@ -27,6 +28,11 @@ from flask.json import jsonify
 import argparse
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
+app.register_blueprint(Customers.customerBlueprint)
+app.register_blueprint(Projects.projectBlueprint)
+app.register_blueprint(Pictures.pictureBlueprint)
+app.register_blueprint(Statuses.statusBlueprint)
+
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
@@ -102,6 +108,11 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
+    if not fieldExists(dbSession, Status.status_name, "Finished"):
+        newStatus = Status(status_name = "Finished")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
     if not fieldExists(dbSession, Project.project_id, 1):
         newProject = Project(customer_id = 1, address = "1234",
             status_name = "Not Reached", end_date = None, note = '',
@@ -134,10 +145,7 @@ def customers():
         users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
     else:
-        # gets customers and display
-        json_companyCust = Customers.getCompanyCustomers(current_user.company_name)
-
-        return render_template("customer.html", listcust = json.dumps(json_companyCust), company = current_user.company_name)
+        return render_template("customer.html")
 
 @app.route('/users/')
 @login_required
@@ -166,8 +174,7 @@ def newcustomer():
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
         print(success)
 
-        return redirect(url_for('customers', company = current_user.company_name))
-
+        return redirect(url_for('customers'))#, company = current_user.company_name))
 
     else:
         return render_template("newcustomer.html", company = current_user.company_name)
@@ -182,19 +189,7 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
-
-    # Get the argument 'cust_id' if it is given
-    customer_id = request.args.get('cust_id')
-    json_companyProjects = Projects.getCompanyProjects(current_user.company_name, customer_id)
-
-    if customer_id is None:
-        return render_template("projects.html", listproj = json.dumps(json_companyProjects), company = current_user.company_name)
-
-    else:
-        customer = Customers.getCustomer(customer_id)
-        return render_template("projects.html", listproj = json.dumps(json_companyProjects),
-                 customer = json.dumps(customer), company = current_user.company_name
-                 )
+        return render_template("projects.html")
 
 @app.route('/autocomplete/', methods=["GET"])
 @login_required
@@ -274,21 +269,11 @@ def projectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
         if project_id is not None:
-            # get project info to pass to html and display
-            json_projectinfo = Projects.getProject(project_id)
-            print(json_projectinfo)
-
-            # Get project pictures to display
-            json_pictures = Pictures.getPictures(project_id)
-            print(json_pictures)
-
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
             print('Relative Path: ' + imgPath)
 
-            return render_template("projectinfo.html", proj = json.dumps(json_projectinfo),
-                company = current_user.company_name, images = json.dumps(json_pictures),
-                path = imgPath)
+            return render_template("projectinfo.html", path = imgPath)
 
     else:
         return render_template("projectinfo.html", company = current_user.company_name)
@@ -315,18 +300,7 @@ def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
         if project_id is not None:
-            # Grab project information to set into the editing form
-            json_projectinfo = Projects.getProject(project_id)
-            print(json_projectinfo)
-
-            # Grab the list of statuses to set into the dropdown list
-            # TODO: Refactor this into an API
-            statuses = dbSession.query(Status).all()
-            json_statuses = [i.serialize for i in statuses]
-            print(json_statuses)
-
-            return render_template("editproject.html", proj = json.dumps(json_projectinfo),
-                statuses = json.dumps(json_statuses), company = current_user.company_name)
+            return render_template("editproject.html")
         else:
             # Error handling
             pass
