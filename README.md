@@ -79,5 +79,5 @@ brew link fontconfig
 pip3 install WeasyPrint
 ```
 
-Other:
+Other:<br>
 http://weasyprint.readthedocs.io/en/stable/install.html
