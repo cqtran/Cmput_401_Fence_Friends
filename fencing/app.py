@@ -258,6 +258,38 @@ def newproject():
     else:
         return render_template("newproject.html")
 
+@app.route('/viewMaterialList/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def viewMaterialList():
+    """Generate and view a material list in a new tab"""
+    proj_id = request.args.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    return Messages.materialListMessage(project)
+
+@app.route('/viewQuote/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def viewQuote():
+    """Generate and view a quote in a new tab"""
+    proj_id = request.args.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    attachmentString = Messages.quoteAttachment(project, customer)
+    attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
+
+    if attachment is not None:
+        return redirect(url_for("static", filename=attachment[7:]))
+
+    return redirect(url_for("projectinfo", proj_id=proj_id))
+
 @app.route('/sendQuote/', methods = ['POST'])
 @login_required
 @roles_required('primary')
@@ -272,8 +304,7 @@ def sendQuote():
         Company.company_name == project.company_name).one()
     message = Messages.quoteMessage(customer, company)
     attachmentString = Messages.quoteAttachment(project, customer)
-    attachmentPath = Messages.quotePath
-    attachment = Email.makeAttachment(attachmentPath, attachmentString)
+    attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, customer.email,

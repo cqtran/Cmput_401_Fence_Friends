@@ -71,6 +71,17 @@ loadimage({{ drawiopic | safe }})
 </form>
 
 <br>
+<form method="post" target="_blank" action="{{url_for('viewQuote', proj_id=request.args.get('proj_id'))}}">
+	<input class="btn btn-primary btn-block" type="submit" value="View Quote"/>
+</form>
+
+<br>
+<form method="post" target="_blank" action="{{url_for('viewMaterialList', proj_id=request.args.get('proj_id'))}}">
+	<input class="btn btn-primary btn-block" type="submit" value="View Material List"/>
+</form>
+
+<br>
+<br>
 <form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}">
 	<input id="sendQuoteButton" class="btn btn-primary btn-block" style="background-color:#DADA00;" type="submit" value="Send Quote ►"/>
 </form>

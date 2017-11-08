@@ -3,7 +3,7 @@ from weasyprint import CSS
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
-	quotePath = "Quote.pdf"
+	quotePath = "static/Quote.pdf"
 
 	stylesheets=[CSS(string="""
 		table {
