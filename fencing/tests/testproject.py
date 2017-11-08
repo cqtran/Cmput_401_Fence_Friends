@@ -1,25 +1,17 @@
 import unittest
 
-from flask import Flask, json
-from database.db import dbSession, Base, init_db, engine
-from database.models import Customer, Project, Company, Status
+from flask import json
+from database.db import dbSession, Base, engine
+from database.models import Project
 from tests.testdata import *
 
 import requests
 
 import api.projects as Projects
 
-app = Flask(__name__)
-app.config['TESTING'] = True
-app.config['WTF_CSRF_ENABLED'] = False
-app.config['DEBUG'] = False
-
-app.register_blueprint(Projects.projectBlueprint)
-
 class TestProject(unittest.TestCase):
     def setUp(self):
         """ Initialize, clear, and set starting data """
-        init_db()
 
         # Clear all tables in the database
         for tbl in reversed (Base.metadata.sorted_tables):
@@ -83,14 +75,10 @@ class TestProject(unittest.TestCase):
         print("\n\n Testing getProject API\n")
         projectTestData()
 
-        # TODO: SQLalchemy ORM autoincrements project_id but does not allow
-        # setting a static project_id when adding a project unlike the
-        # Customer table. This makes it difficult to test getting projects
-
-        # Test getting project with id = 10
-        response = requests.get('http://localhost:5000/getProject/10')
+        # Test getting project with id = 3
+        response = requests.get('http://localhost:5000/getProject/3')
         json_obj = json.loads(response.text)
-        print("\nGot json response from 'http://localhost:5000/getProject/10':")
+        print("\nGot json response from 'http://localhost:5000/getProject/3':")
         print(json_obj)
 
         assert len(json_obj) == 1

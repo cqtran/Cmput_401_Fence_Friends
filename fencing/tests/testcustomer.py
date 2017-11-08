@@ -1,29 +1,22 @@
 import unittest
 
-from flask import Flask, json
-from database.db import dbSession, Base, init_db, engine
-from database.models import Customer, Project, Company, Status
+from flask import json
+from database.db import dbSession, Base, engine
+from database.models import Customer
 from tests.testdata import *
 
 import requests
 
 import api.customers as Customers
 
-app = Flask(__name__)
-app.config['TESTING'] = True
-app.config['WTF_CSRF_ENABLED'] = False
-app.config['DEBUG'] = False
-
-app.register_blueprint(Customers.customerBlueprint)
-
 class TestCustomer(unittest.TestCase):
     def setUp(self):
         """ Initialize, clear, and set starting data """
-        init_db()
 
         # Clear all tables in the database
         for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
+        
         companyTestData()
         statusTestData()
 

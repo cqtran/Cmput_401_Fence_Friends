@@ -1,4 +1,3 @@
-import os
 import unittest
 
 from flask import json
@@ -8,30 +7,32 @@ from tests.testdata import *
 
 import requests
 
-import api.pictures as Pictures
+import api.statuses as Statuses
 
-class TestPicture(unittest.TestCase):
+class TestCustomer(unittest.TestCase):
     def setUp(self):
         """ Initialize, clear, and set starting data """
 
         # Clear all tables in the database
         for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
+
         companyTestData()
         statusTestData()
-        customerTestData()
-        projectTestData()
-
+        
     def tearDown(self):
         """Clear all tables"""
         for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
         dbSession.remove()
 
-    def test_addPicture(self):
-        """ Test adding a picture to a project """
-        pass
+    def test_getStatusList(self):
+        """ Test for getting a list of project statuses """
+        print("\n\n Testing getStatusList API\n")
+        response = requests.get('http://localhost:5000/getStatusList/')
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getStatusList/':")
+        print(json_obj)
 
-    def test_getPictures(self):
-        """ Test getting pictures of a project """
+        #assert len(json_obj) == 7:
         pass
