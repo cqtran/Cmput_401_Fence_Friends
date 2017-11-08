@@ -81,3 +81,28 @@ pip3 install WeasyPrint
 
 Other:<br>
 http://weasyprint.readthedocs.io/en/stable/install.html
+
+## Run
+
+1. Start MySQL
+
+2. In the "fencing" folder, run:
+```bash
+python3 app.py
+```
+
+## Run in Debug Mode
+
+1. Start MySQL
+
+2. In the "fencing" folder, run:
+```bash
+python3 app.py -debug
+```
+
+## Help
+
+In the "fencing" folder, run:
+```bash
+python3 app.py --help
+```
