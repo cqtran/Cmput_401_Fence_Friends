@@ -1,3 +1,4 @@
+from datetime import datetime
 from database.models import Customer, Project, Company, Status
 from database.db import dbSession
 
@@ -10,7 +11,11 @@ def companyTestData():
 
 def statusTestData():
     status1 = Status(status_name = "Not Reached")
+    status2 = Status(status_name = "In Progress")
+    status3 = Status(status_name = "Complete")
     dbSession.add(status1)
+    dbSession.add(status2)
+    dbSession.add(status3)
     dbSession.commit()
 
 # Helper function for inserting customer test data
@@ -25,8 +30,10 @@ def customerTestData():
 
 # Helper function for inserting project test data
 def projectTestData():
-    newProject1 = Project(1, 'Not Reached', 'Bear St', None, 'A fun fencing project', "Kat's house fence", 'Fence')
-    newProject2 = Project(1, 'Not Reached', 'Grand Ave', None, 'Dog lives here', "Kat's second house fence", 'Fence')
+    newProject1 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Bear St', end_date = None, note = 'A fun fencing project', project_name = "Kat's house fence", company_name = 'Fence')
+    newProject2 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Grand Ave', end_date = None, note = 'Dog lives here', project_name = "Kat's second house fence", company_name = 'Fence')
+    newProject3 = Project(customer_id = 3, status_name = 'Complete',  address = 'Park St', end_date = None, note = 'Concrete fence', project_name = "Jason's fence for company building", company_name = 'Fence')
     dbSession.add(newProject1)
     dbSession.add(newProject2)
+    dbSession.add(newProject3)
     dbSession.commit()

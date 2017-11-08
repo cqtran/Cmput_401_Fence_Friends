@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Customer, Company
+from database.models import Customer
 
 from flask import Blueprint, request
 from flask.json import jsonify
@@ -10,18 +10,21 @@ from flask_security.decorators import roles_required
 
 customerBlueprint = Blueprint('customerBlueprint', __name__, template_folder='templates')
 
-@customerBlueprint.route('/getCustomerList', methods=['GET'])
-@login_required
-@roles_required('primary')
-def getCustomerList():
+@customerBlueprint.route('/getCustomerList/', defaults={'company_name': None}, methods=['GET'])
+@customerBlueprint.route('/getCustomerList/<company_name>', methods=['GET'])
+#@login_required
+#@roles_required('primary')
+def getCustomerList(company_name):
     if request.method == 'GET':
         customers = dbSession.query(Customer)
-        customers = customers.filter(Customer.company_name == current_user.company_name).all()
+        if company_name is not None:
+            customers = customers.filter(Customer.company_name == company_name)
+        customers = customers.all()
         return jsonify(customers)
 
 @customerBlueprint.route('/getCustomer/<int:customer_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def getCustomer(customer_id):
     if request.method == 'GET':
         customer = dbSession.query(Customer)

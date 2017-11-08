@@ -1,10 +1,12 @@
 import os
 import unittest
 
-from flask import Flask
+from flask import Flask, json
 from database.db import dbSession, Base, init_db, engine
 from database.models import Customer, Project, Company, Status
 from tests.testdata import *
+
+import requests
 
 import api.pictures as Pictures
 
@@ -12,6 +14,8 @@ app = Flask(__name__)
 app.config['TESTING'] = True
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['DEBUG'] = False
+
+app.register_blueprint(Pictures.pictureBlueprint)
 
 class TestPicture(unittest.TestCase):
     def setUp(self):
@@ -23,6 +27,8 @@ class TestPicture(unittest.TestCase):
             engine.execute(tbl.delete())
         companyTestData()
         statusTestData()
+        customerTestData()
+        projectTestData()
 
     def tearDown(self):
         """Clear all tables"""

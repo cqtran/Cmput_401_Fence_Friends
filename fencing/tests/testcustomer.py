@@ -1,9 +1,11 @@
 import unittest
 
-from flask import Flask
+from flask import Flask, json
 from database.db import dbSession, Base, init_db, engine
 from database.models import Customer, Project, Company, Status
 from tests.testdata import *
+
+import requests
 
 import api.customers as Customers
 
@@ -11,6 +13,8 @@ app = Flask(__name__)
 app.config['TESTING'] = True
 app.config['WTF_CSRF_ENABLED'] = False
 app.config['DEBUG'] = False
+
+app.register_blueprint(Customers.customerBlueprint)
 
 class TestCustomer(unittest.TestCase):
     def setUp(self):
@@ -50,37 +54,44 @@ class TestCustomer(unittest.TestCase):
 
     def test_getCustomer(self):
         """ Test for getting a customer of a customer id """
+        print("\n\n Testing getCustomer API\n")
         customerTestData()
 
         # Test getting customer with id = 2
-        customer2 = Customers.getCustomer(2)
-        assert len(customer2) == 1
-        result = customer2[0]
+        response = requests.get('http://localhost:5000/getCustomer/2')
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getCustomer/2':")
+        print(json_obj)
 
+        assert len(json_obj) == 1
+        result = json_obj[0]
+        # Test the information contained in the object with expected information
         assert result['first_name'] == 'Davis'
         assert result['email'] == 'Davis@gmail.com'
         assert result['cellphone'] == '761-158-2113'
         assert result['company_name'] == 'Builder'
+        print("Json response is expected")
 
-        # Test getting customer with id = 3
-        customer3 = Customers.getCustomer(3)
-        assert len(customer3) == 1
-        result = customer3[0]
+        # Test getting non-existing customer with id = 4.
+        response = requests.get('http://localhost:5000/getCustomer/4')
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getCustomer/4':")
+        print(json_obj)
+        assert len(json_obj) == 0
+        print("Json response is expected")
 
-        assert result['first_name'] == 'Jason'
-        assert result['email'] == 'Jason@gmail.com'
-        assert result['cellphone'] == '688-946-8781'
-        assert result['company_name'] == 'Fence'
-
-    def test_getCompanyCustomers(self):
+    def test_getCustomerList(self):
         """ Test for getting all customers of company """
+        print("\n\n Testing getCustomerList API\n")
         customerTestData()
 
         # Test getting customers from the only the 'Fence' company
-        fenceCustomers = Customers.getCompanyCustomers('Fence')
-        assert len(fenceCustomers) == 2
-        result1 = fenceCustomers[0]
-        result2 = fenceCustomers[1]
+        response = requests.get('http://localhost:5000/getCustomerList/Fence')
+        json_obj = json.loads(response.text)
+        print(json_obj)
+        assert len(json_obj) == 2
+        result1 = json_obj[0]
+        result2 = json_obj[1]
 
         assert result1['first_name'] == 'Kat'
         assert result1['email'] == 'Kat@gmail.com'
@@ -91,7 +102,7 @@ class TestCustomer(unittest.TestCase):
         assert result2['email'] == 'Jason@gmail.com'
         assert result2['cellphone'] == '688-946-8781'
         assert result2['company_name'] == 'Fence'
-
+        print("Json response is expected")
 
     def test_updateCustomerInfo(self):
         """ Test for updating customer information """

@@ -92,7 +92,7 @@ class Status (Base):
 class Project(Base):
     __tablename__ = 'project'
     project_id = Column(Integer, primary_key=True)
-    customer_id = Column('customer_id', Integer(), ForeignKey('customer.customer_id'))
+    customer_id = Column('customer_id', Integer, ForeignKey('customer.customer_id'))
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
