@@ -271,9 +271,14 @@ def sendQuote():
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.quoteMessage(customer, company)
-    attachment = Messages.quoteAttachment(project, customer)
-    Email.send(app, mail, project.company_name, customer.email, "Your quote",
-        message, "Quote", attachment, True)
+    attachmentString = Messages.quoteAttachment(project, customer)
+    attachmentPath = Messages.quotePath
+    attachment = Email.makeAttachment(attachmentPath, attachmentString)
+
+    if attachment is not None:
+        Email.send(app, mail, project.company_name, customer.email,
+            "Your quote", message, "Quote", attachment)
+
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
