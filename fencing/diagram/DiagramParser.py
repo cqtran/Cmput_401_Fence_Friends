@@ -11,7 +11,6 @@ class DiagramParser:
 		Parse the given compressed XML fence diagram file
 		Return the parsed data or None if parse failed
 		"""
-
 		try:
 			return DiagramParser._parse(compressedString)
 		
@@ -20,7 +19,6 @@ class DiagramParser:
 
 	def _decompress(compressedDiagramString):
 		"""Decompress a compressed diagram string"""
-
 		decoded = base64.b64decode(compressedDiagramString)
 		decompressed = zlib.decompress(decoded, -8)
 		decompressedString = decompressed.decode('utf-8')
@@ -31,7 +29,6 @@ class DiagramParser:
 		Given the value of the 'style' tag of an 'mxCell' element, return the
 		value of the 'shape' portion or None if it is not found
 		"""
-
 		split = style.split(';')
 
 		for item in split:
