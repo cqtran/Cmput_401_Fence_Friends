@@ -35,7 +35,7 @@ Mac OS (assuming Homebrew is installed):
 ```bash
 xcode-select --install
 brew install mysql-connector-c
-pip3 install mysql-connector
+pip3 install mysql-connector==2.1.4
 ```
 
 ### SQLAlchemy
