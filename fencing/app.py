@@ -318,8 +318,11 @@ def sendMaterialList():
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
+        print("goes get")
         project_id = request.args.get('proj_id')
         if project_id is not None:
+            print("getget")
+            print("This is project id", project_id)
 
             json_quotepic = Projects.getdrawiopic(project_id)
             print(json_quotepic)
@@ -332,10 +335,7 @@ def projectinfo():
 
     else:
         # POST?
-        print("post")
-        long_url = request.form['myField']
-        print(long_url)
-
+        print("goes post")
         return render_template("projectinfo.html", company = current_user.company_name)
 
 @app.route('/uploadpicture/', methods = ['GET', 'POST'])
@@ -358,9 +358,20 @@ def uploadpicture():
 @roles_required('primary')
 def saveDiagram():
     project_id = request.args.get('proj_id')
-    image = request.form['image']
+    image = request.form['image'] #long url
     parsed = DiagramParser._parse(image)
     print(parsed)
+
+    json_quotepic = Projects.getdrawiopic(project_id)
+    qid = json_quotepic[0].get("quote_id")
+    print(qid)
+    update = Projects.updatedrawiopic(qid, 5, image, 0)
+    print(update)
+
+    print("This is project id", project_id)
+
+
+
     return redirect(url_for('projectinfo', proj_id = project_id))
 
 @app.route('/editprojectinfo/', methods = ['GET', 'POST'])
