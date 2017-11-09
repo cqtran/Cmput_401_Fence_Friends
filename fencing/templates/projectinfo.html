@@ -21,25 +21,26 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <h1>
 	<p id="project_name"></p>
-    <button class="button" onclick="saveDrawPicture()">CLICK HERE TO SAVE DRAW IO DIAGRAM</button>
 
+    <form id="long_url" method="POST" action="{{ url_for('projectinfo') }}">
+        <input type="hidden" id="myField" name="myField" />
+        <button type="button" onclick="saveDrawPicture()">Save draw io pic</button>
+
+        <button type="submit" value="REFRESH PAGE" >REFRESH PAGE</button>
+
+        </form>
 </h1>
-
-
-
-
-
-
-
 
 
 <div class="container">
   <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
     <script>
+
 function saveDrawPicture() {
     var initial = image.getAttribute('src');
     console.log("LETS GOOO")
     console.log(initial)
+    document.getElementById("myField").value = initial
 
 }
 

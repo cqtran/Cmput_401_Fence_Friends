@@ -316,8 +316,12 @@ def projectinfo():
             return render_template("projectinfo.html", proj = json.dumps(json_projectinfo),
                 company = current_user.company_name, images = json.dumps(json_pictures),
                 path = imgPath, drawiopic = json.dumps(json_quotepic))
-
     else:
+        # POST?
+        print("post")
+        long_url = request.form['myField']
+        print(long_url)
+
         return render_template("projectinfo.html", company = current_user.company_name)
 
 @app.route('/uploadpicture/', methods = ['GET', 'POST'])

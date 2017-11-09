@@ -24,6 +24,10 @@ def updateProjectInfo(project_id, project_name, address, status, note):
     dbSession.commit()
     return True
 
+def updatedrawiopic(project_id):
+    # ERIC PLEASE HELP
+    return True
+
 def createProject(customerId, statusName, address, companyName, project_name):
     #Access MySQL and add in account
     newProject = Project(customer_id = customerId, address = address,
