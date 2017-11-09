@@ -24,10 +24,6 @@ def updateProjectInfo(project_id, project_name, address, status, note):
     dbSession.commit()
     return True
 
-def updatedrawiopic(project_id):
-    # ERIC PLEASE HELP
-    return True
-
 def createProject(customerId, statusName, address, companyName, project_name):
     #Access MySQL and add in account
     newProject = Project(customer_id = customerId, address = address,
@@ -41,21 +37,28 @@ def createProject(customerId, statusName, address, companyName, project_name):
     dbSession.add(newQuote)
     dbSession.commit()
 
-
-
-
     return True
 
-
 def getdrawiopic(project_id):
+    #TODO: function should be renamed in the future for clarity purposes
     getpic = dbSession.query(Quote).filter(Quote.project_id == project_id).all()
     json_response = [i.serialize for i in getpic]
     return json_response
 
-
+def updatedrawiopic(quote_id, quote, project_info, note):
+    # ERIC PLEASE HELP
+    #TODO: function should be renamed in the future for clarity purposes
+    quotation = dbSession.query(Quote)
+    quotation = quotation.filter(Quote.quote_id == quote_id).all()
+    quotation[0].quote = quote
+    quotation[0].projectinfo = projectinfo
+    quotation[0].note = note
+    dbSession.commit()
+    return True
 
 def savenote(note, pid):
     """Save the given note to the database"""
+    #CHANGED: savenote function may be deprecated
     project = dbSession.query(Project)
     project = project.filter(Project.project_id == pid).all()
     project[0].note = note
