@@ -19,6 +19,21 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 {% endif %}
 {% endwith %}
 
+<div id="progress" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="progressTitle" class="modal-title">Processing</h5>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+			<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h1>
 	<p id="project_name"></p>
 </h1>
@@ -90,12 +105,12 @@ loadimage({{ drawiopic | safe }})
 
 <br>
 <br>
-<form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}">
+<form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
 	<input id="sendQuoteButton" class="btn btn-primary btn-block" style="background-color:#DADA00;" type="submit" value="Send Quote ►"/>
 </form>
 
 <br>
-<form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}">
+<form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
 	<input id="sendMaterialListButton" class="btn btn-primary btn-block" style="background-color:#DA0000;" type="submit" value="Send Material List ►"/>
 </form>
 
