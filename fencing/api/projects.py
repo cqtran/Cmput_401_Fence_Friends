@@ -1,11 +1,7 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-<<<<<<< HEAD
-from database.models import Project, Customer
+from database.models import Project, Customer, Quote
 from flask.json import jsonify
-=======
-from database.models import Project, Quote
->>>>>>> refs/remotes/origin/saving_drawio_url_to_database
 
 from flask import Blueprint, request
 from flask.json import jsonify
