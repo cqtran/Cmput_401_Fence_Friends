@@ -21,7 +21,15 @@ def getProjectList(customer_id):
         #projectList = projectList.filter(Customer.company_name == current_user.company_name)
         if customer_id is not None:
             projectList = projectList.filter(customer_id == Project.customer_id)
-        projectList = projectList.filter(Customer.customer_id == Project.customer_id).all()
+        
+        status = request.args.get('status')
+
+        if status is None or status == "None":
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id).all()
+        
+        else:
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status).all()
+
         return jsonify(projectList)
 
 @projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
