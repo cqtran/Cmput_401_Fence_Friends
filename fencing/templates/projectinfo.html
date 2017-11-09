@@ -21,7 +21,6 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <h1>
 	<p id="project_name"></p>
-    <button class="button" onclick="saveDrawPicture()">CLICK HERE TO SAVE DRAW IO DIAGRAM</button>
 </h1>
 
 <div class="container">
@@ -183,6 +182,7 @@ loadimage({{ drawiopic | safe }})
 							close();
 							image.setAttribute('src', msg.data);
 							save(location.href);
+							saveDrawPicture();
 						}
 						else if (msg.event == 'save')
 						{
