@@ -228,6 +228,38 @@ def newproject():
     else:
         return render_template("newproject.html")
 
+@app.route('/viewMaterialList/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def viewMaterialList():
+    """Generate and view a material list in a new tab"""
+    proj_id = request.args.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    return Messages.materialListMessage(project)
+
+@app.route('/viewQuote/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def viewQuote():
+    """Generate and view a quote in a new tab"""
+    proj_id = request.args.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    customer = dbSession.query(Customer).filter(
+        Customer.customer_id == project.customer_id).one()
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    attachmentString = Messages.quoteAttachment(project, customer)
+    attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
+
+    if attachment is not None:
+        return redirect(url_for("static", filename=attachment[7:]))
+
+    return redirect(url_for("projectinfo", proj_id=proj_id))
+
 @app.route('/sendQuote/', methods = ['POST'])
 @login_required
 @roles_required('primary')
@@ -241,9 +273,13 @@ def sendQuote():
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.quoteMessage(customer, company)
-    attachment = Messages.quoteAttachment(project, customer)
-    Email.send(app, mail, project.company_name, customer.email, "Your quote",
-        message, "Quote", attachment, True)
+    attachmentString = Messages.quoteAttachment(project, customer)
+    attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
+
+    if attachment is not None:
+        Email.send(app, mail, project.company_name, customer.email,
+            "Your quote", message, "Quote", attachment)
+
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
@@ -269,13 +305,22 @@ def projectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
         if project_id is not None:
+
+            json_quotepic = Projects.getdrawiopic(project_id)
+            print(json_quotepic)
+
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
             print('Relative Path: ' + imgPath)
 
-            return render_template("projectinfo.html", path = imgPath)
+            return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic))
 
     else:
+        # POST?
+        print("post")
+        long_url = request.form['myField']
+        print(long_url)
+
         return render_template("projectinfo.html", company = current_user.company_name)
 
 @app.route('/uploadpicture/', methods = ['GET', 'POST'])

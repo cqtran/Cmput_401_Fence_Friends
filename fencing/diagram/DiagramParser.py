@@ -1,16 +1,34 @@
 from xml.etree import ElementTree
 from diagram.DiagramData import DiagramData
 from diagram.FencingEntity import FencingEntity
+import base64, zlib, urllib.parse
 
 class DiagramParser:
 	"""Parse fence diagrams"""
 
-	def getShape(style):
+	def parse(compressedString):
+		"""
+		Parse the given compressed XML fence diagram file
+		Return the parsed data or None if parse failed
+		"""
+		try:
+			return DiagramParser._parse(compressedString)
+		
+		except:
+			return None
+
+	def _decompress(compressedDiagramString):
+		"""Decompress a compressed diagram string"""
+		decoded = base64.b64decode(compressedDiagramString)
+		decompressed = zlib.decompress(decoded, -8)
+		decompressedString = decompressed.decode('utf-8')
+		return urllib.parse.unquote(decompressedString)
+
+	def _getShape(style):
 		"""
 		Given the value of the 'style' tag of an 'mxCell' element, return the
 		value of the 'shape' portion or None if it is not found
 		"""
-
 		split = style.split(';')
 
 		for item in split:
@@ -20,25 +38,37 @@ class DiagramParser:
 		
 		return None
 
-	def parse(fileName):
+	def _parse(compressedString):
 		"""
-		Parse the given XML fence diagram file
+		Parse the given compressed XML fence diagram file
 		Return the parsed data or None if parse failed
 		"""
-		tree = ElementTree.parse(fileName)
-		graphModel = tree.getroot()
+		mxfile = ElementTree.fromstring(compressedString)
 
-		# If graphModel is not actually an 'mxGraphModel' element, return false
-		if graphModel.tag != 'mxGraphModel':
+		# If mxfile is not actually an 'mxfile' element, return None
+		if mxfile.tag != 'mxfile':
 			return None
 
-		# If graphModel has no children, return false
-		if len(graphModel) < 1:
+		# If mxfile has no children, return None
+		if len(mxfile) < 1:
+			return None
+		
+		diagram = mxfile[0]
+
+		# If diagram is not actually a 'diagram' element, return None
+		if diagram.tag != 'diagram':
+			return None
+		
+		graphModelString = DiagramParser._decompress(diagram.text)
+		graphModel = ElementTree.fromstring(graphModelString)
+
+		# If graphModel is not actually an 'mxGraphModel' element, return None
+		if graphModel.tag != 'mxGraphModel':
 			return None
 		
 		root = graphModel[0]
 
-		# If root is not actually a 'root' element, return false
+		# If root is not actually a 'root' element, return None
 		if root.tag != 'root':
 			return None
 
@@ -56,7 +86,7 @@ class DiagramParser:
 			if style is None:
 				continue
 			
-			shape = DiagramParser.getShape(style)
+			shape = DiagramParser._getShape(style)
 
 			# We are only dealing with 'mxCell' elements that have shapes
 			if shape is None:
