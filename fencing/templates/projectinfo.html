@@ -190,7 +190,7 @@ loadimage({{ drawiopic | safe }});
 						if (msg.event == 'init')
 						{
 							iframe.contentWindow.postMessage(JSON.stringify({action: 'load',
-								xmlsvg: initial}), '*');
+								xml: initial}), '*');
 						}
 						else if (msg.event == 'export')
 						{
