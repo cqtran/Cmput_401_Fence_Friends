@@ -371,13 +371,13 @@ def uploadpicture():
 
         return redirect(url_for('projectinfo', proj_id = project_id))
 
-@app.route('/blah/', methods = ['POST'])
+@app.route('/saveDiagram/', methods = ['POST'])
 @login_required
 @roles_required('primary')
-def blah():
+def saveDiagram():
     project_id = request.args.get('proj_id')
     image = request.form['image']
-    parsed = DiagramParser.parse(image)
+    parsed = DiagramParser._parse(image)
     print(parsed)
     return redirect(url_for('projectinfo', proj_id = project_id))
 

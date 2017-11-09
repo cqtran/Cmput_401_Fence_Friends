@@ -22,16 +22,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <h1>
 	<p id="project_name"></p>
     <button class="button" onclick="saveDrawPicture()">CLICK HERE TO SAVE DRAW IO DIAGRAM</button>
-
 </h1>
-
-
-
-
-
-
-
-
 
 <div class="container">
   <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
@@ -61,17 +52,11 @@ function post(url, params) {
 
 function saveDrawPicture() {
     var initial = image.getAttribute('src');
-    console.log("LETS GOOO");
-    console.log(initial);
-	post("{{ url_for('blah', proj_id=request.args.get('proj_id') ) }}", {image: initial});
-
+	post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
 }
 
 function loadimage(image){
     document.getElementById("image").src=image[0].project_info;
-
-    console.log(image[0].project_info);
-    console.log("hello");
 }
 
 loadimage({{ drawiopic | safe }})
@@ -169,7 +154,6 @@ loadimage({{ drawiopic | safe }})
 			function editDiagram(image)
 			{
 				var initial = image.getAttribute('src');
-				console.log("this is initial")
 				image.setAttribute('src', 'https://csahmad.github.io/drawio/war/images/ajax-loader.gif');
 				var iframe = document.createElement('iframe');
 				iframe.setAttribute('frameborder', '0');
@@ -180,7 +164,6 @@ loadimage({{ drawiopic | safe }})
 				var close = function()
 				{
 					image.setAttribute('src', initial);
-					console.log("yolo")
 					document.body.removeChild(iframe);
 					window.removeEventListener('message', receive);
 				};
@@ -197,14 +180,12 @@ loadimage({{ drawiopic | safe }})
 						}
 						else if (msg.event == 'export')
 						{
-						    console.log("Export")
 							close();
 							image.setAttribute('src', msg.data);
 							save(location.href);
 						}
 						else if (msg.event == 'save')
 						{
-						    console.log("saved")
 							iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
 								format: 'xmlsvg', spin: 'Updating page'}), '*');
 						}
@@ -221,8 +202,6 @@ loadimage({{ drawiopic | safe }})
 
 			function save(url)
 			{
-			    console.log(url)
-                console.log("helloworld")
 				if (url != null)
 				{
 					var req = new XMLHttpRequest();

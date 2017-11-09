@@ -1,3 +1,4 @@
+from flask import flash
 from xml.etree import ElementTree
 from diagram.DiagramData import DiagramData
 from diagram.FencingEntity import FencingEntity
@@ -15,10 +16,12 @@ class DiagramParser:
 			return DiagramParser._parse(compressedString)
 		
 		except BaseException as e:
+			flash("Error saving diagram", "danger")
 			print(str(e))
 			return None
 		
 		except:
+			flash("Error saving diagram", "danger")
 			return None
 	
 	def _initialDecode(string):
