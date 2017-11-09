@@ -359,7 +359,7 @@ def uploadpicture():
 def saveDiagram():
     project_id = request.args.get('proj_id')
     image = request.form['image'] #long url
-    parsed = DiagramParser._parse(image)
+    parsed = DiagramParser.parse(image)
     print(parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
