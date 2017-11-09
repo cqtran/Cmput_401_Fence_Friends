@@ -1,21 +1,29 @@
 from xml.etree import ElementTree
 from diagram.DiagramData import DiagramData
 from diagram.FencingEntity import FencingEntity
-import base64, zlib, urllib.parse
+import base64, zlib, urllib.parse, html
 
 class DiagramParser:
 	"""Parse fence diagrams"""
 
 	def parse(compressedString):
 		"""
-		Parse the given compressed XML fence diagram file
+		Parse the given compressed XML-SVG fence diagram
 		Return the parsed data or None if parse failed
 		"""
 		try:
 			return DiagramParser._parse(compressedString)
 		
+		except BaseException as e:
+			print(str(e))
+			return None
+		
 		except:
 			return None
+	
+	def _initialDecode(string):
+		# Slice to get rid of "data:image/svg+xml;base64,"
+		return base64.b64decode(string[26:])
 
 	def _decompress(compressedDiagramString):
 		"""Decompress a compressed diagram string"""
@@ -37,13 +45,23 @@ class DiagramParser:
 				return item[6:]
 		
 		return None
+	
+	def _getRoot(compressedString):
+		"""
+		Given a compressed XML-SVG fence diagram, return the "root" element
+		or None if not found
+		"""
+		string = DiagramParser._initialDecode(compressedString)
+		svg = ElementTree.fromstring(string)
+		
+		content = svg.get('content')
 
-	def _parse(compressedString):
-		"""
-		Parse the given compressed XML fence diagram file
-		Return the parsed data or None if parse failed
-		"""
-		mxfile = ElementTree.fromstring(compressedString)
+		# If svg has no "content" attribute, return None
+		if content is None:
+			return None
+		
+		unescaped = html.unescape(content)
+		mxfile = ElementTree.fromstring(unescaped)
 
 		# If mxfile is not actually an 'mxfile' element, return None
 		if mxfile.tag != 'mxfile':
@@ -70,6 +88,18 @@ class DiagramParser:
 
 		# If root is not actually a 'root' element, return None
 		if root.tag != 'root':
+			return None
+		
+		return root
+
+	def _parse(compressedString):
+		"""
+		Parse the given compressed XML-SVG fence diagram
+		Return the parsed data or None if parse failed
+		"""
+		root = DiagramParser._getRoot(compressedString)
+
+		if root is None:
 			return None
 
 		data = DiagramData()

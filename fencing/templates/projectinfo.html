@@ -36,10 +36,34 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <div class="container">
   <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
     <script>
+// From:
+// https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/133997#133997
+// Acccessed November 8, 2017
+function post(url, params) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", url);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
 function saveDrawPicture() {
     var initial = image.getAttribute('src');
-    console.log("LETS GOOO")
-    console.log(initial)
+    console.log("LETS GOOO");
+    console.log(initial);
+	post("{{ url_for('blah', proj_id=request.args.get('proj_id') ) }}", {image: initial});
 
 }
 
@@ -169,7 +193,7 @@ loadimage({{ drawiopic | safe }})
 						if (msg.event == 'init')
 						{
 							iframe.contentWindow.postMessage(JSON.stringify({action: 'load',
-								xmlpng: initial}), '*');
+								xmlsvg: initial}), '*');
 						}
 						else if (msg.event == 'export')
 						{
@@ -182,7 +206,7 @@ loadimage({{ drawiopic | safe }})
 						{
 						    console.log("saved")
 							iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
-								format: 'xmlpng', spin: 'Updating page'}), '*');
+								format: 'xmlsvg', spin: 'Updating page'}), '*');
 						}
 						else if (msg.event == 'exit')
 						{
