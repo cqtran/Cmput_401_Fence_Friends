@@ -311,7 +311,7 @@ def projectinfo():
 
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
-            print('Relative Path: ' + imgPath)
+            #print('Relative Path: ' + imgPath)
 
             return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic))
 
@@ -337,6 +337,16 @@ def uploadpicture():
         Pictures.addPicture(app.root_path, project_id, picture)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.route('/saveDiagram/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def saveDiagram():
+    project_id = request.args.get('proj_id')
+    image = request.form['image']
+    parsed = DiagramParser._parse(image)
+    print(parsed)
+    return redirect(url_for('projectinfo', proj_id = project_id))
 
 @app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required
