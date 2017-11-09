@@ -337,17 +337,17 @@ def projectinfo():
         if project_id is not None:
             # get project info to pass to html and display
             json_projectinfo = Projects.getProject(project_id)
-            print(json_projectinfo)
+            #print(json_projectinfo)
 
             # Get project pictures to display
             json_pictures = Pictures.getPictures(project_id)
             json_quotepic = Projects.getdrawiopic(project_id)
-            print(json_pictures)
-            print(json_quotepic)
+            #print(json_pictures)
+            #print(json_quotepic)
 
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
-            print('Relative Path: ' + imgPath)
+            #print('Relative Path: ' + imgPath)
 
             return render_template("projectinfo.html", proj = json.dumps(json_projectinfo),
                 company = current_user.company_name, images = json.dumps(json_pictures),
@@ -374,6 +374,16 @@ def uploadpicture():
         Pictures.addPicture(app.root_path, project_id, picture)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.route('/saveDiagram/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def saveDiagram():
+    project_id = request.args.get('proj_id')
+    image = request.form['image']
+    parsed = DiagramParser._parse(image)
+    print(parsed)
+    return redirect(url_for('projectinfo', proj_id = project_id))
 
 @app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required

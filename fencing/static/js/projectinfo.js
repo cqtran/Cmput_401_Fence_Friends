@@ -1,4 +1,10 @@
+function setProgressTitle(title) {
+	var progressTitle = document.getElementById("progressTitle");
+	progressTitle.innerHTML = title;
+}
+
 function showSendingQuote() {
+	setProgressTitle("Sending quote");
 	var quoteButton = document.getElementById("sendQuoteButton");
 	var materialListButton = document.getElementById("sendMaterialListButton");
 	quoteButton.disabled = true;
@@ -7,6 +13,7 @@ function showSendingQuote() {
 }
 
 function showSendingMaterialList() {
+	setProgressTitle("Sending material list");
 	var quoteButton = document.getElementById("sendQuoteButton");
 	var materialListButton = document.getElementById("sendMaterialListButton");
 	quoteButton.disabled = true;

@@ -64,5 +64,9 @@ class Email:
 			flash(errorMessage + " (OSError)", "danger")
 			print(str(e))
 		
+		except BaseException as e:
+			flash(errorMessage + " (unknown exception)", "danger")
+			print(str(e))
+		
 		except:
 			flash(errorMessage + " (unknown exception)", "danger")
