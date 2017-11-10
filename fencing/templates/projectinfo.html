@@ -38,7 +38,8 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	<p id="project_name"></p>
 </h1>
 
-<div class="container">
+<div class="container" id="overlay" >
+
   <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
     <script>
 // From:
@@ -121,7 +122,6 @@ loadimage({{ drawiopic | safe }});
 
 var imgPath = {{ path|safe }}
 var pictureList = document.getElementById('projectPictures');
-
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");
 
@@ -197,10 +197,11 @@ request.send()
 				var initial = image.getAttribute('src');
 				image.setAttribute('src', 'https://csahmad.github.io/drawio/war/images/ajax-loader.gif');
 				var iframe = document.createElement('iframe');
-				iframe.setAttribute('frameborder', '0');
-				iframe.setAttribute('width', '80%');
-				iframe.setAttribute('height', '1000');
-				iframe.setAttribute('align', 'right');
+				iframe.setAttribute('style', "position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;")
+				//iframe.setAttribute('frameborder', '0');
+				//iframe.setAttribute('width', '80%');
+				//iframe.setAttribute('height', '1000');
+				//iframe.setAttribute('align', 'right');
 
 				var close = function()
 				{
