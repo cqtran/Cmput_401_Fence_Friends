@@ -12,6 +12,7 @@ from flask_security.decorators import roles_required
 #from app import userDatastore
 
 adminBlueprint = Blueprint('adminBlueprint', __name__, template_folder='templates')
+# TODO: This was moved into app.py due to it being tied to flask_security
 """
 @adminBlueprint.route('/acceptUser/', methods=['POST'])
 @login_required
