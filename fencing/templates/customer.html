@@ -8,48 +8,81 @@
 
 <h1>Customers</h1>
 
-<div class="list-group list-group-flush" id="customerlist"></div>
+<hr class="mt-2">
+<div class="col-lg-12">
+  <div class="row" id="customerlist"></div>
+</div>
 
+<script type="text/javascript">
 
+  // Get the <datalist> and <input> elements.
+  var customerList = document.getElementById('customerlist');
 
-<script>
-function test_data(listcust){
-    console.log(listcust)
-}
+  // Create a new XMLHttpRequest.
+  var request = new XMLHttpRequest();
 
-function makeA(array,id) {
-    // Create the list element:
-    var list = document.getElementById('customerlist');
+  // Handle state changes for the request.
+  request.onreadystatechange = function(response) {
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      // Parse the JSON
+      var jsonOptions = JSON.parse(request.responseText);
 
-    for(var i = 0; i < array.length; i++) {
-        // Create the list item:
-        var item = document.createElement('a');
-        item.setAttribute('href', '#')
-        item.setAttribute('class', 'list-group-item list-group-item-action');
+      // Loop over the JSON array.
+      jsonOptions.forEach(function(customer) {
+        var item = document.createElement('div');
+        var final = document.createElement('div');
+        var link = document.createElement('a');
+        var inner = document.createElement('div');
+        var name = document.createElement('h2');
+        var number = document.createElement('h6');
+        var email = document.createElement('h6');
+
+        email.setAttribute('class', 'card-body mb-1 text-center no-padding');
+        email.innerText = customer.email;
+
+        number.setAttribute('class', 'card-body mb-1 text-center no-padding');
+        number.innerText = customer.cellphone;
+
+        name.setAttribute('class', 'card-title mb-1 text-center no-padding');
+        name.innerText = customer.first_name;
+
+        link.setAttribute('href', '#')
+
+        inner.setAttribute('class', 'card-body');
+        inner.appendChild(name);
+        inner.appendChild(number);
+        inner.appendChild(email);
+
+        link.appendChild(inner);
+        item.setAttribute('class', 'card mb-2');
+        final.setAttribute('class', 'less-padding card-row col-lg-4 col-md-6')
 
         // this is where you want to go when you click
         //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-        item.setAttribute('onclick', 'customerClicked('+id[i]+')')
-		item.setAttribute('cust_id', id[i])
+        link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
 
-
-        // Set its contents:
-        var content = array[i];
-        item.appendChild(document.createTextNode(content));
-
+        item.appendChild(link);
+        final.appendChild(item);
         // Add it to the list:
-        list.appendChild(item);
+        customerList.appendChild(final);
+      });
+
+    } else {
+      var item = document.createElement('a');
+      item.appendChild(document.createTextNode('An error has occurred'));
+      customerList.appendChild(item);
     }
+  }
+  };
 
-    // Finally, return the constructed list:
-    return list;
-}
+  // Set up and make the request.
+  request.open('GET', '/getCustomerList', true);
+  request.send();
 
-makeA({{ listcust|safe }}, {{ custid|safe }});
-
-function customerClicked(id) {
-	window.location.href= '/projects?cust_id='+id
-}
+  function customerClicked(id) {
+  	window.location.href= '/customerinfo?cust_id=' + id + "&status=All"
+  }
 
 </script>
 {% endblock %}

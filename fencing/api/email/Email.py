@@ -2,8 +2,10 @@ from flask_mail import Message
 from smtplib import SMTPAuthenticationError, SMTPServerDisconnected, \
     SMTPException
 from flask import flash
+from flask_security.core import current_user
 from weasyprint import HTML
-from database.models import Customer, Project
+from database.models import Company, Customer, Project
+from database.db import dbSession
 from api.email.Messages import Messages
 import os
 
@@ -36,8 +38,12 @@ class Email:
 		errorMessage = "Error sending " + kind.lower()
 
 		try:
+			company = dbSession.query(Company).filter(
+				Company.company_name == current_user.company_name).one()
+
 			m = Message(subject, sender=(senderName, SENDER_EMAIL),
-				recipients=[recipientEmail])
+				recipients=[recipientEmail],
+				bcc=[company.email])
 			m.html = message
 
 			if attachmentPath is not None:

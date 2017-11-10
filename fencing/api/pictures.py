@@ -4,7 +4,25 @@ from database.models import Picture
 import os
 from werkzeug.utils import secure_filename
 
+from flask import Blueprint, request
+from flask.json import jsonify
+from flask_security.core import current_user
+from flask_security import login_required
+from flask_security.decorators import roles_required
+
 directory = os.path.join('static', 'images')
+
+pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
+
+@pictureBlueprint.route('/getPictureList/<int:project_id>', methods=['GET'])
+#@login_required
+#@roles_required('primary')
+def getPictureList(project_id):
+    """ Returns a list of pictures for a given project id"""
+    if request.method == 'GET':
+        pictures = dbSession.query(Picture)
+        pictures = pictures.filter(Picture.project_id == project_id).all()
+        return jsonify(pictures)
 
 def addPicture(root_path, pid, picture):
     """ Saves the image and adds the picture name to a related project """
@@ -23,10 +41,3 @@ def addPicture(root_path, pid, picture):
         return True
 
     return False
-
-def getPictures(pid):
-    """ Returns a list of picture names to a related project """
-    pictures = dbSession.query(Picture)
-    pictures = pictures.filter(Picture.project_id == pid).all()
-    json_response = [i.serialize for i in pictures]
-    return json_response

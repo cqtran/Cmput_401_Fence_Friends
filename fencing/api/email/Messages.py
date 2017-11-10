@@ -4,6 +4,7 @@ class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
 	quotePath = "static/Quote.pdf"
+	materialListPath = "static/Material List.pdf"
 
 	stylesheets=[CSS(string="""
 		table {
@@ -40,6 +41,18 @@ class Messages:
 			Dear {customer.first_name},<br>
 			<br>
 			Please find your attached quote.<br>
+			<br>
+			Please do not respond to this email. You can contact us at
+			{company.email}
+			"""
+	
+	def materialListMessage(company):
+		"""Generate a material list email message"""
+		supplier = "Your face"
+		return f"""
+			Dear {supplier},<br>
+			<br>
+			Please find our required materials attached.<br>
 			<br>
 			Please do not respond to this email. You can contact us at
 			{company.email}
@@ -87,8 +100,8 @@ class Messages:
 			</div>
 			"""
 	
-	def materialListMessage(project):
-		"""Generate a material list email message"""
+	def materialListAttachment(project):
+		"""Generate the content of a material list attachment and return it"""
 		return """
 			<b>Steel</b><br>
 			7 steel posts<br>

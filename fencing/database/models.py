@@ -93,7 +93,7 @@ class Status (Base):
 class Project(Base):
     __tablename__ = 'project'
     project_id = Column(Integer, primary_key=True)
-    customer_id = Column('customer_id', Integer(), ForeignKey('customer.customer_id'))
+    customer_id = Column('customer_id', Integer, ForeignKey('customer.customer_id'))
     status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
     address = Column(String(100))
@@ -103,7 +103,8 @@ class Project(Base):
     project_name = Column("project_name", String(50))
 
     def __init__(self, customer_id, status_name, address, end_date, note,
-                 project_name, company_name):
+                 project_name, company_name, project_id = None):
+        self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
         self.address = address
@@ -135,8 +136,8 @@ class Quote(Base):
     note = Column(String(255))
     last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
 
-    def __init__(self, project_id, quote, project_info, note):
-        #self.quote_id = quote_id
+    def __init__(self, project_id, quote, project_info, note, quote_id=None):
+        self.quote_id = quote_id
         self.project_id = project_id
         self.quote = quote
         self.project_info = project_info
@@ -167,8 +168,8 @@ class Picture(Base):
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
     file_name = Column(String(100))
 
-    def __init__(self, project_id, file_name):
-        #self.picture_id = picture_id
+    def __init__(self, project_id, file_name, picture_id = None):
+        self.picture_id = picture_id
         self.project_id = project_id
         self.file_name = file_name
 

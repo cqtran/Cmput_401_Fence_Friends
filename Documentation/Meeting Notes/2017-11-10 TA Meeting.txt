@@ -1,0 +1,54 @@
+2017-11-10 Meeting with Diego
+------------------------------------------------------
+Demoed sprint 3 progress:
+	New UI, projects are color coded depending on status and can filter,
+		edit projects, upload picture
+	
+Demoed TestCases:
+	Getting requests from the API and comparing to the test data
+	Need 404 and error handling
+	
+Overall looks good and alot of work has been done for this sprint.
+UI looks plain?
+
+Next sprint will accounting, quotation calculculation, 
+	import/export files, edit customer info
+
+Need link to application with username and password
+Trouble deploying using only IP, Flask wants a URL
+Parameters may have to be changed for deployment on IP
+
+
+2017-11-10 Meeting with Victor
+------------------------------------------------------
+Demoed what progress we have:
+	In general we need mock data that looks real
+	We need to ask Diego for a tablet to try out app out
+	Customers page:
+		Customers should be sorted somehow
+		Clean UI, prettier UI or boxes? Tighter/smaller customer box UI
+		Colors?
+		
+	Projects page:
+		Can filter projects by status
+		Sorted by start date. We should sort by dates
+			and group by project status
+		We should know the status process flow
+	
+	Project Info:
+		Dates in order
+	
+	Drawing.IO:
+		Gates, Fence, Buildings. Drawing saves to database
+		We should make sure to scale it vertically too. Making a skinny but tall image will make it look weird
+	
+	Create customer -> new project (Both have addresses because a client may have multiple properties)
+	Buttons should be 
+	
+	View quote and view material list create a pdf
+	Can send an email with attached pdf to suppliers and clients
+	Calculations are from rules
+	
+	New requirement: Create an thumbnail to make them look the same size. Clicking them will open the full image
+	
+	Floating text when Draw.IO is loaded may be able to be captured and hidden
