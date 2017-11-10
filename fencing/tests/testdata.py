@@ -1,5 +1,5 @@
 from datetime import datetime
-from database.models import Customer, Project, Company, Status, User, Quote
+from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material
 from database.db import dbSession
 
 def companyTestData():
@@ -48,6 +48,7 @@ def userTestData():
     dbSession.add(newUser2)
     dbSession.commit()
 
+# Helper function for inserting quotes
 def quoteTestData():
     newQuote = Quote(quote_id = 1, project_id = 1, quote = 1500, project_info ='image1', note='noteeeeeeeeeee' )
     newQuote1 = Quote(quote_id = 2, project_id = 1, quote = 1700, project_info ='image1', note='This is note the same')
@@ -56,3 +57,14 @@ def quoteTestData():
     dbSession.add(newQuote1)
     dbSession.add(newQuote2)
     dbSession.commit()
+
+# Helper function for inserting pictures
+def pictureTestData():
+    newPic = Picture(picture_id = 1, file_name = "file", project_id = 1)
+    newPic1 = Picture(picture_id = 2, file_name = "file1", project_id = 1)
+    newPic2 = Picture(picture_id = 3, file_name = "this_is_a_file", project_id = 2)
+    dbSession.add(newPic)
+    dbSession.add(newPic1)
+    dbSession.add(newPic2)
+    dbSession.commit()
+

@@ -3,7 +3,7 @@ import unittest
 
 from flask import json
 from database.db import dbSession, Base, engine
-from database.models import Status
+from database.models import Status, Picture
 from tests.testdata import *
 
 import requests
@@ -28,10 +28,37 @@ class TestPicture(unittest.TestCase):
             engine.execute(tbl.delete())
         dbSession.remove()
 
+    def test_noPicture(self):
+        print("Testing Picture")
+        noPic = dbSession.query(Picture).all()
+        assert len(noPic) == 0
+
+
     def test_addPicture(self):
         """ Test adding a picture to a project """
-        pass
+        pictureTestData()
+
+        Pic = dbSession.query(Picture).first()
+        assert Pic.picture_id == 1
+        assert Pic.file_name == "file"
+
+
 
     def test_getPictures(self):
         """ Test getting pictures of a project """
-        pass
+        pictureTestData()
+
+        Pics = Picture.query.filter_by(project_id=1).all()
+        assert len(Pics) > 1
+        assert Pics[0].file_name != Pics[1].file_name
+
+    def test_picturePID(self):
+        pictureTestData()
+
+        Pics = dbSession.query(Picture).all()
+        assert Pics[1].project_id != Pics[2].project_id
+
+    # def test_getPicPID(self):
+    #     pictureTestData()
+
+    #     Pics = Pictures.getPictureList(1)
