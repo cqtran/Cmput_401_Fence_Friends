@@ -44,6 +44,14 @@ pip3 install mysql-connector==2.1.4
 pip3 install SQLAlchemy
 ```
 
+### Flask SQLAlchemy
+
+```bash
+pip3 install flask-sqlalchemy
+```
+
+flask-sqlalchemy
+
 ### Flask
 
 ```bash
