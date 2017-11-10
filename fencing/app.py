@@ -203,8 +203,7 @@ def users():
 @login_required
 @roles_required('admin')
 def accountrequests():
-    users = dbSession.query(User).filter(User.active == False).all()
-    return render_template("accountrequests.html", company = "Admin", users = users)
+    return render_template("accountrequests.html", company = "Admin")
 
 @app.route('/acceptUser/', methods=['POST'])
 @login_required
@@ -217,8 +216,7 @@ def acceptUser():
         userDatastore.activate_user(user[0])
         user[0].active = True
         dbSession.commit()
-        users = dbSession.query(User).filter(User.active == False).all()
-        return render_template("accountrequests.html", company = "Admin", users = users)
+        return render_template("accountrequests.html", company = "Admin")
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
@@ -367,13 +365,13 @@ def sendMaterialList():
     attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
-    
+
     supplierEmail = "hey@hey.hey"
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, supplierEmail,
             "Material list", message, "Material list", attachment)
-    
+
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
