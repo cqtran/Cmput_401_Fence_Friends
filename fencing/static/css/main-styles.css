@@ -57,3 +57,34 @@ a, a:hover {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.not-reached{
+  background-color: #ffffb3;
+}
+.appraisal-booked{
+  background-color: #b3ffb3;
+}
+.waiting-appraisal{
+  background-color: #ffb3b3;
+}
+.appraised{
+  background-color: #a7f1a7;
+}
+.quote-sent{
+  background-color: #eee8aa;
+}
+.waiting-alberta{
+  background-color: #fff599;
+}
+.install-pending{
+  background-color: #ffdab9;
+}
+.installing{
+  background-color: #c0f2f2;
+}
+.paid{
+  background-color: #dfecdf;
+}
+.not-interested{
+  background-color: #d9d9d9;
+}

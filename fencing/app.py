@@ -215,6 +215,17 @@ def projects():
 
     return render_template("projects.html")
 
+@app.route('/customerinfo/')
+@login_required
+@roles_required('primary')
+def customerinfo():
+    status = request.args.get('status')
+
+    # Because seeing "None" in the dropdown menu is unsettling, even if it is
+    # treated as "All"
+
+    return render_template("customerinfo.html")
+
 @app.route('/autocomplete/', methods=["GET"])
 @login_required
 @roles_required('primary')
