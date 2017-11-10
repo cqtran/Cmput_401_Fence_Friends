@@ -9,7 +9,8 @@ class MyJSONEncoder(JSONEncoder):
                 'username' : obj.username,
                 'email' : obj.email,
                 'company_name' : obj.company_name,
-                'active' : obj.active
+                'active' : obj.active,
+                'confirmed_at' : dump_datetime(obj.confirmed_at)
             }
         if isinstance(obj, Customer):
             return {
