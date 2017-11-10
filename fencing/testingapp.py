@@ -9,7 +9,7 @@ import api.customers as Customers
 import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
-
+import api.errors as Errors
 import argparse
 
 app = Flask(__name__)
@@ -22,6 +22,7 @@ app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
 app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
+app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
 
 """

@@ -20,6 +20,7 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
+import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
 import json
@@ -35,6 +36,7 @@ app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
+#app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
@@ -442,6 +444,10 @@ def editprojectinfo():
             address = address, status = status, note = note)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error404.html'), 404
 
 if __name__ == "__main__":
 
