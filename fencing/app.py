@@ -260,9 +260,14 @@ def viewMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    customer = dbSession.query(Customer).filter(
-        Customer.customer_id == project.customer_id).one()
-    return Messages.materialListMessage(project)
+    attachmentString = Messages.materialListAttachment(project)
+    attachment = Email.makeAttachment(Messages.materialListPath,
+        attachmentString)
+
+    if attachment is not None:
+        return redirect(url_for("static", filename=attachment[7:]))
+
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
@@ -314,11 +319,19 @@ def sendMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    customer = dbSession.query(Customer).filter(
-        Customer.customer_id == project.customer_id).one()
-    message = Messages.materialListMessage(project)
-    Email.send(app, mail, project.company_name, customer.email, "Material list",
-        message, "Material list")
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    message = Messages.materialListMessage(company)
+    attachmentString = Messages.materialListAttachment(project)
+    attachment = Email.makeAttachment(Messages.materialListPath,
+        attachmentString)
+    
+    supplierEmail = "hey@hey.hey"
+
+    if attachment is not None:
+        Email.send(app, mail, project.company_name, supplierEmail,
+            "Material list", message, "Material list", attachment)
+    
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
