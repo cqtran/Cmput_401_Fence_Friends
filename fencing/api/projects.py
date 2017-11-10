@@ -20,7 +20,7 @@ def getProjectList(customer_id):
         projectList = dbSession.query(Project)
         #projectList = projectList.filter(Customer.company_name == current_user.company_name)
         if customer_id is not None:
-            projectList = projectList.filter(customer_id == Project.customer_id)
+           projectList = projectList.filter(Project.customer_id == customer_id)
         
         status = request.args.get('status')
 

@@ -86,16 +86,16 @@
   var url = new URL(window.location.href);
   var cust_id = url.searchParams.get("cust_id");
   if(cust_id == null) {
-    requestCustomer.open('GET', '/getCustomer/' + '?status={{ request.args.get("status") }}', true);
+    request.open('GET', '/getProjectList' + '?status={{ request.args.get("status") }}', true);
   } else {
-    request.open('GET', '/getProjectList/?cust_id=' + cust_id + '&status={{ request.args.get("status") }}', true);
-    requestCustomer.open('GET', '/getCustomer/?cust_id=' + cust_id + '&status={{ request.args.get("status") }}', true);
-    requestCustomer.send()
+    request.open('GET', '/getProjectList/' + cust_id + '?status={{ request.args.get("status") }}', true);
+    requestCustomer.open('GET', '/getCustomer/' + cust_id, true);
+    requestCustomer.send();
   }
   request.send();
 
 function projectClicked(id) {
-	window.location.href= '/projectinfo?proj_id='+id
+	window.location.href = '/projectinfo?proj_id=' + id;
 }
 
 </script>
