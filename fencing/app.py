@@ -190,7 +190,7 @@ def customers():
         users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
     else:
-        return render_template("customer.html")
+        return render_template("customer.html", company = current_user.company_name)
 
 @app.route('/users/')
 @login_required
@@ -232,7 +232,7 @@ def newcustomer():
         # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
 
-        return redirect(url_for('customers'))#, company = current_user.company_name))
+        return redirect(url_for('customers', company = current_user.company_name))
 
     else:
         return render_template("newcustomer.html", company = current_user.company_name)
@@ -255,28 +255,14 @@ def projects():
         cust_id = request.args.get('cust_id')
         return redirect(url_for('projects', cust_id=cust_id, status="All"))
 
-    return render_template("projects.html")
+    return render_template("projects.html", company = current_user.company_name)
 
 @app.route('/customerinfo/')
 @login_required
 @roles_required('primary')
 def customerinfo():
     status = request.args.get('status')
-
-    # Because seeing "None" in the dropdown menu is unsettling, even if it is
-    # treated as "All"
-
-    return render_template("customerinfo.html")
-
-@app.route('/autocomplete/', methods=["GET"])
-@login_required
-@roles_required('primary')
-def autocomplete():
-    # pulls in customers to populate dropdown table in new project
-    search = request.args.get("q")
-    customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
-    return jsonify(customers)
-
+    return render_template("customerinfo.html", company = current_user.company_name)
 
 @app.route('/newproject/', methods=['GET', 'POST'])
 @login_required
@@ -292,7 +278,7 @@ def newproject():
                                          current_user.company_name, projectname)
         return redirect(url_for('projects', status="All"))
     else:
-        return render_template("newproject.html")
+        return render_template("newproject.html", company = current_user.company_name)
 
 @app.route('/viewMaterialList/', methods = ['POST'])
 @login_required
@@ -390,7 +376,7 @@ def projectinfo():
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
 
-            return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic))
+            return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
 
     else:
         # POST?
@@ -440,7 +426,7 @@ def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
         if project_id is not None:
-            return render_template("editproject.html")
+            return render_template("editproject.html", company = current_user.company_name)
         else:
             # Error handling
             pass
@@ -456,12 +442,6 @@ def editprojectinfo():
             address = address, status = status, note = note)
 
         return redirect(url_for('projectinfo', proj_id = project_id))
-
-@app.route('/testdraw/',  methods = ['GET', 'POST'])
-def testdraw():
-    return render_template("self-editing-embed.html")
-
-
 
 if __name__ == "__main__":
 

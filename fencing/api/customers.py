@@ -15,9 +15,12 @@ customerBlueprint = Blueprint('customerBlueprint', __name__, template_folder='te
 #@login_required
 #@roles_required('primary')
 def getCustomerList(company_name):
+    """ Returns a list of customers. If a company name is provided, the list will
+    only contain customers from that company"""
     if request.method == 'GET':
         customers = dbSession.query(Customer)
         if company_name is not None:
+            # filter customer list by company_name if provided
             customers = customers.filter(Customer.company_name == company_name)
         customers = customers.all()
         return jsonify(customers)
@@ -26,10 +29,20 @@ def getCustomerList(company_name):
 #@login_required
 #@roles_required('primary')
 def getCustomer(customer_id):
+    """ Returns a response for a single customer of the given customer id """
     if request.method == 'GET':
         customer = dbSession.query(Customer)
         customer = customer.filter(Customer.customer_id == customer_id).all()
         return jsonify(customer)
+
+@customerBlueprint.route('/autocomplete/', methods=["GET"])
+@login_required
+@roles_required('primary')
+def autocomplete():
+    # pulls in customers to populate dropdown table in new project
+    search = request.args.get("q")
+    customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
+    return jsonify(customers)
 
 def addCustomer(name, email, ph, addr, cname):
     """Add a customer to the database with the given field values"""

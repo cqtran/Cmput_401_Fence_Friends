@@ -18,6 +18,7 @@ pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='temp
 @login_required
 @roles_required('primary')
 def getPictureList(project_id):
+    """ Returns a list of pictures for a given project id"""
     if request.method == 'GET':
         pictures = dbSession.query(Picture)
         pictures = pictures.filter(Picture.project_id == project_id).all()

@@ -1,5 +1,5 @@
 from datetime import datetime
-from database.models import Customer, Project, Company, Status
+from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material
 from database.db import dbSession
 
 def companyTestData():
@@ -37,3 +37,34 @@ def projectTestData():
     dbSession.add(newProject2)
     dbSession.add(newProject3)
     dbSession.commit()
+
+# Helper function for inserting user test data
+def userTestData():
+    newUser = User(id = 1, email = "abc@abc.com", username = "KatUser", password = "password", company_name = "Fence", active = True)
+    newUser1 = User(id = 2, email = "abc1@abc.com", username = "aUser", password = "password", company_name = "Fence", active = True)
+    newUser2 = User(id = 3, email = "abc2@abc.com", username = "aUser", password = "password", company_name = "Fence", active = True)
+    dbSession.add(newUser)
+    dbSession.add(newUser1)
+    dbSession.add(newUser2)
+    dbSession.commit()
+
+# Helper function for inserting quotes
+def quoteTestData():
+    newQuote = Quote(quote_id = 1, project_id = 1, quote = 1500, project_info ='image1', note='noteeeeeeeeeee' )
+    newQuote1 = Quote(quote_id = 2, project_id = 1, quote = 1700, project_info ='image1', note='This is note the same')
+    newQuote2 = Quote(quote_id = 3, project_id = 2, quote = 2500, project_info ='image1', note='noteeeeeeeeeee')    
+    dbSession.add(newQuote)
+    dbSession.add(newQuote1)
+    dbSession.add(newQuote2)
+    dbSession.commit()
+
+# Helper function for inserting pictures
+def pictureTestData():
+    newPic = Picture(picture_id = 1, file_name = "file", project_id = 1)
+    newPic1 = Picture(picture_id = 2, file_name = "file1", project_id = 1)
+    newPic2 = Picture(picture_id = 3, file_name = "this_is_a_file", project_id = 2)
+    dbSession.add(newPic)
+    dbSession.add(newPic1)
+    dbSession.add(newPic2)
+    dbSession.commit()
+
