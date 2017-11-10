@@ -4,7 +4,7 @@ class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
 	quotePath = "static/Quote.pdf"
-	materialListPath = "static/Material_List.pdf"
+	materialListPath = "static/Material List.pdf"
 
 	stylesheets=[CSS(string="""
 		table {
