@@ -239,7 +239,7 @@ def newproject():
         #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
                                          current_user.company_name, projectname)
-        return redirect(url_for('projects'))
+        return redirect(url_for('projects', status="All"))
     else:
         return render_template("newproject.html")
 

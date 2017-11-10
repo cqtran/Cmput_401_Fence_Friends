@@ -15,6 +15,7 @@
     {{ request.args.get('status') }}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='All') }}">All</a>
     <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Not Reached') }}">Not Reached</a>
     <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Appraisal Booked') }}">Appraisal Booked</a>
     <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Waiting for Appraisal') }}">Waiting for Appraisal</a>
