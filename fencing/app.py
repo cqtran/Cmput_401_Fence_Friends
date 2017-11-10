@@ -204,7 +204,15 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
-        return render_template("projects.html")
+    status = request.args.get('status')
+
+    # Because seeing "None" in the dropdown menu is unsettling, even if it is
+    # treated as "All"
+    if (status is None or status == "None"):
+        cust_id = request.args.get('cust_id')
+        return redirect(url_for('projects', cust_id=cust_id, status="All"))
+
+    return render_template("projects.html")
 
 @app.route('/autocomplete/', methods=["GET"])
 @login_required
