@@ -44,8 +44,9 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
+app.config['SECURITY_FLASH_MESSAGES'] = False
 
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
@@ -111,13 +112,6 @@ def setup_db():
         userDatastore.activate_user(newUser)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Customer.customer_id, 1):
-        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy"
-                                ,cellphone = "1234567", company_name = "Fence")
-        dbSession.add(newCustomer)
-        dbSession.commit()
-
-
     if not fieldExists(dbSession, Status.status_name, "Not Reached"):
         newStatus = Status(status_name = "Not Reached")
         dbSession.add(newStatus)
@@ -128,12 +122,6 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Project.project_id, 1):
-        newProject = Project(customer_id = 1, address = "1234",
-            status_name = "Not Reached", end_date = None, note = '',
-            project_name = "Andy's Project", company_name = "Fence", project_id = 1)
-        dbSession.add(newProject)
-        dbSession.commit()
 
 
 @app.teardown_appcontext
@@ -187,7 +175,6 @@ def newcustomer():
         address = request.form['address']
         # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
-        print(success)
 
         return redirect(url_for('customers'))#, company = current_user.company_name))
 
@@ -204,7 +191,15 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
-        return render_template("projects.html")
+    status = request.args.get('status')
+
+    # Because seeing "None" in the dropdown menu is unsettling, even if it is
+    # treated as "All"
+    if (status is None or status == "None"):
+        cust_id = request.args.get('cust_id')
+        return redirect(url_for('projects', cust_id=cust_id, status="All"))
+
+    return render_template("projects.html")
 
 @app.route('/autocomplete/', methods=["GET"])
 @login_required
@@ -212,7 +207,6 @@ def projects():
 def autocomplete():
     # pulls in customers to populate dropdown table in new project
     search = request.args.get("q")
-    print(search)
     customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
     return jsonify(customers)
 
@@ -221,22 +215,12 @@ def autocomplete():
 @login_required
 @roles_required('primary')
 def newproject():
-    print("new project" + request.method)
     if request.method == 'POST':
-        #customer = request.form["customer"]
-        #print()
-        #customer = request.args.get('customer')
         customer = request.form["customer"]
         customer = customer.split("-")
-        print(customer)
         customerId = customer[1]
-        print(customer)
         projectname = request.form["name"]
-        print(projectname)
         address = request.form["address"]
-        print(address)
-        # cid = request.form[]
-        #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
                                          current_user.company_name, projectname)
         return redirect(url_for('projects', status="All"))
@@ -251,9 +235,14 @@ def viewMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    customer = dbSession.query(Customer).filter(
-        Customer.customer_id == project.customer_id).one()
-    return Messages.materialListMessage(project)
+    attachmentString = Messages.materialListAttachment(project)
+    attachment = Email.makeAttachment(Messages.materialListPath,
+        attachmentString)
+
+    if attachment is not None:
+        return redirect(url_for("static", filename=attachment[7:]))
+
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
@@ -305,11 +294,19 @@ def sendMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    customer = dbSession.query(Customer).filter(
-        Customer.customer_id == project.customer_id).one()
-    message = Messages.materialListMessage(project)
-    Email.send(app, mail, project.company_name, customer.email, "Material list",
-        message, "Material list")
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    message = Messages.materialListMessage(company)
+    attachmentString = Messages.materialListAttachment(project)
+    attachment = Email.makeAttachment(Messages.materialListPath,
+        attachmentString)
+    
+    supplierEmail = "hey@hey.hey"
+
+    if attachment is not None:
+        Email.send(app, mail, project.company_name, supplierEmail,
+            "Material list", message, "Material list", attachment)
+    
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
@@ -322,11 +319,9 @@ def projectinfo():
         if project_id is not None:
 
             json_quotepic = Projects.getdrawiopic(project_id)
-            print(json_quotepic)
 
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
-            #print('Relative Path: ' + imgPath)
 
             return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic))
 
@@ -342,8 +337,6 @@ def uploadpicture():
         project_id = request.form['proj_id']
         picture = request.files['picture']
 
-        print('\nProject ID: ' + project_id)
-        print('File name: ' + picture.filename)
         # Store the picture in the database
         Pictures.addPicture(app.root_path, project_id, picture)
 
@@ -369,11 +362,7 @@ def saveDiagram():
 
     # If parsed is empty don't changed the drawing
     if check !=  '[]':
-        print("Here")
         update = Projects.updatedrawiopic(qid, 5, image, 0)
-        print(update)
-
-    print("This is project id", project_id)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 

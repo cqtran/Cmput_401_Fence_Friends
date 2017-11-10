@@ -3,15 +3,17 @@
   <h1>Account Requests</h1>
     <div class="list-group list-group-flush small" id="genereate-users">
       {% for user in users %}
-        <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#acceptModal">
+        <!--<a class="list-group-item list-group-item-action" id="{{user.id}}" data-toggle="modal" data-target="acceptModal" data-id="{{user.id}}">-->
+        <a class="list-group-item list-group-item-action" onclick="acceptUser({{user.id}})">
           <strong>{{ user.company_name }}</strong>
           <div class="text-muted smaller">Requested {{ user.confirmed_at }}</div>
+          <div class="text-muted smaller">Requested {{ user.id }}</div>
         </a>
       {% endfor %}
     </div>
 {% endblock %}
 {% block content2 %}
-	<div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true">
+	<!--<div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -23,15 +25,37 @@
 	      <div class="modal-body">Clicking accept will accept the account request and activate the account.</div>
 	      <div class="modal-footer">
 	        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-	        <a class="btn btn-primary" href="#">Accept</a>
+          form
+	        <a class="btn btn-primary" id="acceptButton" href="#" onclick="acceptUser();">Accept</a>
 	      </div>
 	    </div>
 	  </div>
-	</div>
+	</div>-->
 	<script type="text/javascript">
 		var users = {{users}};
 	</script>
 {% endblock %}
 {% block content3 %}
+<script type="text/javascript">
 
+  var postRequest = new XMLHttpRequest();
+
+  function acceptUser(id) {    //window.location.href= '/projectinfo?proj_id='+id
+    console.log(id)
+
+    var url = "{{url_for('acceptUser')}}"
+    var params = "user_id="+id;
+    postRequest.open("POST", url, true);
+
+    //Send the proper header information along with the request
+    postRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    postRequest.onreadystatechange = function() {//Call a function when the state changes.
+        if(postRequest.readyState == 4 && postRequest.status == 200) {
+            alert(postRequest.responseText);
+        }
+    }
+    postRequest.send(params);
+  }
+</script>
 {% endblock %}

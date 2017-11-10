@@ -110,12 +110,12 @@ loadimage({{ drawiopic | safe }});
 <br>
 <br>
 <form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
-	<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote ►"/>
+	<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote"/>
 </form>
 
 <br>
 <form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
-	<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List ►"/>
+	<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List"/>
 </form>
 
 <script type="text/javascript">
@@ -173,8 +173,8 @@ request.onreadystatechange = function(response) {
 				img.src =  imgPath + picture.file_name;
 				img.alt =  picture.file_name + ' not found';
         console.log(imgPath + picture.file_name)
-				img.height = '150';
-				img.width = '150';
+				img.height = '384';
+				img.width = '512';
 				img.className += 'img-thumbnail'
 				// Add it to the list:
 				pictureList.appendChild(img);
