@@ -46,6 +46,7 @@ app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
 app.config['SECURITY_CONFIRMABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
+app.config['SECURITY_FLASH_MESSAGES'] = False
 
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
