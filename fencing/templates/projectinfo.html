@@ -167,36 +167,36 @@ requestProj.onreadystatechange = function(response) {
 		document.getElementById('status').innerHTML = "■ " + project[0].status_name;
 		document.getElementById('address').innerHTML = project[0].address;
 		document.getElementById('start-date').innerHTML = project[0].start_date;
-		/*if(project[0].status_name == "Paid"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid paid');
+		if(project[0].status_name == "Paid"){
+		  document.getElementById("status").setAttribute('class', 'float-right paid-text');
 		}
 		else if(project[0].status_name == "Not Reached"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid not-reached');
+		  document.getElementById("status").setAttribute('class', 'float-right not-reached-text');
 		}
 		else if(project[0].status_name == "Appraisal Booked"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid appraisal-booked');
+		  document.getElementById("status").setAttribute('class', 'float-right appraisal-booked-text');
 		}
 		else if(project[0].status_name == "Waiting for Appraisal"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid waiting-appraisal');
+		  document.getElementById("status").setAttribute('class', 'float-right waiting-appraisal-text');
 		}
 		else if(project[0].status_name == "Appraised"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid appraised');
+		  document.getElementById("status").setAttribute('class', 'float-right appraised-text');
 		}
 		else if(project[0].status_name == "Quote Sent"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid quote-sent');
+		  document.getElementById("status").setAttribute('class', 'float-right quote-sent-text');
 		}
 		else if(project[0].status_name == "Waiting for Alberta1Call"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid waiting-alberta');
+		  document.getElementById("status").setAttribute('class', 'float-right waiting-alberta-text');
 		}
 		else if(project[0].status_name == "Installation Pending"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid install-pending');
+		  document.getElementById("status").setAttribute('class', 'float-right install-pending-text');
 		}
 		else if(project[0].status_name == "Installing"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid installing');
+		  document.getElementById("status").setAttribute('class', 'float-right installing-text');
 		}
 		else if(project[0].status_name == "No Longer Interested"){
-		  document.getElementById("main-window").setAttribute('class', 'container-fluid not-interested');
-		}*/
+		  document.getElementById("status").setAttribute('class', 'float-right not-interested-text');
+		}
 
 		// Sets the project_id into the uploadpicture form
 		document.getElementById('project_id').setAttribute('value', project[0].project_id);

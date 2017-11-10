@@ -102,34 +102,34 @@ input[type="file"] {
   background-color: #d9d9d9;
 }
 
-.not-reached-text{
+.not-reached-text::first-letter {
   color: #ffffb3;
 }
-.appraisal-booked-text{
+.appraisal-booked-text::first-letter {
   color: #b3ffb3;
 }
-.waiting-appraisal-text{
+.waiting-appraisal-text::first-letter {
   color: #ffb3b3;
 }
-.appraised-text{
+.appraised-text::first-letter {
   color: #a7f1a7;
 }
-.quote-sent-text{
+.quote-sent-text::first-letter {
   color: #eee8aa;
 }
-.waiting-alberta-text{
+.waiting-alberta-text::first-letter {
   color: #fff599;
 }
-.install-pending-text{
+.install-pending-text::first-letter {
   color: #ffdab9;
 }
-.installing-text{
+.installing-text::first-letter {
   color: #c0f2f2;
 }
-.paid-text{
+.paid-text::first-letter {
   color: #99ff99;
 }
-.not-interested-text{
+.not-interested-text::first-letter {
   color: #d9d9d9;
 }
 .make-centre{
