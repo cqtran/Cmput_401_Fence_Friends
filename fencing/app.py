@@ -20,7 +20,7 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
-import api.errors as Errors
+#import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
 import json

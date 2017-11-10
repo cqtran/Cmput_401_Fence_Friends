@@ -9,7 +9,7 @@ import api.customers as Customers
 import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
-import api.errors as Errors
+#import api.errors as Errors
 import argparse
 
 app = Flask(__name__)
