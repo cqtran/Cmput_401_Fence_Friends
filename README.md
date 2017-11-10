@@ -106,7 +106,7 @@ python3 app.py
 python3 app.py -debug
 ```
 
-## Run tests
+## Run Tests
 
 1. Start MySQL
 
