@@ -159,6 +159,11 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Appraisal"):
+        newStatus = Status(status_name = "Waiting for Appraisal")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
 
 
 @app.teardown_appcontext
