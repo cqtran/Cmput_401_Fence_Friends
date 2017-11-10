@@ -367,13 +367,13 @@ def sendMaterialList():
     attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
-    
+
     supplierEmail = "hey@hey.hey"
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, supplierEmail,
             "Material list", message, "Material list", attachment)
-    
+
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note

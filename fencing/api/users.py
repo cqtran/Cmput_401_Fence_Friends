@@ -12,6 +12,11 @@ from flask_security.decorators import roles_required
 userBlueprint = Blueprint('userBlueprint', __name__, template_folder='templates')
 
 @userBlueprint.route('/getInactiveUsers/', methods=['GET'])
-def getUser(customer_id):
+def getInactiveUsers():
     users = dbSession.query(User).filter(User.active == False).all()
+    return jsonify(users)
+
+@userBlueprint.route('/getActiveUsers/', methods=['GET'])
+def getActiveUsers():
+    users = dbSession.query(User).filter(User.active == True).all()
     return jsonify(users)
