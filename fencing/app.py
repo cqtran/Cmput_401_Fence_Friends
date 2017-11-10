@@ -124,6 +124,36 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
+    if not fieldExists(dbSession, Status.status_name, "Appraisal Booked"):
+        newStatus = Status(status_name = "Appraisal Booked")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Appraised"):
+        newStatus = Status(status_name = "Appraised")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
+        newStatus = Status(status_name = "Quote Sent")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
+        newStatus = Status(status_name = "Waiting for Alberta1Call")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
+        newStatus = Status(status_name = "Installation Pending")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installing"):
+        newStatus = Status(status_name = "Installing")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
 
 
 @app.teardown_appcontext
