@@ -106,6 +106,20 @@ python3 app.py
 python3 app.py -debug
 ```
 
+## Run tests
+
+1. Start MySQL
+
+2. In the "fencing" folder, run:
+```bash
+python3 testingapp.py
+```
+
+3. While that is running, in a new terminal tab/window in the "fencing" folder, run:
+```bash
+python3 -m unittest discover
+```
+
 ## Help
 
 In the "fencing" folder, run:
