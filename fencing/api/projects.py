@@ -16,17 +16,19 @@ projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='temp
 #@login_required
 #@roles_required('primary')
 def getProjectList(customer_id):
+    """ Returns a list of projects. If a customer id is provided, the list will contain
+    only contain projects to the given customer id """
     if request.method == 'GET':
         projectList = dbSession.query(Project)
 
         if customer_id is not None:
            projectList = projectList.filter(Project.customer_id == customer_id)
-        
+
         status = request.args.get('status')
 
         if status is None or status == "All" or status == "None":
             projectList = projectList.filter(Customer.customer_id == Project.customer_id).order_by(desc(Project.start_date)).all()
-        
+
         else:
             projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status)\
             .order_by(desc(Project.start_date)).all()
@@ -37,6 +39,7 @@ def getProjectList(customer_id):
 #@login_required
 #@roles_required('primary')
 def getProject(project_id):
+    """ Returns a single project of a given project id """
     if request.method == "GET":
         project = dbSession.query(Project)
         project = project.filter(Project.project_id == project_id).all()

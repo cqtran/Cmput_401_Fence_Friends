@@ -15,6 +15,7 @@ statusBlueprint = Blueprint('statusBlueprint', __name__, template_folder='templa
 #@login_required
 #@roles_required('primary')
 def getStatusList():
+    """ Returns the list of statuses """
     if request.method == "GET":
         statuses = dbSession.query(Status).all()
         return jsonify(statuses)
