@@ -101,8 +101,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		</div>
 	</div>
 </div>
-<hr class="mt-2">
-<h3 class="text-green make-centre" style="font-weight: bold;">Notes</h3>
+<hr class="mt-2" id="noteContainer" style="display:none;">
 <p id="savednote"></p>
 <hr class="mt-2">
 
@@ -207,7 +206,11 @@ requestProj.onreadystatechange = function(response) {
 		if (project[0].end_date != null) {
 			document.getElementById('end_date').innerHTML = project[0].end_date;
 		}
-		document.getElementById('savednote').innerHTML = project[0].note;
+		var note = project[0].note;
+		if (!(note == null || note.trim() == "")) {
+			document.getElementById('savednote').innerHTML = project[0].note;
+			document.getElementById('noteContainer').style.display = "block";
+		}
     }
   }
 }
