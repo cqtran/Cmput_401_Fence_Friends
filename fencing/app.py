@@ -360,13 +360,20 @@ def saveDiagram():
     project_id = request.args.get('proj_id')
     image = request.form['image'] #long url
     parsed = DiagramParser.parse(image)
+    # Test parsed output
+    check = str(parsed)
+    if check == '[]':
+        print("WE OUT")
     print(parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
     qid = json_quotepic[0].get("quote_id")
-    print(qid)
-    update = Projects.updatedrawiopic(qid, 5, image, 0)
-    print(update)
+
+    # If parsed is empty don't changed the drawing
+    if check !=  '[]':
+        print("Here")
+        update = Projects.updatedrawiopic(qid, 5, image, 0)
+        print(update)
 
     print("This is project id", project_id)
 
