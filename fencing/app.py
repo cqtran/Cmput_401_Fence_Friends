@@ -46,6 +46,7 @@ app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
 app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
+app.config['SECURITY_FLASH_MESSAGES'] = False
 
 app.config['SECURITY_MSG_INVALID_PASSWORD'] = ("Invalid username or password", "error")
 app.config['SECURITY_MSG_USER_DOES_NOT_EXIST'] = ("Invalid username or password", "error")
@@ -204,7 +205,15 @@ def editcustomer():
 @login_required
 @roles_required('primary')
 def projects():
-        return render_template("projects.html")
+    status = request.args.get('status')
+
+    # Because seeing "None" in the dropdown menu is unsettling, even if it is
+    # treated as "All"
+    if (status is None or status == "None"):
+        cust_id = request.args.get('cust_id')
+        return redirect(url_for('projects', cust_id=cust_id, status="All"))
+
+    return render_template("projects.html")
 
 @app.route('/autocomplete/', methods=["GET"])
 @login_required
@@ -239,7 +248,7 @@ def newproject():
         #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
                                          current_user.company_name, projectname)
-        return redirect(url_for('projects'))
+        return redirect(url_for('projects', status="All"))
     else:
         return render_template("newproject.html")
 
@@ -318,11 +327,8 @@ def sendMaterialList():
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
-        print("goes get")
         project_id = request.args.get('proj_id')
         if project_id is not None:
-            print("getget")
-            print("This is project id", project_id)
 
             json_quotepic = Projects.getdrawiopic(project_id)
             print(json_quotepic)
@@ -335,7 +341,6 @@ def projectinfo():
 
     else:
         # POST?
-        print("goes post")
         return render_template("projectinfo.html", company = current_user.company_name)
 
 @app.route('/uploadpicture/', methods = ['GET', 'POST'])
@@ -357,20 +362,27 @@ def uploadpicture():
 @login_required
 @roles_required('primary')
 def saveDiagram():
+    # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
     image = request.form['image'] #long url
     parsed = DiagramParser.parse(image)
+    
+    # Test parsed output
+    check = str(parsed)
+    if check == '[]':
+        print("WE OUT")
     print(parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
     qid = json_quotepic[0].get("quote_id")
-    print(qid)
-    update = Projects.updatedrawiopic(qid, 5, image, 0)
-    print(update)
+
+    # If parsed is empty don't changed the drawing
+    if check !=  '[]':
+        print("Here")
+        update = Projects.updatedrawiopic(qid, 5, image, 0)
+        print(update)
 
     print("This is project id", project_id)
-
-
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 

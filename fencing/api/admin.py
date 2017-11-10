@@ -16,4 +16,5 @@ projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='temp
 @roles_required('admin')
 def getProjectList():
     if request.method == 'POST':
-        
+        user_id = request.args.get('user_id')
+        print(user_id)
