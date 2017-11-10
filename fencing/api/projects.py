@@ -24,7 +24,7 @@ def getProjectList(customer_id):
         
         status = request.args.get('status')
 
-        if status is None or status == "None":
+        if status is None or status == "All" or status == "None":
             projectList = projectList.filter(Customer.customer_id == Project.customer_id).all()
         
         else:
