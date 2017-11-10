@@ -50,7 +50,12 @@ a, a:hover {
     padding-right: 4px;
     padding-left: 4px;
 }
-
+.no-top-padding {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
 .no-padding {
   padding-right: 0px;
   padding-left: 0px;
@@ -123,4 +128,12 @@ a, a:hover {
 }
 .not-interested-text{
   color: #d9d9d9;
+}
+.make-centre{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hide{
+  visibility: hidden;
 }

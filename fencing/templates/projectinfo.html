@@ -43,7 +43,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 </div>
 <hr class="mt-2">
 
-<div class="container" id="overlay" >
+<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
   <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
     <script>
 	// From:
@@ -85,27 +85,46 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 	</script>
 </div>
-
-<p id="address"></p>
-<p id="start-date"></p>
-<p id="end_date">End Date: Ongoing</p>
-<p id="savednote">Note</p>
-<button type="button" id="editproject">Click to edit project information</button>
+<hr class="mt-2">
+<div class="container-fluid">
+	<div class="row justify-content-between">
+		<div class="col-lg-6 col-md-6">
+			<h4 class="text-green" style="font-weight: bold;">Address</h4>
+			<p class="no-top-padding" id="address" style="font-weight: bold;" id="address"></p>
+		</div>
+		<!-- or class="float-right" -->
+		<div class="col-lg-6 col-md-6">
+			<h4 class="text-green" style="font-weight: bold;">Start Date</h4>
+			<p class="no-top-padding" id="start-date" style="font-weight: bold;"></p>
+			<h4 class="text-green" style="font-weight: bold;">End Date</h4>
+			<p class="no-top-padding" id="end_date" style="font-weight: bold;">Ongoing</p>
+		</div>
+	</div>
+</div>
+<hr class="mt-2">
+<h3 class="text-green make-centre" style="font-weight: bold;">Notes</h3>
+<p id="savednote"></p>
+<hr class="mt-2">
 <div class="row" id = 'projectPictures'></div>
+
 <form method = "post" action="{{ url_for('uploadpicture') }}" enctype=multipart/form-data >
 	<input class="form-control" type="hidden" name="proj_id" id="project_id" />
-  <input type="file" name="picture" accept="image/*">
-  <input type="submit" value="Upload picture">
+  	<input type="file" name="picture" accept="image/*">
+  	<input type="submit" value="Upload picture">
 </form>
+
 <form method="post" target="_blank" action="{{url_for('viewQuote', proj_id=request.args.get('proj_id'))}}">
 	<input class="btn btn-primary btn-block" type="submit" value="View Quote"/>
 </form>
+
 <form method="post" target="_blank" action="{{url_for('viewMaterialList', proj_id=request.args.get('proj_id'))}}">
 	<input class="btn btn-primary btn-block" type="submit" value="View Material List"/>
 </form>
+
 <form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
 	<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote"/>
 </form>
+
 <form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
 	<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List"/>
 </form>
@@ -116,6 +135,7 @@ var imgPath = {{ path|safe }}
 var pictureList = document.getElementById('projectPictures');
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");
+document.getElementById("pencil-button").setAttribute('class', 'nav-item');
 
 var requestProj = new XMLHttpRequest();
 requestProj.onreadystatechange = function(response) {
@@ -126,8 +146,8 @@ requestProj.onreadystatechange = function(response) {
 		document.getElementById('project-name').innerHTML = project[0].project_name;
 		document.getElementById('status').innerHTML = project[0].status_name;
 		document.getElementById('address').innerHTML = project[0].address;
-		document.getElementById('start-date').innerHTML = 'Start Date: ' + project[0].start_date;
-		if(project[0].status_name == "Paid"){
+		document.getElementById('start-date').innerHTML = project[0].start_date;
+		/*if(project[0].status_name == "Paid"){
 		  document.getElementById("main-window").setAttribute('class', 'container-fluid paid');
 		}
 		else if(project[0].status_name == "Not Reached"){
@@ -156,7 +176,7 @@ requestProj.onreadystatechange = function(response) {
 		}
 		else if(project[0].status_name == "No Longer Interested"){
 		  document.getElementById("main-window").setAttribute('class', 'container-fluid not-interested');
-		}
+		}*/
 
 		// Sets the project_id into the uploadpicture form
 		document.getElementById('project_id').setAttribute('value', project[0].project_id);
@@ -164,9 +184,9 @@ requestProj.onreadystatechange = function(response) {
 		document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+project[0].project_id+')')
 
 		if (project[0].end_date != null) {
-			document.getElementById('end_date').innerHTML = 'End Date: ' + project[0].end_date;
+			document.getElementById('end_date').innerHTML = project[0].end_date;
 		}
-		document.getElementById('savednote').innerHTML = 'Notes: ' + project[0].note;
+		document.getElementById('savednote').innerHTML = project[0].note;
     }
   }
 }
