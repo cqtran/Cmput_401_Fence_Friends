@@ -318,11 +318,8 @@ def sendMaterialList():
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
-        print("goes get")
         project_id = request.args.get('proj_id')
         if project_id is not None:
-            print("getget")
-            print("This is project id", project_id)
 
             json_quotepic = Projects.getdrawiopic(project_id)
             print(json_quotepic)
@@ -335,7 +332,6 @@ def projectinfo():
 
     else:
         # POST?
-        print("goes post")
         return render_template("projectinfo.html", company = current_user.company_name)
 
 @app.route('/uploadpicture/', methods = ['GET', 'POST'])
@@ -357,9 +353,11 @@ def uploadpicture():
 @login_required
 @roles_required('primary')
 def saveDiagram():
+    # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
     image = request.form['image'] #long url
     parsed = DiagramParser.parse(image)
+    
     # Test parsed output
     check = str(parsed)
     if check == '[]':
@@ -376,8 +374,6 @@ def saveDiagram():
         print(update)
 
     print("This is project id", project_id)
-
-
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 
