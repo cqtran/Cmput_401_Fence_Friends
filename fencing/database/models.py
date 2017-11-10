@@ -136,8 +136,8 @@ class Quote(Base):
     note = Column(String(255))
     last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
 
-    def __init__(self, project_id, quote, project_info, note):
-        #self.quote_id = quote_id
+    def __init__(self, project_id, quote, project_info, note, quote_id=None):
+        self.quote_id = quote_id
         self.project_id = project_id
         self.quote = quote
         self.project_info = project_info
