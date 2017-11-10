@@ -110,12 +110,12 @@ loadimage({{ drawiopic | safe }});
 <br>
 <br>
 <form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
-	<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote ►"/>
+	<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote"/>
 </form>
 
 <br>
 <form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
-	<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List ►"/>
+	<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List"/>
 </form>
 
 <script type="text/javascript">

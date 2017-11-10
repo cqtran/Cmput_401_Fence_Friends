@@ -14,11 +14,12 @@ from flask_security.decorators import roles_required
 
 import os
 # Import python files with functionality
+import api.users as Users
 import api.customers as Customers
 import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
-
+import api.admin as Admins
 from api.forms.extendedRegisterForm import *
 
 import json
@@ -32,7 +33,8 @@ app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
 app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
-
+app.register_blueprint(Admins.adminBlueprint)
+app.register_blueprint(Users.userBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
@@ -112,29 +114,46 @@ def setup_db():
         userDatastore.activate_user(newUser)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Customer.customer_id, 1):
-        newCustomer = Customer(customer_id = 1, email = "null@null.null", first_name = "Andy"
-                                ,cellphone = "1234567", company_name = "Fence")
-        dbSession.add(newCustomer)
-        dbSession.commit()
-
-
     if not fieldExists(dbSession, Status.status_name, "Not Reached"):
         newStatus = Status(status_name = "Not Reached")
         dbSession.add(newStatus)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Status.status_name, "Finished"):
-        newStatus = Status(status_name = "Finished")
+    if not fieldExists(dbSession, Status.status_name, "Paid"):
+        newStatus = Status(status_name = "Paid")
         dbSession.add(newStatus)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Project.project_id, 1):
-        newProject = Project(customer_id = 1, address = "1234",
-            status_name = "Not Reached", end_date = None, note = '',
-            project_name = "Andy's Project", company_name = "Fence", project_id = 1)
-        dbSession.add(newProject)
+    if not fieldExists(dbSession, Status.status_name, "Appraisal Booked"):
+        newStatus = Status(status_name = "Appraisal Booked")
+        dbSession.add(newStatus)
         dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Appraised"):
+        newStatus = Status(status_name = "Appraised")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
+        newStatus = Status(status_name = "Quote Sent")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
+        newStatus = Status(status_name = "Waiting for Alberta1Call")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
+        newStatus = Status(status_name = "Installation Pending")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installing"):
+        newStatus = Status(status_name = "Installing")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
 
 
 @app.teardown_appcontext
@@ -177,6 +196,20 @@ def accountrequests():
     users = dbSession.query(User).filter(User.active == False).all()
     return render_template("accountrequests.html", company = "Admin", users = users)
 
+@app.route('/acceptUser/', methods=['POST'])
+@login_required
+@roles_required('admin')
+def acceptUser():
+    if request.method == 'POST':
+        user_id = request.form["user_id"]
+        print(user_id)
+        user = dbSession.query(User).filter(User.id == user_id).all()
+        userDatastore.activate_user(user[0])
+        user[0].active = True
+        dbSession.commit()
+        users = dbSession.query(User).filter(User.active == False).all()
+        return render_template("accountrequests.html", company = "Admin", users = users)
+
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
@@ -188,7 +221,6 @@ def newcustomer():
         address = request.form['address']
         # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
-        print(success)
 
         return redirect(url_for('customers'))#, company = current_user.company_name))
 
@@ -232,7 +264,6 @@ def customerinfo():
 def autocomplete():
     # pulls in customers to populate dropdown table in new project
     search = request.args.get("q")
-    print(search)
     customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
     return jsonify(customers)
 
@@ -241,22 +272,12 @@ def autocomplete():
 @login_required
 @roles_required('primary')
 def newproject():
-    print("new project" + request.method)
     if request.method == 'POST':
-        #customer = request.form["customer"]
-        #print()
-        #customer = request.args.get('customer')
         customer = request.form["customer"]
         customer = customer.split("-")
-        print(customer)
         customerId = customer[1]
-        print(customer)
         projectname = request.form["name"]
-        print(projectname)
         address = request.form["address"]
-        print(address)
-        # cid = request.form[]
-        #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
                                          current_user.company_name, projectname)
         return redirect(url_for('projects', status="All"))
@@ -271,9 +292,14 @@ def viewMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    customer = dbSession.query(Customer).filter(
-        Customer.customer_id == project.customer_id).one()
-    return Messages.materialListMessage(project)
+    attachmentString = Messages.materialListAttachment(project)
+    attachment = Email.makeAttachment(Messages.materialListPath,
+        attachmentString)
+
+    if attachment is not None:
+        return redirect(url_for("static", filename=attachment[7:]))
+
+    return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
@@ -325,11 +351,19 @@ def sendMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    customer = dbSession.query(Customer).filter(
-        Customer.customer_id == project.customer_id).one()
-    message = Messages.materialListMessage(project)
-    Email.send(app, mail, project.company_name, customer.email, "Material list",
-        message, "Material list")
+    company = dbSession.query(Company).filter(
+        Company.company_name == project.company_name).one()
+    message = Messages.materialListMessage(company)
+    attachmentString = Messages.materialListAttachment(project)
+    attachment = Email.makeAttachment(Messages.materialListPath,
+        attachmentString)
+    
+    supplierEmail = "hey@hey.hey"
+
+    if attachment is not None:
+        Email.send(app, mail, project.company_name, supplierEmail,
+            "Material list", message, "Material list", attachment)
+    
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
@@ -342,11 +376,9 @@ def projectinfo():
         if project_id is not None:
 
             json_quotepic = Projects.getdrawiopic(project_id)
-            print(json_quotepic)
 
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
-            #print('Relative Path: ' + imgPath)
 
             return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic))
 
@@ -362,8 +394,6 @@ def uploadpicture():
         project_id = request.form['proj_id']
         picture = request.files['picture']
 
-        print('\nProject ID: ' + project_id)
-        print('File name: ' + picture.filename)
         # Store the picture in the database
         Pictures.addPicture(app.root_path, project_id, picture)
 
@@ -377,7 +407,7 @@ def saveDiagram():
     project_id = request.args.get('proj_id')
     image = request.form['image'] #long url
     parsed = DiagramParser.parse(image)
-    
+
     # Test parsed output
     check = str(parsed)
     if check == '[]':
@@ -389,11 +419,7 @@ def saveDiagram():
 
     # If parsed is empty don't changed the drawing
     if check !=  '[]':
-        print("Here")
         update = Projects.updatedrawiopic(qid, 5, image, 0)
-        print(update)
-
-    print("This is project id", project_id)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 
