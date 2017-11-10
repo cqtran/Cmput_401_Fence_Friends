@@ -117,8 +117,8 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Status.status_name, "Finished"):
-        newStatus = Status(status_name = "Finished")
+    if not fieldExists(dbSession, Status.status_name, "Paid"):
+        newStatus = Status(status_name = "Paid")
         dbSession.add(newStatus)
         dbSession.commit()
 
