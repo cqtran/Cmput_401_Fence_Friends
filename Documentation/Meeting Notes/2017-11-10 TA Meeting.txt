@@ -1,0 +1,19 @@
+2017-11-10 Meeting with Diego
+------------------------------------------------------
+Demoed sprint 3 progress:
+	New UI, projects are color coded depending on status and can filter,
+		edit projects, upload picture
+	
+Demoed TestCases:
+	Getting requests from the API and comparing to the test data
+	Need 404 and error handling
+	
+Overall looks good and alot of work has been done for this sprint.
+UI looks plain?
+
+Next sprint will accounting, quotation calculculation, 
+	import/export files, edit customer info
+
+Need link to application with username and password
+Trouble deploying using only IP, Flask wants a URL
+Parameters may have to be changed for deployment on IP

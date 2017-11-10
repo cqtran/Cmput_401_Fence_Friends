@@ -1,0 +1,12 @@
+2017-11-09 Meeting with Jon
+------------------------------------------------------
+Demoed the drawing functionality (Draw.IO) to Jon
+
+Jon has provided us with some information in the Google drive 
+	including materials listing, quotation examples, and quotation 
+	calculations. He will also later provide us material examples.
+	Using one general email for the app is fine, and referencing the 
+	fencing company's email or fencing user's email at the end of the
+	quotation email to the client is fine.
+	
+He will use his current website for the URL and forward it to our app.

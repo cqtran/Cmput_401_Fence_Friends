@@ -15,8 +15,8 @@ directory = os.path.join('static', 'images')
 pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
 
 @pictureBlueprint.route('/getPictureList/<int:project_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def getPictureList(project_id):
     """ Returns a list of pictures for a given project id"""
     if request.method == 'GET':

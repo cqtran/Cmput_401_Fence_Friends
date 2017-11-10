@@ -25,10 +25,10 @@ app.register_blueprint(Statuses.statusBlueprint)
 app.json_encoder = MyJSONEncoder
 
 """
-    The purpose of the tests is to test the endpoint APIs.
+    The purpose of the testingapp is to test the endpoint APIs.
 
     To run the tests; run 'testingapp.py' with the command 'python testingapp.py'
-
+    In a browser, go to http://127.0.0.1:5000/ to initialize the database
     In another terminal from the '/fencing' directory:
         - Run the command 'python -m unittest discover' to run all tests
         - Run the command 'python -m unittest tests/<testfile.py>' to run
@@ -42,6 +42,13 @@ def setup_db():
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbSession.remove()
+
+@app.route('/')
+def testingHomePage():
+    return """
+    Database has been initialized for testing 'Cavalry Fence Builder'.
+    Run python -m unittest to run all tests.
+    """
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Run Cavalry Fence Builder')

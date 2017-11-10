@@ -41,7 +41,7 @@ class TestUser(unittest.TestCase):
         response = User.query.filter_by(id=1).all()
         assert response[0].username == 'KatUser'
 
-    # Test getting a user 
+    # Test getting a user
     def test_getUser(self):
         userTestData()
         response = User.query.filter_by(username='aUser').all()
@@ -49,9 +49,8 @@ class TestUser(unittest.TestCase):
         # user name isnt unique
         print("Testing getUser")
         print(len(response))
-        assert len(response) > 1
+        assert len(response) == 3
         assert response[0].id != response[1].id
 
 if __name__ == '__main__':
     unittest.main()
-

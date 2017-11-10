@@ -44,13 +44,27 @@ class TestPicture(unittest.TestCase):
 
 
 
-    def test_getPictures(self):
-        """ Test getting pictures of a project """
+    def test_getPictureList(self):
+        """ Test getting all pictures of a project """
+        print("\n\n Testing getPictureList API\n")
         pictureTestData()
 
-        Pics = Picture.query.filter_by(project_id=1).all()
-        assert len(Pics) > 1
-        assert Pics[0].file_name != Pics[1].file_name
+        # Test getting pictures from project id = 1.
+        response = requests.get('http://localhost:5000/getPictureList/1')
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getPictureList/1':")
+        print(json_obj)
+
+        assert len(json_obj) == 2
+        result1 = json_obj[0]
+        result2 = json_obj[1]
+        # Test the information contained in the object with expected information
+        assert result1['picture_id'] == 1
+        assert result1['file_name'] == 'file'
+
+        assert result2['picture_id'] == 2
+        assert result2['file_name'] == 'file1'
+        print("Json response is expected")
 
     def test_picturePID(self):
         pictureTestData()
