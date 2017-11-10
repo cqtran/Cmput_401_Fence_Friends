@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+
+<h1 id="title"></h1>
+<p id="phone"></p>
+<p id="email"></p>
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{ request.args.get('status') }}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='All') }}">All</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Not Reached') }}">Not Reached</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Appraisal Booked') }}">Appraisal Booked</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Waiting for Appraisal') }}">Waiting for Appraisal</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Appraised') }}">Appraised</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Quote Sent') }}">Quote Sent</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Waiting for Alberta1Call') }}">Waiting for Alberta1Call</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Installation Pending') }}">Installation Pending</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Installing') }}">Installing</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='Paid') }}">Paid</a>
+    <a class="dropdown-item" href="{{ url_for('projects', cust_id=request.args.get('cust_id'), status='No Longer Interested') }}">No Longer Interested</a>
+  </div>
+</div>
+<br>
+
+<div class="list-group list-group-flush" id="projectlist"></div>
+
+
+<script type="text/javascript">
+  // Get the project list element
+  var projectList = document.getElementById('projectlist');
+
+  // Create a new XMLHttpRequest to get projects
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function(response) {
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      // Parse the JSON
+      var jsonOptions = JSON.parse(request.responseText);
+
+      // Loop over the JSON array.
+      jsonOptions.forEach(function(project) {
+        var item = document.createElement('a');
+        item.setAttribute('href', '#')
+        item.setAttribute('class', 'list-group-item list-group-item-action');
+
+        // this is where you want to go when you click
+        //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+        item.setAttribute('onclick', 'projectClicked('+project.project_id+')')
+
+        item.appendChild(document.createTextNode(project.project_name));
+
+        // Add it to the list:
+        projectList.appendChild(item);
+      });
+
+    } else {
+      var item = document.createElement('a');
+      item.appendChild(document.createTextNode('An error has occurred'));
+      projectList.appendChild(item);
+    }
+  }
+  };
+
+  var requestCustomer = new XMLHttpRequest();
+  requestCustomer.onreadystatechange = function(response) {
+    if (requestCustomer.readyState === 4) {
+      if (requestCustomer.status === 200) {
+        // Parse the JSON
+        var customer = JSON.parse(requestCustomer.responseText);
+        document.getElementById('title').innerHTML = customer[0].first_name;
+        document.getElementById('phone').innerHTML = 'Cellphone: ' + customer[0].cellphone;
+        document.getElementById('email').innerHTML = 'Email: ' + customer[0].email;
+      }
+    }
+  }
+
+  // Set up and make the request.
+  var url = new URL(window.location.href);
+  var cust_id = url.searchParams.get("cust_id");
+  if(cust_id == null) {
+    request.open('GET', '/getProjectList' + '?status={{ request.args.get("status") }}', true);
+  } else {
+    request.open('GET', '/getProjectList/' + cust_id + '?status={{ request.args.get("status") }}', true);
+    requestCustomer.open('GET', '/getCustomer/' + cust_id, true);
+    requestCustomer.send();
+  }
+  request.send();
+
+function projectClicked(id) {
+	window.location.href = '/projectinfo?proj_id=' + id;
+}
+
+</script>
+{% endblock %}

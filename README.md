@@ -44,6 +44,14 @@ pip3 install mysql-connector==2.1.4
 pip3 install SQLAlchemy
 ```
 
+### Flask SQLAlchemy
+
+```bash
+pip3 install flask-sqlalchemy
+```
+
+flask-sqlalchemy
+
 ### Flask
 
 ```bash
@@ -104,6 +112,20 @@ python3 app.py
 2. In the "fencing" folder, run:
 ```bash
 python3 app.py -debug
+```
+
+## Run Tests
+
+1. Start MySQL
+
+2. In the "fencing" folder, run:
+```bash
+python3 testingapp.py
+```
+
+3. While that is running, in a new terminal tab/window in the "fencing" folder, run:
+```bash
+python3 -m unittest discover
 ```
 
 ## Help

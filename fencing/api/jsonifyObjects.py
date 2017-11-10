@@ -1,8 +1,17 @@
 from flask.json import JSONEncoder
-from database.models import Customer, Status, Project, Quote, Picture, Material
+from database.models import User, Customer, Status, Project, Quote, Picture, Material
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
+        if isinstance(obj, User):
+            return {
+                'id' : obj.id,
+                'username' : obj.username,
+                'email' : obj.email,
+                'company_name' : obj.company_name,
+                'active' : obj.active,
+                'confirmed_at' : dump_datetime(obj.confirmed_at)
+            }
         if isinstance(obj, Customer):
             return {
             	'customer_id': obj.customer_id,

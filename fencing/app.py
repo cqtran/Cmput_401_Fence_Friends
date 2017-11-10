@@ -14,11 +14,12 @@ from flask_security.decorators import roles_required
 
 import os
 # Import python files with functionality
+import api.users as Users
 import api.customers as Customers
 import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
-
+import api.admin as Admins
 from api.forms.extendedRegisterForm import *
 
 import json
@@ -32,7 +33,8 @@ app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
 app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
-
+app.register_blueprint(Admins.adminBlueprint)
+app.register_blueprint(Users.userBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
@@ -117,8 +119,48 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
-    if not fieldExists(dbSession, Status.status_name, "Finished"):
-        newStatus = Status(status_name = "Finished")
+    if not fieldExists(dbSession, Status.status_name, "Paid"):
+        newStatus = Status(status_name = "Paid")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Appraisal Booked"):
+        newStatus = Status(status_name = "Appraisal Booked")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Appraised"):
+        newStatus = Status(status_name = "Appraised")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
+        newStatus = Status(status_name = "Quote Sent")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
+        newStatus = Status(status_name = "Waiting for Alberta1Call")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
+        newStatus = Status(status_name = "Installation Pending")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installing"):
+        newStatus = Status(status_name = "Installing")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "No Longer Interested"):
+        newStatus = Status(status_name = "No Longer Interested")
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Appraisal"):
+        newStatus = Status(status_name = "Waiting for Appraisal")
         dbSession.add(newStatus)
         dbSession.commit()
 
@@ -164,6 +206,20 @@ def accountrequests():
     users = dbSession.query(User).filter(User.active == False).all()
     return render_template("accountrequests.html", company = "Admin", users = users)
 
+@app.route('/acceptUser/', methods=['POST'])
+@login_required
+@roles_required('admin')
+def acceptUser():
+    if request.method == 'POST':
+        user_id = request.form["user_id"]
+        print(user_id)
+        user = dbSession.query(User).filter(User.id == user_id).all()
+        userDatastore.activate_user(user[0])
+        user[0].active = True
+        dbSession.commit()
+        users = dbSession.query(User).filter(User.active == False).all()
+        return render_template("accountrequests.html", company = "Admin", users = users)
+
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')
@@ -200,6 +256,17 @@ def projects():
         return redirect(url_for('projects', cust_id=cust_id, status="All"))
 
     return render_template("projects.html")
+
+@app.route('/customerinfo/')
+@login_required
+@roles_required('primary')
+def customerinfo():
+    status = request.args.get('status')
+
+    # Because seeing "None" in the dropdown menu is unsettling, even if it is
+    # treated as "All"
+
+    return render_template("customerinfo.html")
 
 @app.route('/autocomplete/', methods=["GET"])
 @login_required
@@ -300,13 +367,13 @@ def sendMaterialList():
     attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
-    
+
     supplierEmail = "hey@hey.hey"
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, supplierEmail,
             "Material list", message, "Material list", attachment)
-    
+
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 # delete later, just for testing note
@@ -350,7 +417,7 @@ def saveDiagram():
     project_id = request.args.get('proj_id')
     image = request.form['image'] #long url
     parsed = DiagramParser.parse(image)
-    
+
     # Test parsed output
     check = str(parsed)
     if check == '[]':
