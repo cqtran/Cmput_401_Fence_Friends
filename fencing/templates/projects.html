@@ -128,19 +128,6 @@
   }
   };
 
-  var requestCustomer = new XMLHttpRequest();
-  requestCustomer.onreadystatechange = function(response) {
-    if (requestCustomer.readyState === 4) {
-      if (requestCustomer.status === 200) {
-        // Parse the JSON
-        var customer = JSON.parse(requestCustomer.responseText);
-        document.getElementById('title').innerHTML = customer[0].first_name;
-        document.getElementById('phone').innerHTML = 'Cellphone: ' + customer[0].cellphone;
-        document.getElementById('email').innerHTML = 'Email: ' + customer[0].email;
-      }
-    }
-  }
-
   // Set up and make the request.
   var url = new URL(window.location.href);
   var cust_id = url.searchParams.get("cust_id");
