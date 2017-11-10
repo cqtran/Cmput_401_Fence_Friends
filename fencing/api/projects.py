@@ -18,17 +18,18 @@ projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='temp
 def getProjectList(customer_id):
     if request.method == 'GET':
         projectList = dbSession.query(Project)
-        #projectList = projectList.filter(Customer.company_name == current_user.company_name)
+
         if customer_id is not None:
            projectList = projectList.filter(Project.customer_id == customer_id)
         
         status = request.args.get('status')
 
         if status is None or status == "All" or status == "None":
-            projectList = projectList.filter(Customer.customer_id == Project.customer_id).all()
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id).order_by(desc(Project.start_date)).all()
         
         else:
-            projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status).all()
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status)\
+            .order_by(desc(Project.start_date)).all()
 
         return jsonify(projectList)
 
