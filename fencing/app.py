@@ -203,7 +203,8 @@ def users():
 @login_required
 @roles_required('admin')
 def accountrequests():
-    return render_template("accountrequests.html", company = "Admin")
+    users = dbSession.query(User).filter(User.active == False).all()
+    return render_template("accountrequests.html", company = "Admin", users = users)
 
 @app.route('/acceptUser/', methods=['POST'])
 @login_required
@@ -216,7 +217,8 @@ def acceptUser():
         userDatastore.activate_user(user[0])
         user[0].active = True
         dbSession.commit()
-        return render_template("accountrequests.html", company = "Admin")
+        users = dbSession.query(User).filter(User.active == False).all()
+        return render_template("accountrequests.html", company = "Admin", users = users)
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
