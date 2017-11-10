@@ -188,7 +188,6 @@ def newcustomer():
         address = request.form['address']
         # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
-        print(success)
 
         return redirect(url_for('customers'))#, company = current_user.company_name))
 
@@ -221,7 +220,6 @@ def projects():
 def autocomplete():
     # pulls in customers to populate dropdown table in new project
     search = request.args.get("q")
-    print(search)
     customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
     return jsonify(customers)
 
@@ -230,22 +228,12 @@ def autocomplete():
 @login_required
 @roles_required('primary')
 def newproject():
-    print("new project" + request.method)
     if request.method == 'POST':
-        #customer = request.form["customer"]
-        #print()
-        #customer = request.args.get('customer')
         customer = request.form["customer"]
         customer = customer.split("-")
-        print(customer)
         customerId = customer[1]
-        print(customer)
         projectname = request.form["name"]
-        print(projectname)
         address = request.form["address"]
-        print(address)
-        # cid = request.form[]
-        #print(customer)
         success = Projects.createProject(customerId, "Not Reached",  address,
                                          current_user.company_name, projectname)
         return redirect(url_for('projects', status="All"))
@@ -344,11 +332,9 @@ def projectinfo():
         if project_id is not None:
 
             json_quotepic = Projects.getdrawiopic(project_id)
-            print(json_quotepic)
 
             # Get relative path to project pictures
             imgPath = repr(os.path.join('..', Pictures.directory, ''))
-            #print('Relative Path: ' + imgPath)
 
             return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic))
 
@@ -364,8 +350,6 @@ def uploadpicture():
         project_id = request.form['proj_id']
         picture = request.files['picture']
 
-        print('\nProject ID: ' + project_id)
-        print('File name: ' + picture.filename)
         # Store the picture in the database
         Pictures.addPicture(app.root_path, project_id, picture)
 
@@ -391,11 +375,7 @@ def saveDiagram():
 
     # If parsed is empty don't changed the drawing
     if check !=  '[]':
-        print("Here")
         update = Projects.updatedrawiopic(qid, 5, image, 0)
-        print(update)
-
-    print("This is project id", project_id)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 
