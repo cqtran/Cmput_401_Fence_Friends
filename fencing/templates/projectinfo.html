@@ -34,86 +34,78 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
-<h1>
-	<p id="project_name"></p>
-</h1>
+<!--top name and status -->
+<div class="container-fluid">
+  <div class="row justify-content-between">
+    <h1 id="project-name"></h1>
+    <h4 class="float-right" id="status" style="padding-top: 10px; font-weight: bold;"></h4>
+  </div>
+</div>
+<hr class="mt-2">
 
 <div class="container" id="overlay" >
-
   <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
     <script>
-// From:
-// https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/133997#133997
-// Acccessed November 8, 2017
-function post(url, params) {
-    var form = document.createElement("form");
-    form.setAttribute("method", "post");
-    form.setAttribute("action", url);
+	// From:
+	// https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/133997#133997
+	// Acccessed November 8, 2017
+	function post(url, params) {
+	    var form = document.createElement("form");
+	    form.setAttribute("method", "post");
+	    form.setAttribute("action", url);
 
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
+	    for(var key in params) {
+	        if(params.hasOwnProperty(key)) {
+	            var hiddenField = document.createElement("input");
+	            hiddenField.setAttribute("type", "hidden");
+	            hiddenField.setAttribute("name", key);
+	            hiddenField.setAttribute("value", params[key]);
 
-            form.appendChild(hiddenField);
-        }
-    }
+	            form.appendChild(hiddenField);
+	        }
+	    }
 
-    document.body.appendChild(form);
-    form.submit();
-}
+	    document.body.appendChild(form);
+	    form.submit();
+	}
 
-function saveDrawPicture() {
-    var initial = image.getAttribute('src');
-    console.log("asdkl;fjadks;")
-	console.log(initial);
-	post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
+	function saveDrawPicture() {
+	    var initial = image.getAttribute('src');
+	    console.log("asdkl;fjadks;")
+		console.log(initial);
+		post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
 
-}
+	}
 
-function loadimage(image){
-    document.getElementById("image").src=image[0].project_info;
-}
+	function loadimage(image){
+	    document.getElementById("image").src=image[0].project_info;
+	}
 
-loadimage({{ drawiopic | safe }});
+	loadimage({{ drawiopic | safe }});
 
-</script>
-
-	<p id="address"></p>
-	<p id="status"></p>
-	<p id="start_date"></p>
-	<p id="end_date">End Date: Ongoing</p>
-  <p id="savednote">Note</p>
-	<button type="button" id="editproject">Click to edit project information</button>
-	<br> <br>
-	<div class="row" id = 'projectPictures'></div>
+	</script>
 </div>
 
+<p id="address"></p>
+<p id="start-date"></p>
+<p id="end_date">End Date: Ongoing</p>
+<p id="savednote">Note</p>
+<button type="button" id="editproject">Click to edit project information</button>
+<div class="row" id = 'projectPictures'></div>
 <form method = "post" action="{{ url_for('uploadpicture') }}" enctype=multipart/form-data >
 	<input class="form-control" type="hidden" name="proj_id" id="project_id" />
   <input type="file" name="picture" accept="image/*">
   <input type="submit" value="Upload picture">
 </form>
-
-<br>
 <form method="post" target="_blank" action="{{url_for('viewQuote', proj_id=request.args.get('proj_id'))}}">
 	<input class="btn btn-primary btn-block" type="submit" value="View Quote"/>
 </form>
-
-<br>
 <form method="post" target="_blank" action="{{url_for('viewMaterialList', proj_id=request.args.get('proj_id'))}}">
 	<input class="btn btn-primary btn-block" type="submit" value="View Material List"/>
 </form>
-
-<br>
-<br>
 <form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
 	<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote"/>
 </form>
-
-<br>
 <form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
 	<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List"/>
 </form>
@@ -129,23 +121,52 @@ var requestProj = new XMLHttpRequest();
 requestProj.onreadystatechange = function(response) {
   if (requestProj.readyState === 4) {
     if (requestProj.status === 200) {
-      // Parse the JSON
-      var project = JSON.parse(requestProj.responseText);
-      document.getElementById('project_name').innerHTML = project[0].project_name;
-  		document.getElementById('status').innerHTML = 'Status: ' + project[0].status_name;
-  		document.getElementById('address').innerHTML = 'Address: ' + project[0].address;
-  		document.getElementById('start_date').innerHTML = 'Start Date: ' + project[0].start_date;
+		// Parse the JSON
+		var project = JSON.parse(requestProj.responseText);
+		document.getElementById('project-name').innerHTML = project[0].project_name;
+		document.getElementById('status').innerHTML = project[0].status_name;
+		document.getElementById('address').innerHTML = project[0].address;
+		document.getElementById('start-date').innerHTML = 'Start Date: ' + project[0].start_date;
+		if(project[0].status_name == "Paid"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid paid');
+		}
+		else if(project[0].status_name == "Not Reached"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid not-reached');
+		}
+		else if(project[0].status_name == "Appraisal Booked"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid appraisal-booked');
+		}
+		else if(project[0].status_name == "Waiting for Appraisal"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid waiting-appraisal');
+		}
+		else if(project[0].status_name == "Appraised"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid appraised');
+		}
+		else if(project[0].status_name == "Quote Sent"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid quote-sent');
+		}
+		else if(project[0].status_name == "Waiting for Alberta1Call"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid waiting-alberta');
+		}
+		else if(project[0].status_name == "Installation Pending"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid install-pending');
+		}
+		else if(project[0].status_name == "Installing"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid installing');
+		}
+		else if(project[0].status_name == "No Longer Interested"){
+		  document.getElementById("main-window").setAttribute('class', 'container-fluid not-interested');
+		}
 
-  		// Sets the project_id into the uploadpicture form
-  		document.getElementById('project_id').setAttribute('value', project[0].project_id);
+		// Sets the project_id into the uploadpicture form
+		document.getElementById('project_id').setAttribute('value', project[0].project_id);
 
-  		document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+project[0].project_id+')')
+		document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+project[0].project_id+')')
 
-  		if (project[0].end_date != null) {
-  			document.getElementById('end_date').innerHTML = 'End Date: ' + project[0].end_date;
-  		}
-
-  		document.getElementById('savednote').innerHTML = 'Notes: ' + project[0].note;
+		if (project[0].end_date != null) {
+			document.getElementById('end_date').innerHTML = 'End Date: ' + project[0].end_date;
+		}
+		document.getElementById('savednote').innerHTML = 'Notes: ' + project[0].note;
     }
   }
 }
@@ -170,14 +191,14 @@ request.onreadystatechange = function(response) {
       }
       jsonOptions.forEach(function(picture) {
         var img = document.createElement('img');
-				img.src =  imgPath + picture.file_name;
-				img.alt =  picture.file_name + ' not found';
-        console.log(imgPath + picture.file_name)
-				img.height = '384';
-				img.width = '512';
-				img.className += 'img-thumbnail'
-				// Add it to the list:
-				pictureList.appendChild(img);
+		img.src =  imgPath + picture.file_name;
+		img.alt =  picture.file_name + ' not found';
+		console.log(imgPath + picture.file_name)
+		img.height = '384';
+		img.width = '512';
+		img.className += 'img-thumbnail'
+		// Add it to the list:
+		pictureList.appendChild(img);
       })
     }
   }
@@ -275,6 +296,5 @@ request.send()
 					req.send(document.documentElement.outerHTML);
 				}
 			}
-
-		</script>
+</script>
 {% endblock %}

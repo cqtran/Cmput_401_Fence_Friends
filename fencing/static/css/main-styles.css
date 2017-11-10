@@ -58,6 +58,11 @@ a, a:hover {
   padding-bottom: 10px;
 }
 
+.paddingless{
+  padding: 0px;
+  margin: 0;
+}
+
 .not-reached{
   background-color: #ffffb3;
 }
@@ -87,4 +92,35 @@ a, a:hover {
 }
 .not-interested{
   background-color: #d9d9d9;
+}
+
+.not-reached-text{
+  color: #ffffb3;
+}
+.appraisal-booked-text{
+  color: #b3ffb3;
+}
+.waiting-appraisal-text{
+  color: #ffb3b3;
+}
+.appraised-text{
+  color: #a7f1a7;
+}
+.quote-sent-text{
+  color: #eee8aa;
+}
+.waiting-alberta-text{
+  color: #fff599;
+}
+.install-pending-text{
+  color: #ffdab9;
+}
+.installing-text{
+  color: #c0f2f2;
+}
+.paid-text{
+  color: #99ff99;
+}
+.not-interested-text{
+  color: #d9d9d9;
 }
