@@ -164,7 +164,7 @@ requestProj.onreadystatechange = function(response) {
 		// Parse the JSON
 		var project = JSON.parse(requestProj.responseText);
 		document.getElementById('project-name').innerHTML = project[0].project_name;
-		document.getElementById('status').innerHTML = project[0].status_name;
+		document.getElementById('status').innerHTML = "■ " + project[0].status_name;
 		document.getElementById('address').innerHTML = project[0].address;
 		document.getElementById('start-date').innerHTML = project[0].start_date;
 		/*if(project[0].status_name == "Paid"){
