@@ -82,6 +82,12 @@ pip3 install WeasyPrint
 Other:<br>
 http://weasyprint.readthedocs.io/en/stable/install.html
 
+### Requests
+
+```bash
+pip3 install requests
+```
+
 ## Run
 
 1. Start MySQL
