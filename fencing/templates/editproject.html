@@ -5,9 +5,15 @@
 
 <form method = "post"  action="{{url_for('editprojectinfo') }} ">
   <input class="form-control" id="project_id" type="hidden" name="project_id"/>
+  <label for="project_name" style="padding-top: 1rem;">Project Name</label>
   <input class="form-control" id="project_name" type="text" name="project_name" value="Project Name">
+  <label for="address" style="padding-top: 1rem;">Address</label>
   <input class="form-control" id="address" type="text" name="address" value="Address">
-  <select id = "status" name = "status"></select>
+  <label for="status" style="padding-top: 1rem;">Status</label>
+  <br>
+  <select id = "status" name = "status" datastyle="btn-primary"></select>
+  <br>
+  <label for="note" style="padding-top: 1rem;">Note</label>
   <textarea class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
   <br>
   <input class="btn btn-primary btn-block" type="submit" value = "Save Information"/>
@@ -31,6 +37,7 @@ requestStatus.onreadystatechange = function(response) {
         item.innerHTML = status.status_name;
         // Add it to the list:
         statusList.appendChild(item);
+        //$('.selectpicker').selectpicker('refresh'); 
     });
     }
   }
