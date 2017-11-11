@@ -140,3 +140,8 @@ input[type="file"] {
 .hide{
   visibility: hidden;
 }
+
+.required::after {
+  content: "*";
+  color: red;
+}
