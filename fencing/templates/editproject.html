@@ -21,6 +21,7 @@
 </form>
 
 <script type="text/javascript">
+var _STATUS;
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");
 var statusList = document.getElementById('status');
@@ -37,6 +38,7 @@ requestStatus.onreadystatechange = function(response) {
         item.innerHTML = status.status_name;
         // Add it to the list:
         statusList.appendChild(item);
+        statusList.value = _STATUS;
         //$('.selectpicker').selectpicker('refresh'); 
     });
     }
@@ -53,18 +55,14 @@ requestStatus.send()
         var project = JSON.parse(requestProj.responseText);
         document.getElementById('project_id').value = project[0].project_id;
         document.getElementById('project_name').value = project[0].project_name;
-    		document.getElementById('address').value = project[0].address;
-        for(var i = 0; i < statusList.length; i++) {
-          if(statusList[i].value == project[0].status_name) {
-            statusList[i].setAttribute('selected', 'selected')
-          }
-        }
+        document.getElementById('address').value = project[0].address;
+        _STATUS = project[0].status_name;
     	  document.getElementById('note').value = project[0].note;
       }
     }
   }
   requestProj.open('GET', '/getProject/' + proj_id, true);
-  requestProj.send()
+  requestProj.send();
 
 </script>
 
