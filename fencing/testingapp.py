@@ -22,7 +22,7 @@ app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
 app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
-app.register_blueprint(Errors.errorBlueprint)
+#app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
 
 """

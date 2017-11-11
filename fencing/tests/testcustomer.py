@@ -16,7 +16,7 @@ class TestCustomer(unittest.TestCase):
         # Clear all tables in the database
         for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
-        
+
         companyTestData()
         statusTestData()
 
@@ -52,6 +52,7 @@ class TestCustomer(unittest.TestCase):
 
         # Test getting customer with id = 2
         response = requests.get('http://localhost:5000/getCustomer/2')
+        assert response.status_code == 200
         json_obj = json.loads(response.text)
         print("\nGot json response from 'http://localhost:5000/getCustomer/2':")
         print(json_obj)
@@ -64,13 +65,18 @@ class TestCustomer(unittest.TestCase):
         assert result['cellphone'] == '761-158-2113'
         assert result['company_name'] == 'Builder'
         print("Json response is expected")
-
-        # Test getting non-existing customer with id = 4.
-        response = requests.get('http://localhost:5000/getCustomer/4')
+        
+    def test_getInvalidCustomer(self):
+        """ Test for getting a customer of a non-exsitng customer id """
+        print("\n\n Testing getCustomer API for non-existing customer\n")
+        customerTestData()
+        # Test getting non-existing customer with id = 100.
+        response = requests.get('http://localhost:5000/getCustomer/100')
+        assert response.status_code == 400
         json_obj = json.loads(response.text)
-        print("\nGot json response from 'http://localhost:5000/getCustomer/4':")
+        print("\nGot json response from 'http://localhost:5000/getCustomer/100':")
         print(json_obj)
-        assert len(json_obj) == 0
+        assert json_obj['message'] == "The customer was not found"
         print("Json response is expected")
 
     def test_getCustomerList(self):
@@ -80,7 +86,9 @@ class TestCustomer(unittest.TestCase):
 
         # Test getting customers from the only the 'Fence' company
         response = requests.get('http://localhost:5000/getCustomerList/Fence')
+        assert response.status_code == 200
         json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getCustomerList/Fence':")
         print(json_obj)
         assert len(json_obj) == 2
         result1 = json_obj[0]
@@ -95,6 +103,19 @@ class TestCustomer(unittest.TestCase):
         assert result2['email'] == 'Jason@gmail.com'
         assert result2['cellphone'] == '688-946-8781'
         assert result2['company_name'] == 'Fence'
+        print("Json response is expected")
+
+    def test_getInvalidCustomerList(self):
+        """ Test for getting all customers of a non-existing company """
+        print("\n\n Testing getCustomerList API for non-existing company \n")
+        customerTestData()
+
+        response = requests.get('http://localhost:5000/getCustomerList/NumberOneFencing')
+        assert response.status_code == 400
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getCustomerList/NumberOneFencing':")
+        print(json_obj)
+        assert json_obj['message'] == "No customers were found"
         print("Json response is expected")
 
     def test_updateCustomerInfo(self):

@@ -8,6 +8,7 @@ from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
+from api.errors import bad_request
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
@@ -33,6 +34,8 @@ def getProjectList(customer_id):
             projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status)\
             .order_by(desc(Project.start_date)).all()
 
+        if len(projectList) == 0:
+            return bad_request("No projects were found")
         return jsonify(projectList)
 
 @projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
@@ -43,6 +46,8 @@ def getProject(project_id):
     if request.method == "GET":
         project = dbSession.query(Project)
         project = project.filter(Project.project_id == project_id).all()
+        if len(project) == 0:
+            return bad_request("The project was not found")
         return jsonify(project)
 
 def updateProjectInfo(project_id, project_name, address, status, note):

@@ -7,6 +7,7 @@ from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
+from api.errors import bad_request
 
 customerBlueprint = Blueprint('customerBlueprint', __name__, template_folder='templates')
 
@@ -23,6 +24,8 @@ def getCustomerList(company_name):
             # filter customer list by company_name if provided
             customers = customers.filter(Customer.company_name == company_name)
         customers = customers.all()
+        if len(customers) == 0:
+            return bad_request("No customers were found")
         return jsonify(customers)
 
 @customerBlueprint.route('/getCustomer/<int:customer_id>', methods=['GET'])
@@ -33,6 +36,8 @@ def getCustomer(customer_id):
     if request.method == 'GET':
         customer = dbSession.query(Customer)
         customer = customer.filter(Customer.customer_id == customer_id).all()
+        if len(customer) == 0:
+            return bad_request("The customer was not found")
         return jsonify(customer)
 
 @customerBlueprint.route('/autocomplete/', methods=["GET"])

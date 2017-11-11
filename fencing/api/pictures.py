@@ -9,6 +9,7 @@ from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
+from api.errors import bad_request
 
 directory = os.path.join('static', 'images')
 
@@ -22,6 +23,8 @@ def getPictureList(project_id):
     if request.method == 'GET':
         pictures = dbSession.query(Picture)
         pictures = pictures.filter(Picture.project_id == project_id).all()
+        if len(pictures) == 0:
+            return bad_request("No pictures were found for this project")
         return jsonify(pictures)
 
 def addPicture(root_path, pid, picture):

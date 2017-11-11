@@ -51,6 +51,7 @@ class TestPicture(unittest.TestCase):
 
         # Test getting pictures from project id = 1.
         response = requests.get('http://localhost:5000/getPictureList/1')
+        assert response.status_code == 200
         json_obj = json.loads(response.text)
         print("\nGot json response from 'http://localhost:5000/getPictureList/1':")
         print(json_obj)
@@ -64,6 +65,17 @@ class TestPicture(unittest.TestCase):
 
         assert result2['picture_id'] == 2
         assert result2['file_name'] == 'file1'
+        print("Json response is expected")
+
+    def test_getInvalidPictureList(self):
+        """ Test getting all pictures of a project that has no pictures """
+        print("\n\n Testing getPictureList API with a project that has no pictures\n")
+        response = requests.get('http://localhost:5000/getPictureList/100')
+        assert response.status_code == 400
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getPictureList/100':")
+        print(json_obj)
+        assert json_obj['message'] == "No pictures were found for this project"
         print("Json response is expected")
 
     def test_picturePID(self):

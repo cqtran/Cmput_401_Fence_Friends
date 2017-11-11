@@ -8,6 +8,7 @@ from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
+from api.errors import bad_request
 
 statusBlueprint = Blueprint('statusBlueprint', __name__, template_folder='templates')
 
@@ -18,4 +19,6 @@ def getStatusList():
     """ Returns the list of statuses """
     if request.method == "GET":
         statuses = dbSession.query(Status).all()
+        if len(statuses) == 0:
+            return bad_request("No statuses were found")
         return jsonify(statuses)
