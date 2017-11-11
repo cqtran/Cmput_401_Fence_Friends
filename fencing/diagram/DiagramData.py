@@ -22,6 +22,10 @@ class DiagramData:
 		
 		else:
 			return '[]'
+	
+	@property
+	def empty(self):
+		return len(self._fences) == 0 and len(self._gates) == 0
 
 	@property
 	def fences(self):

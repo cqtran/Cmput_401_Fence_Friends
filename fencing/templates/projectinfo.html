@@ -71,9 +71,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 	function saveDrawPicture() {
 	    var initial = image.getAttribute('src');
-	    console.log("asdkl;fjadks;")
-		console.log(initial);
-		post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
+		  post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
 
 	}
 
@@ -254,7 +252,6 @@ request.onreadystatechange = function(response) {
 
         item.appendChild(link);
         final.appendChild(item);
-		console.log(imgPath + picture.file_name)
 
 		//img.className += 'img-thumbnail'
 		// Add it to the list:

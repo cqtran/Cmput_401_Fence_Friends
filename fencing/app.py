@@ -214,7 +214,6 @@ def accountrequests():
 def acceptUser():
     if request.method == 'POST':
         user_id = request.form["user_id"]
-        print(user_id)
         user = dbSession.query(User).filter(User.id == user_id).all()
         userDatastore.activate_user(user[0])
         user[0].active = True
@@ -407,16 +406,13 @@ def saveDiagram():
     parsed = DiagramParser.parse(image)
 
     # Test parsed output
-    check = str(parsed)
-    if check == '[]':
-        print("WE OUT")
     print(parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
     qid = json_quotepic[0].get("quote_id")
 
     # If parsed is empty don't changed the drawing
-    if check !=  '[]':
+    if not parsed.empty:
         update = Projects.updatedrawiopic(qid, 5, image, 0)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
