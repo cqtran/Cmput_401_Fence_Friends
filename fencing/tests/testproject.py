@@ -28,25 +28,6 @@ class TestProject(unittest.TestCase):
         dbSession.remove()
 
     def test_createProject(self):
-        """ Test for creating a project """
-        """customerTestData()
-
-        # Test if there are no projects
-        noProjectTest = dbSession.query(Project).all()
-        assert len(noProjectTest)  == 0
-
-        # Try adding a project through Project api
-        Projects.createProject(1, 'Not Reached', 'Somewhere Ave', 'Fence', "Kat's house fence")
-        oneProjectTest = dbSession.query(Project).all()
-
-        # Test if the project is successfully added
-        assert len(oneProjectTest) == 1
-
-        # Test the information from the found project
-        result = oneProjectTest[0].serialize
-        assert result['status_name'] == 'Not Reached'
-        assert result['address'] == 'Somewhere Ave'
-        assert result['project_name'] == "Kat's house fence" """
         pass
 
     def test_savingNote(self):
@@ -90,6 +71,20 @@ class TestProject(unittest.TestCase):
         assert result['project_name'] == "Jason's fence for company building"
         print("Json response is expected")
 
+    def test_getInvalidProject(self):
+        """ Test for getting a project of a non-exsitng project id """
+        print("\n\n Testing getProject API for non-existing project\n")
+        projectTestData()
+        
+        # Test getting non-existing project with id = 100.
+        response = requests.get('http://localhost:5000/getProject/100')
+        assert response.status_code == 400
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getProject/100':")
+        print(json_obj)
+        assert json_obj['message'] == "The project was not found"
+        print("Json response is expected")
+
     def test_getProjectList(self):
         """ Test for getting all projects of a company """
         print("\n\n Testing getProjectList API\n")
@@ -114,6 +109,20 @@ class TestProject(unittest.TestCase):
         assert result2['note'] == 'Dog lives here'
         assert result2['project_name'] == "Kat's second house fence"
 
+        print("Json response is expected")
+
+    def test_getInvalidProjectList(self):
+        """ Test for getting all project of a non-existing customer """
+        print("\n\n Testing getCustomerList API for non-existing customer \n")
+        projectTestData()
+
+        # Test getting projects from a non-existing customer
+        response = requests.get('http://localhost:5000/getProjectList/100')
+        assert response.status_code == 400
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/getProjectList/100':")
+        print(json_obj)
+        assert json_obj['message'] == "No projects were found"
         print("Json response is expected")
 
     def test_updateProjectInfo(self):
