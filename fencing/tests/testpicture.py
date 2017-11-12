@@ -5,7 +5,7 @@ from flask import json
 from database.db import dbSession, Base, engine
 from database.models import Status, Picture
 from tests.testdata import *
-
+from io import StringIO
 import requests
 
 import api.pictures as Pictures
@@ -36,13 +36,41 @@ class TestPicture(unittest.TestCase):
 
     def test_addPicture(self):
         """ Test adding a picture to a project """
-        pictureTestData()
+        print("\n\n Testing uploadPicture API\n")
+        image = open('testimage.jpg','rb')
+        files = {'picture': image}
 
-        Pic = dbSession.query(Picture).first()
-        assert Pic.picture_id == 1
-        assert Pic.file_name == "file"
+        #r = requests.post(url, files=files, data=values)
 
+        response = requests.post('http://localhost:5000/uploadPicture/', files = files, data={'proj_id': 2})
+        assert response.status_code == 200
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/uploadPicture/':")
 
+        print(json_obj)
+        assert json_obj['message'] == "Picture was uploaded"
+        print("Json response is expected")
+
+        image.close()
+
+    def test_addInvalidPicture(self):
+        """ Test adding an invalid picture to a project """
+        print("\n\n Testing uploadPicture API with invalid project id\n")
+        image = open('testimage.jpg','rb')
+        files = {'picture': image}
+
+        #r = requests.post(url, files=files, data=values)
+
+        response = requests.post('http://localhost:5000/uploadPicture/', files = files, data={'proj_id': 100})
+        assert response.status_code == 400
+        json_obj = json.loads(response.text)
+        print("\nGot json response from 'http://localhost:5000/uploadPicture/':")
+
+        print(json_obj)
+        assert json_obj['message'] == "Invalid project id"
+        print("Json response is expected")
+
+        image.close()
 
     def test_getPictureList(self):
         """ Test getting all pictures of a project """

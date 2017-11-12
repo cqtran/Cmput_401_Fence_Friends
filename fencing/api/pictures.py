@@ -9,11 +9,15 @@ from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
-from api.errors import bad_request
+from api.errors import *
+# May be required in the future for thumbnail creation
+# https://stackoverflow.com/questions/8631076/what-is-the-fastest-way-to-generate-image-thumbnails-in-python
+#from PIL import Image
 
 directory = os.path.join('static', 'images')
 
 pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
+app_root = ''
 
 @pictureBlueprint.route('/getPictureList/<int:project_id>', methods=['GET'])
 #@login_required
@@ -27,20 +31,31 @@ def getPictureList(project_id):
             return bad_request("No pictures were found for this project")
         return jsonify(pictures)
 
-def addPicture(root_path, pid, picture):
+@pictureBlueprint.route('/uploadPicture/', methods = ['POST'])
+#@login_required
+#@roles_required('primary')
+def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
-    filename = secure_filename(picture.filename)
-    absolutePath = os.path.join(root_path, directory, filename)
+    if request.method == 'POST':
+        project_id = request.form['proj_id']
+        picture = request.files['picture']
 
-    # Save the image
-    if picture.filename != '':
-        print('File stored at: ' + absolutePath + '\n')
-        picture.save(absolutePath)
+        # Store the picture in the database
+        # TODO: Create and save a thumbnail for each picture
+        filename = secure_filename(picture.filename)
 
-        # Store filepath into the database
-        newPicture = Picture(project_id = pid, file_name = filename)
-        dbSession.add(newPicture)
-        dbSession.commit()
-        return True
+        if picture.filename != '':
+            try:
+                absolutePath = os.path.join(app_root, directory, filename)
+                # Store filepath into the database
+                newPicture = Picture(project_id = project_id, file_name = filename)
+                dbSession.add(newPicture)
+                dbSession.commit()
 
-    return False
+                print('File stored at: ' + absolutePath + '\n')
+                picture.save(absolutePath)
+
+                return created_request("Picture was uploaded")
+            except:
+                return bad_request("Invalid project id")
+        return bad_request("No file provided")

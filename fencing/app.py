@@ -165,7 +165,7 @@ def setup_db():
         newStatus = Status(status_name = "Waiting for Appraisal")
         dbSession.add(newStatus)
         dbSession.commit()
-
+    Pictures.app_root = app.root_path
 
 
 @app.teardown_appcontext
@@ -382,19 +382,6 @@ def projectinfo():
     else:
         # POST?
         return render_template("projectinfo.html", company = current_user.company_name)
-
-@app.route('/uploadpicture/', methods = ['GET', 'POST'])
-@login_required
-@roles_required('primary')
-def uploadpicture():
-    if request.method == 'POST':
-        project_id = request.form['proj_id']
-        picture = request.files['picture']
-
-        # Store the picture in the database
-        Pictures.addPicture(app.root_path, project_id, picture)
-
-        return redirect(url_for('projectinfo', proj_id = project_id))
 
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required

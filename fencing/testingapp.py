@@ -39,7 +39,8 @@ app.json_encoder = MyJSONEncoder
 @app.before_first_request
 def setup_db():
     init_db()
-
+    Pictures.app_root = app.root_path
+    
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbSession.remove()

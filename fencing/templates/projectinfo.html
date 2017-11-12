@@ -108,7 +108,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 </div>
 
 <div class="container-fluid">
-	<form method = "post" id="upload-form" action="{{ url_for('uploadpicture') }}" enctype=multipart/form-data >
+	<form method = "post" id="upload-form" action='javascript:uploadPicture();' enctype=multipart/form-data >
 		<input class="form-control" type="hidden" name="proj_id" id="project_id" />
 		<div class="row">
 			<label for="file-upload" class="btn btn-primary btn-block">
@@ -223,14 +223,7 @@ request.onreadystatechange = function(response) {
     if (request.status === 200) {
       // Parse the JSON
       var jsonOptions = JSON.parse(request.responseText);
-      /*if (jsonOptions.length == 0) {
-        var img = document.createElement('img');
-        img.src =  imgPath + 'No_picture_available.png';
-        img.alt =  'No pictures available';
-        img.height = '150';
-        img.width = '150';
-        pictureList.appendChild(img);
-      }*/
+
       jsonOptions.forEach(function(picture) {
       	var item = document.createElement('div');
         var img = document.createElement('img');
@@ -259,13 +252,29 @@ request.onreadystatechange = function(response) {
 
       })
     }
+    if (request.status === 400) {
+      // No images for this project
+      var img = document.createElement('img');
+      img.src =  imgPath + 'No_picture_available.png';
+      img.alt =  'No pictures available';
+      img.height = '150';
+      img.width = '150';
+      pictureList.appendChild(img);
+    }
   }
 }
 request.open('GET', '/getPictureList/' + proj_id, true);
 request.send()
 
-	//displayProjectInfo({{ proj|safe }});
-	//displayPictures({{ images|safe }}, {{ path|safe }});
+  function uploadPicture() {
+    var uploadRequest = new XMLHttpRequest();
+    var formData = new FormData( document.getElementById("upload-form") );
+    uploadRequest.open('POST', '/uploadPicture/', true);
+    uploadRequest.onreadystatechange = function(response) {
+          window.location.reload();
+    }
+    uploadRequest.send(formData);
+  }
 
 	function projectClicked(id) {
 		window.location.href= '/editprojectinfo?proj_id='+id
