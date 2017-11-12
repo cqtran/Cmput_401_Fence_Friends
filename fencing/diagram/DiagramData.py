@@ -38,5 +38,5 @@ class DiagramData:
 	def addFence(self, length):
 		self._fences.append(FencingEntity('fence', length))
 	
-	def addGate(self, length):
-		self._gates.append(FencingEntity('gate', length))
+	def addGate(self, length, double=False):
+		self._gates.append(FencingEntity('gate', length, double))
