@@ -7,6 +7,13 @@ class DiagramData:
 		self._fences = []
 		self._gates = []
 	
+	def __iter__(self):
+		for fencingEntity in self._fences:
+			yield fencingEntity
+		
+		for fencingEntity in self._gates:
+			yield fencingEntity
+	
 	def __str__(self):
 		fenceStrings = ', '.join([str(fence) for fence in self._fences])
 		gateStrings = ', '.join([str(gate) for gate in self._gates])
@@ -35,8 +42,9 @@ class DiagramData:
 	def gates(self):
 		return self._gates
 
-	def addFence(self, length):
-		self._fences.append(FencingEntity('fence', length))
+	def addFence(self, length, x, y, rotation):
+		self._fences.append(FencingEntity('fence', length, x, y, rotation))
 	
-	def addGate(self, length, double=False):
-		self._gates.append(FencingEntity('gate', length, double))
+	def addGate(self, length, x, y, rotation, double=False):
+		self._gates.append(FencingEntity('gate', length, x, y, rotation,
+			double))
