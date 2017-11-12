@@ -37,11 +37,9 @@
   var postRequest = new XMLHttpRequest();
 
   function acceptUser(id) {    //window.location.href= '/projectinfo?proj_id='+id
-    console.log(id)
     postRequest.open("POST", "/acceptUser/", true);
     //Send the proper header information along with the request
     var params = "user_id="+id;
-    console.log(params)
     postRequest.onreadystatechange = function(response) {
     if (postRequest.readyState === 4) {
       if (postRequest.status === 200) {
