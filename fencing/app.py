@@ -412,8 +412,9 @@ def saveDiagram():
     qid = json_quotepic[0].get("quote_id")
 
     # If parsed is empty don't changed the drawing
-    if not parsed.empty:
-        update = Projects.updatedrawiopic(qid, 5, image, 0)
+    if parsed is not None:
+        if not parsed.empty:
+            update = Projects.updatedrawiopic(qid, 5, image, 0)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 
