@@ -3,7 +3,7 @@
 
 <h1> Editing Project Information </h1>
 
-<form method = "post"  action="{{url_for('editprojectinfo') }} ">
+<form onsubmit="markClean()" method="post"  action="{{url_for('editprojectinfo') }} ">
   <input class="form-control" id="project_id" type="hidden" name="project_id"/>
   <label for="project_name" style="padding-top: 1rem;">Project Name</label>
   <input onchange="markDirty()" class="form-control" id="project_name" type="text" name="project_name" value="Project Name">
@@ -71,6 +71,10 @@ requestStatus.send()
 
   function markDirty() {
     window.onbeforeunload = confirmDiscard;
+  }
+
+  function markClean() {
+    window.onbeforeunload = null;
   }
 
 </script>
