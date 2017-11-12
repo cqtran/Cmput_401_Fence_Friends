@@ -44,8 +44,13 @@ class DiagramParser:
 
 		for item in split:
 
-			if item.startswith('shape='):
-				return item[6:]
+			subSplit = item.split("=")
+
+			if (len(subSplit) < 2):
+				continue
+
+			if subSplit[0].strip() == 'shape':
+				return subSplit[1].strip()
 		
 		return None
 	
