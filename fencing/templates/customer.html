@@ -38,11 +38,6 @@
 
       // Loop over the JSON array.
       jsonOptions.forEach(function(customer) {
-        if (!customer.first_name.toLowerCase().includes(searchValue)) {
-          return;
-        }
-        console.log(customer.first_name);
-
         var item = document.createElement('div');
         var final = document.createElement('div');
         var link = document.createElement('a');
@@ -92,7 +87,8 @@
   function updateCustomerList() {
     customerList.innerHTML = "";
     // Set up and make the request.
-    request.open('GET', '/getCustomerList', true);
+    searchValue = search.value.trim().toLowerCase();
+    request.open('GET', '/getCustomerList?search=' + searchValue, true);
     request.send();
   }
 
