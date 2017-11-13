@@ -1,6 +1,5 @@
 from weasyprint import CSS
 from database.db import dbSession
-from diagram.DiagramParser import DiagramParser
 from database.models import Quote
 
 class Messages:
