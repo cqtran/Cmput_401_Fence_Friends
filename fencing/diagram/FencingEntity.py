@@ -1,3 +1,5 @@
+import math
+
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
@@ -48,8 +50,22 @@ class FencingEntity:
 		return self._x
 	
 	@property
+	def x2(self):
+		x = self._x
+		y = self._y
+		rotation = self._rotation
+		return x * math.cos(rotation) - y * sin(rotation)
+	
+	@property
 	def y(self):
 		return self._y
+	
+	@property
+	def y2(self):
+		x = self._x
+		y = self._y
+		rotation = self._rotation
+		return y * math.cos(rotation) + x * math.sin(rotation)
 	
 	@property
 	def rotation(self):
