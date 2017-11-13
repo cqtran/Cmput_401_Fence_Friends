@@ -44,8 +44,13 @@ class DiagramParser:
 
 		for item in split:
 
-			if item.startswith('shape='):
-				return item[6:]
+			subSplit = item.split("=")
+
+			if (len(subSplit) < 2):
+				continue
+
+			if subSplit[0].strip() == 'shape':
+				return subSplit[1].strip()
 		
 		return None
 	
@@ -132,7 +137,7 @@ class DiagramParser:
 			shape = shape[16:]
 
 			# We are only dealing with fence and gate shapes
-			if shape != 'fence' and shape != 'gate':
+			if shape != 'fence' and shape != 'gate' and shape != 'double_gate':
 				continue
 			
 			for geometry in cell:
@@ -154,5 +159,8 @@ class DiagramParser:
 				
 				elif shape == 'gate':
 					data.addGate(width)
+				
+				elif shape == 'double_gate':
+					data.addGate(width, double=True)
 		
 		return data

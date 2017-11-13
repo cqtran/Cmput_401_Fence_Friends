@@ -5,7 +5,7 @@
 
 <form onsubmit="markClean()" method="post"  action="{{url_for('editprojectinfo') }} ">
   <input class="form-control" id="project_id" type="hidden" name="project_id"/>
-  <label for="project_name" style="padding-top: 1rem;">Project Name</label>
+  <label for="project_name" style="padding-top: 1rem;" class="required">Project Name</label>
   <input onchange="markDirty()" class="form-control" id="project_name" type="text" name="project_name" value="Project Name">
   <label for="address" style="padding-top: 1rem;">Address</label>
   <input onchange="markDirty()" class="form-control" id="address" type="text" name="address" value="Address">
@@ -20,6 +20,7 @@
 </form>
 
 <script type="text/javascript">
+var _STATUS;
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");
 var statusList = document.getElementById('status');
@@ -36,6 +37,7 @@ requestStatus.onreadystatechange = function(response) {
         item.innerHTML = status.status_name;
         // Add it to the list:
         statusList.appendChild(item);
+        statusList.value = _STATUS;
         //$('.selectpicker').selectpicker('refresh'); 
     });
     }
@@ -52,12 +54,8 @@ requestStatus.send()
         var project = JSON.parse(requestProj.responseText);
         document.getElementById('project_id').value = project[0].project_id;
         document.getElementById('project_name').value = project[0].project_name;
-    		document.getElementById('address').value = project[0].address;
-        for(var i = 0; i < statusList.length; i++) {
-          if(statusList[i].value == project[0].status_name) {
-            statusList[i].setAttribute('selected', 'selected')
-          }
-        }
+        document.getElementById('address').value = project[0].address;
+        _STATUS = project[0].status_name;
     	  document.getElementById('note').value = project[0].note;
       }
     }

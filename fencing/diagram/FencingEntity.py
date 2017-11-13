@@ -1,17 +1,29 @@
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
-	def __init__(self, entityType, length):
+	_inchesInPoint = 10
+
+	def __init__(self, entityType, length, double=False):
 		self._entityType = entityType
-		self._length = length
+		self._length = length / FencingEntity._inchesInPoint
+		self._isDouble = double
 	
 	def __str__(self):
-		return str(self._length) + '" ' + self._entityType
+		entityType = self._entityType
+
+		if self._isDouble:
+			entityType = "double " + entityType
+
+		return str(self._length) + '" ' + entityType
 	
 	@property
-	def entityType():
+	def isDouble(self):
+		return self._isDouble
+	
+	@property
+	def entityType(self):
 		return self._entityType
 
 	@property
-	def length():
+	def length(self):
 		return self._length

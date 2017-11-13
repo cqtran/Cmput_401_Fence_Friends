@@ -20,19 +20,24 @@ def getProjectList(customer_id):
     """ Returns a list of projects. If a customer id is provided, the list will contain
     only contain projects to the given customer id """
     if request.method == 'GET':
+        search = request.args.get("search")
+        status = request.args.get('status')
         projectList = dbSession.query(Project)
 
         if customer_id is not None:
            projectList = projectList.filter(Project.customer_id == customer_id)
 
-        status = request.args.get('status')
-
         if status is None or status == "All" or status == "None":
-            projectList = projectList.filter(Customer.customer_id == Project.customer_id).order_by(desc(Project.start_date)).all()
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id).order_by(desc(Project.start_date))
 
         else:
-            projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status)\
-            .order_by(desc(Project.start_date)).all()
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status)
+        
+        if search is not None and search != "":
+            projectList = projectList.filter(
+                Project.project_name.contains(search))
+        
+        projectList = projectList.order_by(desc(Project.start_date)).all()
 
         if len(projectList) == 0:
             return bad_request("No projects were found")

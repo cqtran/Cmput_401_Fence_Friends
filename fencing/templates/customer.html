@@ -8,6 +8,10 @@
 
 <h1>Customers</h1>
 
+<form>
+  <input id="search" onkeyup="updateCustomerList()" onpaste="updateCustomerList()" type="text" class="form-control" placeholder="Search">
+</form>
+
 <hr class="mt-2">
 <div class="col-lg-12">
   <div class="row" id="customerlist"></div>
@@ -18,6 +22,8 @@
   // Get the <datalist> and <input> elements.
   var customerList = document.getElementById('customerlist');
 
+  var search = document.getElementById('search');
+
   // Create a new XMLHttpRequest.
   var request = new XMLHttpRequest();
 
@@ -27,6 +33,8 @@
     if (request.status === 200) {
       // Parse the JSON
       var jsonOptions = JSON.parse(request.responseText);
+
+      searchValue = search.value.trim().toLowerCase();
 
       // Loop over the JSON array.
       jsonOptions.forEach(function(customer) {
@@ -76,13 +84,19 @@
   }
   };
 
-  // Set up and make the request.
-  request.open('GET', '/getCustomerList', true);
-  request.send();
+  function updateCustomerList() {
+    customerList.innerHTML = "";
+    // Set up and make the request.
+    searchValue = search.value.trim().toLowerCase();
+    request.open('GET', '/getCustomerList?search=' + searchValue, true);
+    request.send();
+  }
 
   function customerClicked(id) {
   	window.location.href= '/customerinfo?cust_id=' + id + "&status=All"
   }
+
+  updateCustomerList();
 
 </script>
 {% endblock %}

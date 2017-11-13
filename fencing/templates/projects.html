@@ -29,6 +29,9 @@
   </div>
 </div>
 
+<form>
+  <input id="search" onkeyup="updateProjectList()" onpaste="updateProjectList()" type="text" class="form-control" placeholder="Search">
+</form>
 
 <hr class="mt-2">
 <div class="col-lg-12">
@@ -38,6 +41,8 @@
 <script type="text/javascript">
   // Get the project list element
   var projectList = document.getElementById('projectlist');
+
+  var search = document.getElementById('search');
 
   // Create a new XMLHttpRequest to get projects
   var request = new XMLHttpRequest();
@@ -132,12 +137,18 @@
   var url = new URL(window.location.href);
   var cust_id = url.searchParams.get("cust_id");
 
-  request.open('GET', '/getProjectList' + '?status={{ request.args.get("status") }}', true);
-  request.send();
+  function updateProjectList() {
+    projectList.innerHTML = "";
+    searchValue = search.value.trim().toLowerCase();
+    request.open('GET', '/getProjectList' + '?status={{ request.args.get("status") }}&search=' + searchValue, true);
+    request.send();
+  }
 
-function projectClicked(id) {
-	window.location.href = '/projectinfo?proj_id=' + id;
-}
+  function projectClicked(id) {
+    window.location.href = '/projectinfo?proj_id=' + id;
+  }
+
+  updateProjectList();
 
 </script>
 {% endblock %}

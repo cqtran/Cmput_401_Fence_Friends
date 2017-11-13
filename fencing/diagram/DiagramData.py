@@ -22,6 +22,10 @@ class DiagramData:
 		
 		else:
 			return '[]'
+	
+	@property
+	def empty(self):
+		return len(self._fences) == 0 and len(self._gates) == 0
 
 	@property
 	def fences(self):
@@ -34,5 +38,5 @@ class DiagramData:
 	def addFence(self, length):
 		self._fences.append(FencingEntity('fence', length))
 	
-	def addGate(self, length):
-		self._gates.append(FencingEntity('gate', length))
+	def addGate(self, length, double=False):
+		self._gates.append(FencingEntity('gate', length, double))
