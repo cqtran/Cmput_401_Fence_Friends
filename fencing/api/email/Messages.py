@@ -1,4 +1,7 @@
 from weasyprint import CSS
+from database.db import dbSession
+from diagram.DiagramParser import DiagramParser
+from database.models import Quote
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -60,6 +63,14 @@ class Messages:
 
 	def quoteAttachment(project, customer):
 		"""Generate the content of a quote attachment and return it"""
+		diagram = dbSession.query(Quote).filter(
+			Quote.project_id == project.project_id).one().project_info
+
+		pageBreak = """
+			<p style="page-break-after: always" ></p>
+			<p style="page-break-before: always" ></p>
+			"""
+
 		return """
 			<div style="float:left; width:25%;">
 				HELLO
@@ -98,7 +109,10 @@ class Messages:
 				</table>
 				<b>Signature:_____________________________________________</b>
 			</div>
-			"""
+			{pageBreak}
+			<img src="{diagram}">
+			<b>Signature:_____________________________________________</b>
+			""".format(pageBreak=pageBreak, diagram=diagram)
 	
 	def materialListAttachment(project):
 		"""Generate the content of a material list attachment and return it"""
