@@ -42,9 +42,10 @@ class DiagramData:
 	def gates(self):
 		return self._gates
 
-	def addFence(self, length, x, y, rotation):
-		self._fences.append(FencingEntity('fence', length, x, y, rotation))
+	def addFence(self, length, height, x, y, rotation):
+		self._fences.append(FencingEntity('fence', length, height, x, y,
+			rotation))
 	
-	def addGate(self, length, x, y, rotation, double=False):
-		self._gates.append(FencingEntity('gate', length, x, y, rotation,
+	def addGate(self, length, height, x, y, rotation, double=False):
+		self._gates.append(FencingEntity('gate', length, height, x, y, rotation,
 			double))

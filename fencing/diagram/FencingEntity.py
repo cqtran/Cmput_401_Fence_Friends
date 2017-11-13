@@ -3,10 +3,13 @@ class FencingEntity:
 
 	_inchesInPoint = 10
 
-	def __init__(self, entityType, length, x, y, rotation, double=False):
+	def __init__(self, entityType, length, height, x, y, rotation,
+		double=False):
+
 		self._entityType = entityType
-		self._rawLength = length
+		self._width = length
 		self._length = length / FencingEntity._inchesInPoint
+		self._height = height
 		self._x = x
 		self._y = y
 		self._isDouble = double
@@ -29,12 +32,16 @@ class FencingEntity:
 		return self._entityType
 	
 	@property
-	def rawLength(self):
-		return self._rawLength
+	def width(self):
+		return self._width
 	
 	@property
 	def length(self):
 		return self._length
+	
+	@property
+	def height(self):
+		return self._height
 	
 	@property
 	def x(self):

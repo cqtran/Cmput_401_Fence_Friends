@@ -158,6 +158,7 @@ class DiagramParser:
 					continue
 				
 				widthString = geometry.get('width')
+				heightString = geometry.get('height')
 				xString = geometry.get('x')
 				yString = geometry.get('y')
 
@@ -166,16 +167,17 @@ class DiagramParser:
 					return None
 				
 				width = int(widthString)
+				height = int(heightString)
 				x = int(xString)
 				y = int(yString)
 				
 				if shape == 'fence':
-					data.addFence(width, x, y, rotation)
+					data.addFence(width, height, x, y, rotation)
 				
 				elif shape == 'gate':
-					data.addGate(width, x, y, rotation)
+					data.addGate(width, height, x, y, rotation)
 				
 				elif shape == 'double_gate':
-					data.addGate(width, x, y, rotation, double=True)
+					data.addGate(width, height, x, y, rotation, double=True)
 		
 		return data
