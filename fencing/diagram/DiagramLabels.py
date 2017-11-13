@@ -15,6 +15,9 @@ class DiagramLabels:
 		Add length labels to a fence diagram and return the result or None if
 		there was a problem
 		"""
+		if (unparsed is None or parsed is None):
+			return None
+
 		svg = DiagramParser.getSVG(unparsed)
 		g = DiagramLabels._getG(svg)
 
