@@ -27,14 +27,13 @@ class DiagramLabels:
 			y = fencingEntity.y
 			x2 = (x + fencingEntity.rawLength) / 2.0
 			x2 = x2 * math.cos(rotation) - y * math.sin(rotation)
-			
-			x -= 12
-			y -= 12
+			x2 = x - 12
+			y2 = y - 12
 
 			length = html.escape(fencingEntity.lengthString())
 
 			lengthLabel = """<g transform="translate({x},{y})"><foreignObject style="overflow:visible;" pointer-events="all" width="58" height="12"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 60px; white-space: nowrap; word-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#FFFFFF;">{length}</div></div></foreignObject></g>""".format(
-				length=length, x=x, y=y)
+				length=length, x=x2, y=y2)
 
 			g.append(ElementTree.fromstring(lengthLabel))
 		

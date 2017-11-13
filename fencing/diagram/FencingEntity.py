@@ -53,12 +53,12 @@ class FencingEntity:
 		return self._isDouble
 	
 	def _inchesString(self):
-		return str(self._length) + '"'
+		return str(int(self._length)) + '"'
 	
 	def _feetString(self):
 		feet = self._length // 12
 		inchesLeft = self._length % 12
-		return str(feet) + "'" + str(inchesLeft) + '"'
+		return str(int(feet)) + "'" + str(int(inchesLeft)) + '"'
 	
 	def lengthString(self):
 		if self._entityType == "fence":
