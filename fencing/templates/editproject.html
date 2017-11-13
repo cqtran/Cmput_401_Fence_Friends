@@ -20,6 +20,29 @@
   <a> * Any unsaved information will be lost </a>
 </form>
 
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteLabel">Delete Project?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form method="post" action="{{ url_for('deleteproject', id=request.args.get('proj_id')) }}">
+            <input class="btn btn-danger btn-block" type="submit" value="Delete Project"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirmDelete">
+  Delete Project
+</button>
+
 <script type="text/javascript">
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");

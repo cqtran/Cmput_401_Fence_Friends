@@ -417,6 +417,16 @@ def saveDiagram():
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 
+@app.route('/deleteproject/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteproject():
+    project = dbSession.query(Project).filter(
+        Project.project_id == request.args.get("id")).one()
+    dbSession.delete(project)
+    dbSession.commit()
+    return redirect(url_for("projects"))
+
 @app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required
 @roles_required('primary')
