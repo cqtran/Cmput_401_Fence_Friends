@@ -17,6 +17,9 @@ class DiagramLabels:
 		"""
 		svg = DiagramParser.getSVG(unparsed)
 		g = DiagramLabels._getG(svg)
+
+		if g is None:
+			g = svg
 		
 		for fencingEntity in parsed:
 			rotation = fencingEntity.rotation
@@ -24,31 +27,48 @@ class DiagramLabels:
 			y = fencingEntity.y
 			x2 = (x + fencingEntity.rawLength) / 2.0
 			x2 = x2 * math.cos(rotation) - y * math.sin(rotation)
+			
+			x -= 12
+			y -= 12
 
 			length = html.escape(fencingEntity.lengthString())
 
-			lengthLabel = """<g transform="translate({x},{y})"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="42" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: normal; word-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;">{length}</div></div></foreignObject><text x="{x}" y="{y}" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">{length}</text></switch></g>""".format(
+			lengthLabel = """<g transform="translate({x},{y})"><foreignObject style="overflow:visible;" pointer-events="all" width="58" height="12"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 60px; white-space: nowrap; word-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#FFFFFF;">{length}</div></div></foreignObject></g>""".format(
 				length=length, x=x, y=y)
 
 			g.append(ElementTree.fromstring(lengthLabel))
 		
+		# So labels are not cropped off
+		DiagramLabels._addPadding(svg, 50)
+
 		ElementTree.register_namespace(
 			"", "http://www.w3.org/2000/svg")
 		
 		xml = ElementTree.tostring(svg, method='xml').decode('utf-8')
 		return DiagramLabels._encode(xml)
 	
+	def _addPadding(svgElement, pixels):
+		"""Add padding to the given SVG image"""
+		oldWidth = int(svgElement.get("width")[:-2])
+		oldHeight = int(svgElement.get("height")[:-2])
+		newWidth = oldWidth + pixels
+		newHeight = oldHeight + pixels
+		svgElement.set("width", str(newWidth) + "px")
+		svgElement.set("height", str(newHeight) + "px")
+	
+	def _getG(svg):
+ 		"""
+ 		Return the "g" element in the given "svg" element or None if not found
+ 		"""
+ 		for element in svg:
+ 			if element.tag == "g" or \
+			 	element.tag == "{http://www.w3.org/2000/svg}g":
+
+ 				return element
+ 		
+ 		return None
+	
 	def _encode(string):
 		"""Encode an XML-SVG diagram string"""
 		return "data:image/svg+xml;base64," + \
 			base64.b64encode(str.encode(string)).decode('utf-8')
-
-	def _getG(svg):
-		"""
-		Return the "g" element in the given "svg" element or None if not found
-		"""
-		for element in svg:
-			if element.tag == "{http://www.w3.org/2000/svg}g":
-				return element
-		
-		return None

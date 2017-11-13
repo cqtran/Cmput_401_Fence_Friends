@@ -404,7 +404,7 @@ def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
     image = request.form['image']
-    parsed = DiagramParser.parse(image)
+    parsed = DiagramParser._parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
@@ -414,6 +414,7 @@ def saveDiagram():
     if parsed is not None:
         if not parsed.empty:
             update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
+            #update = Projects.updatedrawiopic(qid, 5, image, 0)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 
