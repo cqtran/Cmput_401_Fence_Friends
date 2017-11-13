@@ -37,7 +37,7 @@ class TestPicture(unittest.TestCase):
     def test_addPicture(self):
         """ Test adding a picture to a project """
         print("\n\n Testing uploadPicture API\n")
-        image = open('testimage.jpg','rb')
+        image = open('tests/testimage.jpg','rb')
         files = {'picture': image}
 
         #r = requests.post(url, files=files, data=values)
@@ -56,7 +56,7 @@ class TestPicture(unittest.TestCase):
     def test_addInvalidPicture(self):
         """ Test adding an invalid picture to a project """
         print("\n\n Testing uploadPicture API with invalid project id\n")
-        image = open('testimage.jpg','rb')
+        image = open('tests/testimage.jpg','rb')
         files = {'picture': image}
 
         #r = requests.post(url, files=files, data=values)
@@ -67,7 +67,7 @@ class TestPicture(unittest.TestCase):
         print("\nGot json response from 'http://localhost:5000/uploadPicture/':")
 
         print(json_obj)
-        assert json_obj['message'] == "Invalid project id"
+        assert json_obj['message'] == "Invalid project id or an error when saving the file has occured"
         print("Json response is expected")
 
         image.close()
@@ -89,10 +89,12 @@ class TestPicture(unittest.TestCase):
         result2 = json_obj[1]
         # Test the information contained in the object with expected information
         assert result1['picture_id'] == 1
-        assert result1['file_name'] == 'file'
+        assert result1['file_name'] == 'garden.jpg'
+        assert result1['thumbnail_name'] == 'thumbnail_garden.png'
 
         assert result2['picture_id'] == 2
-        assert result2['file_name'] == 'file1'
+        assert result2['file_name'] == 'corner.jpg'
+        assert result2['thumbnail_name'] == 'thumbnail_corner.png'
         print("Json response is expected")
 
     def test_getInvalidPictureList(self):

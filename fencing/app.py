@@ -375,7 +375,7 @@ def projectinfo():
             json_quotepic = Projects.getdrawiopic(project_id)
 
             # Get relative path to project pictures
-            imgPath = repr(os.path.join('..', Pictures.directory, ''))
+            imgPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
 
             return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
 

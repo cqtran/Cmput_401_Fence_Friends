@@ -232,8 +232,8 @@ request.onreadystatechange = function(response) {
 
         link.setAttribute('href', '#');
         img.setAttribute('class', 'img-fluid');
-		img.src =  imgPath + picture.file_name;
-		img.alt =  picture.file_name + ' not found';
+		img.src =  imgPath + picture.thumbnail_name;
+		img.alt =  picture.thumbnail_name + ' not found';
 
 		link.appendChild(img);
         item.setAttribute('class', 'card mb-2');

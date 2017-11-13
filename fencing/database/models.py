@@ -167,11 +167,13 @@ class Picture(Base):
     picture_id = Column(Integer, primary_key=True)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
     file_name = Column(String(100))
+    thumbnail_name = Column(String(100))
 
-    def __init__(self, project_id, file_name, picture_id = None):
+    def __init__(self, project_id, file_name, thumbnail_name,  picture_id = None):
         self.picture_id = picture_id
         self.project_id = project_id
         self.file_name = file_name
+        self.thumbnail_name = thumbnail_name
 
     @property
     def serialize(self):
@@ -179,5 +181,6 @@ class Picture(Base):
         return {
             'picture_id'                : self.picture_id,
             'project_id'                : self.project_id,
-            'file_name'                 : self.file_name
+            'file_name'                 : self.file_name,
+            'thumbnail_name'            : self.thumbnail_name
         }

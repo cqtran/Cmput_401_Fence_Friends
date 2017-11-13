@@ -10,11 +10,17 @@ from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
-# May be required in the future for thumbnail creation
-# https://stackoverflow.com/questions/8631076/what-is-the-fastest-way-to-generate-image-thumbnails-in-python
-#from PIL import Image
 
-directory = os.path.join('static', 'images')
+# https://stackoverflow.com/questions/8631076/what-is-the-fastest-way-to-generate-image-thumbnails-in-python
+from PIL import Image
+
+# TODO: Clean code and refactor. Maybe there is a better way to handle different file extensions?
+thumbnailDir = os.path.join('static', 'images', 'thumbnails')
+thumbnailPrefix = 'thumbnail_'
+thumbnailExt = '.png'
+thumbnailSize = (128, 128)
+pictureDir = os.path.join('static', 'images', 'pictures')
+
 
 pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
 app_root = ''
@@ -40,22 +46,43 @@ def uploadPicture():
         project_id = request.form['proj_id']
         picture = request.files['picture']
 
-        # Store the picture in the database
-        # TODO: Create and save a thumbnail for each picture
         filename = secure_filename(picture.filename)
-
-        if picture.filename != '':
+        filename, file_extension = os.path.splitext(filename)
+        if filename != '':
             try:
-                absolutePath = os.path.join(app_root, directory, filename)
                 # Store filepath into the database
-                newPicture = Picture(project_id = project_id, file_name = filename)
+                newPicture = Picture(project_id = project_id,
+                    file_name = filename + file_extension,
+                    thumbnail_name = thumbnailPrefix + filename + thumbnailExt)
                 dbSession.add(newPicture)
+
+                # Save picture in the picture directory
+                picturePath = os.path.join(app_root, pictureDir,
+                    filename + file_extension + file_extension)
+                print('Picture stored at: ' + picturePath + '\n')
+                picture.save(picturePath)
+
+                # Create thumbnail of picture
+                thumb = Image.open(picturePath)
+                thumb.thumbnail(thumbnailSize)
+
+                background = Image.new('RGBA', thumbnailSize, (255, 255, 255, 0))
+                background.paste(
+                    thumb, (int((thumbnailSize[0] - thumb.size[0]) / 2),
+                            int((thumbnailSize[1] - thumb.size[1]) / 2))
+                )
+
+                # Save thumbnail in the thumbnail directory
+                thumbnailPath = os.path.join(app_root, thumbnailDir,
+                    thumbnailPrefix + filename + thumbnailExt)
+                print('Thumbnail stored at: ' + thumbnailPath + '\n')
+                background.save(thumbnailPath)
+                background.close()
+                thumb.close()
+
+                # Commit and return ok status
                 dbSession.commit()
-
-                print('File stored at: ' + absolutePath + '\n')
-                picture.save(absolutePath)
-
                 return created_request("Picture was uploaded")
             except:
-                return bad_request("Invalid project id")
+                return bad_request("Invalid project id or an error when saving the file has occured")
         return bad_request("No file provided")
