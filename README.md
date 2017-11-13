@@ -38,12 +38,6 @@ brew install mysql-connector-c
 pip3 install mysql-connector==2.1.4
 ```
 
-### SQLAlchemy
-
-```bash
-pip3 install SQLAlchemy
-```
-
 ### Flask SQLAlchemy
 
 ```bash
@@ -51,12 +45,6 @@ pip3 install flask-sqlalchemy
 ```
 
 flask-sqlalchemy
-
-### Flask
-
-```bash
-pip3 install flask
-```
 
 ### bcrypt
 
@@ -68,12 +56,6 @@ pip3 install bcrypt
 
 ```bash
 pip3 install flask-security
-```
-
-### Flask-Bootstrap
-
-```bash
-pip3 install flask-bootstrap
 ```
 
 ### WeasyPrint
