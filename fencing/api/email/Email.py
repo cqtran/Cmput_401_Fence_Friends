@@ -28,11 +28,6 @@ class Email:
 				stylesheets=Messages.stylesheets)
 			return filePath
 		
-		except BaseException as e:
-			print(str(e))
-			flash("Error creating attachment", "danger")
-			return None
-		
 		except:
 			flash("Error creating attachment", "danger")
 			return None

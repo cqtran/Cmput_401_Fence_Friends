@@ -34,8 +34,12 @@ class DiagramParser:
 		decompressed = zlib.decompress(decoded, -8)
 		decompressedString = decompressed.decode('utf-8')
 		return urllib.parse.unquote(decompressedString)
-	
-	def _getStyleValue(style, key):
+
+	def _getShape(style):
+		"""
+		Given the value of the 'style' tag of an 'mxCell' element, return the
+		value of the 'shape' portion or None if it is not found
+		"""
 		split = style.split(';')
 
 		for item in split:
@@ -45,25 +49,10 @@ class DiagramParser:
 			if (len(subSplit) < 2):
 				continue
 
-			if subSplit[0].strip() == key:
+			if subSplit[0].strip() == 'shape':
 				return subSplit[1].strip()
 		
 		return None
-	
-	def _getToRemove(style):
-		"""
-		Given the value of the 'style' tag of an 'mxCell' element, return
-		whether there is a 'dashed' portion with a value of 1 (indicates a
-		fencing entity to be removed)
-		"""
-		return DiagramParser._getStyleValue(style, 'dashed') == "1"
-
-	def _getShape(style):
-		"""
-		Given the value of the 'style' tag of an 'mxCell' element, return the
-		value of the 'shape' portion or None if it is not found
-		"""
-		return DiagramParser._getStyleValue(style, 'shape')
 	
 	def _getRoot(compressedString):
 		"""
@@ -136,7 +125,6 @@ class DiagramParser:
 				continue
 			
 			shape = DiagramParser._getShape(style)
-			toRemove = DiagramParser._getToRemove(style)
 
 			# We are only dealing with 'mxCell' elements that have shapes
 			if shape is None:
@@ -167,12 +155,12 @@ class DiagramParser:
 				width = int(widthString)
 				
 				if shape == 'fence':
-					data.addFence(width, toRemove=toRemove)
+					data.addFence(width)
 				
 				elif shape == 'gate':
-					data.addGate(width, toRemove=toRemove)
+					data.addGate(width)
 				
 				elif shape == 'double_gate':
-					data.addGate(width, toRemove=toRemove, double=True)
+					data.addGate(width, double=True)
 		
 		return data
