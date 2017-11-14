@@ -117,55 +117,54 @@ def setup_db():
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Not Reached"):
-        newStatus = Status(status_name = "Not Reached")
+        newStatus = Status(status_name = "Not Reached", status_number = 1)
         dbSession.add(newStatus)
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Paid"):
-        newStatus = Status(status_name = "Paid")
+        newStatus = Status(status_name = "Paid", status_number = 2)
         dbSession.add(newStatus)
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Appraisal Booked"):
-        newStatus = Status(status_name = "Appraisal Booked")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Appraised"):
-        newStatus = Status(status_name = "Appraised")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
-        newStatus = Status(status_name = "Quote Sent")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
-        newStatus = Status(status_name = "Waiting for Alberta1Call")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
-        newStatus = Status(status_name = "Installation Pending")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Installing"):
-        newStatus = Status(status_name = "Installing")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "No Longer Interested"):
-        newStatus = Status(status_name = "No Longer Interested")
+        newStatus = Status(status_name = "Appraisal Booked", status_number = 3)
         dbSession.add(newStatus)
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Waiting for Appraisal"):
-        newStatus = Status(status_name = "Waiting for Appraisal")
+        newStatus = Status(status_name = "Waiting for Appraisal", status_number = 4)
         dbSession.add(newStatus)
         dbSession.commit()
 
+    if not fieldExists(dbSession, Status.status_name, "Appraised"):
+        newStatus = Status(status_name = "Appraised", status_number = 5)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
+        newStatus = Status(status_name = "Quote Sent", status_number = 6)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
+        newStatus = Status(status_name = "Waiting for Alberta1Call", status_number = 7)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
+        newStatus = Status(status_name = "Installation Pending", status_number = 8)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installing"):
+        newStatus = Status(status_name = "Installing", status_number = 9)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "No Longer Interested"):
+        newStatus = Status(status_name = "No Longer Interested", status_number = 10)
+        dbSession.add(newStatus)
+        dbSession.commit()
 
 
 @app.teardown_appcontext
