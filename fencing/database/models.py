@@ -168,6 +168,7 @@ class Picture(Base):
     project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
     file_name = Column(String(100))
     thumbnail_name = Column(String(100))
+    upload_date = Column(DateTime(), default = datetime.datetime.utcnow)
 
     def __init__(self, project_id, file_name, thumbnail_name,  picture_id = None):
         self.picture_id = picture_id

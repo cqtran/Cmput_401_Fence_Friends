@@ -21,7 +21,6 @@ thumbnailExt = '.png'
 thumbnailSize = (128, 128)
 pictureDir = os.path.join('static', 'images', 'pictures')
 
-
 pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
 app_root = ''
 
@@ -32,7 +31,7 @@ def getPictureList(project_id):
     """ Returns a list of pictures for a given project id"""
     if request.method == 'GET':
         pictures = dbSession.query(Picture)
-        pictures = pictures.filter(Picture.project_id == project_id).all()
+        pictures = pictures.filter(Picture.project_id == project_id).order_by(desc(Picture.upload_date)).all()
         if len(pictures) == 0:
             return bad_request("No pictures were found for this project")
         return jsonify(pictures)
