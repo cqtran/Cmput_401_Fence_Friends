@@ -27,6 +27,12 @@ input[type="file"] {
   border: 0;
   font-weight: bold;
 }
+.btn-danger {
+  color: #ffffff;
+  background-color: #A50000;
+  border: 0;
+  font-weight: bold;
+}
 .no-border {
 	border: 0;
 }
