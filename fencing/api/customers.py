@@ -19,6 +19,7 @@ def getCustomerList(company_name):
     """ Returns a list of customers. If a company name is provided, the list will
     only contain customers from that company"""
     if request.method == 'GET':
+        company_name = current_user.company_name
         search = request.args.get("search")
         customers = dbSession.query(Customer)
         if company_name is not None:
