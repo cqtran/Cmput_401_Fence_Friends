@@ -1,12 +1,17 @@
+import math
+
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
 	_inchesInPoint = 10
 
-	def __init__(self, entityType, length, x, y, rotation, double=False):
+	def __init__(self, entityType, length, height, x, y, rotation,
+		double=False):
+
 		self._entityType = entityType
-		self._rawLength = length
+		self._width = length
 		self._length = length / FencingEntity._inchesInPoint
+		self._height = height
 		self._x = x
 		self._y = y
 		self._isDouble = double
@@ -29,20 +34,38 @@ class FencingEntity:
 		return self._entityType
 	
 	@property
-	def rawLength(self):
-		return self._rawLength
+	def width(self):
+		return self._width
 	
 	@property
 	def length(self):
 		return self._length
 	
 	@property
+	def height(self):
+		return self._height
+	
+	@property
 	def x(self):
 		return self._x
 	
 	@property
+	def x2(self):
+		x = self._x
+		y = self._y
+		rotation = self._rotation
+		return x * math.cos(rotation) - y * sin(rotation)
+	
+	@property
 	def y(self):
 		return self._y
+	
+	@property
+	def y2(self):
+		x = self._x
+		y = self._y
+		rotation = self._rotation
+		return y * math.cos(rotation) + x * math.sin(rotation)
 	
 	@property
 	def rotation(self):
@@ -53,12 +76,12 @@ class FencingEntity:
 		return self._isDouble
 	
 	def _inchesString(self):
-		return str(self._length) + '"'
+		return str(int(self._length)) + '"'
 	
 	def _feetString(self):
 		feet = self._length // 12
 		inchesLeft = self._length % 12
-		return str(feet) + "'" + str(inchesLeft) + '"'
+		return str(int(feet)) + "'" + str(int(inchesLeft)) + '"'
 	
 	def lengthString(self):
 		if self._entityType == "fence":
