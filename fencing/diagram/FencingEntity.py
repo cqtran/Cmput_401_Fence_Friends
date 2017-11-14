@@ -6,7 +6,7 @@ class FencingEntity:
 	_inchesInPoint = 10
 
 	def __init__(self, entityType, length, height, x, y, rotation,
-		double=False):
+		toRemove=False, double=False):
 
 		self._entityType = entityType
 		self._width = length
@@ -14,6 +14,7 @@ class FencingEntity:
 		self._height = height
 		self._x = x
 		self._y = y
+		self._toRemove = toRemove
 		self._isDouble = double
 
 		if rotation is None:
@@ -26,6 +27,9 @@ class FencingEntity:
 
 		if self._isDouble:
 			entityType = "double " + entityType
+		
+		if self._toRemove:
+			entityType += " (remove)"
 
 		return str(self._length) + '" ' + entityType
 	
@@ -70,6 +74,10 @@ class FencingEntity:
 	@property
 	def rotation(self):
 		return self._rotation
+	
+	@property
+	def toRemove(self, toRemove):
+		return self._isDouble
 	
 	@property
 	def isDouble(self):

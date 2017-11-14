@@ -130,6 +130,7 @@ class DiagramParser:
 				continue
 			
 			shape = DiagramParser._getStyleValue(style, 'shape')
+			toRemove = DiagramParser._getStyleValue(style, 'dashed') == "1"
 
 			# We are only dealing with 'mxCell' elements that have shapes
 			if shape is None:
@@ -172,12 +173,15 @@ class DiagramParser:
 				y = int(yString)
 				
 				if shape == 'fence':
-					data.addFence(width, height, x, y, rotation)
+					data.addFence(width, height, x, y, rotation,
+						toRemove=toRemove)
 				
 				elif shape == 'gate':
-					data.addGate(width, height, x, y, rotation)
+					data.addGate(width, height, x, y, rotation,
+						toRemove=toRemove)
 				
 				elif shape == 'double_gate':
-					data.addGate(width, height, x, y, rotation, double=True)
+					data.addGate(width, height, x, y, rotation,
+						toRemove=toRemove, double=True)
 		
 		return data
