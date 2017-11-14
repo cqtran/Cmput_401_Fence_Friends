@@ -44,6 +44,10 @@ class Email:
 	def send(app, mail, senderName, recipientEmail, subject, message, kind,
 		attachmentPath=None):
 		"""Send an email"""
+		if recipientEmail is None:
+			flash("No email to send " + kind.lower() + " to", "danger")
+			return
+
 		errorMessage = "Error sending " + kind.lower()
 
 		try:
