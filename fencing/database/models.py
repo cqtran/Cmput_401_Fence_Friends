@@ -165,7 +165,7 @@ class Material(Base):
 class Picture(Base):
     __tablename__ = 'picture'
     picture_id = Column(Integer, primary_key=True)
-    project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     file_name = Column(String(100))
 
     def __init__(self, project_id, file_name, picture_id = None):
