@@ -56,7 +56,7 @@ class Customer(Base):
     email = Column(String(255), unique=True)
     first_name = Column(String(255))
     cellphone = Column(String(20))
-    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name', ondelete="CASCADE"))
 
     def __int__(self, customer_id, email, first_name, cellphone, company_name):
         self.customer_id = customer_id
@@ -93,9 +93,9 @@ class Status (Base):
 class Project(Base):
     __tablename__ = 'project'
     project_id = Column(Integer, primary_key=True)
-    customer_id = Column('customer_id', Integer, ForeignKey('customer.customer_id'))
-    status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
-    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+    customer_id = Column('customer_id', Integer, ForeignKey('customer.customer_id', ondelete="CASCADE"))
+    status_name = Column('status_name', String(100), ForeignKey('status.status_name', ondelete="CASCADE"))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name', ondelete="CASCADE"))
     address = Column(String(100))
     start_date = Column(DateTime(), default = datetime.datetime.utcnow)
     end_date = Column(DateTime())
@@ -130,7 +130,7 @@ class Project(Base):
 class Quote(Base):
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
-    project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     quote = Column(Integer)
     project_info = Column(TEXT)
     note = Column(String(255))
@@ -165,7 +165,7 @@ class Material(Base):
 class Picture(Base):
     __tablename__ = 'picture'
     picture_id = Column(Integer, primary_key=True)
-    project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     file_name = Column(String(100))
 
     def __init__(self, project_id, file_name, picture_id = None):
