@@ -30,6 +30,8 @@ from flask.json import jsonify
 
 import argparse
 
+Email.staticFolder = os.path.dirname(os.path.abspath(__file__)) + "/static/"
+
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
@@ -295,7 +297,7 @@ def viewMaterialList():
         attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment[7:]))
+        return redirect(url_for("static", filename=attachment))
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
@@ -315,7 +317,7 @@ def viewQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment[7:]))
+        return redirect(url_for("static", filename=attachment))
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 

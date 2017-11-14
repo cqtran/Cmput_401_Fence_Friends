@@ -2,7 +2,7 @@ from flask import flash
 from xml.etree import ElementTree
 from diagram.DiagramData import DiagramData
 from diagram.FencingEntity import FencingEntity
-import base64, zlib, urllib.parse, html
+import base64, zlib, urllib.parse, html, traceback
 
 class DiagramParser:
 	"""Parse fence diagrams"""
@@ -17,7 +17,7 @@ class DiagramParser:
 		
 		except BaseException as e:
 			flash("Error saving diagram", "danger")
-			print(str(e))
+			traceback.print_exc()
 			return None
 		
 		except:
