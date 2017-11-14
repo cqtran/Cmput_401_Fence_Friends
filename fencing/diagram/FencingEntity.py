@@ -55,7 +55,7 @@ class FencingEntity:
 	
 	@property
 	def x2(self):
-		x = self._x
+		x = self._x + self._length
 		y = self._y
 		rotation = self._rotation
 		return x * math.cos(rotation) - y * sin(rotation)
@@ -66,7 +66,7 @@ class FencingEntity:
 	
 	@property
 	def y2(self):
-		x = self._x
+		x = self._x + self._length
 		y = self._y
 		rotation = self._rotation
 		return y * math.cos(rotation) + x * math.sin(rotation)
