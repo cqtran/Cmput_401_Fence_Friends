@@ -21,7 +21,12 @@ input[type="file"] {
   color: #ffffff;
   background-color: #2b724f;
 }
-
+.btn-secondary {
+  color: #329664;
+  background-color: #ffffff;
+  border: 0;
+  font-weight: bold;
+}
 .no-border {
 	border: 0;
 }
@@ -138,10 +143,14 @@ input[type="file"] {
   align-items: center;
 }
 .hide{
-  visibility: hidden;
+  display: none;
 }
-
 .required::after {
   content: "*";
   color: red;
+}
+
+#search-bar .empty-message {
+  padding: 5px 10px;
+ text-align: center;
 }
