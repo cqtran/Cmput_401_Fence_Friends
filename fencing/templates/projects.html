@@ -125,10 +125,16 @@
         projectList.appendChild(final);
       });
 
-    } else {
+    }
+    if (request.status === 400) {
       var item = document.createElement('a');
-      item.appendChild(document.createTextNode('An error has occurred'));
+      item.appendChild(document.createTextNode('No projects were found.'));
       projectList.appendChild(item);
+      var createNew = document.createElement('a');
+      createNew.setAttribute('class', 'btn btn-primary btn-block')
+      createNew.appendChild(document.createTextNode('Click here to start a new project'));
+      createNew.setAttribute('href', "{{ url_for('newproject')}}")
+      projectList.appendChild(createNew);
     }
   }
   };
