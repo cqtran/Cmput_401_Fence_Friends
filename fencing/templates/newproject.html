@@ -4,12 +4,12 @@
 <form id="projinfo" method="post" action="{{ url_for('newproject') }}">
   <div class="form-group">
     <label for="customer" class="required">Select a Customer</label>
-    <input class="form-control" type="text" id="customer" list="json-datalist" placeholder="Customer" name="customer" autocomplete="new-password" required>
+    <input class="form-control" type="text" id="customer" list="json-datalist" placeholder="Customer" name="customer" autocomplete="new-password" pattern=".*\S+.*" required>
     <datalist id="json-datalist"></datalist>
   </div>
 	<div class="form-group">
 		<label for="name" class="required">Name</label>
-		<input class="form-control" placeholder="Enter Project Name" id="name" name="name" type="text" size="20" required>
+		<input class="form-control" placeholder="Enter Project Name" id="name" name="name" type="text" size="20" pattern=".*\S+.*" required>
 	</div>
 	<div class="form-group">
 		<label for="address">Address</label>
