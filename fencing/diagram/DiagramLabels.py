@@ -15,14 +15,14 @@ class DiagramLabels:
 		Add length labels to a fence diagram and return the result or None if
 		there was a problem
 		"""
-		lowestX = DiagramLabels._getLowestX(parsed)
-		lowestY = DiagramLabels._getLowestY(parsed)
-
 		if (unparsed is None or parsed is None):
 			return None
 		
 		if parsed.empty:
 			return None
+		
+		lowestX = DiagramLabels._getLowestX(parsed)
+		lowestY = DiagramLabels._getLowestY(parsed)
 
 		svg = DiagramParser.getSVG(unparsed)
 		g = DiagramLabels._getG(svg)
