@@ -95,8 +95,6 @@ def updatedrawiopic(quote_id, quote, project_info, note):
     quotation = quotation.filter(Quote.quote_id == quote_id).all()
     quotation[0].quote = quote
     quotation[0].project_info = project_info
-    print("this is projectinfo")
-    print(project_info)
     quotation[0].note = note
     dbSession.commit()
     return True

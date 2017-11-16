@@ -15,7 +15,13 @@ class DiagramLabels:
 		Add length labels to a fence diagram and return the result or None if
 		there was a problem
 		"""
+		lowestX = DiagramLabels._getLowestX(parsed)
+		lowestY = DiagramLabels._getLowestY(parsed)
+
 		if (unparsed is None or parsed is None):
+			return None
+		
+		if parsed.empty:
 			return None
 
 		svg = DiagramParser.getSVG(unparsed)
@@ -25,8 +31,11 @@ class DiagramLabels:
 			g = svg
 		
 		for fencingEntity in parsed:
-			x = fencingEntity.x
-			y = fencingEntity.y + fencingEntity.height - 12
+			# Subtract lowest x and y values to prevent the labels from being
+			# offset by the distance between the origin and the closest shape to
+			# it
+			x = fencingEntity.x - lowestX
+			y = fencingEntity.y + fencingEntity.height - lowestY
 
 			length = html.escape(fencingEntity.lengthString())
 
@@ -43,6 +52,34 @@ class DiagramLabels:
 		
 		xml = ElementTree.tostring(svg, method='xml').decode('utf-8')
 		return DiagramLabels._encode(xml)
+	
+	def _getLowestX(parsed):
+		"""Return the lowest x value"""
+		lowest = None
+
+		for fencingEntity in parsed:
+			if lowest is None:
+				lowest = fencingEntity.x
+				continue
+			
+			if fencingEntity.x < lowest:
+				lowest = fencingEntity.x
+		
+		return lowest
+	
+	def _getLowestY(parsed):
+		"""Return the lowest y value"""
+		lowest = None
+
+		for fencingEntity in parsed:
+			if lowest is None:
+				lowest = fencingEntity.y
+				continue
+			
+			if fencingEntity.y < lowest:
+				lowest = fencingEntity.y
+		
+		return lowest
 	
 	def _addPadding(svgElement, pixels):
 		"""Add padding to the given SVG image"""

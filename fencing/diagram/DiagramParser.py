@@ -59,6 +59,7 @@ class DiagramParser:
 		Given a compressed XML-SVG fence diagram, return the "svg" element
 		"""
 		string = DiagramParser._initialDecode(compressedString)
+		print("\n\n\n\n" + string + "\n\n\n\n")
 		return ElementTree.fromstring(string)
 	
 	def _getRoot(svgElement):
