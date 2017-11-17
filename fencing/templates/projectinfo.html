@@ -125,13 +125,12 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	<form method = "post" id="upload-form" action='javascript:uploadPicture();' enctype=multipart/form-data >
 		<input class="form-control" type="hidden" name="proj_id" id="project_id" />
 		<div class="row">
-			<label for="file-upload" class="btn btn-primary btn-block">
-			    Upload Image
-			</label>
-	  		<input class="btn btn-primary btn-block" id="file-upload" type="file" name="picture" accept="image/*">
-		  	<!--<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-		  		<input class="btn btn-primary btn-block" type="submit" value="Upload picture">
-		  	</div>-->
+			<div class="col-sm-12 less-padding">
+				<label for="file-upload" class="btn btn-primary btn-block">
+				    Upload Image
+				</label>
+		  		<input class="btn btn-primary btn-block" id="file-upload" type="file" name="picture" accept="image/*">
+			</div>
 	  	</div>
 	</form>
 	<div class="row">

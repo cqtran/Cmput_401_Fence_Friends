@@ -15,7 +15,6 @@ input[type="file"] {
   border: 0;
   font-weight: bold;
 }
-
 .btn-primary:hover,
 .btn-primary:focus {
   color: #ffffff;
@@ -27,11 +26,33 @@ input[type="file"] {
   border: 0;
   font-weight: bold;
 }
+.customer-item {
+  color: #ffffff;
+  background-color: #808080;
+  border: 0;
+}
 .btn-danger {
   color: #ffffff;
   background-color: #A50000;
   border: 0;
   font-weight: bold;
+}
+.btn-grey {
+  margin: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: #ffffff;
+  background-color: #808080;
+  border: 0;
+  font-weight: bold;
+}
+.btn-grey:hover,
+.btn-grey:focus {
+  margin: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: #808080;
+  background-color: #ffffff;
 }
 .no-border {
 	border: 0;
@@ -59,10 +80,14 @@ input[type="file"] {
 .text-black {
   color:#000000;
 }
-
+.top-bot-pad {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin: 0;
+}
 .less-padding {
-    padding-right: 4px;
-    padding-left: 4px;
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
 }
 .no-top-padding {
   padding-top: 0px;
@@ -76,8 +101,13 @@ input[type="file"] {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
 .zero-padding {
   padding: 0;
+
+.bottom-margin {
+  margin-bottom: 0.25rem;
+
 }
 .paddingless{
   padding: 0px;
@@ -158,12 +188,34 @@ input[type="file"] {
   content: "*";
   color: red;
 }
-
 #search-bar .empty-message {
   padding: 5px 10px;
  text-align: center;
 }
-
+.search-icon {
+  color: #329664;
+  background-color: #ffffff;
+  border: 0;
+  font-weight: bold;
+}
+.vertical-center {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+}
+.card-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.card-row > [class*='col-'] {
+   display: flex;
+   flex-direction: column;
+}
+.full-width {
+  width: 100%;
+}
 /*modified from https://github.com/bassjobsen/typeahead.js-bootstrap-css/blob/master/typeaheadjs.css */
 span.twitter-typeahead .tt-menu,
 span.twitter-typeahead .tt-dropdown-menu {

@@ -268,21 +268,11 @@ def customerinfo():
     status = request.args.get('status')
     return render_template("customerinfo.html", company = current_user.company_name)
 
-@app.route('/newproject/', methods=['GET', 'POST'])
+@app.route('/newproject/')
 @login_required
 @roles_required('primary')
 def newproject():
-    if request.method == 'POST':
-        customer = request.form["customer"]
-        customer = customer.split("-")
-        customerId = customer[1]
-        projectname = request.form["name"]
-        address = request.form["address"]
-        success = Projects.createProject(customerId, "Not Reached",  address,
-                                         current_user.company_name, projectname)
-        return redirect(url_for('projects', status="All"))
-    else:
-        return render_template("newproject.html", company = current_user.company_name)
+    return render_template("newproject.html", company = current_user.company_name)
 
 @app.route('/viewMaterialList/', methods = ['POST'])
 @login_required
