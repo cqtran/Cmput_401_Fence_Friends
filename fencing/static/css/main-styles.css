@@ -198,6 +198,19 @@ input[type="file"] {
   display: flex;
   align-items: center;
 }
+.card-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.card-row > [class*='col-'] {
+   display: flex;
+   flex-direction: column;
+}
+.full-width {
+  width: 100%;
+}
 /*modified from https://github.com/bassjobsen/typeahead.js-bootstrap-css/blob/master/typeaheadjs.css */
 span.twitter-typeahead .tt-menu,
 span.twitter-typeahead .tt-dropdown-menu {
