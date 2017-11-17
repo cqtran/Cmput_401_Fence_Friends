@@ -62,9 +62,9 @@ def quoteTestData():
 
 # Helper function for inserting pictures
 def pictureTestData():
-    newPic = Picture(picture_id = 1, file_name = "file", project_id = 1)
-    newPic1 = Picture(picture_id = 2, file_name = "file1", project_id = 1)
-    newPic2 = Picture(picture_id = 3, file_name = "this_is_a_file", project_id = 2)
+    newPic = Picture(picture_id = 1, file_name = "garden.jpg", thumbnail_name = "thumbnail_garden.png", project_id = 1)
+    newPic1 = Picture(picture_id = 2, file_name = "corner.jpg", thumbnail_name = "thumbnail_corner.png", project_id = 1)
+    newPic2 = Picture(picture_id = 3, file_name = "backyard.png", thumbnail_name = "thumbnail_backyard.png", project_id = 2)
     dbSession.add(newPic)
     dbSession.add(newPic1)
     dbSession.add(newPic2)

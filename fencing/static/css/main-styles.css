@@ -101,8 +101,13 @@ input[type="file"] {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.zero-padding {
+  padding: 0;
+
 .bottom-margin {
   margin-bottom: 0.25rem;
+
 }
 .paddingless{
   padding: 0px;
@@ -178,6 +183,7 @@ input[type="file"] {
 .hide{
   display: none;
 }
+
 .required::after {
   content: "*";
   color: red;
@@ -306,3 +312,40 @@ span.twitter-typeahead {
   top: 46px !important;
 }
 
+.HorizontalScrollList
+{
+    overflow-x:scroll;
+    overflow-y:hidden;
+    padding: 0 5px;
+		margin: 0px 10px 15px 10px;
+}
+
+.PictureThumbnail
+{
+		display:inline-block;
+    padding: 0;
+    max-height:100%;
+    max-width:100%;
+		margin:0.5rem;
+}
+.modal-padding {
+  padding: 0.25rem;
+}
+.center-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.list-inline {
+  white-space:nowrap;
+}
+.custom-modal {
+  height: auto;
+  width: auto;
+  display: table;
+}
+.imagemodal {
+	max-height: 90vh;
+	max-width: 90vw;
+}

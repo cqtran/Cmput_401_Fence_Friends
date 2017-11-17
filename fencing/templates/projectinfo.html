@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-<script src="../static/js/projectinfo.js"></script>
-
 <!--
 From:
 https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
@@ -103,12 +101,28 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <p id="savednote"></p>
 <hr class="mt-2">
 
-<div class="col-lg-12">
+<!--<div class="col-lg-12">
   <div class="row" id="projectPictures"></div>
+</div>-->
+<div>
+  <div class="HorizontalScrollList">
+    <ul class="list-inline" id="projectPictures">
+    </ul>
+  </div>
+</div>
+
+<div class="modal fade" id="imagepopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" data-dismiss="modal">
+    <div class="modal-content custom-modal">
+      <div class="modal-body modal-padding">
+        <img class="imagemodal" src="" id="imagepreview" >
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid">
-	<form method = "post" id="upload-form" action="{{ url_for('uploadpicture') }}" enctype=multipart/form-data >
+	<form method = "post" id="upload-form" action='javascript:uploadPicture();' enctype=multipart/form-data >
 		<input class="form-control" type="hidden" name="proj_id" id="project_id" />
 		<div class="row">
 			<div class="col-sm-12 less-padding">
@@ -148,7 +162,8 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <script type="text/javascript">
 
-var imgPath = {{ path|safe }}
+var imgPath = {{ imgPath|safe }}
+var tbnPath = {{ tbnPath|safe }}
 var pictureList = document.getElementById('projectPictures');
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");
@@ -222,35 +237,24 @@ request.onreadystatechange = function(response) {
     if (request.status === 200) {
       // Parse the JSON
       var jsonOptions = JSON.parse(request.responseText);
-      /*if (jsonOptions.length == 0) {
-        var img = document.createElement('img');
-        img.src =  imgPath + 'No_picture_available.png';
-        img.alt =  'No pictures available';
-        img.height = '150';
-        img.width = '150';
-        pictureList.appendChild(img);
-      }*/
+
       jsonOptions.forEach(function(picture) {
-      	var item = document.createElement('div');
         var img = document.createElement('img');
-        var link = document.createElement('a');
-        var final = document.createElement('div');
+        var final = document.createElement('a');
 
-        link.setAttribute('href', '#');
-        img.setAttribute('class', 'img-fluid');
-		img.src =  imgPath + picture.file_name;
-		img.alt =  picture.file_name + ' not found';
-
-		link.appendChild(img);
-        item.setAttribute('class', 'card mb-2');
-        final.setAttribute('class', 'less-padding card-row col-lg-4 col-md-6')
-
+		img.src =  tbnPath + picture.thumbnail_name;
+		img.alt =  picture.thumbnail_name + ' not found';
+        final.setAttribute('href', '#');
+        final.setAttribute('class', 'PictureThumbnail card zero-padding')
+        console.log(picture.file_name)
         // this is where you want to go when you click
-        //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+        final.addEventListener('click', function(){
+          jQuery.noConflict();
+          $('#imagepreview').attr('src', imgPath + picture.file_name);
+          $('#imagepopup').modal('show');
+        });
         //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
-
-        item.appendChild(link);
-        final.appendChild(item);
+        final.appendChild(img);
 
 		//img.className += 'img-thumbnail'
 		// Add it to the list:
@@ -258,13 +262,29 @@ request.onreadystatechange = function(response) {
 
       })
     }
+    if (request.status === 400) {
+      // No images for this project
+      var img = document.createElement('img');
+      img.src =  tbnPath + 'No_picture_available.png';
+      img.alt =  'No pictures available';
+      img.height = '150';
+      img.width = '150';
+      pictureList.appendChild(img);
+    }
   }
 }
 request.open('GET', '/getPictureList/' + proj_id, true);
 request.send()
 
-	//displayProjectInfo({{ proj|safe }});
-	//displayPictures({{ images|safe }}, {{ path|safe }});
+  function uploadPicture() {
+    var uploadRequest = new XMLHttpRequest();
+    var formData = new FormData( document.getElementById("upload-form") );
+    uploadRequest.open('POST', '/uploadPicture/', true);
+    uploadRequest.onreadystatechange = function(response) {
+          window.location.reload();
+    }
+    uploadRequest.send(formData);
+  }
 
 	function projectClicked(id) {
 		window.location.href= '/editprojectinfo?proj_id='+id
@@ -359,4 +379,7 @@ request.send()
     document.getElementById("upload-form").submit();
 }
 </script>
+{% endblock %}
+{% block content2 %}
+<script src="../static/js/projectinfo.js"></script>
 {% endblock %}
