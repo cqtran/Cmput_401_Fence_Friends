@@ -71,7 +71,7 @@ $('#search-bar .typeahead').typeahead({
     source: projects.ttAdapter(),
     templates: {
         header: Handlebars.compile("<div class='container-fluid'><h3 class='text-green'>Projects</h3><hr class='mt-2'></div>"),
-        suggestion: Handlebars.compile("<div class='container-fluid'><p><b>{{value}}</b> - Status - {{status}} - Address {{address}} </p></div>")
+        suggestion: Handlebars.compile("<div class='container-fluid'><p class='top-bot-pad'><b>{{value}}</b> - Status - {{status}} - Address {{address}} </p></div>")
     }
   }).on('typeahead:selected', function(event, selection) {
   
@@ -82,3 +82,13 @@ $('#search-bar .typeahead').typeahead({
     window.location.href= '/customerinfo?cust_id=' + selection.cust_id + '&status=All'
   }
 });
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
