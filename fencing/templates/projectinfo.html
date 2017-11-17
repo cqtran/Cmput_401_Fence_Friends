@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-<script src="../static/js/projectinfo.js"></script>
-
 <!--
 From:
 https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
@@ -113,10 +111,10 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
-<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="imagepopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" data-dismiss="modal">
-    <div class="modal-content">
-      <div class="modal-body">
+    <div class="modal-content custom-modal">
+      <div class="modal-body modal-padding">
         <img class="imagemodal" src="" id="imagepreview" >
       </div>
     </div>
@@ -248,13 +246,13 @@ request.onreadystatechange = function(response) {
 		img.src =  tbnPath + picture.thumbnail_name;
 		img.alt =  picture.thumbnail_name + ' not found';
         final.setAttribute('href', '#');
-        final.setAttribute('class', 'PictureThumbnail card')
+        final.setAttribute('class', 'PictureThumbnail card zero-padding')
         console.log(picture.file_name)
         // this is where you want to go when you click
         final.addEventListener('click', function(){
           jQuery.noConflict();
           $('#imagepreview').attr('src', imgPath + picture.file_name);
-          $('#imagemodal').modal('show');
+          $('#imagepopup').modal('show');
         });
         //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
         final.appendChild(img);
@@ -382,4 +380,7 @@ request.send()
     document.getElementById("upload-form").submit();
 }
 </script>
+{% endblock %}
+{% block content2 %}
+<script src="../static/js/projectinfo.js"></script>
 {% endblock %}

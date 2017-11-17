@@ -76,7 +76,9 @@ input[type="file"] {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-
+.zero-padding {
+  padding: 0;
+}
 .paddingless{
   padding: 0px;
   margin: 0;
@@ -269,17 +271,29 @@ span.twitter-typeahead {
 .PictureThumbnail
 {
 		display:inline-block;
-    padding:5px;
+    padding: 0;
     max-height:100%;
     max-width:100%;
-		margin:5px;
+		margin:0.5rem;
 }
-
+.modal-padding {
+  padding: 0.25rem;
+}
+.center-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 .list-inline {
   white-space:nowrap;
 }
-
+.custom-modal {
+  height: auto;
+  width: auto;
+  display: table;
+}
 .imagemodal {
-	height: 100%;
-	width: 100%;
+	max-height: 90vh;
+	max-width: 90vw;
 }

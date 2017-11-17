@@ -20,3 +20,7 @@ function showSendingMaterialList() {
 	materialListButton.disabled = true;
 	materialListButton.value = "Sending Material List...";
 }
+
+$('#progress').on('shown.bs.modal', function (e) {
+  alert("hi");
+});
