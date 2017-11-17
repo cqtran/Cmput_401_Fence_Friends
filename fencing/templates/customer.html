@@ -1,12 +1,10 @@
 {% extends "base.html" %}
-{% block head %}
-  {{ super() }}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='customer.css') }}">
-{% endblock %}
 {% block content %}
 
+<div class="container-fluid">
+  <h1>Customers</h1>
+</div>
 
-<h1>Customers</h1>
 
 <hr class="mt-2">
 <div class="col-lg-12">
@@ -17,6 +15,8 @@
 
   // Get the <datalist> and <input> elements.
   var customerList = document.getElementById('customerlist');
+
+  var search = document.getElementById('search');
 
   // Create a new XMLHttpRequest.
   var request = new XMLHttpRequest();
@@ -68,21 +68,31 @@
         customerList.appendChild(final);
       });
 
-    } else {
+    }
+    if (request.status === 400) {
       var item = document.createElement('a');
-      item.appendChild(document.createTextNode('An error has occurred'));
+      item.appendChild(document.createTextNode('No customers were found.'));
       customerList.appendChild(item);
+
+      var createNew = document.createElement('a');
+      createNew.setAttribute('class', 'btn btn-primary btn-block')
+      createNew.appendChild(document.createTextNode('Click here to create a new customer'));
+      createNew.setAttribute('href', "{{ url_for('newcustomer')}}")
+      customerList.appendChild(createNew);
     }
   }
   };
 
-  // Set up and make the request.
-  request.open('GET', '/getCustomerList', true);
-  request.send();
+  function updateCustomerList() {
+    request.open('GET', '/getCustomerList', true);
+    request.send();
+  }
 
   function customerClicked(id) {
   	window.location.href= '/customerinfo?cust_id=' + id + "&status=All"
   }
+
+  updateCustomerList();
 
 </script>
 {% endblock %}

@@ -5,6 +5,7 @@ from flask_security import Security, login_required, \
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
+from diagram.DiagramLabels import DiagramLabels
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
@@ -28,6 +29,8 @@ from api.jsonifyObjects import MyJSONEncoder
 from flask.json import jsonify
 
 import argparse
+
+Email.staticFolder = os.path.dirname(os.path.abspath(__file__)) + "/static/"
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.register_blueprint(Customers.customerBlueprint)
@@ -294,7 +297,7 @@ def viewMaterialList():
         attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment[7:]))
+        return redirect(url_for("static", filename=attachment))
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
@@ -314,7 +317,7 @@ def viewQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment[7:]))
+        return redirect(url_for("static", filename=attachment))
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
@@ -390,11 +393,9 @@ def projectinfo():
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
-    image = request.form['image'] #long url
+    image = request.form['image']
     parsed = DiagramParser.parse(image)
-
-    # Test parsed output
-    print(parsed)
+    withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
     qid = json_quotepic[0].get("quote_id")
@@ -402,9 +403,19 @@ def saveDiagram():
     # If parsed is empty don't changed the drawing
     if parsed is not None:
         if not parsed.empty:
-            update = Projects.updatedrawiopic(qid, 5, image, 0)
+            update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.route('/deleteproject/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteproject():
+    project = dbSession.query(Project).filter(
+        Project.project_id == request.args.get("id")).one()
+    dbSession.delete(project)
+    dbSession.commit()
+    return redirect(url_for("projects"))
 
 @app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required

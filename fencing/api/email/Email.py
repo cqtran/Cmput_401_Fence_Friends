@@ -7,12 +7,14 @@ from weasyprint import HTML
 from database.models import Company, Customer, Project
 from database.db import dbSession
 from api.email.Messages import Messages
-import os
+import os, traceback
 
 SENDER_EMAIL = 'cmput401fence@gmail.com'
 
 class Email:
 	"""Send emails"""
+
+	staticFolder = None
 
 	def makeAttachment(filePath, content):
 		"""
@@ -20,13 +22,20 @@ class Email:
 		exception
 		"""
 		try:
+			fullPath = Email.staticFolder + filePath
+
 			# If there is an old attachment, delete it
-			if os.path.isfile(filePath):
-				os.remove(filePath)
+			if os.path.isfile(fullPath):
+				os.remove(fullPath)
 			
-			HTML(string=content).write_pdf(filePath,
+			HTML(string=content).write_pdf(fullPath,
 				stylesheets=Messages.stylesheets)
 			return filePath
+		
+		except BaseException as e:
+			traceback.print_exc()
+			flash("Error creating attachment", "danger")
+			return None
 		
 		except:
 			flash("Error creating attachment", "danger")
@@ -35,6 +44,10 @@ class Email:
 	def send(app, mail, senderName, recipientEmail, subject, message, kind,
 		attachmentPath=None):
 		"""Send an email"""
+		if recipientEmail is None:
+			flash("No email to send " + kind.lower() + " to", "danger")
+			return
+
 		errorMessage = "Error sending " + kind.lower()
 
 		try:
@@ -47,6 +60,7 @@ class Email:
 			m.html = message
 
 			if attachmentPath is not None:
+				attachmentPath = Email.staticFolder + attachmentPath
 				with app.open_resource(attachmentPath) as fp:
 					m.attach(attachmentPath, "image/png", fp.read())
 
@@ -56,23 +70,23 @@ class Email:
 		
 		except SMTPAuthenticationError as e:
 			flash(errorMessage + " (SMTPAuthenticationError)", "danger")
-			print(str(e))
+			traceback.print_exc()
 		
 		except SMTPServerDisconnected as e:
 			flash(errorMessage + " (SMTPServerDisconnected)", "danger")
-			print(str(e))
+			traceback.print_exc()
 		
 		except SMTPException as e:
 			flash(errorMessage + " (SMTPException)", "danger")
-			print(str(e))
+			traceback.print_exc()
 		
 		except OSError as e:
 			flash(errorMessage + " (OSError)", "danger")
-			print(str(e))
+			traceback.print_exc()
 		
 		except BaseException as e:
 			flash(errorMessage + " (unknown exception)", "danger")
-			print(str(e))
+			traceback.print_exc()
 		
 		except:
 			flash(errorMessage + " (unknown exception)", "danger")

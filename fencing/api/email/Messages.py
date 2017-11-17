@@ -1,10 +1,12 @@
 from weasyprint import CSS
+from database.db import dbSession
+from database.models import Quote
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
-	quotePath = "static/Quote.pdf"
-	materialListPath = "static/Material List.pdf"
+	quotePath = "Quote.pdf"
+	materialListPath = "Material List.pdf"
 
 	stylesheets=[CSS(string="""
 		table {
@@ -33,33 +35,48 @@ class Messages:
 			background-color: #BBB;
 			border: none;
 		}
+
+		.bottom {
+			position: absolute;
+			bottom: 0px;
+		}
 		""")]
 
 	def quoteMessage(customer, company):
 		"""Generate a quote email message"""
-		return f"""
-			Dear {customer.first_name},<br>
+		return """
+			Dear {customer_first_name},<br>
 			<br>
 			Please find your attached quote.<br>
 			<br>
 			Please do not respond to this email. You can contact us at
-			{company.email}
-			"""
+			{company_email}
+			""".format(customer_first_name=customer.first_name,
+				company_email=company.email)
 	
 	def materialListMessage(company):
 		"""Generate a material list email message"""
 		supplier = "Your face"
-		return f"""
+		return """
 			Dear {supplier},<br>
 			<br>
 			Please find our required materials attached.<br>
 			<br>
 			Please do not respond to this email. You can contact us at
-			{company.email}
-			"""
+			{company_email}
+			""".format(supplier=supplier,
+				company_email=company.email)
 
 	def quoteAttachment(project, customer):
 		"""Generate the content of a quote attachment and return it"""
+		diagram = dbSession.query(Quote).filter(
+			Quote.project_id == project.project_id).one().project_info
+
+		pageBreak = """
+			<p style="page-break-after: always" ></p>
+			<p style="page-break-before: always" ></p>
+			"""
+
 		return """
 			<div style="float:left; width:25%;">
 				HELLO
@@ -96,9 +113,19 @@ class Messages:
 						<td class="right"><b>$ 13,001.10</b></td>
 					</tr>
 				</table>
-				<b>Signature:_____________________________________________</b>
+				<b><span class="bottom">
+					Signature:_____________________________________________
+				</span></b>
 			</div>
-			"""
+			{pageBreak}
+			<div style="float:left; width:25%;"><p></p></div>
+			<div style="float:left; width:75%;">
+				<img src="{diagram}"><br>
+				<b><span class="bottom">
+					Signature:_____________________________________________
+				</span></b>
+			</div>
+			""".format(pageBreak=pageBreak, diagram=diagram)
 	
 	def materialListAttachment(project):
 		"""Generate the content of a material list attachment and return it"""

@@ -2,7 +2,7 @@ from flask import flash
 from xml.etree import ElementTree
 from diagram.DiagramData import DiagramData
 from diagram.FencingEntity import FencingEntity
-import base64, zlib, urllib.parse, html
+import base64, zlib, urllib.parse, html, traceback
 
 class DiagramParser:
 	"""Parse fence diagrams"""
@@ -17,7 +17,7 @@ class DiagramParser:
 		
 		except BaseException as e:
 			flash("Error saving diagram", "danger")
-			print(str(e))
+			traceback.print_exc()
 			return None
 		
 		except:
@@ -26,19 +26,19 @@ class DiagramParser:
 	
 	def _initialDecode(string):
 		# Slice to get rid of "data:image/svg+xml;base64,"
-		return base64.b64decode(string[26:])
+		return base64.b64decode(string[26:]).decode('utf-8')
 
-	def _decompress(compressedDiagramString):
+	def _decompressDiagram(compressedDiagramString):
 		"""Decompress a compressed diagram string"""
 		decoded = base64.b64decode(compressedDiagramString)
 		decompressed = zlib.decompress(decoded, -8)
 		decompressedString = decompressed.decode('utf-8')
 		return urllib.parse.unquote(decompressedString)
 
-	def _getShape(style):
+	def _getStyleValue(style, key):
 		"""
-		Given the value of the 'style' tag of an 'mxCell' element, return the
-		value of the 'shape' portion or None if it is not found
+		Given the value of the 'style' attribute of an 'mxCell' element, return
+		the value of the given key in that attribute or None if it is not found
 		"""
 		split = style.split(';')
 
@@ -49,20 +49,24 @@ class DiagramParser:
 			if (len(subSplit) < 2):
 				continue
 
-			if subSplit[0].strip() == 'shape':
+			if subSplit[0].strip() == key:
 				return subSplit[1].strip()
 		
 		return None
 	
-	def _getRoot(compressedString):
+	def getSVG(compressedString):
 		"""
-		Given a compressed XML-SVG fence diagram, return the "root" element
-		or None if not found
+		Given a compressed XML-SVG fence diagram, return the "svg" element
 		"""
 		string = DiagramParser._initialDecode(compressedString)
-		svg = ElementTree.fromstring(string)
-		
-		content = svg.get('content')
+		return ElementTree.fromstring(string)
+	
+	def _getRoot(svgElement):
+		"""
+		Given the "svg" element of an XML-SVG fence diagram, return the "root"
+		element or None if not found
+		"""
+		content = svgElement.get('content')
 
 		# If svg has no "content" attribute, return None
 		if content is None:
@@ -85,7 +89,7 @@ class DiagramParser:
 		if diagram.tag != 'diagram':
 			return None
 		
-		graphModelString = DiagramParser._decompress(diagram.text)
+		graphModelString = DiagramParser._decompressDiagram(diagram.text)
 		graphModel = ElementTree.fromstring(graphModelString)
 
 		# If graphModel is not actually an 'mxGraphModel' element, return None
@@ -105,7 +109,8 @@ class DiagramParser:
 		Parse the given compressed XML-SVG fence diagram
 		Return the parsed data or None if parse failed
 		"""
-		root = DiagramParser._getRoot(compressedString)
+		svg = DiagramParser.getSVG(compressedString)
+		root = DiagramParser._getRoot(svg)
 
 		if root is None:
 			return None
@@ -124,7 +129,8 @@ class DiagramParser:
 			if style is None:
 				continue
 			
-			shape = DiagramParser._getShape(style)
+			shape = DiagramParser._getStyleValue(style, 'shape')
+			toRemove = DiagramParser._getStyleValue(style, 'dashed') == "1"
 
 			# We are only dealing with 'mxCell' elements that have shapes
 			if shape is None:
@@ -136,9 +142,15 @@ class DiagramParser:
 			
 			shape = shape[16:]
 
-			# We are only dealing with fence and gate shapes
-			if shape != 'fence' and shape != 'gate' and shape != 'double_gate':
+			# Ignore buildings
+			if shape == 'building':
 				continue
+			
+			rotationString = DiagramParser._getStyleValue(style, 'rotation')
+			rotation = None
+
+			if rotationString is not None:
+				rotation = int(rotationString)
 			
 			for geometry in cell:
 
@@ -147,20 +159,29 @@ class DiagramParser:
 					continue
 				
 				widthString = geometry.get('width')
+				heightString = geometry.get('height')
+				xString = geometry.get('x')
+				yString = geometry.get('y')
 
-				# This element should have a width
-				if widthString is None:
+				# This element should have these attributes
+				if widthString is None or xString is None or yString is None:
 					return None
 				
 				width = int(widthString)
+				height = int(heightString)
+				x = int(xString)
+				y = int(yString)
 				
 				if shape == 'fence':
-					data.addFence(width)
+					data.addFence(width, height, x, y, rotation,
+						toRemove=toRemove)
 				
 				elif shape == 'gate':
-					data.addGate(width)
+					data.addGate(width, height, x, y, rotation,
+						toRemove=toRemove)
 				
 				elif shape == 'double_gate':
-					data.addGate(width, double=True)
+					data.addGate(width, height, x, y, rotation,
+						toRemove=toRemove, double=True)
 		
 		return data
