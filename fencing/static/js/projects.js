@@ -84,7 +84,7 @@ function showError(){
   var createNew = document.createElement('a');
   createNew.setAttribute('class', 'btn btn-primary btn-block')
   createNew.appendChild(document.createTextNode('Click here to start a new project'));
-  createNew.setAttribute('href', "{{ url_for('newproject')}}")
+  createNew.setAttribute('href', "/newproject")
   projectList.appendChild(createNew);
 }
 
