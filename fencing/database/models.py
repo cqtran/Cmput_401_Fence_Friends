@@ -135,13 +135,15 @@ class Quote(Base):
     project_info = Column(TEXT)
     note = Column(String(255))
     last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
+    appearance_selected = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
-    def __init__(self, project_id, quote, project_info, note, quote_id=None):
+    def __init__(self, project_id, quote, project_info, note, appearance_selected, quote_id=None):
         self.quote_id = quote_id
         self.project_id = project_id
         self.quote = quote
         self.project_info = project_info
         self.note = note
+        self.appearance_selected = appearance_selected
         #self.last_modified = last_modified
 
     @property
@@ -155,6 +157,17 @@ class Quote(Base):
             'note'                    : self.note,
             'last_modified'           : dump_datetime(self.last_modified)
         }
+
+class Appearance(Base):
+    __tablename__ = 'appearance'
+    appearance_id = Column(Integer, primary_key=True)
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
+    # TODO: Columns referencing material list
+
+    def __init__ (self, project_id, appearance_id=None):
+        self.appearance_id = appearance_id
+        self.project_id = project_id
+        # TODO: initialize data for other columns
 
 class Material(Base):
     __tablename__ = 'material'

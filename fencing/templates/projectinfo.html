@@ -41,9 +41,225 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 </div>
 <hr class="mt-2">
 
-<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
-  <td><img id="image" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
+<ul id="layout-tabs" class="nav nav-tabs flex-wrap">
+  <li id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#layout1">Layout 1</a>
+  </li>
+	<li id="add-layout" class="nav-item">
+    <a class="nav-link" onclick="addLayout()" href="#" style="color:grey;">+</a>
+  </li>
+</ul>
+
+<div id="layouts" class="tab-content">
+  <div id="layout1" class="tab-pane fade in show active">
+		<a href="#" onclick="setLayoutName('1')"><b>Layout 1</b></a>
+		<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
+			<td><img id="image1" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+
+	<ul id="appearance-tabs" class="nav nav-pills nav-justified flex-column">
+		<li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
+			<a class="nav-link active" data-toggle="pill" href="#appearance1">Appearance 1</a>
+		</li>
+		<li id="add-appearance" onclick="addAppearance()" class="nav-item">
+			<a class="nav-link" href="#" style="color:grey;">+</a>
+		</li>
+	</ul>
+
+	<div id="appearances" class="tab-content">
+		<div id="appearance1" class="tab-pane fade in show active">
+				<a href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b></a>
+			<h3>Appearance 1</h3>
+		</div>
+	</div>
+
+</div>
+
     <script>
+	
+	var activeLayout = "1";
+	var activeAppearance = "1";
+
+	var lastLayout = "1";
+	var lastAppearance = "1";
+
+	var deletedLayout = null;
+	var deletedAppearance = null;
+
+	var layoutCount = 1;
+	var appearanceCount = 1;
+	var tabLimit = 10;
+
+	function setActiveLayout(number) {
+		if (number == deletedLayout) {
+			deletedLayout = null;
+			return;
+		}
+
+		activeLayout = number;
+	}
+
+	function setActiveAppearance(number) {
+		if (number == deletedAppearance) {
+			deletedAppearance = null;
+			return;
+		}
+
+		activeAppearance = number;
+	}
+
+	function setLayoutName(number) {
+		var tabText = document.getElementById("layout-tab" + number).children[0];
+		var bodyText = document.getElementById("layout" + number).children[0];
+
+		newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
+
+		if (newName != null) {
+
+			if (number == "1") {
+				tabText.innerHTML = newName;
+			}
+
+			else {
+				tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' +
+					newName;
+			}
+
+			bodyText.innerHTML = "<b>" + newName + "</b>";
+		}
+	}
+
+	function setAppearanceName(number) {
+		var tabText = document.getElementById("appearance-tab" + number).children[0];
+		var bodyText = document.getElementById("appearance" + number).children[0];
+
+		newName = prompt("Appearance Name", bodyText.innerHTML.slice(3, -4));
+
+		if (newName != null) {
+
+			if (number == "1") {
+				tabText.innerHTML = newName;
+			}
+
+			else {
+				tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' +
+					newName;
+			}
+
+			bodyText.innerHTML = "<b>" + newName + "</b>";
+		}
+	}
+
+	function addLayout() {
+		if (layoutCount >= tabLimit) {
+			alert("Cannot have more than " + tabLimit.toString() + " layouts");
+			return;
+		}
+
+		var active = document.getElementById("layout" + activeLayout);
+		var activeTab = document.getElementById("layout-tab" + activeLayout);
+		var activeLink = activeTab.children[0];
+		lastLayout = (parseInt(lastLayout) + 1).toString();
+		activeLayout = lastLayout;
+
+		var clone = active.cloneNode(true);
+		clone.id = "layout" + lastLayout;
+		clone.children[0].setAttribute("onclick",
+			"setLayoutName('" + lastLayout + "')");
+		clone.children[0].innerHTML = "<b>Layout " + lastLayout + "</b>";
+		clone.children[1].children[0].id = "image" + lastLayout;
+		document.getElementById("layouts").appendChild(clone);
+
+		var cloneTab = activeTab.cloneNode(true);
+		cloneTab.id = "layout-tab" + lastLayout;
+		cloneTab.setAttribute("onclick", "setActiveLayout('" + lastLayout + "')");
+		var link = cloneTab.children[0];
+		link.href = "#layout" + lastLayout;
+		link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Layout ' + lastLayout;
+		document.getElementById("layout-tabs").insertBefore(cloneTab,
+			document.getElementById("add-layout"));
+
+		activeLink.classList.remove("active");
+		active.classList.remove("active");
+		active.classList.remove("show");
+
+		layoutCount += 1;
+	}
+
+	function addAppearance() {
+		if (appearanceCount >= tabLimit) {
+			alert("Cannot have more than " + tabLimit.toString() + " appearances");
+			return;
+		}
+
+		var active = document.getElementById("appearance" + activeAppearance);
+		var activeTab = document.getElementById("appearance-tab" + activeAppearance);
+		var activeLink = activeTab.children[0];
+		lastAppearance= (parseInt(lastAppearance) + 1).toString();
+		activeAppearance = lastAppearance;
+
+		var clone = active.cloneNode(true);
+		clone.id = "appearance" + lastAppearance;
+		clone.children[0].setAttribute("onclick",
+			"setAppearanceName('" + lastAppearance + "')");
+		clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + "</b>";
+		clone.children[1].innerHTML = "Appearance" + lastAppearance;
+		document.getElementById("appearances").appendChild(clone);
+
+		var cloneTab = activeTab.cloneNode(true);
+		cloneTab.id = "appearance-tab" + lastAppearance;
+		cloneTab.setAttribute("onclick", "setActiveAppearance('" + lastAppearance + "')");
+		var link = cloneTab.children[0];
+		link.href = "#appearance" + lastAppearance;
+		link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Appearance ' + lastAppearance;
+		document.getElementById("appearance-tabs").insertBefore(cloneTab,
+			document.getElementById("add-appearance"));
+
+		activeLink.classList.remove("active");
+		active.classList.remove("active");
+		active.classList.remove("show");
+
+		appearanceCount += 1;
+	}
+
+	function removeLayout(number) {
+		var element = document.getElementById("layout" + number);
+		element.parentNode.removeChild(element);
+		element = document.getElementById("layout-tab" + number);
+		element.parentNode.removeChild(element);
+
+		if (activeLayout == number) {
+			activeLayout = "1";
+			document.getElementById("layout1").classList.add("active");
+			document.getElementById("layout1").classList.add("show");
+			document.getElementById("layout-tab1").children[0].classList.add("active");
+		}
+
+		deletedLayout = number;
+		layoutCount -= 1;
+	}
+
+	function removeAppearance(number) {
+		var element = document.getElementById("appearance" + number);
+		element.parentNode.removeChild(element);
+		element = document.getElementById("appearance-tab" + number);
+		element.parentNode.removeChild(element);
+
+		if (activeAppearance == number) {
+			activeAppearance = "1";
+			document.getElementById("appearance1").classList.add("active");
+			document.getElementById("appearance1").classList.add("show");
+			document.getElementById("appearance-tab1").children[0].classList.add("active");
+		}
+
+		deletedAppearance = number;
+		appearanceCount -= 1;
+	}
+
 	// From:
 	// https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/133997#133997
 	// Acccessed November 8, 2017
@@ -74,13 +290,14 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	}
 
 	function loadimage(image){
-	    document.getElementById("image").src=image[0].project_info;
+			var imageId = "image" + activeLayout;
+	    document.getElementById(imageId).src=image[0].project_info;
 	}
 
 	loadimage({{ drawiopic | safe }});
 
 	</script>
-</div>
+
 <hr class="mt-2">
 <div class="container-fluid">
 	<div class="row justify-content-between">
