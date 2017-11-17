@@ -1,48 +1,3 @@
-/*// Get the <datalist> and <input> elements.
-var dataList = document.getElementById('json-datalist');
-var input = document.getElementById('customer');
-
-
-//http://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
-// Create a new XMLHttpRequest.
-var request = new XMLHttpRequest();
-
-// Handle state changes for the request.
-request.onreadystatechange = function(response) {
-  if (request.readyState === 4) {
-    if (request.status === 200) {
-      // Parse the JSON
-      var jsonOptions = JSON.parse(request.responseText);
-
-      // Loop over the JSON array.
-      jsonOptions.forEach(function(item) {
-        // Create a new <option> element.
-        var option = document.createElement('option');
-        // Set the value using the item in the JSON array.
-        var out = item.first_name.concat("-")
-        out = out.concat(item.customer_id)
-        option.value = out;
-
-        // Add the <option> element to the <datalist>.
-        dataList.appendChild(option);
-      });
-
-      // Update the placeholder text.
-      input.placeholder = "Customer";
-    } else {
-      // An error occured :(
-      input.placeholder = "Couldn't load datalist options :(";
-    }
-  }
-};
-
-// Update the placeholder text.
-input.placeholder = "Loading options...";
-
-// Set up and make the request.
-request.open('GET', '/autocomplete', true);
-request.send();
-*/
 var chosenCustomers = [];
 
 function removeCust(customer, torem){
@@ -81,8 +36,9 @@ $(document).on('click', '.btn-grey', function(e) {
 });
 
 //send request to create project
-$('#create').click(function(e) {
-    e.preventDefault();
+$('form').submit(function(e) {
+  e.preventDefault();
+  if(typeof chosenCustomers != "undefined" && chosenCustomers != null && chosenCustomers.length > 0){
     $.ajax({
         type: 'POST',
         url: '/addproject/',
@@ -100,6 +56,10 @@ $('#create').click(function(e) {
             alert('error');
         }
     });
+  }
+  else {
+    alert("A customer must be selected.");
+  }
 });
 
 //populate typeahead with customers

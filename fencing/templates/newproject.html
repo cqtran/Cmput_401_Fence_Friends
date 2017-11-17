@@ -3,24 +3,12 @@
 <h1>New Project</h1>
 <hr class="mt-2">
 <div class="col-12">
-  <div class="row" id="customers-list">
-    <!--<div class="rounded customer-item container-fluid">
-      <div class="col-12">
-        <div class="row justify-content-between">
-          <p class="top-bot-pad"><b>Greg</b> - Phone 780-435-2588 </p>
-          <button class="btn btn-grey float-right" type="button">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-    </div>-->
-  </div>
+  <div class="row" id="customers-list"></div>
 </div>
 <form>
   <div class="form-group" id="add-project">
     <label for="customer" class="required">Select a Customer</label>
     <input id="add-customer-typeahead" class="col-12 typeahead form-control" type="text" placeholder="Add a customer..." style="margin-top: 0; width: 100%;">
-    <!--<input class="form-control" type="text" id="customer" list="json-datalist" placeholder="Customer" name="customer" autocomplete="new-password" pattern=".*\S+.*" required> -->
     <datalist id="json-datalist"></datalist>
   </div>
   <div class="form-group">
@@ -31,9 +19,9 @@
     <label for="address">Address</label>
     <input class="form-control" placeholder="Enter Address" id="address" name="address" size="20">
   </div>
-  <p></p>
+  <input class="btn btn-primary btn-block" type="submit" value="Create">
 </form>
-<button class="btn btn-primary btn-block" id="create">Create</button>
+<!--<button class="btn btn-primary btn-block" id="create">Create</button>-->
 {% endblock %}
 {% block content2 %}
 <script type="text/javascript" src='../static/js/newproject.js'></script>
