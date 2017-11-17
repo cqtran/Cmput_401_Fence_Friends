@@ -43,7 +43,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 </div>
 <hr class="mt-2">
 
-<ul id="layout-tabs" class="nav nav-tabs nav-justified">
+<ul id="layout-tabs" class="nav nav-tabs flex-wrap">
   <li id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
     <a class="nav-link active" data-toggle="tab" href="#layout1">Layout 1</a>
   </li>
@@ -54,9 +54,10 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="layouts" class="tab-content">
   <div id="layout1" class="tab-pane fade in show active">
-			<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
-				<td><img id="image1" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
-			</div>
+		<a href="#" onclick="setLayoutName('1')"><b>Layout 1</b></a>
+		<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
+			<td><img id="image1" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
+		</div>
 	</div>
 </div>
 
@@ -73,6 +74,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 	<div id="appearances" class="tab-content">
 		<div id="appearance1" class="tab-pane fade in show active">
+				<a href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b></a>
 			<h3>Appearance 1</h3>
 		</div>
 	</div>
@@ -89,6 +91,10 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 	var deletedLayout = null;
 	var deletedAppearance = null;
+
+	var layoutCount = 1;
+	var appearanceCount = 1;
+	var tabLimit = 10;
 
 	function setActiveLayout(number) {
 		if (number == deletedLayout) {
@@ -108,7 +114,54 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		activeAppearance = number;
 	}
 
+	function setLayoutName(number) {
+		var tabText = document.getElementById("layout-tab" + number).children[0];
+		var bodyText = document.getElementById("layout" + number).children[0];
+
+		newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
+
+		if (newName != null) {
+
+			if (number == "1") {
+				tabText.innerHTML = newName;
+			}
+
+			else {
+				tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' +
+					newName;
+			}
+
+			bodyText.innerHTML = "<b>" + newName + "</b>";
+		}
+	}
+
+	function setAppearanceName(number) {
+		var tabText = document.getElementById("appearance-tab" + number).children[0];
+		var bodyText = document.getElementById("appearance" + number).children[0];
+
+		newName = prompt("Appearance Name", bodyText.innerHTML.slice(3, -4));
+
+		if (newName != null) {
+
+			if (number == "1") {
+				tabText.innerHTML = newName;
+			}
+
+			else {
+				tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' +
+					newName;
+			}
+
+			bodyText.innerHTML = "<b>" + newName + "</b>";
+		}
+	}
+
 	function addLayout() {
+		if (layoutCount >= tabLimit) {
+			alert("Cannot have more than " + tabLimit.toString() + " layouts");
+			return;
+		}
+
 		var active = document.getElementById("layout" + activeLayout);
 		var activeTab = document.getElementById("layout-tab" + activeLayout);
 		var activeLink = activeTab.children[0];
@@ -117,7 +170,10 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 		var clone = active.cloneNode(true);
 		clone.id = "layout" + lastLayout;
-		clone.children[0].children[0].id = "image" + lastLayout;
+		clone.children[0].setAttribute("onclick",
+			"setLayoutName('" + lastLayout + "')");
+		clone.children[0].innerHTML = "<b>Layout " + lastLayout + "</b>";
+		clone.children[1].children[0].id = "image" + lastLayout;
 		document.getElementById("layouts").appendChild(clone);
 
 		var cloneTab = activeTab.cloneNode(true);
@@ -132,9 +188,16 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		activeLink.classList.remove("active");
 		active.classList.remove("active");
 		active.classList.remove("show");
+
+		layoutCount += 1;
 	}
 
 	function addAppearance() {
+		if (appearanceCount >= tabLimit) {
+			alert("Cannot have more than " + tabLimit.toString() + " appearances");
+			return;
+		}
+
 		var active = document.getElementById("appearance" + activeAppearance);
 		var activeTab = document.getElementById("appearance-tab" + activeAppearance);
 		var activeLink = activeTab.children[0];
@@ -143,7 +206,10 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 		var clone = active.cloneNode(true);
 		clone.id = "appearance" + lastAppearance;
-		clone.children[0].innerHTML = "Appearance" + lastAppearance;
+		clone.children[0].setAttribute("onclick",
+			"setAppearanceName('" + lastAppearance + "')");
+		clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + "</b>";
+		clone.children[1].innerHTML = "Appearance" + lastAppearance;
 		document.getElementById("appearances").appendChild(clone);
 
 		var cloneTab = activeTab.cloneNode(true);
@@ -158,6 +224,8 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		activeLink.classList.remove("active");
 		active.classList.remove("active");
 		active.classList.remove("show");
+
+		appearanceCount += 1;
 	}
 
 	function removeLayout(number) {
@@ -174,6 +242,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		}
 
 		deletedLayout = number;
+		layoutCount -= 1;
 	}
 
 	function removeAppearance(number) {
@@ -190,6 +259,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		}
 
 		deletedAppearance = number;
+		appearanceCount -= 1;
 	}
 
 	// From:
