@@ -113,6 +113,19 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <img class="imagemodal" src="" id="imagepreview" >
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container-fluid">
 	<form method = "post" id="upload-form" action='javascript:uploadPicture();' enctype=multipart/form-data >
 		<input class="form-control" type="hidden" name="proj_id" id="project_id" />
@@ -155,7 +168,8 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <script type="text/javascript">
 
-var imgPath = {{ path|safe }}
+var imgPath = {{ imgPath|safe }}
+var tbnPath = {{ tbnPath|safe }}
 var pictureList = document.getElementById('projectPictures');
 var url = new URL(window.location.href);
 var proj_id = url.searchParams.get("proj_id");
@@ -234,12 +248,17 @@ request.onreadystatechange = function(response) {
         var img = document.createElement('img');
         var final = document.createElement('a');
 
-		img.src =  imgPath + picture.thumbnail_name;
+		img.src =  tbnPath + picture.thumbnail_name;
 		img.alt =  picture.thumbnail_name + ' not found';
         final.setAttribute('href', '#');
         final.setAttribute('class', 'PictureThumbnail card')
+        console.log(picture.file_name)
         // this is where you want to go when you click
-        //final.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
+        final.addEventListener('click', function(){
+          jQuery.noConflict();
+          $('#imagepreview').attr('src', imgPath + picture.file_name);
+          $('#imagemodal').modal('show');
+        });
         //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
         final.appendChild(img);
 
@@ -252,7 +271,7 @@ request.onreadystatechange = function(response) {
     if (request.status === 400) {
       // No images for this project
       var img = document.createElement('img');
-      img.src =  imgPath + 'No_picture_available.png';
+      img.src =  tbnPath + 'No_picture_available.png';
       img.alt =  'No pictures available';
       img.height = '150';
       img.width = '150';

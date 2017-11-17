@@ -56,8 +56,7 @@ def uploadPicture():
                 dbSession.add(newPicture)
 
                 # Save picture in the picture directory
-                picturePath = os.path.join(app_root, pictureDir,
-                    filename + file_extension + file_extension)
+                picturePath = os.path.join(app_root, pictureDir, filename + file_extension)
                 print('Picture stored at: ' + picturePath + '\n')
                 picture.save(picturePath)
 
