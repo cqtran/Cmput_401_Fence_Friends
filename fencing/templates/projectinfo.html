@@ -286,93 +286,76 @@ request.send()
     uploadRequest.send(formData);
   }
 
-	function projectClicked(id) {
-		window.location.href= '/editprojectinfo?proj_id='+id
-	}
+function projectClicked(id) {
+	window.location.href= '/editprojectinfo?proj_id='+id
+}
 
-			function editDiagram(image)
-			{
-				var initial = image.getAttribute('src');
-				image.setAttribute('src', 'https://csahmad.github.io/drawio/war/images/ajax-loader.gif');
-				var iframe = document.createElement('iframe');
-				iframe.setAttribute('style', "position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;")
-				//iframe.setAttribute('frameborder', '0');
-				//iframe.setAttribute('width', '80%');
-				//iframe.setAttribute('height', '1000');
-				//iframe.setAttribute('align', 'right');
+function editDiagram(image) {
+	var initial = image.getAttribute('src');
+	image.setAttribute('src', 'https://csahmad.github.io/drawio/war/images/ajax-loader.gif');
+	var iframe = document.createElement('iframe');
+	iframe.setAttribute('style', "position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;")
+	//iframe.setAttribute('frameborder', '0');
+	//iframe.setAttribute('width', '80%');
+	//iframe.setAttribute('height', '1000');
+	//iframe.setAttribute('align', 'right');
 
-				var close = function()
-				{
-					image.setAttribute('src', initial);
-					document.body.removeChild(iframe);
-					window.removeEventListener('message', receive);
-				};
-				var receive = function(evt)
-				{
-					if (evt.data.length > 0)
-					{
-						var msg = JSON.parse(evt.data);
+	var close = function() {
+		image.setAttribute('src', initial);
+		document.body.removeChild(iframe);
+		window.removeEventListener('message', receive);
+	};
+	var receive = function(evt) {
+		if (evt.data.length > 0) {
+			var msg = JSON.parse(evt.data);
 
-						if (msg.event == 'init')
-						{
-							iframe.contentWindow.postMessage(JSON.stringify({action: 'load',
-								xml: initial}), '*');
-						}
-						else if (msg.event == 'export')
-						{
-							close();
-							image.setAttribute('src', msg.data);
-							save(location.href);
-							saveDrawPicture();
-						}
-						else if (msg.event == 'save')
-						{
-							iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
-								format: 'xmlsvg', spin: 'Updating page'}), '*');
-						}
-						else if (msg.event == 'exit')
-						{
-							close();
-						}
+			if (msg.event == 'init') {
+				iframe.contentWindow.postMessage(JSON.stringify({action: 'load',
+					xml: initial}), '*');
+			}
+			else if (msg.event == 'export') {
+				close();
+				image.setAttribute('src', msg.data);
+				save(location.href);
+				saveDrawPicture();
+			}
+			else if (msg.event == 'save') {
+				iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
+					format: 'xmlsvg', spin: 'Updating page'}), '*');
+			}
+			else if (msg.event == 'exit') {
+				close();
+			}
+		}
+	};
+	window.addEventListener('message', receive);
+	iframe.setAttribute('src', 'https://csahmad.github.io/drawio/war/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json');
+	document.body.appendChild(iframe);
+};
+
+function save(url) {
+	if (url != null) {
+		var req = new XMLHttpRequest();
+		req.withCredentials = true;
+		var wnd = (url != window.location.href) ? window.open() : null;
+
+		req.onreadystatechange = function() {
+			if (req.readyState == 4) {
+				if (req.status != 200 && req.status != 201) {
+					if (wnd != null) {
+						wnd.close();
 					}
-				};
-				window.addEventListener('message', receive);
-				iframe.setAttribute('src', 'https://csahmad.github.io/drawio/war/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json');
-				document.body.appendChild(iframe);
-			};
-
-			function save(url)
-			{
-				if (url != null)
-				{
-					var req = new XMLHttpRequest();
-					req.withCredentials = true;
-					var wnd = (url != window.location.href) ? window.open() : null;
-
-					req.onreadystatechange = function()
-					{
-						if (req.readyState == 4)
-						{
-							if (req.status != 200 && req.status != 201)
-							{
-								if (wnd != null)
-								{
-									wnd.close();
-								}
-
-								alert('Error ' + req.status);
-							}
-							else if (wnd != null)
-							{
-								wnd.location.href = url;
-							}
-						}
-					};
-
-					req.open('PUT', url, true);
-					req.send(document.documentElement.outerHTML);
+					alert('Error ' + req.status);
+				}
+				else if (wnd != null) {
+					wnd.location.href = url;
 				}
 			}
+		};
+		req.open('PUT', url, true);
+		req.send(document.documentElement.outerHTML);
+	}
+}
 </script>
 <script type="text/javascript">
 	document.getElementById("file-upload").onchange = function() {

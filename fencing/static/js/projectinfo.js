@@ -21,6 +21,8 @@ function showSendingMaterialList() {
 	materialListButton.value = "Sending Material List...";
 }
 
-$('#progress').on('shown.bs.modal', function (e) {
-  alert("hi");
+$(document).ready(function(){
+	$('#imagepopup').on('show.bs.modal', function (e) {
+	  alert('hello')
+	});
 });

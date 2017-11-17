@@ -356,7 +356,7 @@ def sendMaterialList():
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
-# delete later, just for testing note
+# delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
@@ -372,7 +372,8 @@ def projectinfo():
             tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
 
             return render_template("projectinfo.html", imgPath = imgPath, tbnPath = tbnPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
-
+        else:
+            redirect()
     else:
         # POST?
         return render_template("projectinfo.html", company = current_user.company_name)
