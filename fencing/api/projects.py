@@ -2,7 +2,7 @@ from sqlalchemy import *
 from database.db import dbSession, init_db
 from database.models import Project, Customer, Quote
 from flask.json import jsonify
-
+import json
 from flask import Blueprint, request
 from flask.json import jsonify
 from flask_security.core import current_user
@@ -55,6 +55,24 @@ def getProject(project_id):
             return bad_request("The project was not found")
         return jsonify(project)
 
+@projectBlueprint.route('/addproject/', methods=['GET', 'POST'])
+#login_required
+#roles_required('primary')
+def addproject():
+    print("test it")
+    if request.method == 'POST':
+        print("made it")
+        customer = request.values.get("customer")
+        customer = json.loads(customer);
+        print("customers", customer)
+        customerId = customer[0]
+        projectname = request.values.get("name")
+        address = request.values.get("address")
+        proj_id = createProject(customerId, "Not Reached",  address,
+                                         current_user.company_name, projectname)
+        print(proj_id)
+        return jsonify(proj_id)
+
 def updateProjectInfo(project_id, project_name, address, status, note):
     """ Updates the project information of a given project id """
     project = dbSession.query(Project).filter(Project.project_id == project_id).all()
@@ -80,7 +98,7 @@ def createProject(customerId, statusName, address, companyName, project_name):
     dbSession.add(newQuote)
     dbSession.commit()
 
-    return True
+    return newProject.project_id
 
 def getdrawiopic(project_id):
     #TODO: function should be renamed in the future for clarity purposes

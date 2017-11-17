@@ -71,7 +71,7 @@ $('#search-bar .typeahead').typeahead({
     source: projects.ttAdapter(),
     templates: {
         header: Handlebars.compile("<div class='container-fluid'><h3 class='text-green'>Projects</h3><hr class='mt-2'></div>"),
-        suggestion: Handlebars.compile("<div class='container-fluid'><p><b>{{value}}</b> - Status - {{status}} - Address {{address}} </p></div>")
+        suggestion: Handlebars.compile("<div class='container-fluid'><p class='top-bot-pad'><b>{{value}}</b> - Status - {{status}} - Address {{address}} </p></div>")
     }
   }).on('typeahead:selected', function(event, selection) {
   
