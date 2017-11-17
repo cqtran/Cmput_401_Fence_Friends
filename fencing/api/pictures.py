@@ -16,7 +16,7 @@ from PIL import Image
 
 # TODO: Clean code and refactor. Maybe there is a better way to handle different file extensions?
 thumbnailDir = os.path.join('static', 'images', 'thumbnails')
-thumbnailPrefix = 'thumbnail_'
+thumbnailPrefix = 'tbn_'
 thumbnailExt = '.png'
 thumbnailSize = (128, 128)
 pictureDir = os.path.join('static', 'images', 'pictures')
