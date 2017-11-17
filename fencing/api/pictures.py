@@ -62,20 +62,31 @@ def uploadPicture():
 
                 # Create thumbnail of picture
                 thumb = Image.open(picturePath)
-                thumb.thumbnail(thumbnailSize)
 
-                background = Image.new('RGBA', thumbnailSize, (255, 255, 255, 0))
-                background.paste(
-                    thumb, (int((thumbnailSize[0] - thumb.size[0]) / 2),
-                            int((thumbnailSize[1] - thumb.size[1]) / 2))
-                )
+                # Source: javiergodinez.blogspot.ca/2008/03/square-thumbnail-with-python-image.html
+                width, height = thumb.size
+
+                if width > height:
+                   delta = width - height
+                   left = int(delta/2)
+                   upper = 0
+                   right = height + left
+                   lower = height
+                else:
+                   delta = height - width
+                   left = 0
+                   upper = int(delta/2)
+                   right = width
+                   lower = width + upper
+
+                thumb = thumb.crop((left, upper, right, lower))
+                thumb.thumbnail(thumbnailSize, Image.ANTIALIAS)
 
                 # Save thumbnail in the thumbnail directory
                 thumbnailPath = os.path.join(app_root, thumbnailDir,
                     thumbnailPrefix + filename + thumbnailExt)
                 print('Thumbnail stored at: ' + thumbnailPath + '\n')
-                background.save(thumbnailPath)
-                background.close()
+                thumb.save(thumbnailPath)
                 thumb.close()
 
                 # Commit and return ok status
