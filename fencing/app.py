@@ -5,6 +5,7 @@ from flask_security import Security, login_required, \
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
+from diagram.DiagramLabels import DiagramLabels
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
@@ -28,6 +29,8 @@ from api.jsonifyObjects import MyJSONEncoder
 from flask.json import jsonify
 
 import argparse
+
+Email.staticFolder = os.path.dirname(os.path.abspath(__file__)) + "/static/"
 
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.register_blueprint(Customers.customerBlueprint)
@@ -166,7 +169,6 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
 
-
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     dbSession.remove()
@@ -264,21 +266,11 @@ def customerinfo():
     status = request.args.get('status')
     return render_template("customerinfo.html", company = current_user.company_name)
 
-@app.route('/newproject/', methods=['GET', 'POST'])
+@app.route('/newproject/')
 @login_required
 @roles_required('primary')
 def newproject():
-    if request.method == 'POST':
-        customer = request.form["customer"]
-        customer = customer.split("-")
-        customerId = customer[1]
-        projectname = request.form["name"]
-        address = request.form["address"]
-        success = Projects.createProject(customerId, "Not Reached",  address,
-                                         current_user.company_name, projectname)
-        return redirect(url_for('projects', status="All"))
-    else:
-        return render_template("newproject.html", company = current_user.company_name)
+    return render_template("newproject.html", company = current_user.company_name)
 
 @app.route('/viewMaterialList/', methods = ['POST'])
 @login_required
@@ -293,7 +285,7 @@ def viewMaterialList():
         attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment[7:]))
+        return redirect(url_for("static", filename=attachment))
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
@@ -313,7 +305,7 @@ def viewQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment[7:]))
+        return redirect(url_for("static", filename=attachment))
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
@@ -362,38 +354,16 @@ def sendMaterialList():
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
-# delete later, just for testing note
+# delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
-        project_id = request.args.get('proj_id')
-        if project_id is not None:
-
-            json_quotepic = Projects.getdrawiopic(project_id)
-
-            # Get relative path to project pictures
-            imgPath = repr(os.path.join('..', Pictures.directory, ''))
-
-            return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
-
+        return render_template("projectinfo.html")
     else:
         # POST?
-        return render_template("projectinfo.html", company = current_user.company_name)
-
-@app.route('/uploadpicture/', methods = ['GET', 'POST'])
-@login_required
-@roles_required('primary')
-def uploadpicture():
-    if request.method == 'POST':
-        project_id = request.form['proj_id']
-        picture = request.files['picture']
-
-        # Store the picture in the database
-        Pictures.addPicture(app.root_path, project_id, picture)
-
-        return redirect(url_for('projectinfo', proj_id = project_id))
+        return render_template("projectinfo.html")
 
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
@@ -401,11 +371,9 @@ def uploadpicture():
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
-    image = request.form['image'] #long url
+    image = request.form['image']
     parsed = DiagramParser.parse(image)
-
-    # Test parsed output
-    print(parsed)
+    withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
     json_quotepic = Projects.getdrawiopic(project_id)
     qid = json_quotepic[0].get("quote_id")
@@ -413,9 +381,19 @@ def saveDiagram():
     # If parsed is empty don't changed the drawing
     if parsed is not None:
         if not parsed.empty:
-            update = Projects.updatedrawiopic(qid, 5, image, 0)
+            update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
+
+@app.route('/deleteproject/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteproject():
+    project = dbSession.query(Project).filter(
+        Project.project_id == request.args.get("id")).one()
+    dbSession.delete(project)
+    dbSession.commit()
+    return redirect(url_for("projects"))
 
 @app.route('/editprojectinfo/', methods = ['GET', 'POST'])
 @login_required

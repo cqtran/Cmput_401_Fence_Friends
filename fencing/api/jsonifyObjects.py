@@ -46,20 +46,30 @@ class MyJSONEncoder(JSONEncoder):
                 'quote'                   : obj.quote,
                 'project_info'            : obj.project_info,
                 'note'                    : obj.note,
-                'last_modified'           : dump_datetime(obj.last_modified)
+                'last_modified'           : dump_datetime(obj.last_modified),
+                'appearance_selected'     : obj.appearance_selected
             }
 
         if isinstance(obj, Picture):
             return {
                 'picture_id'                : obj.picture_id,
                 'project_id'                : obj.project_id,
-                'file_name'                 : obj.file_name
+                'file_name'                 : obj.file_name,
+                'thumbnail_name'            : obj.thumbnail_name,
+                'upload_date'               : dump_datetime(obj.upload_date)
             }
 
         if isinstance(obj, Material):
             # TODO
             return{}
 
+        if isinstance(obj, Appearance):
+            return {
+                'appearance_id'         : obj.appearance_id,
+                'project_id'            : obj.project_id
+                #TODO: Define other columns related to materials
+            }
+            
         return super(MyJSONEncoder, obj).default(obj)
 
 def dump_datetime(value):

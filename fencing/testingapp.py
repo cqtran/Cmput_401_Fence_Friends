@@ -39,6 +39,7 @@ app.json_encoder = MyJSONEncoder
 @app.before_first_request
 def setup_db():
     init_db()
+    Pictures.app_root = app.root_path
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -47,7 +48,7 @@ def shutdown_session(exception=None):
 @app.route('/')
 def testingHomePage():
     return """
-    Database has been initialized for testing 'Cavalry Fence Builder'.
+    Testing database has been initialized for testing 'Cavalry Fence Builder'.
     Run python -m unittest to run all tests.
     """
 
