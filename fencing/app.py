@@ -362,21 +362,10 @@ def sendMaterialList():
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
-        project_id = request.args.get('proj_id')
-        if project_id is not None:
-
-            json_quotepic = Projects.getdrawiopic(project_id)
-
-            # Get relative path to project pictures
-            imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
-            tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
-
-            return render_template("projectinfo.html", imgPath = imgPath, tbnPath = tbnPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
-        else:
-            redirect()
+        return render_template("projectinfo.html")
     else:
         # POST?
-        return render_template("projectinfo.html", company = current_user.company_name)
+        return render_template("projectinfo.html")
 
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
