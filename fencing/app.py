@@ -431,6 +431,12 @@ def editprojectinfo():
 
         return redirect(url_for('projectinfo', proj_id = project_id))
 
+@app.route('/viewPrices/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def viewPrices():
+    return render_template("prices.html", company = current_user.company_name)
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

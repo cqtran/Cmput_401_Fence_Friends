@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <h1>Fencing Material Prices</h1>
+</div>
+<hr class="mt-2">
+<div class="container-fluid">
+  <form method = "post" id="upload-form" action='javascript:uploadPrices();' enctype=multipart/form-data >
+		<input class="form-control" type="hidden" name="company_name" id="company_name" />
+		<div class="row">
+			<div class="col-sm-12 less-padding">
+				<label for="file-upload" class="btn btn-primary btn-block">
+				    Upload Prices File
+				</label>
+		  		<input class="btn btn-primary btn-block" id="file-upload" type="file" name="prices" accept=".csv">
+			</div>
+	  	</div>
+	</form>
+
+  <select class="selectpicker" id="year" data-style="btn-primary" data-width="auto">
+    <option value="2017">2017</option>
+    <option value="2016">2016</option>
+    <option value="2015">2015</option>
+  </select>
+
+</div>
+
+<div class="container-fluid">
+  <div class="table-responsive">
+    <h4 class="text-green" style="font-weight: bold; padding-top: 10px;">Post Profiles (Sample)</h4>
+    <table class="table">
+     <tr>
+       <th width="25%">Material Name</th>
+       <th width="25%">Price</th>
+       <th width="25%">Pieces in Bundle</th>
+       <th width="25%">Notes</th>
+     </tr>
+     <tr>
+       <td width="25%">W44.48A 4x4"x48 Post Almond</td>
+       <td width="25%">23.57</td>
+       <th width="25%"></th>
+       <th width="25%"></th>
+     </tr>
+     <tr>
+       <td width="25%">W44.48C* 4x4"x48 Post Clay</td>
+       <td width="25%">25.17</td>
+       <th width="25%"></th>
+       <th width="25%"></th>
+     </tr>
+    </table>
+    <h4 class="text-green" style="font-weight: bold; padding-top: 10px;">T&G (Sample)</h4>
+    <table class="table">
+     <tr>
+       <th width="25%">Material Name</th>
+       <th width="25%">Price</th>
+       <th width="25%">Pieces in Bundle</th>
+       <th width="25%">Notes</th>
+     </tr>
+     <tr>
+       <td width="25%">W875TG3.50.25A .875x11.3"x50.25" T&G Almond"</td>
+       <td width="25%">13.02</td>
+       <td width="25%">144</td>
+       <td width="25%"></td>
+     </tr>
+     <tr>
+       <td width="25%">W875TG3.50.25P .875x11.3"x50.25" T&G Pebble"</td>
+       <td width="25%">13.02</td>
+       <td width="25%">144</td>
+       <td width="25%"></td>
+     </tr>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block content2 %}
+<!-- reference to js file
+<script type="text/javascript" src='../static/js/materials.js'></script> -->
+
+<script type="text/javascript">
+  function uploadPrices() {
+    var message = 'Upload Prices File'
+    console.log(message)
+    // TODO: Get info from the form, POST request to materials API to update prices
+  }
+
+  function getPriceList() {
+    // TODO: GET request to materials API to get prices list by year and create tables
+  }
+
+  document.getElementById("file-upload").onchange = function() {
+    document.getElementById("upload-form").submit();
+  }
+</script>
+{% endblock %}
