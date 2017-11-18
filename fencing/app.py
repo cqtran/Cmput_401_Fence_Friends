@@ -168,7 +168,7 @@ def setup_db():
         newStatus = Status(status_name = "Waiting for Appraisal")
         dbSession.add(newStatus)
         dbSession.commit()
-
+    Pictures.app_root = app.root_path
 
 
 @app.teardown_appcontext
@@ -268,21 +268,11 @@ def customerinfo():
     status = request.args.get('status')
     return render_template("customerinfo.html", company = current_user.company_name)
 
-@app.route('/newproject/', methods=['GET', 'POST'])
+@app.route('/newproject/')
 @login_required
 @roles_required('primary')
 def newproject():
-    if request.method == 'POST':
-        customer = request.form["customer"]
-        customer = customer.split("-")
-        customerId = customer[1]
-        projectname = request.form["name"]
-        address = request.form["address"]
-        success = Projects.createProject(customerId, "Not Reached",  address,
-                                         current_user.company_name, projectname)
-        return redirect(url_for('projects', status="All"))
-    else:
-        return render_template("newproject.html", company = current_user.company_name)
+    return render_template("newproject.html", company = current_user.company_name)
 
 @app.route('/viewMaterialList/', methods = ['POST'])
 @login_required
@@ -366,38 +356,16 @@ def sendMaterialList():
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
-# delete later, just for testing note
+# delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
-        project_id = request.args.get('proj_id')
-        if project_id is not None:
-
-            json_quotepic = Projects.getdrawiopic(project_id)
-
-            # Get relative path to project pictures
-            imgPath = repr(os.path.join('..', Pictures.directory, ''))
-
-            return render_template("projectinfo.html", path = imgPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
-
+        return render_template("projectinfo.html")
     else:
         # POST?
-        return render_template("projectinfo.html", company = current_user.company_name)
-
-@app.route('/uploadpicture/', methods = ['GET', 'POST'])
-@login_required
-@roles_required('primary')
-def uploadpicture():
-    if request.method == 'POST':
-        project_id = request.form['proj_id']
-        picture = request.files['picture']
-
-        # Store the picture in the database
-        Pictures.addPicture(app.root_path, project_id, picture)
-
-        return redirect(url_for('projectinfo', proj_id = project_id))
+        return render_template("projectinfo.html")
 
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required

@@ -53,7 +53,9 @@ class MyJSONEncoder(JSONEncoder):
             return {
                 'picture_id'                : obj.picture_id,
                 'project_id'                : obj.project_id,
-                'file_name'                 : obj.file_name
+                'file_name'                 : obj.file_name,
+                'thumbnail_name'            : obj.thumbnail_name,
+                'upload_date'               : dump_datetime(obj.upload_date)
             }
 
         if isinstance(obj, Material):

@@ -2,13 +2,15 @@ from sqlalchemy import *
 from database.db import dbSession, init_db
 from database.models import Project, Customer, Quote
 from flask.json import jsonify
-
+import json
 from flask import Blueprint, request
 from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
+import api.pictures as Pictures
+import os
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
@@ -23,6 +25,7 @@ def getProjectList(customer_id):
         search = request.args.get("search")
         status = request.args.get('status')
         projectList = dbSession.query(Project)
+        projectList.filter(Project.company_name == current_user.company_name)
 
         if customer_id is not None:
            projectList = projectList.filter(Project.customer_id == customer_id)
@@ -55,6 +58,42 @@ def getProject(project_id):
             return bad_request("The project was not found")
         return jsonify(project)
 
+@projectBlueprint.route('/addproject/', methods=['GET', 'POST'])
+#login_required
+#roles_required('primary')
+def addproject():
+    print("test it")
+    if request.method == 'POST':
+        print("made it")
+        customer = request.values.get("customer")
+        customer = json.loads(customer);
+        print("customers", customer)
+        customerId = customer[0]
+        projectname = request.values.get("name")
+        address = request.values.get("address")
+        proj_id = createProject(customerId, "Not Reached",  address,
+                                         current_user.company_name, projectname)
+        print(proj_id)
+        return jsonify(proj_id)
+
+# delete later, just for testing note ---- i think we need this
+@projectBlueprint.route('/projectdetails/', defaults={'project_id': None}, methods=['GET'])
+@projectBlueprint.route('/projectdetails/<int:project_id>', methods=['GET'])
+@login_required
+@roles_required('primary')
+def projectdetails(project_id):
+    if request.method == "GET":
+        json_quotepic = getdrawiopic(project_id)
+
+        # Get relative path to project pictures
+        imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
+        tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
+
+        company = current_user.company_name
+        lst = [imgPath, tbnPath, json_quotepic, company]
+
+        return jsonify(lst)
+
 def updateProjectInfo(project_id, project_name, address, status, note):
     """ Updates the project information of a given project id """
     project = dbSession.query(Project).filter(Project.project_id == project_id).all()
@@ -80,7 +119,7 @@ def createProject(customerId, statusName, address, companyName, project_name):
     dbSession.add(newQuote)
     dbSession.commit()
 
-    return True
+    return newProject.project_id
 
 def getdrawiopic(project_id):
     #TODO: function should be renamed in the future for clarity purposes

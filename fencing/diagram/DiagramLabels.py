@@ -1,4 +1,4 @@
-import math, html, base64
+import html, base64
 from xml.etree import ElementTree
 from diagram.DiagramParser import DiagramParser
 
@@ -35,7 +35,7 @@ class DiagramLabels:
 			# offset by the distance between the origin and the closest shape to
 			# it
 			x = fencingEntity.x - lowestX
-			y = fencingEntity.y + fencingEntity.height - lowestY
+			y = fencingEntity.y - lowestY
 
 			length = html.escape(fencingEntity.lengthString())
 
@@ -59,11 +59,14 @@ class DiagramLabels:
 
 		for fencingEntity in parsed:
 			if lowest is None:
-				lowest = fencingEntity.x
+				lowest = min(fencingEntity.x, fencingEntity.x2)
 				continue
 			
 			if fencingEntity.x < lowest:
 				lowest = fencingEntity.x
+			
+			if fencingEntity.x2 < lowest:
+				lowest = fencingEntity.x2
 		
 		return lowest
 	
@@ -73,11 +76,14 @@ class DiagramLabels:
 
 		for fencingEntity in parsed:
 			if lowest is None:
-				lowest = fencingEntity.y
+				lowest = min(fencingEntity.y, fencingEntity.y2)
 				continue
 			
 			if fencingEntity.y < lowest:
 				lowest = fencingEntity.y
+			
+			if fencingEntity.y2 < lowest:
+				lowest = fencingEntity.y2
 		
 		return lowest
 	
