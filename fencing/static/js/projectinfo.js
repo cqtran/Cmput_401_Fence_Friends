@@ -211,7 +211,7 @@ function addAppearance(loading) {
 }
 
 function removeLayout(number) {
-	removeActiveLayout();
+	removeLayoutFromDb(number);
 
 	var element = document.getElementById("layout" + number);
 	element.parentNode.removeChild(element);
@@ -230,7 +230,7 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
-	removeActiveAppearance();
+	removeAppearanceFromDb(number);
 
 	var element = document.getElementById("appearance" + number);
 	element.parentNode.removeChild(element);
@@ -283,8 +283,8 @@ function saveActiveAppearance() {
 	;
 }
 
-function removeActiveLayout() {
-	var tab = document.getElementById("layout-tab" + activeLayout);
+function removeLayoutFromDb(number) {
+	var tab = document.getElementById("layout-tab" + number);
 	var layout_id = tab.dbId;
 	var quoteData = JSON.stringify({layoutId: layout_id});
 	$.ajax({
@@ -303,7 +303,7 @@ function removeActiveLayout() {
 }
 
 // TODO: fill
-function removeActiveAppearance() {
+function removeAppearanceFromDb(number) {
 	;
 }
 
