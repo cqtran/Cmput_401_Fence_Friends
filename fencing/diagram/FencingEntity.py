@@ -51,35 +51,45 @@ class FencingEntity:
 	
 	@property
 	def x(self):
-		return self._x
+		x0 = self._x  + self._width / 2.0
+		y0 = self._y + self._height / 2.0
+		x = self._x
+		y = self._y
+		angle = math.radians(self._rotation)
+		return x0 + math.cos(angle) * (x - x0) - math.sin(angle) * (y - y0)
 	
 	# Used:
 	# https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
 	# Accessed November 17, 2017
 	@property
 	def x2(self):
-		x = self._x
-		y = self._y
-		x2 = x + self._length
-		y2 = y
+		x0 = self._x  + self._width / 2.0
+		y0 = self._y + self._height / 2.0
+		x2 = self._x + self._width
+		y2 = self._y
 		angle = math.radians(self._rotation)
-		return x + math.cos(angle) * (x2 - x) - math.sin(angle) * (y2 - y)
+		return x0 + math.cos(angle) * (x2 - x0) - math.sin(angle) * (y2 - y0)
 	
 	@property
 	def y(self):
-		return self._y
+		x0 = self._x  + self._width / 2.0
+		y0 = self._y + self._height / 2.0
+		x = self._x
+		y = self._y
+		angle = math.radians(self._rotation)
+		return y0 + math.sin(angle) * (x - x0) + math.cos(angle) * (y - y0)
 	
 	# Used:
 	# https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
 	# Accessed November 17, 2017
 	@property
 	def y2(self):
-		x = self._x
-		y = self._y
-		x2 = x + self._length
-		y2 = y
+		x0 = self._x  + self._width / 2.0
+		y0 = self._y + self._height / 2.0
+		x2 = self._x + self._width
+		y2 = self._y
 		angle = math.radians(self._rotation)
-		return y + math.sin(angle) * (x2 - x) + math.cos(angle) * (y2 - y)
+		return y0 + math.sin(angle) * (x2 - x0) + math.cos(angle) * (y2 - y0)
 	
 	@property
 	def rotation(self):

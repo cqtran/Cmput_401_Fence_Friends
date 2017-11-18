@@ -59,7 +59,7 @@ class DiagramLabels:
 
 		for fencingEntity in parsed:
 			if lowest is None:
-				lowest = fencingEntity.x
+				lowest = min(fencingEntity.x, fencingEntity.x2)
 				continue
 			
 			if fencingEntity.x < lowest:
@@ -76,7 +76,7 @@ class DiagramLabels:
 
 		for fencingEntity in parsed:
 			if lowest is None:
-				lowest = fencingEntity.y
+				lowest = min(fencingEntity.y, fencingEntity.y2)
 				continue
 			
 			if fencingEntity.y < lowest:
