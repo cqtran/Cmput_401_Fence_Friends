@@ -397,11 +397,19 @@ def saveDiagram():
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
-    # If parsed is empty don't changed the drawing
-    if parsed is not None:
-        if not parsed.empty:
-            layout_id = Layouts.updateLayoutInfo(project_id = project_id, layout_id = layout_id, layout_name = layout_name, layout_info = withLabels)
-    print("{" + '"quoteId": {quote_id}'.format(quote_id=layout_id) + "}")
+    # If the layout already exists and the diagram is empty, do not update it
+    # (tell the client to refresh the page instead to get back the old diagram)
+    if layout_id is not None:
+        if parsed is None:
+            return '{"reload": 1}'
+        
+        if parsed.empty:
+            return '{"reload": 1}'
+
+    layout_id = Layouts.updateLayoutInfo(project_id = project_id,
+        layout_id = layout_id, layout_name = layout_name,
+        layout_info = withLabels)
+
     return "{" + '"quoteId": {quote_id}'.format(quote_id=layout_id) + "}"
 
 @app.route('/deleteproject/', methods = ['POST'])

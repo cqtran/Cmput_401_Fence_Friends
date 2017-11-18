@@ -248,6 +248,12 @@ function removeAppearance(number) {
 	appearanceCount -= 1;
 }
 
+function reloadPage() {
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	window.location.replace("/projectinfo/?proj_id=" + proj_id);
+}
+
 function saveActiveLayout() {
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var url = new URL(window.location.href);
@@ -266,7 +272,12 @@ function saveActiveLayout() {
 	  dataType: "json",
       success: function(result) {
 		returndata = result;
-        setActiveLayoutId(result["quoteId"]);
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			setActiveLayoutId(result["quoteId"]);
+		}
       },
       error: function(xhr, textStatus, error) {
 		alert("Error");
