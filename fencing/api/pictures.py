@@ -41,10 +41,13 @@ def getPictureList(project_id):
 #@roles_required('primary')
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
+    print("testgasdfasfj")
+    print(request.method)
     if request.method == 'POST':
+        print("before")
         project_id = request.form['proj_id']
         picture = request.files['picture']
-
+        print("after")
         filename = secure_filename(picture.filename)
         filename, file_extension = os.path.splitext(filename)
         if filename != '':

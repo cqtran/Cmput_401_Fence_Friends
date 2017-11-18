@@ -15,7 +15,6 @@ var drawiopic;
 var imgpath;
 var tbnpath;
 var pictureList;
-var url;
 var proj_id;
 
 function setProgressTitle(title) {
@@ -278,9 +277,8 @@ function setProjectInfo(project){
 	}
 
 	// Sets the project_id into the uploadpicture form
-	document.getElementById('project_id').setAttribute('value', project[0].project_id);
-
-	document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+project[0].project_id+')')
+	document.getElementById('project_id').setAttribute('value', proj_id);
+	document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+proj_id+')')
 
 	if (project[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = project[0].end_date;
@@ -293,6 +291,7 @@ function setProjectInfo(project){
 }
 
 function makePictures(pictures){
+	$('#projectPictures').empty();
   pictures.forEach(function(picture) {
     var img = document.createElement('img');
     var final = document.createElement('a');
@@ -325,16 +324,6 @@ function imagesError(){
   img.height = '150';
   img.width = '150';
   pictureList.appendChild(img);
-}
-
-function uploadPicture() {
-  var uploadRequest = new XMLHttpRequest();
-  var formData = new FormData( document.getElementById("upload-form") );
-  uploadRequest.open('POST', '/uploadPicture/', true);
-  uploadRequest.onreadystatechange = function(response) {
-        window.location.reload();
-  }
-  uploadRequest.send(formData);
 }
 
 function projectClicked(id) {
@@ -408,10 +397,6 @@ function save(url) {
 	}
 }
 
-document.getElementById("file-upload").onchange = function() {
-	document.getElementById("upload-form").submit();
-}
-
 //get project info
 function getProjects(){
   $.ajax({
@@ -461,11 +446,23 @@ function getPics(){
   });
 }
 
+function uploadPicture(e) {
+  var formdata = new FormData(document.getElementById("upload-form"));
+  $.ajax({
+      type: 'POST',
+      url: '/uploadPicture/',
+      data : formdata,
+      processData: false,
+      contentType: false,
+      success: function(response){
+      	getPics();
+      }
+  });
+}
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
 	$("#pencil-button").attr('class', 'nav-item');
 	pictureList = document.getElementById('projectPictures');
-  url = window.location.querystring;
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
@@ -476,9 +473,15 @@ $(document).ready(function(){
 	moreDetails();
 	getProjects();
 	getPics();
-
-	$('#imagepopup').on('show.bs.modal', function (e) {
-	  alert('hello')
-	});
 });
 
+$('#file-upload').change(function(){
+	$('#upload-form').submit();
+});
+$('form').submit(function(e) {
+  e.preventDefault();
+  uploadPicture(e);
+});
+$('#imagepopup').on('show.bs.modal', function (e) {
+  alert('hello')
+});
