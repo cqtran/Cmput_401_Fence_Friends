@@ -21,6 +21,8 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
+import api.layouts as Layouts
+import api.appearances as Appearances
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -39,6 +41,8 @@ app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
+app.register_blueprint(Layouts.layoutBlueprint)
+app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
@@ -377,13 +381,13 @@ def saveDiagram():
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
-    json_quotepic = Projects.getdrawiopic(project_id)
-    qid = json_quotepic[0].get("quote_id")
+    json_quotepic = Layouts.getLayoutHelper(project_id)
+    lid = json_quotepic[0].get("layout_id")
 
     # If parsed is empty don't changed the drawing
     if parsed is not None:
         if not parsed.empty:
-            update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
+            update = Layouts.updateLayout(lid, withLabels)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 

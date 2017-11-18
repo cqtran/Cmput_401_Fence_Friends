@@ -127,15 +127,40 @@ class Project(Base):
             'project_name'       : self.project_name
         }
 
+class Layout(Base):
+    __tablename__ = 'layout'
+    layout_id = Column(Integer, primary_key=True)
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
+    layout_info = Column(TEXT)
+    last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
+    appearance_selected = Column('appearance_selected', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
+
+    def __init__(self, project_id, layout_info, appearance_selected, layout_id=None):
+        self.layout_id = layout_id
+        self.project_id = project_id
+        self.layout_info = layout_info
+        self.appearance_selected = appearance_selected
+        #self.last_modified = last_modified
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'layout_id'                 : self.layout_id,
+            'project_id'                : self.project_id,
+            'layout_info'               : self.layout_info,
+            'last_modified'				: dump_datetime(self.last_modified),
+			'appearance_selected'       : self.appearance_selected
+        }
+
 class Quote(Base):
+	# Should not currently be in use
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     quote = Column(Integer)
-    project_info = Column(TEXT)
-    note = Column(String(255))
-    last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
-    appearance_selected = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
+    layout_id = Column('layout_id', Integer, ForeignKey('layout.layout_id', ondelete="CASCADE"))
+    appearance_id = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
     def __init__(self, project_id, quote, project_info, note, appearance_selected, quote_id=None):
         self.quote_id = quote_id
@@ -145,18 +170,6 @@ class Quote(Base):
         self.note = note
         self.appearance_selected = appearance_selected
         #self.last_modified = last_modified
-
-    @property
-    def serialize(self):
-        """Return object data in easily serializeable format"""
-        return {
-            'quote_id'                : self.quote_id,
-            'project_id'              : self.project_id,
-            'quote'                   : self.quote,
-            'project_info'            : self.project_info,
-            'note'                    : self.note,
-            'last_modified'           : dump_datetime(self.last_modified)
-        }
 
 class Appearance(Base):
     __tablename__ = 'appearance'

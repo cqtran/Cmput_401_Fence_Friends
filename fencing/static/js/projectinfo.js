@@ -239,7 +239,7 @@ function saveDrawPicture(number) {
 
 function loadimage(image){
 	var imageId = "image" + activeLayout;
-  document.getElementById(imageId).src=image[0].project_info;
+  document.getElementById(imageId).src=image[0].layout_info;
 }
 
 function setProjectInfo(project){
