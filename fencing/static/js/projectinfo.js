@@ -225,7 +225,7 @@ function post(url, params) {
       }
   }
 
-	document.body.appendChild(form);
+  document.body.appendChild(form);
   form.submit();
 }
 
