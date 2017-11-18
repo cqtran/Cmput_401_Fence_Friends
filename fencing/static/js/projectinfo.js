@@ -62,7 +62,7 @@ function setLayoutName(number, newName, loading) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-
+	
 	if (newName == null) {
 		newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
 	}
@@ -257,7 +257,7 @@ function saveActiveLayout() {
 	var layout_name = tab.layoutName;
 	var quoteData =
 		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
-	
+
 	$.ajax({
       type: 'POST',
       url: "/saveDiagram/?proj_id=" + proj_id,
@@ -308,15 +308,15 @@ function removeActiveAppearance() {
 }
 
 function loadLayout(layout, number) {
-	document.getElementById("image" + number).src = layout.project_info;
-	setLayoutName(number, layout.quote_name, true);
-	document.getElementById("layout-tab" + number).dbId = layout.quote_id;
+	document.getElementById("image" + number).src = layout.layout_info;
+	setLayoutName(number, layout.layout_name, true);
+	document.getElementById("layout-tab" + number).dbId = layout.layout_id;
 }
 
 function loadLayouts(layouts){
 	loadLayout(layouts[0], "1");
 	var currentLayout = 2;
-	
+
 	for(var i = 1; i < layouts.length; i++) {
 		addLayout(true);
 		loadLayout(layouts[i], currentLayout.toString());

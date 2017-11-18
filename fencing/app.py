@@ -21,6 +21,8 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
+import api.layouts as Layouts
+import api.appearances as Appearances
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -39,6 +41,8 @@ app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
+app.register_blueprint(Layouts.layoutBlueprint)
+app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
@@ -372,8 +376,8 @@ def projectinfo():
 @roles_required('primary')
 def removeLayout():
     project_id = request.args.get('proj_id')
-    quote_id = request.json['layoutId']
-    Projects.removeLayout(quote_id)
+    layout_id = request.json['layoutId']
+    Layouts.removeLayout(layout_id)
     return "{}"
 
 @app.route('/saveDiagram/', methods = ['POST'])
@@ -383,12 +387,12 @@ def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
 
-    quote_id = None
+    layout_id = None
 
     if 'layoutId' in request.json:
-        quote_id = request.json['layoutId']
+        layout_id = request.json['layoutId']
 
-    quote_name = request.json['name']
+    layout_name = request.json['name']
     image = request.json['image']
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
@@ -396,10 +400,9 @@ def saveDiagram():
     # If parsed is empty don't changed the drawing
     if parsed is not None:
         if not parsed.empty:
-            quote_id = Projects.updateLayout(
-                project_id, quote_id, quote_name, 5, withLabels, 0)
-
-    return "{" + '"quoteId": {quote_id}'.format(quote_id=quote_id) + "}"
+            layout_id = Layouts.updateLayoutInfo(project_id = project_id, layout_id = layout_id, layout_name = layout_name, layout_info = withLabels)
+    print("{" + '"quoteId": {quote_id}'.format(quote_id=layout_id) + "}")
+    return "{" + '"quoteId": {quote_id}'.format(quote_id=layout_id) + "}"
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required
