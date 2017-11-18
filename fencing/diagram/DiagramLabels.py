@@ -35,7 +35,7 @@ class DiagramLabels:
 			# offset by the distance between the origin and the closest shape to
 			# it
 			x = fencingEntity.x - lowestX
-			y = fencingEntity.y + fencingEntity.height - lowestY
+			y = fencingEntity.y - lowestY
 
 			length = html.escape(fencingEntity.lengthString())
 
