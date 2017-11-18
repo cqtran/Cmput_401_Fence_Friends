@@ -9,6 +9,8 @@ from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
+import api.pictures as Pictures
+import os
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
@@ -73,6 +75,24 @@ def addproject():
                                          current_user.company_name, projectname)
         print(proj_id)
         return jsonify(proj_id)
+
+# delete later, just for testing note ---- i think we need this
+@projectBlueprint.route('/projectdetails/', defaults={'project_id': None}, methods=['GET'])
+@projectBlueprint.route('/projectdetails/<int:project_id>', methods=['GET'])
+@login_required
+@roles_required('primary')
+def projectdetails(project_id):
+    if request.method == "GET":
+        json_quotepic = getdrawiopic(project_id)
+
+        # Get relative path to project pictures
+        imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
+        tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
+
+        company = current_user.company_name
+        lst = [imgPath, tbnPath, json_quotepic, company]
+
+        return jsonify(lst)
 
 def updateProjectInfo(project_id, project_name, address, status, note):
     """ Updates the project information of a given project id """
