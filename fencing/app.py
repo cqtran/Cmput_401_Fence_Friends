@@ -356,26 +356,16 @@ def sendMaterialList():
 
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
-# delete later, just for testing note
+# delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
 @login_required
 @roles_required('primary')
 def projectinfo():
     if request.method == "GET":
-        project_id = request.args.get('proj_id')
-        if project_id is not None:
-
-            json_quotepic = Projects.getdrawiopic(project_id)
-
-            # Get relative path to project pictures
-            imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
-            tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
-
-            return render_template("projectinfo.html", imgPath = imgPath, tbnPath = tbnPath, drawiopic = json.dumps(json_quotepic), company = current_user.company_name)
-
+        return render_template("projectinfo.html")
     else:
         # POST?
-        return render_template("projectinfo.html", company = current_user.company_name)
+        return render_template("projectinfo.html")
 
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
