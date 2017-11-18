@@ -1,5 +1,5 @@
 from flask.json import JSONEncoder
-from database.models import User, Customer, Status, Project, Quote, Picture, Material
+from database.models import User, Customer, Status, Project, Quote, Picture, Material, Appearance
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):

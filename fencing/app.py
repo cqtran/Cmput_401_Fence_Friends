@@ -1,5 +1,5 @@
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, \
-    flash
+from flask import Flask, Blueprint, render_template, request, redirect, \
+    url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
@@ -372,9 +372,9 @@ def projectinfo():
 @roles_required('primary')
 def removeLayout():
     project_id = request.args.get('proj_id')
-    quote_id = request.form['id']
+    quote_id = request.json['layoutId']
     Projects.removeLayout(quote_id)
-    return redirect(url_for('projectinfo', proj_id = project_id))
+    return "{}"
 
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
@@ -382,19 +382,24 @@ def removeLayout():
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
-    quote_id = request.form['id']
-    quote_name = request.form['name']
-    image = request.form['image']
+
+    quote_id = None
+
+    if 'layoutId' in request.json:
+        quote_id = request.json['layoutId']
+
+    quote_name = request.json['name']
+    image = request.json['image']
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
     # If parsed is empty don't changed the drawing
     if parsed is not None:
         if not parsed.empty:
-            update = Projects.updateLayout(
+            quote_id = Projects.updateLayout(
                 project_id, quote_id, quote_name, 5, withLabels, 0)
 
-    return redirect(url_for('projectinfo', proj_id = project_id))
+    return "{" + '"quoteId": {quote_id}'.format(quote_id=quote_id) + "}"
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required

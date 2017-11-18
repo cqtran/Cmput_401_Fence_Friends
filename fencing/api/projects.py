@@ -134,21 +134,19 @@ def removeLayout(quote_id):
     dbSession.commit()
 
 def updateLayout(project_id, quote_id, quote_name, quote, project_info, note):
-    quotation = dbSession.query(Quote)
-    quotation = quotation.filter(Quote.quote_id == quote_id).all()
-
-    if (len(quotation) > 0):
-        quotation = quotation[0]
+    if quote_id is None:
+        quotation = createQuote(project_id)
     
     else:
-        quotation = createQuote(project_id)
+        quotation = dbSession.query(Quote)
+        quotation = quotation.filter(Quote.quote_id == quote_id).one()
 
     quotation.quote_name = quote_name
     quotation.quote = quote
     quotation.project_info = project_info
     quotation.note = note
     dbSession.commit()
-    return True
+    return quotation.quote_id
 
 def savenote(note, pid):
     """Save the given note to the database"""

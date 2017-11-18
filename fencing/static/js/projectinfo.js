@@ -118,6 +118,16 @@ function setAppearanceName(number, newName, loading) {
 	}
 }
 
+function setActiveLayoutId(dbId) {
+	document.getElementById("layout-tab" + activeLayout).dbId =
+		dbId.toString();
+}
+
+function setActiveAppearanceId(dbId) {
+	document.getElementById("appearance-tab" + activeAppearance).dbId =
+		dbId.toString();
+}
+
 function addLayout(loading) {
 	if (layoutCount >= tabLimit) {
 		alert("Cannot have more than " + tabLimit.toString() + " layouts");
@@ -238,29 +248,6 @@ function removeAppearance(number) {
 	appearanceCount -= 1;
 }
 
-// From:
-// https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/133997#133997
-// Acccessed November 8, 2017
-function post(url, params) {
-  var form = document.createElement("form");
-  form.setAttribute("method", "post");
-  form.setAttribute("action", url);
-
-  for(var key in params) {
-      if(params.hasOwnProperty(key)) {
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", key);
-          hiddenField.setAttribute("value", params[key]);
-
-          form.appendChild(hiddenField);
-      }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
-}
-
 function saveActiveLayout() {
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var url = new URL(window.location.href);
@@ -268,8 +255,26 @@ function saveActiveLayout() {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
-	post("/saveDiagram/?proj_id=" + proj_id,
-		{image: img, id: layout_id, name: layout_name});
+	var quoteData =
+		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
+	
+	$.ajax({
+      type: 'POST',
+      url: "/saveDiagram/?proj_id=" + proj_id,
+      data: quoteData,
+	  contentType: "application/json;charset=UTF-8",
+	  dataType: "json",
+      success: function(result) {
+		returndata = result;
+        setActiveLayoutId(result["quoteId"]);
+      },
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+      }
+  });
 
 }
 
@@ -281,7 +286,20 @@ function saveActiveAppearance() {
 function removeActiveLayout() {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
-	post("/removeLayout/?proj_id=" + proj_id, {id: layout_id});
+	var quoteData = JSON.stringify({layoutId: layout_id});
+	$.ajax({
+		type: 'POST',
+		url: "/removeLayout/?proj_id=" + proj_id,
+		data: quoteData,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			alert("Error");
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+		}
+	});
 }
 
 // TODO: fill
