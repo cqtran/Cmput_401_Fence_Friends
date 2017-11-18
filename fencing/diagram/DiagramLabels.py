@@ -1,4 +1,4 @@
-import math, html, base64
+import html, base64
 from xml.etree import ElementTree
 from diagram.DiagramParser import DiagramParser
 
@@ -64,6 +64,9 @@ class DiagramLabels:
 			
 			if fencingEntity.x < lowest:
 				lowest = fencingEntity.x
+			
+			if fencingEntity.x2 < lowest:
+				lowest = fencingEntity.x2
 		
 		return lowest
 	
@@ -78,6 +81,9 @@ class DiagramLabels:
 			
 			if fencingEntity.y < lowest:
 				lowest = fencingEntity.y
+			
+			if fencingEntity.y2 < lowest:
+				lowest = fencingEntity.y2
 		
 		return lowest
 	
