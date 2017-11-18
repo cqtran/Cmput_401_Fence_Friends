@@ -225,13 +225,15 @@ function post(url, params) {
       }
   }
 
-  document.body.appendChild(form);
+	document.body.appendChild(form);
   form.submit();
 }
 
-function saveDrawPicture() {
-  var initial = image.getAttribute('src');
-  post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
+function saveDrawPicture(number) {
+	var img = document.getElementById("image" + number).getAttribute('src');
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	post("/saveDiagram/?proj_id=" + proj_id, {image: img});
 
 }
 
@@ -357,7 +359,7 @@ function editDiagram(image) {
 				close();
 				image.setAttribute('src', msg.data);
 				save(location.href);
-				saveDrawPicture();
+				saveDrawPicture(activeLayout);
 			}
 			else if (msg.event == 'save') {
 				iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
