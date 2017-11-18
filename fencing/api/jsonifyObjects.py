@@ -42,6 +42,7 @@ class MyJSONEncoder(JSONEncoder):
             return {
                 'quote_id'                : obj.quote_id,
                 'project_id'              : obj.project_id,
+                'quote_name'              : obj.quote_name,
                 'quote'                   : obj.quote,
                 'project_info'            : obj.project_info,
                 'note'                    : obj.note,
@@ -65,6 +66,7 @@ class MyJSONEncoder(JSONEncoder):
         if isinstance(obj, Appearance):
             return {
                 'appearance_id'         : obj.appearance_id,
+                'appearance_name'         : obj.appearance_name,
                 'project_id'            : obj.project_id
                 #TODO: Define other columns related to materials
             }

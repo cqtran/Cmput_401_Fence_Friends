@@ -58,13 +58,18 @@ function setActiveAppearance(number) {
 	activeAppearance = number;
 }
 
-function setLayoutName(number) {
-	var tabText = document.getElementById("layout-tab" + number).children[0];
+function setLayoutName(number, newName, loading) {
+	var tab = document.getElementById("layout-tab" + number);
+	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
 
-	newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
+	if (newName == null) {
+		newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
+	}
 
 	if (newName != null) {
+
+		tab.layoutName = newName;
 
 		if (number == "1") {
 			tabText.innerHTML = newName;
@@ -76,16 +81,25 @@ function setLayoutName(number) {
 		}
 
 		bodyText.innerHTML = "<b>" + newName + "</b>";
+
+		if (!loading) {
+			saveActiveLayout();
+		}
 	}
 }
 
-function setAppearanceName(number) {
-	var tabText = document.getElementById("appearance-tab" + number).children[0];
+function setAppearanceName(number, newName, loading) {
+	var tab = document.getElementById("appearance-tab" + number);
+	var tabText = tab.children[0];
 	var bodyText = document.getElementById("appearance" + number).children[0];
 
-	newName = prompt("Appearance Name", bodyText.innerHTML.slice(3, -4));
+	if (newName == null) {
+		newName = prompt("Appearance Name", bodyText.innerHTML.slice(3, -4));
+	}
 
 	if (newName != null) {
+
+		tab.appearanceName = newName;
 
 		if (number == "1") {
 			tabText.innerHTML = newName;
@@ -97,10 +111,14 @@ function setAppearanceName(number) {
 		}
 
 		bodyText.innerHTML = "<b>" + newName + "</b>";
+
+		if (!loading) {
+			saveActiveAppearance();
+		}
 	}
 }
 
-function addLayout() {
+function addLayout(loading) {
 	if (layoutCount >= tabLimit) {
 		alert("Cannot have more than " + tabLimit.toString() + " layouts");
 		return;
@@ -128,15 +146,20 @@ function addLayout() {
 	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Layout ' + lastLayout;
 	document.getElementById("layout-tabs").insertBefore(cloneTab,
 		document.getElementById("add-layout"));
+	cloneTab.layoutName = "Layout " + lastLayout;
 
 	activeLink.classList.remove("active");
 	active.classList.remove("active");
 	active.classList.remove("show");
 
 	layoutCount += 1;
+
+	if (!loading) {
+		saveActiveLayout();
+	}
 }
 
-function addAppearance() {
+function addAppearance(loading) {
 	if (appearanceCount >= tabLimit) {
 		alert("Cannot have more than " + tabLimit.toString() + " appearances");
 		return;
@@ -164,15 +187,22 @@ function addAppearance() {
 	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Appearance ' + lastAppearance;
 	document.getElementById("appearance-tabs").insertBefore(cloneTab,
 		document.getElementById("add-appearance"));
+	cloneTab.appearanceName = "Appearance " + lastAppearance;
 
 	activeLink.classList.remove("active");
 	active.classList.remove("active");
 	active.classList.remove("show");
 
 	appearanceCount += 1;
+
+	if (!loading) {
+		saveActiveAppearance();
+	}
 }
 
 function removeLayout(number) {
+	removeActiveLayout();
+
 	var element = document.getElementById("layout" + number);
 	element.parentNode.removeChild(element);
 	element = document.getElementById("layout-tab" + number);
@@ -190,6 +220,8 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
+	removeActiveAppearance();
+
 	var element = document.getElementById("appearance" + number);
 	element.parentNode.removeChild(element);
 	element = document.getElementById("appearance-tab" + number);
@@ -229,17 +261,49 @@ function post(url, params) {
   form.submit();
 }
 
-function saveDrawPicture(number) {
-	var img = document.getElementById("image" + number).getAttribute('src');
+function saveActiveLayout() {
+	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var url = new URL(window.location.href);
 	var proj_id = url.searchParams.get("proj_id");
-	post("/saveDiagram/?proj_id=" + proj_id, {image: img});
+	var tab = document.getElementById("layout-tab" + activeLayout);
+	var layout_id = tab.dbId;
+	var layout_name = tab.layoutName;
+	post("/saveDiagram/?proj_id=" + proj_id,
+		{image: img, id: layout_id, name: layout_name});
 
 }
 
-function loadimage(image){
-	var imageId = "image" + activeLayout;
-  document.getElementById(imageId).src=image[0].project_info;
+// TODO: fill
+function saveActiveAppearance() {
+	;
+}
+
+function removeActiveLayout() {
+	var tab = document.getElementById("layout-tab" + activeLayout);
+	var layout_id = tab.dbId;
+	post("/removeLayout/?proj_id=" + proj_id, {id: layout_id});
+}
+
+// TODO: fill
+function removeActiveAppearance() {
+	;
+}
+
+function loadLayout(layout, number) {
+	document.getElementById("image" + number).src = layout.project_info;
+	setLayoutName(number, layout.quote_name, true);
+	document.getElementById("layout-tab" + number).dbId = layout.quote_id;
+}
+
+function loadLayouts(layouts){
+	loadLayout(layouts[0], "1");
+	var currentLayout = 2;
+	
+	for(var i = 1; i < layouts.length; i++) {
+		addLayout(true);
+		loadLayout(layouts[i], currentLayout.toString());
+		currentLayout++;
+	}
 }
 
 function setProjectInfo(project){
@@ -301,8 +365,7 @@ function makePictures(pictures){
 		img.src =  tbnPath + picture.thumbnail_name;
 		img.alt =  picture.thumbnail_name + ' not found';
     final.setAttribute('href', '#');
-    final.setAttribute('class', 'PictureThumbnail card zero-padding')
-    console.log(picture.file_name)
+    final.setAttribute('class', 'PictureThumbnail card zero-padding');
     // this is where you want to go when you click
     final.addEventListener('click', function(){
       jQuery.noConflict();
@@ -359,7 +422,7 @@ function editDiagram(image) {
 				close();
 				image.setAttribute('src', msg.data);
 				save(location.href);
-				saveDrawPicture(activeLayout);
+				saveActiveLayout();
 			}
 			else if (msg.event == 'save') {
 				iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
@@ -419,13 +482,11 @@ function moreDetails(){
       type: 'GET',
       url: '/projectdetails/' + proj_id,
       success: function(result) {
-      	console.log("testing");
-      	console.log(result);
       	imgPath = result[0].replace(/^'(.*)'$/, '$1');
 				tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-				drawiopic = result[2]
+				layouts = result[2];
 				$('#companyNameNav').html(result[3]);
-				loadimage(drawiopic);
+				loadLayouts(layouts);
       },
       error: function(result) {
           showError();
@@ -439,7 +500,6 @@ function getPics(){
       type: 'GET',
       url: '/getPictureList/' + proj_id,
       success: function(result) {
-      	console.log(result);
       	makePictures(result);
       },
       error: function(result) {

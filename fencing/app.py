@@ -367,23 +367,32 @@ def projectinfo():
         # POST?
         return render_template("projectinfo.html")
 
+@app.route('/removeLayout/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeLayout():
+    project_id = request.args.get('proj_id')
+    quote_id = request.form['id']
+    Projects.removeLayout(quote_id)
+    return redirect(url_for('projectinfo', proj_id = project_id))
+
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
+    quote_id = request.form['id']
+    quote_name = request.form['name']
     image = request.form['image']
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
-    json_quotepic = Projects.getdrawiopic(project_id)
-    qid = json_quotepic[0].get("quote_id")
-
     # If parsed is empty don't changed the drawing
     if parsed is not None:
         if not parsed.empty:
-            update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
+            update = Projects.updateLayout(
+                project_id, quote_id, quote_name, 5, withLabels, 0)
 
     return redirect(url_for('projectinfo', proj_id = project_id))
 

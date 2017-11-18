@@ -131,15 +131,17 @@ class Quote(Base):
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
+    quote_name = Column(TEXT)
     quote = Column(Integer)
     project_info = Column(TEXT)
     note = Column(String(255))
     last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
     appearance_selected = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
-    def __init__(self, project_id, quote, project_info, note, appearance_selected, quote_id=None):
+    def __init__(self, project_id, quote_name, quote, project_info, note, appearance_selected, quote_id=None):
         self.quote_id = quote_id
         self.project_id = project_id
+        self.quote_name = quote_name
         self.quote = quote
         self.project_info = project_info
         self.note = note
@@ -152,6 +154,7 @@ class Quote(Base):
         return {
             'quote_id'                : self.quote_id,
             'project_id'              : self.project_id,
+            'quote_name'              : self.quote_name,
             'quote'                   : self.quote,
             'project_info'            : self.project_info,
             'note'                    : self.note,
@@ -161,11 +164,13 @@ class Quote(Base):
 class Appearance(Base):
     __tablename__ = 'appearance'
     appearance_id = Column(Integer, primary_key=True)
+    appearance_name = Column(TEXT)
     project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     # TODO: Columns referencing material list
 
-    def __init__ (self, project_id, appearance_id=None):
+    def __init__ (self, appearance_name, project_id, appearance_id=None):
         self.appearance_id = appearance_id
+        self.appearance_name = appearance_name
         self.project_id = project_id
         # TODO: initialize data for other columns
 
