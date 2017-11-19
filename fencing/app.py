@@ -397,6 +397,9 @@ def saveDiagram():
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
+    if withLabels is None:
+        withLabels = image
+
     # If the layout already exists and the diagram is empty, do not update it
     # (tell the client to refresh the page instead to get back the old diagram)
     if layout_id is not None:
