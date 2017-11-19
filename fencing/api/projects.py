@@ -25,7 +25,7 @@ def getProjectList(customer_id):
         search = request.args.get("search")
         status = request.args.get('status')
         projectList = dbSession.query(Project)
-        projectList.filter(Project.company_name == current_user.company_name)
+        projectList = projectList.filter(Project.company_name == current_user.company_name)
 
         if customer_id is not None:
            projectList = projectList.filter(Project.customer_id == customer_id)
@@ -58,7 +58,7 @@ def getProject(project_id):
             return bad_request("The project was not found")
         return jsonify(project)
 
-@projectBlueprint.route('/addproject/', methods=['GET', 'POST'])
+@projectBlueprint.route('/addproject/', methods=['POST'])
 #login_required
 #roles_required('primary')
 def addproject():
