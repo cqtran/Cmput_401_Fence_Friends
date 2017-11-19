@@ -227,7 +227,7 @@ function removeLayout(number) {
 	element.parentNode.removeChild(element);
 
 	if (activeLayout == number) {
-		activeLayout = "1";
+		setActiveLayout("1");
 		document.getElementById("layout1").classList.add("active");
 		document.getElementById("layout1").classList.add("show");
 		document.getElementById("layout-tab1").children[0].classList.add("active");
@@ -246,7 +246,7 @@ function removeAppearance(number) {
 	element.parentNode.removeChild(element);
 
 	if (activeAppearance == number) {
-		activeAppearance = "1";
+		setActiveAppearance("1");
 		document.getElementById("appearance1").classList.add("active");
 		document.getElementById("appearance1").classList.add("show");
 		document.getElementById("appearance-tab1").children[0].classList.add("active");

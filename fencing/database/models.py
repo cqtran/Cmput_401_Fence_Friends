@@ -101,8 +101,8 @@ class Project(Base):
     end_date = Column(DateTime())
     note = Column('Note', String(400))
     project_name = Column("project_name", String(50))
-    layout_selected = Column('layout_selected', Integer, ForeignKey('layout.layout_id', ondelete="CASCADE"))
-    appearance_selected = Column('appearance_selected', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
+    layout_selected = Column('layout_selected', Integer, ForeignKey('layout.layout_id', ondelete="SET NULL"))
+    appearance_selected = Column('appearance_selected', Integer, ForeignKey('appearance.appearance_id', ondelete="SET NULL"))
 
     def __init__(self, customer_id, status_name, address, end_date, note,
                  project_name, company_name, layout_selected, appearance_selected, project_id = None):
