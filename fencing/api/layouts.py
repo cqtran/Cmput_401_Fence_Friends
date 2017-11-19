@@ -11,6 +11,16 @@ from api.errors import bad_request
 
 layoutBlueprint = Blueprint('layoutBlueprint', __name__, template_folder='templates')
 
+@layoutBlueprint.route('/saveLayoutName/', methods=['POST'])
+def saveLayoutName():
+    """ Update a layout's name """
+    layout_id = request.json['layoutId']
+    layout_name = request.json['name']
+    layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
+    layout.layout_name = layout_name
+    dbSession.commit()
+    return "{}"
+
 @layoutBlueprint.route('/getLayoutList/<int:project_id>', methods=['GET'])
 #@login_required
 #@roles_required('primary')
@@ -55,7 +65,6 @@ def updateLayoutInfo(project_id, layout_name, layout_info, layout_id = None):
     layout.layout_name = layout_name
     layout.layout_info = layout_info
     layout_id = layout.layout_id
-    print(layout_id)
     dbSession.commit()
     return layout_id
 

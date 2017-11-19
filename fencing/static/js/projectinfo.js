@@ -85,7 +85,7 @@ function setLayoutName(number, newName, loading) {
 		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
-			saveActiveLayout();
+			saveActiveLayoutName();
 		}
 	}
 }
@@ -260,6 +260,27 @@ function reloadPage() {
 	var url = new URL(window.location.href);
 	var proj_id = url.searchParams.get("proj_id");
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
+}
+
+function saveActiveLayoutName() {
+	var tab = document.getElementById("layout-tab" + activeLayout);
+	var layout_id = tab.dbId;
+	var layout_name = tab.layoutName;
+	var dat = JSON.stringify({layoutId: layout_id, name: layout_name});
+
+	$.ajax({
+      type: 'POST',
+      url: "/saveLayoutName/",
+      data: dat,
+	  contentType: "application/json;charset=UTF-8",
+	  dataType: "json",
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+      }
+  });
 }
 
 function saveActiveLayout() {
