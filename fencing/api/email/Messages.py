@@ -1,6 +1,6 @@
 from weasyprint import CSS
 from database.db import dbSession
-from database.models import Quote
+from database.models import Layout
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -69,8 +69,8 @@ class Messages:
 
 	def quoteAttachment(project, customer):
 		"""Generate the content of a quote attachment and return it"""
-		diagram = dbSession.query(Quote).filter(
-			Quote.project_id == project.project_id).one().project_info
+		diagram = dbSession.query(Layout).filter(
+			Layout.layout_id == project.selected_layout).one().project_info
 
 		pageBreak = """
 			<p style="page-break-after: always" ></p>
