@@ -35,13 +35,22 @@ def getActiveUsers():
         return jsonify(users)
 
 @userBlueprint.route('/checkcompany/', methods=['POST'])
-@login_required
-@roles_required('admin')
 def checkcompany():
     """ Checks if company exists """
     if request.method == 'POST':
         company = request.values.get("name")
         check = len(dbSession.query(Company).filter(Company.company_name == company).all())
+        if check == 0:
+            return created_request("Good")
+
+    return bad_request("Bad")
+
+@userBlueprint.route('/checkemail/', methods=['POST'])
+def checkemail():
+    """ Checks if company exists """
+    if request.method == 'POST':
+        email = request.values.get("email")
+        check = len(dbSession.query(User).filter(User.email == email).all())
         if check == 0:
             return created_request("Good")
 

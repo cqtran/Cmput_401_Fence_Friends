@@ -29,7 +29,7 @@
         <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form" id="register-form">
           {{ register_user_form.hidden_tag() }}
           {{ render_field_with_errors(register_user_form.username, class="form-control no-border", type="username", placeholder="Enter company name", id="username", maxlength="50") }}
-          {{ render_field_with_errors(register_user_form.email, class="form-control no-border", type="email", placeholder="Enter email", maxlength="50") }}
+          {{ render_field_with_errors(register_user_form.email, class="form-control no-border", type="email", placeholder="Enter email", maxlength="50", id="email") }}
           {{ render_field_with_errors(register_user_form.password, class="form-control no-border", type="password", placeholder="Password", maxlength="50", id="password") }}
     		  {% if register_user_form.password_confirm %}
     		    {{ render_field_with_errors(register_user_form.password_confirm, class="form-control no-border", type="password", placeholder="Password", maxlength="50", id="password-confirm") }}
