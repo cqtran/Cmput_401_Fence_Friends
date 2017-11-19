@@ -484,7 +484,7 @@ $('#imagepopup').on('shown.bs.modal', function (event) {
 $('#file-upload').change(function(){
 	$('#upload-form').submit();
 });
-$('form').submit(function(e) {
+$('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
