@@ -24,7 +24,6 @@ function addToList(customer){
       </div> \
     </div> \
   </div>');
-
 }
 //delete html customer item on click
 $(document).on('click', '.btn-grey', function(e) {

@@ -9,6 +9,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <link rel="apple-touch-icon" sizes="180x180" href="../static/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/favicon/favicon-16x16.png">
+  <link rel="manifest" href="../static/favicon/manifest.json">
+  <link rel="mask-icon" href="../static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="theme-color" content="#ffffff">
   <title>Cavalry Fence Builder</title>
   <!-- Bootstrap core CSS-->
   <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,21 +32,21 @@
       	<h1>{{ _('Cavalry Fence Builder') }}</h1>
       </div>
       <div class="card-body">
-        <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
+        <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form" id="register-form">
           {{ register_user_form.hidden_tag() }}
-          {{ render_field_with_errors(register_user_form.username, class="form-control no-border", type="username", placeholder="Enter company name") }}
-          {{ render_field_with_errors(register_user_form.email, class="form-control no-border", type="email", placeholder="Enter email") }}
-          {{ render_field_with_errors(register_user_form.password, class="form-control no-border", type="password", placeholder="Password") }}
-		  {% if register_user_form.password_confirm %}
-		    {{ render_field_with_errors(register_user_form.password_confirm, class="form-control no-border", type="password", placeholder="Password") }}
-		  {% endif %}
-		  {{ render_field(register_user_form.submit, class="btn btn-primary btn-block") }}
+          {{ render_field_with_errors(register_user_form.username, class="form-control no-border", type="username", placeholder="Enter company name", id="username", maxlength="50") }}
+          {{ render_field_with_errors(register_user_form.email, class="form-control no-border", type="email", placeholder="Enter email", maxlength="50", id="email") }}
+          {{ render_field_with_errors(register_user_form.password, class="form-control no-border", type="password", placeholder="Password", maxlength="50", id="password") }}
+    		  {% if register_user_form.password_confirm %}
+    		    {{ render_field_with_errors(register_user_form.password_confirm, class="form-control no-border", type="password", placeholder="Password", maxlength="50", id="password-confirm") }}
+    		  {% endif %}
         </form>
+        <button class="btn btn-primary btn-block" id="submit-button">Submit</button>
         <div class="text-center">
           <p>An email Confirmation will be sent</p>
-		  <a class="d-block small mt-3 text-white" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Login') }}</a>
+		      <a class="d-block small mt-3 text-white" href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">{{ _('Login') }}</a>
           {% if security.confirmable %}
-          <a class="d-block small text-white" href="{{ url_for_security('send_confirmation') }}">{{ _('Confirm account') }}</a>
+            <a class="d-block small text-white" href="{{ url_for_security('send_confirmation') }}">{{ _('Confirm account') }}</a>
           {% endif %}
         </div>
       </div>
@@ -52,18 +58,7 @@
   <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script type="text/javascript" src='../static/js/register.js'></script>
 </body>
 
 </html>
-
-<!--
-<h1>{{ _('Register') }}</h1>
-<form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
-  {{ register_user_form.hidden_tag() }}
-  {{ render_field_with_errors(register_user_form.email) }}
-  {{ render_field_with_errors(register_user_form.password) }}
-  {% if register_user_form.password_confirm %}
-    {{ render_field_with_errors(register_user_form.password_confirm) }}
-  {% endif %}
-  {{ render_field(register_user_form.submit) }}
-</form>-->

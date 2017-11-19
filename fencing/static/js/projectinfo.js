@@ -444,7 +444,6 @@ function setProjectInfo(project){
 
 	// Sets the project_id into the uploadpicture form
 	document.getElementById('project_id').setAttribute('value', proj_id);
-	document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+proj_id+')')
 
 	if (project[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = project[0].end_date;
@@ -488,10 +487,6 @@ function imagesError(){
   img.height = '150';
   img.width = '150';
   pictureList.appendChild(img);
-}
-
-function projectClicked(id) {
-	window.location.href= '/editprojectinfo?proj_id='+id
 }
 
 function editDiagram(image) {
@@ -718,7 +713,6 @@ function selectAppearance(appearanceId, appearances) {
 
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
-  $("#pencil-button").attr('class', 'nav-item');
   pictureList = document.getElementById('projectPictures');
   proj_id = getParameterByName('proj_id');
 
@@ -727,6 +721,11 @@ $(document).ready(function(){
     window.location.href = '/projects/';
   }
 
+  $("#pencil-button").removeClass('hide');
+  $('#edit').click(function(){
+    window.location.href= '/editprojectinfo?proj_id=' + proj_id;
+  });
+  
   moreDetails();
   getProjects();
   getPics();

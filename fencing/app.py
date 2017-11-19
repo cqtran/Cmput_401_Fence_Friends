@@ -12,6 +12,7 @@ from api.email.Messages import Messages
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
+from api.decorators import async
 
 import os
 # Import python files with functionality
@@ -80,6 +81,14 @@ dbSession.commit()
 
 security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm, register_form=ExtendedRegisterForm)
 
+@async
+def send_security_email(msg):
+    with app.app_context():
+       mail.send(msg)
+
+@security.send_mail_task
+def async_security_email(msg):
+    send_security_email(msg)
 
 test = 0
 # TODO: implement fresh login for password change
@@ -212,21 +221,35 @@ def users():
 @login_required
 @roles_required('admin')
 def accountrequests():
-    users = dbSession.query(User).filter(User.active == False).all()
-    return render_template("accountrequests.html", company = "Admin", users = users)
+    return render_template("accountrequests.html", company = "Admin")
 
 @app.route('/acceptUser/', methods=['POST'])
 @login_required
 @roles_required('admin')
 def acceptUser():
+    """ accepts user, in app.py because of userDatastore """
     if request.method == 'POST':
-        user_id = request.form["user_id"]
+        user_id = request.values.get("user_id")
         user = dbSession.query(User).filter(User.id == user_id).all()
         userDatastore.activate_user(user[0])
         user[0].active = True
         dbSession.commit()
         users = dbSession.query(User).filter(User.active == False).all()
-        return render_template("accountrequests.html", company = "Admin", users = users)
+        return jsonify(users)
+
+@app.route('/deactivateUser/', methods=['POST'])
+@login_required
+@roles_required('admin')
+def deactivateUser():
+    """ accepts user, in app.py because of userDatastore """
+    if request.method == 'POST':
+        user_id = request.values.get("user_id")
+        user = dbSession.query(User).filter(User.id == user_id).all()
+        userDatastore.deactivate_user(user[0])
+        user[0].active = False
+        dbSession.commit()
+        users = dbSession.query(User).filter(User.active == True).all()
+        return jsonify(users)
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
@@ -436,29 +459,13 @@ def deleteproject():
     dbSession.commit()
     return redirect(url_for("projects"))
 
-@app.route('/editprojectinfo/', methods = ['GET', 'POST'])
+@app.route('/editprojectinfo/', methods = ['GET'])
 @login_required
 @roles_required('primary')
 def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
-        if project_id is not None:
-            return render_template("editproject.html", company = current_user.company_name)
-        else:
-            # Error handling
-            pass
-
-    if request.method == "POST":
-        project_id = request.form['project_id']
-        project_name = request.form['project_name']
-        address = request.form['address']
-        status = request.form['status']
-        note = request.form['note']
-
-        Projects.updateProjectInfo(project_id = project_id, project_name = project_name,
-            address = address, status = status, note = note)
-
-        return redirect(url_for('projectinfo', proj_id = project_id))
+        return render_template("editproject.html", company = current_user.company_name)
 
 @app.errorhandler(404)
 def page_not_found(e):
