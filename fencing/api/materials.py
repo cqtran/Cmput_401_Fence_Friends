@@ -28,11 +28,12 @@ def getPriceList(company_name):
             return bad_request('No materials and prices were found for this company')
         return jsonify(materials)
 
-@materialBlueprint.route('/uploadPrice/<company_name>/', methods=['POST'])
+@materialBlueprint.route('/uploadPrice/', methods=['POST'])
 #@login_required
 #@roles_required('primary')
-def uploadPrice(company_name):
+def uploadPrice():
     """ Parses the given csv file into fencing materials prices for a given company """
+    company_name = current_user.company_name
     if request.method == 'POST':
         priceFile = request.files['prices']
         if not priceFile:

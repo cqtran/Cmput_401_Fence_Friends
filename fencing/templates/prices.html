@@ -77,15 +77,13 @@
 <script type="text/javascript" src='../static/js/materials.js'></script> -->
 
 <script type="text/javascript">
-  company_name = '{{ company|safe }}'
-
   function uploadPrices(e) {
     var message = 'Upload Prices File'
     console.log(message)
     var formdata = new FormData(document.getElementById("upload-form"));
     $.ajax({
         type: 'POST',
-        url: '/uploadPrice/' + company_name,
+        url: '/uploadPrice/',
         data : formdata,
         processData: false,
         contentType: false,
