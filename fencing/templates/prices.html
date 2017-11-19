@@ -5,7 +5,7 @@
 </div>
 <hr class="mt-2">
 <div class="container-fluid">
-  <form method = "post" id="upload-form" action='javascript:uploadPrices();' enctype=multipart/form-data >
+  <form id="upload-form" enctype=multipart/form-data >
 		<input class="form-control" type="hidden" name="company_name" id="company_name" />
 		<div class="row">
 			<div class="col-sm-12 less-padding">
@@ -77,18 +77,36 @@
 <script type="text/javascript" src='../static/js/materials.js'></script> -->
 
 <script type="text/javascript">
-  function uploadPrices() {
+  company_name = '{{ company|safe }}'
+
+  function uploadPrices(e) {
     var message = 'Upload Prices File'
     console.log(message)
-    // TODO: Get info from the form, POST request to materials API to update prices
+    var formdata = new FormData(document.getElementById("upload-form"));
+    $.ajax({
+        type: 'POST',
+        url: '/uploadPrice/' + company_name,
+        data : formdata,
+        processData: false,
+        contentType: false,
+        success: function(response){
+          console.log('good')
+        }
+    });
   }
 
   function getPriceList() {
     // TODO: GET request to materials API to get prices list by year and create tables
   }
 
-  document.getElementById("file-upload").onchange = function() {
-    document.getElementById("upload-form").submit();
-  }
+  $('#file-upload').change(function(){
+  	$('#upload-form').submit();
+  });
+
+  $('form').submit(function(e) {
+    e.preventDefault();
+    uploadPrices(e);
+  });
+
 </script>
 {% endblock %}

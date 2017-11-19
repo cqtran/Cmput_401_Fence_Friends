@@ -21,6 +21,7 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
+import api.materials as Materials
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -40,6 +41,7 @@ app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
+app.register_blueprint(Materials.materialBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
 
