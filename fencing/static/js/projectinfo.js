@@ -64,7 +64,7 @@ function setLayoutName(number, newName, loading) {
 	var bodyText = document.getElementById("layout" + number).children[0];
 	
 	if (newName == null) {
-		newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
+		newName = prompt("Layout Name", bodyText.children[0].innerHTML);
 	}
 
 	if (newName != null) {
@@ -80,7 +80,7 @@ function setLayoutName(number, newName, loading) {
 				newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + "</b>";
+		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveLayout();
@@ -110,7 +110,7 @@ function setAppearanceName(number, newName, loading) {
 				newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + "</b>";
+		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveAppearance();
@@ -144,7 +144,7 @@ function addLayout(loading) {
 	clone.id = "layout" + lastLayout;
 	clone.children[0].setAttribute("onclick",
 		"setLayoutName('" + lastLayout + "')");
-	clone.children[0].innerHTML = "<b>Layout " + lastLayout + "</b>";
+	clone.children[0].innerHTML = "<b>Layout " + lastLayout + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 	clone.children[1].children[0].id = "image" + lastLayout;
 	document.getElementById("layouts").appendChild(clone);
 
@@ -185,7 +185,7 @@ function addAppearance(loading) {
 	clone.id = "appearance" + lastAppearance;
 	clone.children[0].setAttribute("onclick",
 		"setAppearanceName('" + lastAppearance + "')");
-	clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + "</b>";
+	clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 	clone.children[1].innerHTML = "Appearance" + lastAppearance;
 	document.getElementById("appearances").appendChild(clone);
 

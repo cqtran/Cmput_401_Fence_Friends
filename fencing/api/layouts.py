@@ -38,6 +38,11 @@ def getLayoutHelper(project_id):
 	json_response = [i.serialize for i in layouts]
 	return json_response
 
+def updateLayoutName(layout_id, layout_name):
+    layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
+    layout.layout_name = layout_name
+    dbSession.commit()
+
 def updateLayoutInfo(project_id, layout_name, layout_info, layout_id = None):
     # ERIC PLEASE HELP
     #TODO: function should be renamed in the future for clarity purposes

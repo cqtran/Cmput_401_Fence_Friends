@@ -404,9 +404,11 @@ def saveDiagram():
     # (tell the client to refresh the page instead to get back the old diagram)
     if layout_id is not None:
         if parsed is None:
+            Layouts.updateLayoutName(layout_id, layout_name)
             return '{"reload": 1}'
         
         if parsed.empty:
+            Layouts.updateLayoutName(layout_id, layout_name)
             return '{"reload": 1}'
 
     layout_id = Layouts.updateLayoutInfo(project_id = project_id,
