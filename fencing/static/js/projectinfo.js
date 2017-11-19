@@ -657,58 +657,54 @@ function saveAppearanceSelection() {
 	});
 }
 
-function selectLayout(layoutId, layouts) {
-	return;
+function selectLayout(layoutId) {
 	var tabs = document.getElementById("layout-tabs");
-	var oldTab;
-	var layout;
-	var i;
+	var tab;
 
-	for (i = 0; i < tabs.children.length; i++) {
+	for (var i = 0; i < tabs.children.length; i++) {
 		if (tabs.children[i].dbId == layoutId) {
-			oldTab = tabs.children[i];
+			tab = tabs.children[i];
 			break;
 		}
 	}
 
-	for (i = 0; i < layouts.length; i++) {
-		if (layouts[i].layout_id == layoutId) {
-			layout = layouts[i];
-			break;
-		}
-	}
+	document.getElementById(
+		"layout-tab" + activeLayout).children[0].classList.remove("active");
+	document.getElementById("layout" + activeLayout).classList.remove("active");
+	document.getElementById("layout" + activeLayout).classList.remove("show");
 
-	addLayout(true);
-	loadLayout(layout, activeLayout);
-	tabs.insertBefore(tabs.children[tabs.children.length - 2], oldTab);
-	tabs.removeChild(oldTab);
+	activeLayout = tab.id.slice(10);
+	document.getElementById("layout" + activeLayout).classList.add("active");
+	document.getElementById("layout" + activeLayout).classList.add("show");
+	document.getElementById(
+		"layout-tab" + activeLayout).children[0].classList.add("active");
 }
 
-function selectAppearance(appearanceId, appearances) {
-	return;
+function selectAppearance(appearanceId) {
 	var tabs = document.getElementById("appearance-tabs");
-	var oldTab;
-	var appearance;
-	var i;
+	var tab;
 
-	for (i = 0; i < tabs.children.length; i++) {
+	for (var i = 0; i < tabs.children.length; i++) {
 		if (tabs.children[i].dbId == appearanceId) {
-			oldTab = tabs.children[i];
+			tab = tabs.children[i];
 			break;
 		}
 	}
 
-	for (i = 0; i < appearances.length; i++) {
-		if (appearances[i].appearance_id == appearanceId) {
-			appearance = appearances[i];
-			break;
-		}
-	}
+	document.getElementById("appearance-tab" + activeAppearance)
+		.children[0].classList.remove("active");
+	document.getElementById("appearance" + activeAppearance)
+		.classList.remove("active");
+	document.getElementById("appearance" + activeAppearance)
+		.classList.remove("show");
 
-	addAppearance(true);
-	loadAppearance(appearance, activeAppearance);
-	tabs.insertBefore(tabs.children[tabs.children.length - 2], oldTab);
-	tabs.removeChild(oldTab);
+	activeAppearance = tab.id.slice(10);
+	document.getElementById("appearance" + activeAppearance)
+		.classList.add("active");
+	document.getElementById("appearance" + activeAppearance)
+		.classList.add("show");
+	document.getElementById("appearance-tab" + activeAppearance)
+		.children[0].classList.add("active");
 }
 
 //this runs after the html has loaded, all function calls should be in here
