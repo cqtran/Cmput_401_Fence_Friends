@@ -70,7 +70,7 @@ class Messages:
 	def quoteAttachment(project, customer):
 		"""Generate the content of a quote attachment and return it"""
 		diagram = dbSession.query(Layout).filter(
-			Layout.layout_id == project.selected_layout).one().project_info
+			Layout.layout_id == project.layout_selected).one().project_info
 
 		pageBreak = """
 			<p style="page-break-after: always" ></p>
