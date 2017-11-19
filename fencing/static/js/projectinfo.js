@@ -317,7 +317,8 @@ function makePictures(pictures){
 
 function imagesError(){
   var img = document.createElement('img');
-  img.src =  tbnpath + 'No_picture_available.png';
+  console.log(tbnPath);
+  img.src =  tbnPath + 'No_picture_available.png';
   img.alt =  'No picture available';
   img.height = '150';
   img.width = '150';
