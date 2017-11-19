@@ -127,6 +127,10 @@ $(document).ready(function(){
     alert("Customer does not exist.");
     window.location.href = '/customers/';
   }
+  $("#pencil-button").removeClass('hide');
+  $('#edit').click(function(){
+    window.location.href = '/editcustomer?cust_id=' + cust_id;
+  });
   getCustInfo();
   getProjects();
 });

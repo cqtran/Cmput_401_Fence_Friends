@@ -19,13 +19,13 @@
 	  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
       
 	  <form action="{{ 'signup' }}" method="post">
-        <input type="text" id="username" name="username"
+        <input type="text" id="username" name="username" maxlength="50"
           placeholder="Username"><br>
-        <input type="text" id="email" name="email"
+        <input type="text" id="email" name="email" maxlength="50"
           placeholder="Email"><br>
-        <input type="password" id="password" name="password"
+        <input type="password" id="password" name="password" maxlength="50"
           placeholder="Password"><br>
-        <input type="password" id="confirmPassword" name="confirmPassword"
+        <input type="password" id="confirmPassword" name="confirmPassword" maxlength="50"
           placeholder="Confirm password"><br>
         <input type="submit" value="Request account">
       </form>

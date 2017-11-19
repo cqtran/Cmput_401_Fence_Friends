@@ -231,8 +231,6 @@ function post(url, params) {
 
 function saveDrawPicture(number) {
 	var img = document.getElementById("image" + number).getAttribute('src');
-	var url = new URL(window.location.href);
-	var proj_id = url.searchParams.get("proj_id");
 	post("/saveDiagram/?proj_id=" + proj_id, {image: img});
 
 }
@@ -280,7 +278,6 @@ function setProjectInfo(project){
 
 	// Sets the project_id into the uploadpicture form
 	document.getElementById('project_id').setAttribute('value', proj_id);
-	document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+proj_id+')')
 
 	if (project[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = project[0].end_date;
@@ -325,10 +322,6 @@ function imagesError(){
   img.height = '150';
   img.width = '150';
   pictureList.appendChild(img);
-}
-
-function projectClicked(id) {
-	window.location.href= '/editprojectinfo?proj_id='+id
 }
 
 function editDiagram(image) {
@@ -471,7 +464,10 @@ $(document).ready(function(){
     alert("Project does not exist.");
     window.location.href = '/projects/';
   }
-
+  $("#pencil-button").removeClass('hide');
+  $('#edit').click(function(){
+    window.location.href= '/editprojectinfo?proj_id=' + proj_id;
+  });
 	moreDetails();
 	getProjects();
 	getPics();

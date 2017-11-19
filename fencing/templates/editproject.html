@@ -6,15 +6,15 @@
 <form onsubmit="markClean()" method="post"  action="{{url_for('editprojectinfo') }} ">
   <input class="form-control" id="project_id" type="hidden" name="project_id"/>
   <label for="project_name" style="padding-top: 1rem;" class="required">Project Name</label>
-  <input onchange="markDirty()" class="form-control" id="project_name" type="text" name="project_name" value="Project Name" pattern=".*\S+.*" required>
+  <input onchange="markDirty()" class="form-control" id="project_name" type="text" name="project_name" value="Project Name" pattern=".*\S+.*" maxlength="50" required>
   <label for="address" style="padding-top: 1rem;">Address</label>
-  <input onchange="markDirty()" class="form-control" id="address" type="text" name="address" value="Address">
+  <input onchange="markDirty()" class="form-control" id="address" type="text" name="address" value="Address" maxlength="50">
   <label for="status" style="padding-top: 1rem;">Status</label>
   <br>
   <select onchange="markDirty()" id = "status" name = "status" datastyle="btn-primary"></select>
   <br>
   <label for="note" style="padding-top: 1rem;">Note</label>
-  <textarea onchange="markDirty()" class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note"></textarea>
+  <textarea onchange="markDirty()" class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note" maxlength="350"></textarea>
   <br>
   <input class="btn btn-primary btn-block" type="submit" value = "Save Information"/>
 </form>
@@ -41,63 +41,6 @@
 <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirmDelete">
   Delete Project
 </button>
-
-<script type="text/javascript">
-var _STATUS;
-var url = new URL(window.location.href);
-var proj_id = url.searchParams.get("proj_id");
-var statusList = document.getElementById('status');
-
-var requestStatus = new XMLHttpRequest();
-requestStatus.onreadystatechange = function(response) {
-  if (requestStatus.readyState === 4) {
-    if (requestStatus.status === 200) {
-      // Parse the JSON
-      var jsonStatus = JSON.parse(requestStatus.responseText);
-      jsonStatus.forEach(function(status) {
-        var item = document.createElement('option');
-        item.setAttribute('value', status.status_name);
-        item.innerHTML = status.status_name;
-        // Add it to the list:
-        statusList.appendChild(item);
-        statusList.value = _STATUS;
-        //$('.selectpicker').selectpicker('refresh'); 
-    });
-    }
-  }
-}
-requestStatus.open('GET', '/getStatusList', true);
-requestStatus.send()
-
-  var requestProj = new XMLHttpRequest();
-  requestProj.onreadystatechange = function(response) {
-    if (requestProj.readyState === 4) {
-      if (requestProj.status === 200) {
-        // Parse the JSON
-        var project = JSON.parse(requestProj.responseText);
-        document.getElementById('project_id').value = project[0].project_id;
-        document.getElementById('project_name').value = project[0].project_name;
-        document.getElementById('address').value = project[0].address;
-        _STATUS = project[0].status_name;
-    	  document.getElementById('note').value = project[0].note;
-      }
-    }
-  }
-  requestProj.open('GET', '/getProject/' + proj_id, true);
-  requestProj.send();
-
-  function confirmDiscard() {
-    return "Discard changes?";
-  }
-
-  function markDirty() {
-    window.onbeforeunload = confirmDiscard;
-  }
-
-  function markClean() {
-    window.onbeforeunload = null;
-  }
-
-</script>
-
 {% endblock %}
+{% block content2 %}
+
