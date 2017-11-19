@@ -60,13 +60,13 @@ function setActiveAppearance(number) {
 	saveAppearanceSelection();
 }
 
-function setLayoutName(number, newName, loading) {
+function setLayoutName(number, loading, newName) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
 	
 	if (newName == null) {
-		newName = prompt("Layout Name", bodyText.children[0].innerHTML);
+		newName = prompt("Layout Name", tab.layoutName);
 	}
 
 	if (newName != null) {
@@ -90,13 +90,13 @@ function setLayoutName(number, newName, loading) {
 	}
 }
 
-function setAppearanceName(number, newName, loading) {
+function setAppearanceName(number, loading, newName) {
 	var tab = document.getElementById("appearance-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("appearance" + number).children[0];
 
 	if (newName == null) {
-		newName = prompt("Appearance Name", bodyText.children[0].innerHTML);
+		newName = prompt("Appearance Name", tab.appearanceName);
 	}
 
 	if (newName != null) {
@@ -146,7 +146,7 @@ function addLayout(loading) {
 	clone.id = "layout" + lastLayout;
 	clone.children[0].setAttribute("onclick",
 		"setLayoutName('" + lastLayout + "')");
-	clone.children[0].innerHTML = "<b>Layout " + lastLayout + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 	clone.children[1].children[0].id = "image" + lastLayout;
 	document.getElementById("layouts").appendChild(clone);
 
@@ -155,10 +155,10 @@ function addLayout(loading) {
 	cloneTab.setAttribute("onclick", "setActiveLayout('" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#layout" + lastLayout;
-	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Layout ' + lastLayout;
+	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Untitled';
 	document.getElementById("layout-tabs").insertBefore(cloneTab,
 		document.getElementById("add-layout"));
-	cloneTab.layoutName = "Layout " + lastLayout;
+	cloneTab.layoutName = "Untitled";
 
 	activeLink.classList.remove("active");
 	active.classList.remove("active");
@@ -167,6 +167,7 @@ function addLayout(loading) {
 	layoutCount += 1;
 
 	if (!loading) {
+		setLayoutName(activeLayout, true);
 		saveActiveLayout();
 	}
 }
@@ -187,7 +188,7 @@ function addAppearance(loading) {
 	clone.id = "appearance" + lastAppearance;
 	clone.children[0].setAttribute("onclick",
 		"setAppearanceName('" + lastAppearance + "')");
-	clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 	var formGroup = clone.children[1];
 	formGroup.children[0].setAttribute("for", "panelGap" + lastAppearance);
@@ -202,10 +203,10 @@ function addAppearance(loading) {
 	cloneTab.setAttribute("onclick", "setActiveAppearance('" + lastAppearance + "')");
 	var link = cloneTab.children[0];
 	link.href = "#appearance" + lastAppearance;
-	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Appearance ' + lastAppearance;
+	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Untitled';
 	document.getElementById("appearance-tabs").insertBefore(cloneTab,
 		document.getElementById("add-appearance"));
-	cloneTab.appearanceName = "Appearance " + lastAppearance;
+	cloneTab.appearanceName = "Untitled";
 
 	activeLink.classList.remove("active");
 	active.classList.remove("active");
@@ -214,6 +215,7 @@ function addAppearance(loading) {
 	appearanceCount += 1;
 
 	if (!loading) {
+		setAppearanceName(activeAppearance, true);
 		saveActiveAppearance();
 	}
 }
@@ -392,7 +394,7 @@ function removeAppearanceFromDb(number) {
 
 function loadLayout(layout, number) {
 	document.getElementById("image" + number).src = layout.layout_info;
-	setLayoutName(number, layout.layout_name, true);
+	setLayoutName(number, true, layout.layout_name);
 	document.getElementById("layout-tab" + number).dbId = layout.layout_id;
 }
 
@@ -411,7 +413,7 @@ function loadAppearance(appearance, number) {
 	document.getElementById("panelGap" + number).value = appearance.panel_gap;
 	document.getElementById("fenceHeight" + number).value =
 		appearance.height;
-	setAppearanceName(number, appearance.appearance_name, true);
+	setAppearanceName(number, true, appearance.appearance_name);
 	document.getElementById("appearance-tab" + number).dbId =
 		appearance.appearance_id;
 }
