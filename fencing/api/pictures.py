@@ -54,12 +54,12 @@ def uploadPicture():
                     file_name = filename + file_extension,
                     thumbnail_name = thumbnailPrefix + filename + thumbnailExt)
                 dbSession.add(newPicture)
-                print("before store")
+
                 # Save picture in the picture directory
                 picturePath = os.path.join(app_root, pictureDir, filename + file_extension)
                 print('Picture stored at: ' + picturePath + '\n')
                 picture.save(picturePath)
-
+                print("actually saved")
                 # Create thumbnail of picture
                 thumb = Image.open(picturePath)
 
