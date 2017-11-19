@@ -47,6 +47,7 @@ function setActiveLayout(number) {
 	}
 
 	activeLayout = number;
+	saveLayoutSelection();
 }
 
 function setActiveAppearance(number) {
@@ -56,6 +57,7 @@ function setActiveAppearance(number) {
 	}
 
 	activeAppearance = number;
+	saveAppearanceSelection();
 }
 
 function setLayoutName(number, newName, loading) {
@@ -510,11 +512,15 @@ function moreDetails(){
       type: 'GET',
       url: '/projectdetails/' + proj_id,
       success: function(result) {
-      	imgPath = result[0].replace(/^'(.*)'$/, '$1');
-				tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-				layouts = result[2];
-				$('#companyNameNav').html(result[3]);
-				loadLayouts(layouts);
+      	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
+          tbnPath = result[1].replace(/^'(.*)'$/, '$1');
+          var layouts = result[2];
+		  $('#companyNameNav').html(result[3]);
+		  var selectedLayout = result[4];
+		  var selectedAppearance = result[5];
+		  loadLayouts(layouts);
+		  selectLayout(selectedLayout, layouts);
+		  selectAppearance(selectedAppearance);
       },
       error: function(result) {
           showError();
@@ -550,10 +556,58 @@ function uploadPicture(e) {
   });
 }
 
+function saveLayoutSelection() {
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var selectedId = document.getElementById("layout-tab" + activeLayout).dbId;
+	var selectionData = JSON.stringify({selected: selectedId});
+	$.ajax({
+		type: 'POST',
+		url: "/saveLayoutSelection/?proj_id=" + proj_id,
+		data: selectionData,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json"
+	});
+}
+
+function saveAppearanceSelection() {
+	;
+}
+
+function selectLayout(layoutId, layouts) {
+	var tabs = document.getElementById("layout-tabs");
+	var oldTab;
+	var layout;
+	var i;
+
+	for (i = 0; i < tabs.children.length; i++) {
+		if (tabs.children[i].dbId == layoutId) {
+			oldTab = tabs.children[i];
+			break;
+		}
+	}
+
+	for (i = 0; i < layouts.length; i++) {
+		if (layouts[i].layout_id == layoutId) {
+			layout = layouts[i];
+			break;
+		}
+	}
+
+	addLayout(true);
+	loadLayout(layout, activeLayout);
+	tabs.insertBefore(tabs.children[tabs.children.length - 2], oldTab);
+	tabs.removeChild(oldTab);
+}
+
+function selectAppearance(appearanceId) {
+	;
+}
+
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
-	$("#pencil-button").attr('class', 'nav-item');
-	pictureList = document.getElementById('projectPictures');
+  $("#pencil-button").attr('class', 'nav-item');
+  pictureList = document.getElementById('projectPictures');
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
@@ -561,9 +615,9 @@ $(document).ready(function(){
     window.location.href = '/projects/';
   }
 
-	moreDetails();
-	getProjects();
-	getPics();
+  moreDetails();
+  getProjects();
+  getPics();
 });
 
 $('#imagepopup').on('shown.bs.modal', function (event) {

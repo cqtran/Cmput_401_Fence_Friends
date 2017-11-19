@@ -15,6 +15,16 @@ import os
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
+@projectBlueprint.route('/saveLayoutSelection/', methods=['POST'])
+def saveLayoutSelection():
+    project_id = request.args.get("proj_id")
+    selected = request.json["selected"]
+    project = dbSession.query(Project).filter(
+        Project.project_id == project_id).one()
+    project.layout_selected = selected
+    dbSession.commit()
+    return "{}"
+
 @projectBlueprint.route('/getProjectList/', defaults={'customer_id': None}, methods=['GET'])
 @projectBlueprint.route('/getProjectList/<int:customer_id>', methods=['GET'])
 #@login_required
@@ -85,6 +95,11 @@ def addproject():
 @roles_required('primary')
 def projectdetails(project_id):
     if request.method == "GET":
+        project = dbSession.query(Project).filter(
+            Project.project_id == project_id).one()
+        selectedLayout = project.layout_selected
+        selectedAppearance = project.appearance_selected
+
         json_layouts = Layouts.getLayoutHelper(project_id)
 
         # Get relative path to project pictures
@@ -92,7 +107,8 @@ def projectdetails(project_id):
         tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
 
         company = current_user.company_name
-        lst = [imgPath, tbnPath, json_layouts, company]
+        lst = [imgPath, tbnPath, json_layouts, company, selectedLayout,
+            selectedAppearance]
 
         return jsonify(lst)
 
