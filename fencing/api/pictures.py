@@ -41,13 +41,10 @@ def getPictureList(project_id):
 #@roles_required('primary')
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
-    print("testgasdfasfj")
     print(request.method)
     if request.method == 'POST':
-        print("before")
         project_id = request.form['proj_id']
         picture = request.files['picture']
-        print("after")
         filename = secure_filename(picture.filename)
         filename, file_extension = os.path.splitext(filename)
         if filename != '':
@@ -57,7 +54,7 @@ def uploadPicture():
                     file_name = filename + file_extension,
                     thumbnail_name = thumbnailPrefix + filename + thumbnailExt)
                 dbSession.add(newPicture)
-
+                print("before store")
                 # Save picture in the picture directory
                 picturePath = os.path.join(app_root, pictureDir, filename + file_extension)
                 print('Picture stored at: ' + picturePath + '\n')
@@ -96,5 +93,6 @@ def uploadPicture():
                 dbSession.commit()
                 return created_request("Picture was uploaded")
             except:
+                print("couldnt save")
                 return bad_request("Invalid project id or an error when saving the file has occured")
         return bad_request("No file provided")
