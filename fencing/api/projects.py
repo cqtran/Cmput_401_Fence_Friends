@@ -10,10 +10,21 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
 import api.layouts as Layouts
+import api.appearances as Appearances
 import api.pictures as Pictures
 import os
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
+
+@projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
+def saveAppearanceSelection():
+    project_id = request.args.get("proj_id")
+    selected = request.json["selected"]
+    project = dbSession.query(Project).filter(
+        Project.project_id == project_id).one()
+    project.appearance_selected = selected
+    dbSession.commit()
+    return "{}"
 
 @projectBlueprint.route('/saveLayoutSelection/', methods=['POST'])
 def saveLayoutSelection():
@@ -73,18 +84,14 @@ def getProject(project_id):
 #login_required
 #roles_required('primary')
 def addproject():
-    print("test it")
     if request.method == 'POST':
-        print("made it")
         customer = request.values.get("customer")
         customer = json.loads(customer)
-        print("customers", customer)
         customerId = customer[0]
         projectname = request.values.get("name")
         address = request.values.get("address")
         proj_id = createProject(customerId, "Not Reached",  address,
                                          current_user.company_name, projectname)
-        print(proj_id)
         return jsonify(proj_id)
 
 # delete later, just for testing note ---- i think we need this
@@ -101,14 +108,15 @@ def projectdetails(project_id):
         selectedAppearance = project.appearance_selected
 
         json_layouts = Layouts.getLayoutHelper(project_id)
+        json_appearances = Appearances.getAppearanceList(project_id)
 
         # Get relative path to project pictures
         imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
         tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
 
         company = current_user.company_name
-        lst = [imgPath, tbnPath, json_layouts, company, selectedLayout,
-            selectedAppearance]
+        lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
+            selectedLayout, selectedAppearance]
 
         return jsonify(lst)
 
@@ -132,8 +140,9 @@ def createProject(customerId, statusName, address, companyName, project_name):
             project_name = project_name, company_name = companyName, layout_selected=None, appearance_selected=None)
     dbSession.add(newProject)
     dbSession.commit()
+    newAppearance = Appearances.createAppearance(newProject.project_id)
+    newProject.appearance_selected = newAppearance.appearance_id
     newLayout = Layouts.createLayout(newProject.project_id)
     newProject.layout_selected = newLayout.layout_id
-    # TODO: Set appearance ID as well
     dbSession.commit()
     return newProject.project_id

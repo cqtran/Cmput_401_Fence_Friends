@@ -188,7 +188,13 @@ function addAppearance(loading) {
 	clone.children[0].setAttribute("onclick",
 		"setAppearanceName('" + lastAppearance + "')");
 	clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
-	clone.children[1].innerHTML = "Appearance" + lastAppearance;
+
+	var formGroup = clone.children[1];
+	formGroup.children[0].setAttribute("for", "panelGap" + lastAppearance);
+	formGroup.children[1].id = "panelGap" + lastAppearance;
+	formGroup.children[2].setAttribute("for", "fenceHeight" + lastAppearance);
+	formGroup.children[3].id = "fenceHeight" + lastAppearance;
+
 	document.getElementById("appearances").appendChild(clone);
 
 	var cloneTab = activeTab.cloneNode(true);
@@ -263,13 +269,13 @@ function saveActiveLayout() {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
-	var quoteData =
+	var dat =
 		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
 
 	$.ajax({
       type: 'POST',
       url: "/saveDiagram/?proj_id=" + proj_id,
-      data: quoteData,
+      data: dat,
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
       success: function(result) {
@@ -278,7 +284,7 @@ function saveActiveLayout() {
 			reloadPage();
 		}
 		else {
-			setActiveLayoutId(result["quoteId"]);
+			setActiveLayoutId(result["layoutId"]);
 		}
       },
       error: function(xhr, textStatus, error) {
@@ -288,22 +294,51 @@ function saveActiveLayout() {
 		console.log(error);
       }
   });
-
 }
 
-// TODO: fill
 function saveActiveAppearance() {
-	;
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var tab = document.getElementById("appearance-tab" + activeAppearance);
+	var appearance_id = tab.dbId;
+	var appearance_name = tab.appearanceName;
+	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
+	var fenceHeight =
+		document.getElementById("fenceHeight" + activeAppearance).value;
+	var dat = JSON.stringify({
+		appearanceId: appearance_id,
+		name: appearance_name,
+		panelGap: panelGap,
+		fenceHeight: fenceHeight
+	});
+
+	$.ajax({
+      type: 'POST',
+      url: "/saveAppearance/?proj_id=" + proj_id,
+      data: dat,
+	  contentType: "application/json;charset=UTF-8",
+	  dataType: "json",
+      success: function(result) {
+		returndata = result;
+		setActiveAppearanceId(result["appearanceId"]);
+      },
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+      }
+  });
 }
 
 function removeLayoutFromDb(number) {
 	var tab = document.getElementById("layout-tab" + number);
 	var layout_id = tab.dbId;
-	var quoteData = JSON.stringify({layoutId: layout_id});
+	var dat = JSON.stringify({layoutId: layout_id});
 	$.ajax({
 		type: 'POST',
 		url: "/removeLayout/?proj_id=" + proj_id,
-		data: quoteData,
+		data: dat,
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
@@ -315,9 +350,23 @@ function removeLayoutFromDb(number) {
 	});
 }
 
-// TODO: fill
 function removeAppearanceFromDb(number) {
-	;
+	var tab = document.getElementById("appearance-tab" + number);
+	var appearance_id = tab.dbId;
+	var dat = JSON.stringify({appearanceId: appearance_id});
+	$.ajax({
+		type: 'POST',
+		url: "/removeAppearance/?proj_id=" + proj_id,
+		data: dat,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			alert("Error");
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+		}
+	});
 }
 
 function loadLayout(layout, number) {
@@ -334,6 +383,26 @@ function loadLayouts(layouts){
 		addLayout(true);
 		loadLayout(layouts[i], currentLayout.toString());
 		currentLayout++;
+	}
+}
+
+function loadAppearance(appearance, number) {
+	document.getElementById("panelGap" + number).value = appearance.panel_gap;
+	document.getElementById("fenceHeight" + number).value =
+		appearance.height;
+	setAppearanceName(number, appearance.appearance_name, true);
+	document.getElementById("appearance-tab" + number).dbId =
+		appearance.appearance_id;
+}
+
+function loadAppearances(appearances){
+	loadAppearance(appearances[0], "1");
+	var currentAppearance = 2;
+
+	for(var i = 1; i < appearances.length; i++) {
+		addAppearance(true);
+		loadAppearance(appearances[i], currentAppearance.toString());
+		currentAppearance++;
 	}
 }
 
@@ -500,8 +569,11 @@ function getProjects(){
       success: function(result) {
         setProjectInfo(result);
       },
-      error: function(result) {
-          showError();
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
       }
   });
 }
@@ -514,16 +586,21 @@ function moreDetails(){
       success: function(result) {
       	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
           tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-          var layouts = result[2];
-		  $('#companyNameNav').html(result[3]);
-		  var selectedLayout = result[4];
-		  var selectedAppearance = result[5];
+		  var layouts = result[2];
+		  var appearances = result[3];
+		  $('#companyNameNav').html(result[4]);
+		  var selectedLayout = result[5];
+		  var selectedAppearance = result[6];
 		  loadLayouts(layouts);
+		  loadAppearances(appearances);
 		  selectLayout(selectedLayout, layouts);
-		  selectAppearance(selectedAppearance);
+		  selectAppearance(selectedAppearance, appearances);
       },
-      error: function(result) {
-          showError();
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
       }
   });
 }
@@ -571,10 +648,22 @@ function saveLayoutSelection() {
 }
 
 function saveAppearanceSelection() {
-	;
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var selectedId =
+		document.getElementById("appearance-tab" + activeAppearance).dbId;
+	var selectionData = JSON.stringify({selected: selectedId});
+	$.ajax({
+		type: 'POST',
+		url: "/saveAppearanceSelection/?proj_id=" + proj_id,
+		data: selectionData,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json"
+	});
 }
 
 function selectLayout(layoutId, layouts) {
+	return;
 	var tabs = document.getElementById("layout-tabs");
 	var oldTab;
 	var layout;
@@ -600,8 +689,31 @@ function selectLayout(layoutId, layouts) {
 	tabs.removeChild(oldTab);
 }
 
-function selectAppearance(appearanceId) {
-	;
+function selectAppearance(appearanceId, appearances) {
+	return;
+	var tabs = document.getElementById("appearance-tabs");
+	var oldTab;
+	var appearance;
+	var i;
+
+	for (i = 0; i < tabs.children.length; i++) {
+		if (tabs.children[i].dbId == appearanceId) {
+			oldTab = tabs.children[i];
+			break;
+		}
+	}
+
+	for (i = 0; i < appearances.length; i++) {
+		if (appearances[i].appearance_id == appearanceId) {
+			appearance = appearances[i];
+			break;
+		}
+	}
+
+	addAppearance(true);
+	loadAppearance(appearance, activeAppearance);
+	tabs.insertBefore(tabs.children[tabs.children.length - 2], oldTab);
+	tabs.removeChild(oldTab);
 }
 
 //this runs after the html has loaded, all function calls should be in here

@@ -42,7 +42,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <hr class="mt-2">
 
 <ul id="layout-tabs" class="nav nav-tabs flex-wrap">
-  <li dbId="" layoutName="" id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
+  <li id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
     <a class="nav-link active" data-toggle="tab" href="#layout1">Layout 1</a>
   </li>
 	<li id="add-layout" class="nav-item">
@@ -62,7 +62,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <div class="row">
 
 <ul id="appearance-tabs" class="nav nav-pills nav-justified flex-column">
-	<li dbId="" appearanceName="" id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
+	<li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
 		<a class="nav-link active" data-toggle="pill" href="#appearance1">Appearance 1</a>
 	</li>
 	<li id="add-appearance" onclick="addAppearance()" class="nav-item">
@@ -72,8 +72,13 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="appearances" class="tab-content">
 	<div id="appearance1" class="tab-pane fade in show active">
-			<a href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
-		<h3>Appearance 1</h3>
+		<a href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<div class="form-group">
+			<label for="panelGap1">Panel Gap</label>
+			<input onchange="saveActiveAppearance()" id="panelGap1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
+			<label for="fenceHeight1">Fence Height</label>
+			<input onchange="saveActiveAppearance()" id="fenceHeight1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
+		</div>
 	</div>
 </div>
 

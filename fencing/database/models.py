@@ -182,6 +182,17 @@ class Appearance(Base):
         self.panel_gap = panel_gap
         self.height = height
         # TODO: initialize data for other columns
+    
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'appearance_id'             : self.appearance_id,
+            'appearance_name'           : self.appearance_name,
+            'project_id'                : self.project_id,
+            'panel_gap'                 : self.panel_gap,
+            'height'                    : self.height
+        }
 
 class Material(Base):
     __tablename__ = 'material'

@@ -380,6 +380,15 @@ def removeLayout():
     Layouts.removeLayout(layout_id)
     return "{}"
 
+@app.route('/removeAppearance/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeAppearance():
+    project_id = request.args.get('proj_id')
+    appearance_id = request.json['appearanceId']
+    Appearances.removeAppearance(appearance_id)
+    return "{}"
+
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
 @roles_required('primary')
@@ -415,7 +424,7 @@ def saveDiagram():
         layout_id = layout_id, layout_name = layout_name,
         layout_info = withLabels)
 
-    return "{" + '"quoteId": {quote_id}'.format(quote_id=layout_id) + "}"
+    return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required
