@@ -94,7 +94,28 @@ def projectdetails(project_id):
 
         return jsonify(lst)
 
-def updateProjectInfo(project_id, project_name, address, status, note):
+
+@projectBlueprint.route('/updateproject/', methods=['POST'])
+@login_required
+@roles_required('primary')
+def updateProject():
+    if request.method == "POST":
+        customer = request.values.get("customer")
+        customer = json.loads(customer);
+        # customer is a list of customer ids
+        project_id = request.values.get("proj_id")
+        project_name = request.values.get("name")
+        address = request.values.get("address")
+        status = request.values.get("status")
+        note = request.values.get("note")
+
+        updateProjectInfo(project_id = project_id, project_name = project_name,
+            address = address, status = status, note = note, customer = customer)
+
+        print("done")
+        return jsonify(project_id)
+
+def updateProjectInfo(project_id, project_name, address, status, note, customer):
     """ Updates the project information of a given project id """
     project = dbSession.query(Project).filter(Project.project_id == project_id).all()
 

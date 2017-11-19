@@ -131,6 +131,7 @@ $(document).ready(function(){
   $('#edit').click(function(){
     window.location.href = '/editcustomer?cust_id=' + cust_id;
   });
+  getStatus();
   getCustInfo();
   getProjects();
 });

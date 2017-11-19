@@ -456,7 +456,6 @@ function uploadPicture(e) {
 
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
-	$("#pencil-button").attr('class', 'nav-item');
 	pictureList = document.getElementById('projectPictures');
   proj_id = getParameterByName('proj_id');
 

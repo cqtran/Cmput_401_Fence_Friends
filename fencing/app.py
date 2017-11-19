@@ -397,29 +397,13 @@ def deleteproject():
     dbSession.commit()
     return redirect(url_for("projects"))
 
-@app.route('/editprojectinfo/', methods = ['GET', 'POST'])
+@app.route('/editprojectinfo/', methods = ['GET'])
 @login_required
 @roles_required('primary')
 def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
-        if project_id is not None:
-            return render_template("editproject.html", company = current_user.company_name)
-        else:
-            # Error handling
-            pass
-
-    if request.method == "POST":
-        project_id = request.form['project_id']
-        project_name = request.form['project_name']
-        address = request.form['address']
-        status = request.form['status']
-        note = request.form['note']
-
-        Projects.updateProjectInfo(project_id = project_id, project_name = project_name,
-            address = address, status = status, note = note)
-
-        return redirect(url_for('projectinfo', proj_id = project_id))
+        return render_template("editproject.html", company = current_user.company_name)
 
 @app.errorhandler(404)
 def page_not_found(e):

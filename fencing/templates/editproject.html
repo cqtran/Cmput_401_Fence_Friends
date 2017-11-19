@@ -1,24 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1> Editing Project Information </h1>
-
-<form onsubmit="markClean()" method="post"  action="{{url_for('editprojectinfo') }} ">
-  <input class="form-control" id="project_id" type="hidden" name="project_id"/>
-  <label for="project_name" style="padding-top: 1rem;" class="required">Project Name</label>
+<h1>Editing Project</h1>
+<hr class="mt-2">
+<div class="col-12">
+  <div class="row" id="customers-list"></div>
+</div>
+<hr class="mt-2">
+<form id="edit-form">
+  <label for="status">Status</label>
+  <br>
+  <select onchange="markDirty()" class="selectpicker mb-lg-2 mt-lg-2" id = "status" name = "status" data-style="btn-primary" data-width="auto"></select>
+  <div class="form-group" id="add-project">
+    <label for="customer" class="required">Select a Customer</label>
+    <input id="add-customer-typeahead" class="col-12 typeahead form-control" type="text" placeholder="Add a customer..." style="margin-top: 0; width: 100%;">
+    <datalist id="json-datalist"></datalist>
+  </div>
+  <label for="project_name" class="required">Project Name</label>
   <input onchange="markDirty()" class="form-control" id="project_name" type="text" name="project_name" value="Project Name" pattern=".*\S+.*" maxlength="50" required>
   <label for="address" style="padding-top: 1rem;">Address</label>
   <input onchange="markDirty()" class="form-control" id="address" type="text" name="address" value="Address" maxlength="50">
-  <label for="status" style="padding-top: 1rem;">Status</label>
-  <br>
-  <select onchange="markDirty()" id = "status" name = "status" datastyle="btn-primary"></select>
-  <br>
   <label for="note" style="padding-top: 1rem;">Note</label>
-  <textarea onchange="markDirty()" class="form-control" id="note" name="note" rows="3" cols="30" placeholder="Save or update note" maxlength="350"></textarea>
-  <br>
-  <input class="btn btn-primary btn-block" type="submit" value = "Save Information"/>
+  <textarea onchange="markDirty()" class="form-control mb-lg-2" id="note" name="note" rows="3" cols="30" placeholder="Save or update note" maxlength="350"></textarea>
+  <input class="btn btn-primary btn-block bottom-margin" type="submit" value = "Save Information"/>
 </form>
-
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -29,7 +34,7 @@
         </button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
         <form method="post" action="{{ url_for('deleteproject', id=request.args.get('proj_id')) }}">
             <input class="btn btn-danger btn-block" type="submit" value="Delete Project"/>
         </form>
@@ -38,9 +43,8 @@
   </div>
 </div>
 
-<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirmDelete">
-  Delete Project
-</button>
+<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirmDelete">Delete Project</button>
 {% endblock %}
 {% block content2 %}
-
+<script type="text/javascript" src='../static/js/editproject.js'></script>
+{% endblock %}
