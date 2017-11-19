@@ -96,7 +96,7 @@ function setAppearanceName(number, newName, loading) {
 	var bodyText = document.getElementById("appearance" + number).children[0];
 
 	if (newName == null) {
-		newName = prompt("Appearance Name", bodyText.innerHTML.slice(3, -4));
+		newName = prompt("Appearance Name", bodyText.children[0].innerHTML);
 	}
 
 	if (newName != null) {
