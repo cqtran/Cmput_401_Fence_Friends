@@ -40,3 +40,12 @@ def checkcompany():
             return created_request("Good")
 
     return bad_request("Bad")
+
+@userBlueprint.route('/getcompany/', methods=['GET'])
+@login_required
+def getcompany():
+    """ returns company name """
+    if request.method == 'GET':
+        company_name = current_user.company_name
+        return jsonify(company_name)
+    return bad_request("Bad")
