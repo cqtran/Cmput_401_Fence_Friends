@@ -397,9 +397,8 @@ function makePictures(pictures){
     final.setAttribute('class', 'PictureThumbnail card zero-padding');
     // this is where you want to go when you click
     final.addEventListener('click', function(){
-      jQuery.noConflict();
       $('#imagepreview').attr('src', imgPath + picture.file_name);
-      $('#imagepopup').modal('show');
+			$('#imagepopup').modal('show');
     });
     //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
     final.appendChild(img);
@@ -550,6 +549,7 @@ function uploadPicture(e) {
       }
   });
 }
+
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
 	$("#pencil-button").attr('class', 'nav-item');
@@ -566,6 +566,15 @@ $(document).ready(function(){
 	getPics();
 });
 
+$('#imagepopup').on('shown.bs.modal', function (event) {
+  var vert = ($(window).height() - $(this).find('#image-modal').outerHeight())/2;
+  var hor = ($(window).width() - $('.imagemodal').outerWidth())/2;
+  console.log("winh" + $(window).height());
+  console.log("winw" + $(window).width());
+  console.log("vert" + $(this).find('#image-modal').outerHeight());
+  console.log("hor" + $('.imagemodal').outerWidth());
+  $('#image-dialog').css({"margin-left" : hor, "margin-right" : hor, "margin-top" : vert, "margin-bottom" : vert});
+});
 $('#file-upload').change(function(){
 	$('#upload-form').submit();
 });
@@ -573,6 +582,7 @@ $('form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
+
 $('#imagepopup').on('show.bs.modal', function (e) {
   alert('hello')
 });
