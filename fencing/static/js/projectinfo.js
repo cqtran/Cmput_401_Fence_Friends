@@ -698,7 +698,7 @@ function selectAppearance(appearanceId) {
 	document.getElementById("appearance" + activeAppearance)
 		.classList.remove("show");
 
-	activeAppearance = tab.id.slice(10);
+	activeAppearance = tab.id.slice(14);
 	document.getElementById("appearance" + activeAppearance)
 		.classList.add("active");
 	document.getElementById("appearance" + activeAppearance)
