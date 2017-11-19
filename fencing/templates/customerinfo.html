@@ -9,24 +9,19 @@
 <div class="container-fluid">
   <div class="row justify-content-between">
     <h1 id="title"></h1>
-    <div class="dropdown float-right">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{ request.args.get('status') }}
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='All') }}">All</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Not Reached') }}">Not Reached</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Appraisal Booked') }}">Appraisal Booked</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Waiting for Appraisal') }}">Waiting for Appraisal</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Appraised') }}">Appraised</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Quote Sent') }}">Quote Sent</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Waiting for Alberta1Call') }}">Waiting for Alberta1Call</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Installation Pending') }}">Installation Pending</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Installing') }}">Installing</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='Paid') }}">Paid</a>
-        <a class="dropdown-item" href="{{ url_for('customerinfo', cust_id=request.args.get('cust_id'), status='No Longer Interested') }}">No Longer Interested</a>
-      </div>
-    </div>
+    <select class="selectpicker" id="status" data-style="btn-primary" data-width="auto">
+      <option value="All">All</option>
+      <option value="Not Reached">Not Reached</option>
+      <option value="Appraisal Booked">Appraisal Booked</option>
+      <option value="Waiting for Appraisal">Waiting for Appraisal</option>
+      <option value="Appraised">Appraised</option>
+      <option value="Quote Sent">Quote Sent</option>
+      <option value="Waiting for Alberta1Call">Waiting for Alberta1Call</option>
+      <option value="Installation Pending">Installation Pending</option>
+      <option value="Installing">Installing</option>
+      <option value="Paid">Paid</option>
+      <option value="No Longer Interested">No Longer Interested</option>
+    </select>
   </div>
 </div>
 
@@ -37,128 +32,7 @@
 <div class="col-lg-12">
   <div class="row" id="projectlist"></div>
 </div>
-
-<script type="text/javascript">
-  // Get the project list element
-  var projectList = document.getElementById('projectlist');
-
-  // Create a new XMLHttpRequest to get projects
-  var request = new XMLHttpRequest();
-
-  request.onreadystatechange = function(response) {
-  if (request.readyState === 4) {
-    if (request.status === 200) {
-      // Parse the JSON
-      var jsonOptions = JSON.parse(request.responseText);
-
-      // Loop over the JSON array.
-      jsonOptions.forEach(function(project) {
-        var item = document.createElement('div');
-        var final = document.createElement('div');
-        var link = document.createElement('a');
-        var inner = document.createElement('div');
-        var name = document.createElement('h2');
-        var status = document.createElement('h6');
-        var address = document.createElement('h6');
-
-        status.setAttribute('class', 'card-body mb-1 text-center no-padding');
-        status.innerText = project.status_name;
-
-        address.setAttribute('class', 'card-body mb-1 text-center no-padding');
-        address.innerText = project.address;
-
-        name.setAttribute('class', 'card-title mb-1 text-center no-padding');
-        name.innerText = project.project_name;
-
-        link.setAttribute('href', '#')
-
-        inner.setAttribute('class', 'card-body');
-        inner.appendChild(name);
-        inner.appendChild(status);
-        inner.appendChild(address);
-
-        link.appendChild(inner);
-        if(project.status_name == "Paid"){
-          item.setAttribute('class', 'card mb-2 paid');
-        }
-        else if(project.status_name == "Not Reached"){
-          item.setAttribute('class', 'card mb-2 not-reached');
-        }
-        else if(project.status_name == "Appraisal Booked"){
-          item.setAttribute('class', 'card mb-2 appraisal-booked');
-        }
-        else if(project.status_name == "Waiting for Appraisal"){
-          item.setAttribute('class', 'card mb-2 waiting-appraisal');
-        }
-        else if(project.status_name == "Appraised"){
-          item.setAttribute('class', 'card mb-2 appraised');
-        }
-        else if(project.status_name == "Quote Sent"){
-          item.setAttribute('class', 'card mb-2 quote-sent');
-        }
-        else if(project.status_name == "Waiting for Alberta1Call"){
-          item.setAttribute('class', 'card mb-2 waiting-alberta');
-        }
-        else if(project.status_name == "Installation Pending"){
-          item.setAttribute('class', 'card mb-2 install-pending');
-        }
-        else if(project.status_name == "Installing"){
-          item.setAttribute('class', 'card mb-2 installing');
-        }
-        else if(project.status_name == "No Longer Interested"){
-          item.setAttribute('class', 'card mb-2 not-interested');
-        }
-        else{
-          item.setAttribute('class', 'card mb-2');
-        }
-        final.setAttribute('class', 'less-padding card-row col-lg-4 col-md-6')
-
-        // this is where you want to go when you click
-        //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-        link.setAttribute('onclick', 'projectClicked('+project.project_id+')')
-
-        item.appendChild(link);
-        final.appendChild(item);
-        // Add it to the list:
-        projectList.appendChild(final);
-      });
-
-    } else {
-      var item = document.createElement('a');
-      item.appendChild(document.createTextNode('An error has occurred'));
-      projectList.appendChild(item);
-    }
-  }
-  };
-
-  var requestCustomer = new XMLHttpRequest();
-  requestCustomer.onreadystatechange = function(response) {
-    if (requestCustomer.readyState === 4) {
-      if (requestCustomer.status === 200) {
-        // Parse the JSON
-        var customer = JSON.parse(requestCustomer.responseText);
-        document.getElementById('title').innerHTML = customer[0].first_name;
-        document.getElementById('phone').innerHTML = customer[0].cellphone;
-        document.getElementById('email').innerHTML = customer[0].email;
-      }
-    }
-  }
-
-  // Set up and make the request.
-  var url = new URL(window.location.href);
-  var cust_id = url.searchParams.get("cust_id");
-  if(cust_id == null) {
-    request.open('GET', '/getProjectList' + '?status={{ request.args.get("status") }}', true);
-  } else {
-    request.open('GET', '/getProjectList/' + cust_id + '?status={{ request.args.get("status") }}', true);
-    requestCustomer.open('GET', '/getCustomer/' + cust_id, true);
-    requestCustomer.send();
-  }
-  request.send();
-
-function projectClicked(id) {
-	window.location.href = '/projectinfo?proj_id=' + id;
-}
-
-</script>
+{% endblock %}
+{% block content2 %}
+<script type="text/javascript" src='../static/js/customerinfo.js'></script>
 {% endblock %}

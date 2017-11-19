@@ -5,8 +5,8 @@ from database.models import Quote
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
-	quotePath = "static/Quote.pdf"
-	materialListPath = "static/Material List.pdf"
+	quotePath = "Quote.pdf"
+	materialListPath = "Material List.pdf"
 
 	stylesheets=[CSS(string="""
 		table {
@@ -34,6 +34,11 @@ class Messages:
 		.greyCell {
 			background-color: #BBB;
 			border: none;
+		}
+
+		.bottom {
+			position: absolute;
+			bottom: 0px;
 		}
 		""")]
 
@@ -108,11 +113,18 @@ class Messages:
 						<td class="right"><b>$ 13,001.10</b></td>
 					</tr>
 				</table>
-				<b>Signature:_____________________________________________</b>
+				<b><span class="bottom">
+					Signature:_____________________________________________
+				</span></b>
 			</div>
 			{pageBreak}
-			<img src="{diagram}">
-			<b>Signature:_____________________________________________</b>
+			<div style="float:left; width:25%;"><p></p></div>
+			<div style="float:left; width:75%;">
+				<img src="{diagram}"><br>
+				<b><span class="bottom">
+					Signature:_____________________________________________
+				</span></b>
+			</div>
 			""".format(pageBreak=pageBreak, diagram=diagram)
 	
 	def materialListAttachment(project):

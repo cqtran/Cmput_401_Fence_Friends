@@ -56,7 +56,7 @@ class Customer(Base):
     email = Column(String(255), unique=True)
     first_name = Column(String(255))
     cellphone = Column(String(20))
-    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name', ondelete="CASCADE"))
 
     def __int__(self, customer_id, email, first_name, cellphone, company_name):
         self.customer_id = customer_id
@@ -93,9 +93,9 @@ class Status (Base):
 class Project(Base):
     __tablename__ = 'project'
     project_id = Column(Integer, primary_key=True)
-    customer_id = Column('customer_id', Integer, ForeignKey('customer.customer_id'))
-    status_name = Column('status_name', String(100), ForeignKey('status.status_name'))
-    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+    customer_id = Column('customer_id', Integer, ForeignKey('customer.customer_id', ondelete="CASCADE"))
+    status_name = Column('status_name', String(100), ForeignKey('status.status_name', ondelete="CASCADE"))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name', ondelete="CASCADE"))
     address = Column(String(100))
     start_date = Column(DateTime(), default = datetime.datetime.utcnow)
     end_date = Column(DateTime())
@@ -130,18 +130,20 @@ class Project(Base):
 class Quote(Base):
     __tablename__ = 'quote'
     quote_id = Column(Integer, primary_key=True)
-    project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     quote = Column(Integer)
     project_info = Column(TEXT)
     note = Column(String(255))
     last_modified = Column(DateTime(), default = datetime.datetime.utcnow)
+    appearance_selected = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
-    def __init__(self, project_id, quote, project_info, note, quote_id=None):
+    def __init__(self, project_id, quote, project_info, note, appearance_selected, quote_id=None):
         self.quote_id = quote_id
         self.project_id = project_id
         self.quote = quote
         self.project_info = project_info
         self.note = note
+        self.appearance_selected = appearance_selected
         #self.last_modified = last_modified
 
     @property
@@ -156,6 +158,17 @@ class Quote(Base):
             'last_modified'           : dump_datetime(self.last_modified)
         }
 
+class Appearance(Base):
+    __tablename__ = 'appearance'
+    appearance_id = Column(Integer, primary_key=True)
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
+    # TODO: Columns referencing material list
+
+    def __init__ (self, project_id, appearance_id=None):
+        self.appearance_id = appearance_id
+        self.project_id = project_id
+        # TODO: initialize data for other columns
+
 class Material(Base):
     __tablename__ = 'material'
     material_id = Column(Integer, primary_key=True)
@@ -165,13 +178,16 @@ class Material(Base):
 class Picture(Base):
     __tablename__ = 'picture'
     picture_id = Column(Integer, primary_key=True)
-    project_id = Column('project_id', Integer, ForeignKey('project.project_id'))
+    project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     file_name = Column(String(100))
+    thumbnail_name = Column(String(100))
+    upload_date = Column(DateTime(), default = datetime.datetime.utcnow)
 
-    def __init__(self, project_id, file_name, picture_id = None):
+    def __init__(self, project_id, file_name, thumbnail_name,  picture_id = None):
         self.picture_id = picture_id
         self.project_id = project_id
         self.file_name = file_name
+        self.thumbnail_name = thumbnail_name
 
     @property
     def serialize(self):
@@ -179,5 +195,6 @@ class Picture(Base):
         return {
             'picture_id'                : self.picture_id,
             'project_id'                : self.project_id,
-            'file_name'                 : self.file_name
+            'file_name'                 : self.file_name,
+            'thumbnail_name'            : self.thumbnail_name
         }

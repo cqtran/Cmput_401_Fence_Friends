@@ -23,7 +23,7 @@
 <body class="fixed-nav sticky-footer bg-green" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-green" id="mainNav">
-    <div align="left"><strong class="navbar-brand mb-0">{{ company }}</strong></div>
+    <div align="left"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></div>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -74,6 +74,14 @@
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <div class="input-group" id="search-bar">
+              <input id="search-typeahead" class="col-12 typeahead form-control no-border" type="text" placeholder="Search for..." style="margin-top: 0; width: 100%;">
+              <span class="input-group-addon search-icon">
+                  <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
+              </span>
+            </div>
+        </li>
         <li class="nav-item hide" id="pencil-button">
           <a class="nav-link mr-lg-2" id="editproject" href="#">
             <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -144,25 +152,21 @@
         </div>
       </div>
     </div>
-    {% block content2 %}{% endblock %}
-    <!-- Bootstrap core JavaScript-->
-    <script src="../static/vendor/jquery/jquery.min.js"></script>
-    <script src="../static/vendor/popper/popper.min.js"></script>
-    <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="../static/js/sb-admin.min.js"></script>
-    <!-- get ajax -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery-3.2.1.min.js') }}">\x3C/script>')</script>
-      <!-- custom file -->
-    <script type="text/javascript" {{ url_for('static', filename='app.js')}}></script>
-    <script type=text/javascript>
-      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-    </script>
-    <script src="../static/js/bootstrap-select.min.js"></script>
   </div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="../static/vendor/jquery/jquery.min.js"></script>
+  <script src="../static/vendor/popper/popper.min.js"></script>
+  <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="../static/js/sb-admin.min.js"></script>
+  <script src="../static/js/bootstrap-select.min.js"></script>
+  <script src="../static/js/typeahead.bundle.js"></script>
+  <script src="../static/js/handlebars-v4.0.11.js"></script>
+  <script type="text/javascript" src='../static/js/app.js'></script>
+  {% block content2 %}{% endblock %}
+
 </body>
 
 </html>
