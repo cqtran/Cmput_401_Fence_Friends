@@ -224,6 +224,20 @@ def acceptUser():
         users = dbSession.query(User).filter(User.active == False).all()
         return jsonify(users)
 
+@app.route('/deactivateUser/', methods=['POST'])
+@login_required
+@roles_required('admin')
+def deactivateUser():
+    """ accepts user, in app.py because of userDatastore """
+    if request.method == 'POST':
+        user_id = request.values.get("user_id")
+        user = dbSession.query(User).filter(User.id == user_id).all()
+        userDatastore.deactivate_user(user[0])
+        user[0].active = False
+        dbSession.commit()
+        users = dbSession.query(User).filter(User.active == True).all()
+        return jsonify(users)
+
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
 @roles_required('primary')

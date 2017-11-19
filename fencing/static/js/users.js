@@ -3,34 +3,33 @@ var requestList;
 
 function dispUsers(users){
   requestList.empty();
-  
   users.forEach(function(user) {
   requestList.append('\
-    <a class="list-group-item list-group-item-action" onclick="confirmAccept(' + user.id + ')">\
+    <a class="list-group-item list-group-item-action" onclick="confirmDeactivate(' + user.id + ')">\
       <strong>' + user.company_name + '</strong>\
       <div class="text-muted smaller">' + user.email + '</div>\
     </a>');
   })
 }
 
-function confirmAccept(id) {
+function confirmDeactivate(id) {
   $('#accept-modal').modal('show');
-  $('#accept-button').attr('onclick', 'acceptUser(' + id + ')');
+  $('#accept-button').attr('onclick', 'deactivateUser(' + id + ')');
 }
 
 function showError(){
   requestList.empty();
   var item = document.createElement('h6');
-  item.appendChild(document.createTextNode('No account requests users we\'re found.'));
+  item.appendChild(document.createTextNode('No active users we\'re found.'));
   document.getElementById('generate-users').appendChild(item);
 }
 
 // POST request to accept the clicked inactive user
-function acceptUser(id) {
+function deactivateUser(id) {
   $('#accept-modal').modal('hide');
   $.ajax({
     type: 'POST',
-    url: '/acceptUser/',
+    url: '/deactivateUser/',
     data: { 
         user_id: id
     },
@@ -48,7 +47,7 @@ $(document).ready(function(){
   requestList = $('#generate-users');
   $.ajax({
     type: 'GET',
-    url: '/getInactiveUsers/',
+    url: '/getActiveUsers/',
     success: function(result) {
       dispUsers(result);
     },
@@ -57,4 +56,3 @@ $(document).ready(function(){
     }
   });
 });
-
