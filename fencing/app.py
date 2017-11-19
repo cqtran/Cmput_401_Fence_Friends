@@ -12,6 +12,7 @@ from api.email.Messages import Messages
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
+from api.decorators import async
 
 import os
 # Import python files with functionality
@@ -21,6 +22,7 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
+
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -76,6 +78,14 @@ dbSession.commit()
 
 security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm, register_form=ExtendedRegisterForm)
 
+@async
+def send_security_email(msg):
+    with app.app_context():
+       mail.send(msg)
+
+@security.send_mail_task
+def async_security_email(msg):
+    send_security_email(msg)
 
 test = 0
 # TODO: implement fresh login for password change
