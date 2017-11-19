@@ -13,6 +13,8 @@ from api.errors import *
 userBlueprint = Blueprint('userBlueprint', __name__, template_folder='templates')
 
 @userBlueprint.route('/getInactiveUsers/', methods=['GET'])
+@login_required
+@roles_required('admin')
 def getInactiveUsers():
     """ Returns a list of inactive users"""
     if request.method == 'GET':
@@ -22,6 +24,8 @@ def getInactiveUsers():
         return jsonify(users)
 
 @userBlueprint.route('/getActiveUsers/', methods=['GET'])
+@login_required
+@roles_required('admin')
 def getActiveUsers():
     """ Returns a list of active users"""
     if request.method == 'GET':
@@ -31,6 +35,8 @@ def getActiveUsers():
         return jsonify(users)
 
 @userBlueprint.route('/checkcompany/', methods=['POST'])
+@login_required
+@roles_required('admin')
 def checkcompany():
     """ Checks if company exists """
     if request.method == 'POST':
