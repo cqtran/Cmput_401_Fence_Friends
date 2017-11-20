@@ -23,7 +23,8 @@ class MyJSONEncoder(JSONEncoder):
 
         if isinstance(obj, Status):
             return {
-                'status_name'         : obj.status_name
+                'status_name'         : obj.status_name,
+                'status_number'       : obj.status_number
             }
 
         if isinstance(obj, Project):
