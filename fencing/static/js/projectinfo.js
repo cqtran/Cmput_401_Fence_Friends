@@ -276,11 +276,10 @@ function saveActiveLayoutName() {
       data: dat,
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
-      error: function(xhr, textStatus, error) {
-		alert("Error");
-		console.log(xhr.statusText);
-		console.log(textStatus);
-		console.log(error);
+	    error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
       }
   });
 }
@@ -296,25 +295,24 @@ function saveActiveLayout() {
 		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
 
 	$.ajax({
-      type: 'POST',
-      url: "/saveDiagram/?proj_id=" + proj_id,
-      data: dat,
+    type: 'POST',
+    url: "/saveDiagram/?proj_id=" + proj_id,
+    data: dat,
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
-      success: function(result) {
-		returndata = result;
-		if (result["reload"]) {
-			reloadPage();
-		}
-		else {
-			setActiveLayoutId(result["layoutId"]);
-		}
-      },
-      error: function(xhr, textStatus, error) {
-		alert("Error");
-		console.log(xhr.statusText);
-		console.log(textStatus);
-		console.log(error);
+    success: function(result) {
+			returndata = result;
+			if (result["reload"]) {
+				reloadPage();
+			}
+			else {
+				setActiveLayoutId(result["layoutId"]);
+			}
+    },
+    error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
       }
   });
 }
@@ -327,7 +325,7 @@ function saveActiveAppearance() {
 	var appearance_name = tab.appearanceName;
 	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
 	var fenceHeight =
-		document.getElementById("fenceHeight" + activeAppearance).value;
+	document.getElementById("fenceHeight" + activeAppearance).value;
 	var dat = JSON.stringify({
 		appearanceId: appearance_id,
 		name: appearance_name,
@@ -336,21 +334,20 @@ function saveActiveAppearance() {
 	});
 
 	$.ajax({
-      type: 'POST',
-      url: "/saveAppearance/?proj_id=" + proj_id,
-      data: dat,
+    type: 'POST',
+    url: "/saveAppearance/?proj_id=" + proj_id,
+    data: dat,
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
-      success: function(result) {
-		returndata = result;
-		setActiveAppearanceId(result["appearanceId"]);
-      },
-      error: function(xhr, textStatus, error) {
-		alert("Error");
-		console.log(xhr.statusText);
-		console.log(textStatus);
-		console.log(error);
-      }
+    success: function(result) {
+			returndata = result;
+			setActiveAppearanceId(result["appearanceId"]);
+    },
+    error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+    }
   });
 }
 
