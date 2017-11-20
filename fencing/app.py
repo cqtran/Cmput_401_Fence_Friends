@@ -246,7 +246,7 @@ def deactivateUser():
         userDatastore.deactivate_user(user[0])
         user[0].active = False
         dbSession.commit()
-        users = dbSession.query(User).filter(User.active == True).all()
+        users = dbSession.query(User).filter(User.active == True).filter(User.id != current_user.id).all()
         return jsonify(users)
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
