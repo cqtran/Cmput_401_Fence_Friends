@@ -52,33 +52,33 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="layouts" class="tab-content">
   <div id="layout1" class="tab-pane fade in show active">
-		<a href="#" onclick="setLayoutName('1')"><b>Layout 1</b></a>
+		<a href="#" onclick="setLayoutName('1')"><b>Layout 1</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
 		<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
 			<td><img id="image1" style="max-width:100%;cursor:pointer;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://csahmad.github.io/drawio/war/?client=1&lightbox=1&edit=_blank');}})(this);"/></td>
 		</div>
 	</div>
 </div>
 
-<div class="row">
-
-<ul id="appearance-tabs" class="nav nav-pills nav-justified flex-column">
-	<li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
-		<a class="nav-link active" data-toggle="pill" href="#appearance1">Appearance 1</a>
-	</li>
-	<li id="add-appearance" onclick="addAppearance()" class="nav-item">
-		<a class="nav-link" href="#" style="color:grey;">+</a>
-	</li>
+<ul id="appearance-tabs" class="nav nav-tabs flex-wrap">
+  <li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#appearance1">Appearance 1</a>
+  </li>
+	<li id="add-appearance" class="nav-item">
+    <a class="nav-link" onclick="addAppearance()" href="#" style="color:grey;">+</a>
+  </li>
 </ul>
 
 <div id="appearances" class="tab-content">
 	<div id="appearance1" class="tab-pane fade in show active">
-			<a href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b></a>
-		<h3>Appearance 1</h3>
+		<a href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<div class="form-group">
+			<label for="panelGap1">Panel Gap</label>
+			<input onchange="saveActiveAppearance()" id="panelGap1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
+			<label for="fenceHeight1">Fence Height</label>
+			<input onchange="saveActiveAppearance()" id="fenceHeight1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
+		</div>
 	</div>
 </div>
-
-</div>
-
 
 <hr class="mt-2">
 <div class="container-fluid">
@@ -89,10 +89,16 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		</div>
 		<!-- or class="float-right" -->
 		<div class="col-lg-6 col-md-6">
-			<h4 class="text-green" style="font-weight: bold;">Start Date</h4>
-			<p class="no-top-padding" id="start-date" style="font-weight: bold;"></p>
-			<h4 class="text-green" style="font-weight: bold;">End Date</h4>
-			<p class="no-top-padding" id="end_date" style="font-weight: bold;">Ongoing</p>
+			<div class="row">
+				<div class="col-6">
+					<h4 class="text-green" style="font-weight: bold;">Start Date</h4>
+					<p class="no-top-padding" id="start-date" style="font-weight: bold;"></p>
+				</div>
+				<div class="col-6">
+					<h4 class="text-green" style="font-weight: bold;">End Date</h4>
+					<p class="no-top-padding" id="end_date" style="font-weight: bold;">Ongoing</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

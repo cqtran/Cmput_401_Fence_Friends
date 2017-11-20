@@ -1,5 +1,5 @@
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, \
-    flash
+from flask import Flask, Blueprint, render_template, request, redirect, \
+    url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
@@ -22,7 +22,8 @@ import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
-
+import api.layouts as Layouts
+import api.appearances as Appearances
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -41,6 +42,8 @@ app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
+app.register_blueprint(Layouts.layoutBlueprint)
+app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
 app.secret_key = os.urandom(24) # used for sessions
@@ -391,25 +394,60 @@ def projectinfo():
         # POST?
         return render_template("projectinfo.html")
 
+@app.route('/removeLayout/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeLayout():
+    project_id = request.args.get('proj_id')
+    layout_id = request.json['layoutId']
+    Layouts.removeLayout(layout_id)
+    return "{}"
+
+@app.route('/removeAppearance/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeAppearance():
+    project_id = request.args.get('proj_id')
+    appearance_id = request.json['appearanceId']
+    Appearances.removeAppearance(appearance_id)
+    return "{}"
+
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
-    image = request.form['image']
+
+    layout_id = None
+
+    if 'layoutId' in request.json:
+        layout_id = request.json['layoutId']
+
+    layout_name = request.json['name']
+    image = request.json['image']
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
-    json_quotepic = Projects.getdrawiopic(project_id)
-    qid = json_quotepic[0].get("quote_id")
+    if withLabels is None:
+        withLabels = image
 
-    # If parsed is empty don't changed the drawing
-    if parsed is not None:
-        if not parsed.empty:
-            update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
+    # If the layout already exists and the diagram is empty, do not update it
+    # (tell the client to refresh the page instead to get back the old diagram)
+    if layout_id is not None:
+        if parsed is None:
+            Layouts.updateLayoutName(layout_id, layout_name)
+            return '{"reload": 1}'
+        
+        if parsed.empty:
+            Layouts.updateLayoutName(layout_id, layout_name)
+            return '{"reload": 1}'
 
-    return redirect(url_for('projectinfo', proj_id = project_id))
+    layout_id = Layouts.updateLayoutInfo(project_id = project_id,
+        layout_id = layout_id, layout_name = layout_name,
+        layout_info = withLabels)
+
+    return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required
