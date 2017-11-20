@@ -764,7 +764,3 @@ $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
-
-$('#imagepopup').on('show.bs.modal', function (e) {
-  alert('hello')
-});
