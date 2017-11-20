@@ -1,10 +1,9 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Project, Customer, Layout
+from database.models import Project, Customer, Layout, Status
 from flask.json import jsonify
 import json
 from flask import Blueprint, request
-from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
@@ -53,7 +52,7 @@ def getProjectList(customer_id):
            projectList = projectList.filter(Project.customer_id == customer_id)
 
         if status is None or status == "All" or status == "None":
-            projectList = projectList.filter(Customer.customer_id == Project.customer_id).order_by(desc(Project.start_date))
+            projectList = projectList.filter(Customer.customer_id == Project.customer_id)
 
         else:
             projectList = projectList.filter(Customer.customer_id == Project.customer_id).filter(Project.status_name == status)
@@ -62,6 +61,7 @@ def getProjectList(customer_id):
             projectList = projectList.filter(
                 Project.project_name.contains(search))
 
+        projectList = projectList.filter(Project.status_name == Status.status_name).order_by(Status.status_number)
         projectList = projectList.order_by(desc(Project.start_date)).all()
 
         if len(projectList) == 0:
