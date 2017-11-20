@@ -12,8 +12,8 @@ var appearanceCount = 1;
 var tabLimit = 10;
 
 var drawiopic;
-var imgpath;
-var tbnpath;
+var imgPath;
+var tbnPath;
 var pictureList;
 var proj_id;
 
@@ -259,8 +259,6 @@ function removeAppearance(number) {
 }
 
 function reloadPage() {
-	var url = new URL(window.location.href);
-	var proj_id = url.searchParams.get("proj_id");
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
 }
 
@@ -286,8 +284,6 @@ function saveActiveLayoutName() {
 
 function saveActiveLayout() {
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
-	var url = new URL(window.location.href);
-	var proj_id = url.searchParams.get("proj_id");
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
@@ -318,8 +314,6 @@ function saveActiveLayout() {
 }
 
 function saveActiveAppearance() {
-	var url = new URL(window.location.href);
-	var proj_id = url.searchParams.get("proj_id");
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
@@ -650,8 +644,6 @@ function uploadPicture(e) {
 }
 
 function saveLayoutSelection() {
-	var url = new URL(window.location.href);
-	var proj_id = url.searchParams.get("proj_id");
 	var selectedId = document.getElementById("layout-tab" + activeLayout).dbId;
 	var selectionData = JSON.stringify({selected: selectedId});
 	$.ajax({
@@ -664,8 +656,6 @@ function saveLayoutSelection() {
 }
 
 function saveAppearanceSelection() {
-	var url = new URL(window.location.href);
-	var proj_id = url.searchParams.get("proj_id");
 	var selectedId =
 		document.getElementById("appearance-tab" + activeAppearance).dbId;
 	var selectionData = JSON.stringify({selected: selectedId});
