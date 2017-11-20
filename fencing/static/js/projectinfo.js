@@ -47,6 +47,7 @@ function setActiveLayout(number) {
 	}
 
 	activeLayout = number;
+	saveLayoutSelection();
 }
 
 function setActiveAppearance(number) {
@@ -56,15 +57,21 @@ function setActiveAppearance(number) {
 	}
 
 	activeAppearance = number;
+	saveAppearanceSelection();
 }
 
-function setLayoutName(number) {
-	var tabText = document.getElementById("layout-tab" + number).children[0];
+function setLayoutName(number, loading, newName) {
+	var tab = document.getElementById("layout-tab" + number);
+	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-
-	newName = prompt("Layout Name", bodyText.innerHTML.slice(3, -4));
+	
+	if (newName == null) {
+		newName = prompt("Layout Name", tab.layoutName);
+	}
 
 	if (newName != null) {
+
+		tab.layoutName = newName;
 
 		if (number == "1") {
 			tabText.innerHTML = newName;
@@ -75,17 +82,26 @@ function setLayoutName(number) {
 				newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + "</b>";
+		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+
+		if (!loading) {
+			saveActiveLayoutName();
+		}
 	}
 }
 
-function setAppearanceName(number) {
-	var tabText = document.getElementById("appearance-tab" + number).children[0];
+function setAppearanceName(number, loading, newName) {
+	var tab = document.getElementById("appearance-tab" + number);
+	var tabText = tab.children[0];
 	var bodyText = document.getElementById("appearance" + number).children[0];
 
-	newName = prompt("Appearance Name", bodyText.innerHTML.slice(3, -4));
+	if (newName == null) {
+		newName = prompt("Appearance Name", tab.appearanceName);
+	}
 
 	if (newName != null) {
+
+		tab.appearanceName = newName;
 
 		if (number == "1") {
 			tabText.innerHTML = newName;
@@ -96,11 +112,25 @@ function setAppearanceName(number) {
 				newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + "</b>";
+		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+
+		if (!loading) {
+			saveActiveAppearance();
+		}
 	}
 }
 
-function addLayout() {
+function setActiveLayoutId(dbId) {
+	document.getElementById("layout-tab" + activeLayout).dbId =
+		dbId.toString();
+}
+
+function setActiveAppearanceId(dbId) {
+	document.getElementById("appearance-tab" + activeAppearance).dbId =
+		dbId.toString();
+}
+
+function addLayout(loading) {
 	if (layoutCount >= tabLimit) {
 		alert("Cannot have more than " + tabLimit.toString() + " layouts");
 		return;
@@ -116,7 +146,7 @@ function addLayout() {
 	clone.id = "layout" + lastLayout;
 	clone.children[0].setAttribute("onclick",
 		"setLayoutName('" + lastLayout + "')");
-	clone.children[0].innerHTML = "<b>Layout " + lastLayout + "</b>";
+	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 	clone.children[1].children[0].id = "image" + lastLayout;
 	document.getElementById("layouts").appendChild(clone);
 
@@ -125,18 +155,24 @@ function addLayout() {
 	cloneTab.setAttribute("onclick", "setActiveLayout('" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#layout" + lastLayout;
-	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Layout ' + lastLayout;
+	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Untitled';
 	document.getElementById("layout-tabs").insertBefore(cloneTab,
 		document.getElementById("add-layout"));
+	cloneTab.layoutName = "Untitled";
 
 	activeLink.classList.remove("active");
 	active.classList.remove("active");
 	active.classList.remove("show");
 
 	layoutCount += 1;
+
+	if (!loading) {
+		setLayoutName(activeLayout, true);
+		saveActiveLayout();
+	}
 }
 
-function addAppearance() {
+function addAppearance(loading) {
 	if (appearanceCount >= tabLimit) {
 		alert("Cannot have more than " + tabLimit.toString() + " appearances");
 		return;
@@ -152,8 +188,14 @@ function addAppearance() {
 	clone.id = "appearance" + lastAppearance;
 	clone.children[0].setAttribute("onclick",
 		"setAppearanceName('" + lastAppearance + "')");
-	clone.children[0].innerHTML = "<b>Appearance " + lastAppearance + "</b>";
-	clone.children[1].innerHTML = "Appearance" + lastAppearance;
+	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+
+	var formGroup = clone.children[1];
+	formGroup.children[0].setAttribute("for", "panelGap" + lastAppearance);
+	formGroup.children[1].id = "panelGap" + lastAppearance;
+	formGroup.children[2].setAttribute("for", "fenceHeight" + lastAppearance);
+	formGroup.children[3].id = "fenceHeight" + lastAppearance;
+
 	document.getElementById("appearances").appendChild(clone);
 
 	var cloneTab = activeTab.cloneNode(true);
@@ -161,25 +203,33 @@ function addAppearance() {
 	cloneTab.setAttribute("onclick", "setActiveAppearance('" + lastAppearance + "')");
 	var link = cloneTab.children[0];
 	link.href = "#appearance" + lastAppearance;
-	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Appearance ' + lastAppearance;
+	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Untitled';
 	document.getElementById("appearance-tabs").insertBefore(cloneTab,
 		document.getElementById("add-appearance"));
+	cloneTab.appearanceName = "Untitled";
 
 	activeLink.classList.remove("active");
 	active.classList.remove("active");
 	active.classList.remove("show");
 
 	appearanceCount += 1;
+
+	if (!loading) {
+		setAppearanceName(activeAppearance, true);
+		saveActiveAppearance();
+	}
 }
 
 function removeLayout(number) {
+	removeLayoutFromDb(number);
+
 	var element = document.getElementById("layout" + number);
 	element.parentNode.removeChild(element);
 	element = document.getElementById("layout-tab" + number);
 	element.parentNode.removeChild(element);
 
 	if (activeLayout == number) {
-		activeLayout = "1";
+		setActiveLayout("1");
 		document.getElementById("layout1").classList.add("active");
 		document.getElementById("layout1").classList.add("show");
 		document.getElementById("layout-tab1").children[0].classList.add("active");
@@ -190,13 +240,15 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
+	removeAppearanceFromDb(number);
+
 	var element = document.getElementById("appearance" + number);
 	element.parentNode.removeChild(element);
 	element = document.getElementById("appearance-tab" + number);
 	element.parentNode.removeChild(element);
 
 	if (activeAppearance == number) {
-		activeAppearance = "1";
+		setActiveAppearance("1");
 		document.getElementById("appearance1").classList.add("active");
 		document.getElementById("appearance1").classList.add("show");
 		document.getElementById("appearance-tab1").children[0].classList.add("active");
@@ -206,38 +258,172 @@ function removeAppearance(number) {
 	appearanceCount -= 1;
 }
 
-// From:
-// https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/133997#133997
-// Acccessed November 8, 2017
-function post(url, params) {
-  var form = document.createElement("form");
-  form.setAttribute("method", "post");
-  form.setAttribute("action", url);
+function reloadPage() {
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	window.location.replace("/projectinfo/?proj_id=" + proj_id);
+}
 
-  for(var key in params) {
-      if(params.hasOwnProperty(key)) {
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", key);
-          hiddenField.setAttribute("value", params[key]);
+function saveActiveLayoutName() {
+	var tab = document.getElementById("layout-tab" + activeLayout);
+	var layout_id = tab.dbId;
+	var layout_name = tab.layoutName;
+	var dat = JSON.stringify({layoutId: layout_id, name: layout_name});
 
-          form.appendChild(hiddenField);
+	$.ajax({
+      type: 'POST',
+      url: "/saveLayoutName/",
+      data: dat,
+	  contentType: "application/json;charset=UTF-8",
+	  dataType: "json",
+	    error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
       }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
+  });
 }
 
-function saveDrawPicture() {
-  var initial = image.getAttribute('src');
-  post("{{ url_for('saveDiagram', proj_id=request.args.get('proj_id') ) }}", {image: initial});
+function saveActiveLayout() {
+	var img = document.getElementById("image" + activeLayout).getAttribute('src');
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var tab = document.getElementById("layout-tab" + activeLayout);
+	var layout_id = tab.dbId;
+	var layout_name = tab.layoutName;
+	var dat =
+		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
 
+	$.ajax({
+    type: 'POST',
+    url: "/saveDiagram/?proj_id=" + proj_id,
+    data: dat,
+	  contentType: "application/json;charset=UTF-8",
+	  dataType: "json",
+    success: function(result) {
+			returndata = result;
+			if (result["reload"]) {
+				reloadPage();
+			}
+			else {
+				setActiveLayoutId(result["layoutId"]);
+			}
+    },
+    error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+      }
+  });
 }
 
-function loadimage(image){
-	var imageId = "image" + activeLayout;
-  document.getElementById(imageId).src=image[0].project_info;
+function saveActiveAppearance() {
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var tab = document.getElementById("appearance-tab" + activeAppearance);
+	var appearance_id = tab.dbId;
+	var appearance_name = tab.appearanceName;
+	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
+	var fenceHeight =
+	document.getElementById("fenceHeight" + activeAppearance).value;
+	var dat = JSON.stringify({
+		appearanceId: appearance_id,
+		name: appearance_name,
+		panelGap: panelGap,
+		fenceHeight: fenceHeight
+	});
+
+	$.ajax({
+    type: 'POST',
+    url: "/saveAppearance/?proj_id=" + proj_id,
+    data: dat,
+	  contentType: "application/json;charset=UTF-8",
+	  dataType: "json",
+    success: function(result) {
+			returndata = result;
+			setActiveAppearanceId(result["appearanceId"]);
+    },
+    error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+    }
+  });
+}
+
+function removeLayoutFromDb(number) {
+	var tab = document.getElementById("layout-tab" + number);
+	var layout_id = tab.dbId;
+	var dat = JSON.stringify({layoutId: layout_id});
+	$.ajax({
+		type: 'POST',
+		url: "/removeLayout/?proj_id=" + proj_id,
+		data: dat,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			alert("Error");
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+		}
+	});
+}
+
+function removeAppearanceFromDb(number) {
+	var tab = document.getElementById("appearance-tab" + number);
+	var appearance_id = tab.dbId;
+	var dat = JSON.stringify({appearanceId: appearance_id});
+	$.ajax({
+		type: 'POST',
+		url: "/removeAppearance/?proj_id=" + proj_id,
+		data: dat,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			alert("Error");
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+		}
+	});
+}
+
+function loadLayout(layout, number) {
+	document.getElementById("image" + number).src = layout.layout_info;
+	setLayoutName(number, true, layout.layout_name);
+	document.getElementById("layout-tab" + number).dbId = layout.layout_id;
+}
+
+function loadLayouts(layouts){
+	loadLayout(layouts[0], "1");
+	var currentLayout = 2;
+
+	for(var i = 1; i < layouts.length; i++) {
+		addLayout(true);
+		loadLayout(layouts[i], currentLayout.toString());
+		currentLayout++;
+	}
+}
+
+function loadAppearance(appearance, number) {
+	document.getElementById("panelGap" + number).value = appearance.panel_gap;
+	document.getElementById("fenceHeight" + number).value =
+		appearance.height;
+	setAppearanceName(number, true, appearance.appearance_name);
+	document.getElementById("appearance-tab" + number).dbId =
+		appearance.appearance_id;
+}
+
+function loadAppearances(appearances){
+	loadAppearance(appearances[0], "1");
+	var currentAppearance = 2;
+
+	for(var i = 1; i < appearances.length; i++) {
+		addAppearance(true);
+		loadAppearance(appearances[i], currentAppearance.toString());
+		currentAppearance++;
+	}
 }
 
 function setProjectInfo(project){
@@ -278,7 +464,6 @@ function setProjectInfo(project){
 
 	// Sets the project_id into the uploadpicture form
 	document.getElementById('project_id').setAttribute('value', proj_id);
-	document.getElementById('editproject').setAttribute('onclick', 'projectClicked('+proj_id+')')
 
 	if (project[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = project[0].end_date;
@@ -299,13 +484,11 @@ function makePictures(pictures){
 		img.src =  tbnPath + picture.thumbnail_name;
 		img.alt =  picture.thumbnail_name + ' not found';
     final.setAttribute('href', '#');
-    final.setAttribute('class', 'PictureThumbnail card zero-padding')
-    console.log(picture.file_name)
+    final.setAttribute('class', 'PictureThumbnail card zero-padding');
     // this is where you want to go when you click
     final.addEventListener('click', function(){
-      jQuery.noConflict();
       $('#imagepreview').attr('src', imgPath + picture.file_name);
-      $('#imagepopup').modal('show');
+			$('#imagepopup').modal('show');
     });
     //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
     final.appendChild(img);
@@ -319,15 +502,12 @@ function makePictures(pictures){
 
 function imagesError(){
   var img = document.createElement('img');
+  console.log(tbnPath);
   img.src =  tbnPath + 'No_picture_available.png';
-  img.alt =  'No pictures available';
+  img.alt =  'No picture available';
   img.height = '150';
   img.width = '150';
   pictureList.appendChild(img);
-}
-
-function projectClicked(id) {
-	window.location.href= '/editprojectinfo?proj_id='+id
 }
 
 function editDiagram(image) {
@@ -357,7 +537,7 @@ function editDiagram(image) {
 				close();
 				image.setAttribute('src', msg.data);
 				save(location.href);
-				saveDrawPicture();
+				saveActiveLayout();
 			}
 			else if (msg.event == 'save') {
 				iframe.contentWindow.postMessage(JSON.stringify({action: 'export',
@@ -405,8 +585,11 @@ function getProjects(){
       success: function(result) {
         setProjectInfo(result);
       },
-      error: function(result) {
-          showError();
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
       }
   });
 }
@@ -417,16 +600,23 @@ function moreDetails(){
       type: 'GET',
       url: '/projectdetails/' + proj_id,
       success: function(result) {
-      	console.log("testing");
-      	console.log(result);
-      	imgPath = result[0].replace(/^'(.*)'$/, '$1');
-				tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-				drawiopic = result[2]
-				$('#companyNameNav').html(result[3]);
-				loadimage(drawiopic);
+      	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
+          tbnPath = result[1].replace(/^'(.*)'$/, '$1');
+		  var layouts = result[2];
+		  var appearances = result[3];
+		  $('#companyNameNav').html(result[4]);
+		  var selectedLayout = result[5];
+		  var selectedAppearance = result[6];
+		  loadLayouts(layouts);
+		  loadAppearances(appearances);
+		  selectLayout(selectedLayout, layouts);
+		  selectAppearance(selectedAppearance, appearances);
       },
-      error: function(result) {
-          showError();
+      error: function(xhr, textStatus, error) {
+		alert("Error");
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
       }
   });
 }
@@ -437,7 +627,6 @@ function getPics(){
       type: 'GET',
       url: '/getPictureList/' + proj_id,
       success: function(result) {
-      	console.log(result);
       	makePictures(result);
       },
       error: function(result) {
@@ -459,10 +648,89 @@ function uploadPicture(e) {
       }
   });
 }
+
+function saveLayoutSelection() {
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var selectedId = document.getElementById("layout-tab" + activeLayout).dbId;
+	var selectionData = JSON.stringify({selected: selectedId});
+	$.ajax({
+		type: 'POST',
+		url: "/saveLayoutSelection/?proj_id=" + proj_id,
+		data: selectionData,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json"
+	});
+}
+
+function saveAppearanceSelection() {
+	var url = new URL(window.location.href);
+	var proj_id = url.searchParams.get("proj_id");
+	var selectedId =
+		document.getElementById("appearance-tab" + activeAppearance).dbId;
+	var selectionData = JSON.stringify({selected: selectedId});
+	$.ajax({
+		type: 'POST',
+		url: "/saveAppearanceSelection/?proj_id=" + proj_id,
+		data: selectionData,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json"
+	});
+}
+
+function selectLayout(layoutId) {
+	var tabs = document.getElementById("layout-tabs");
+	var tab;
+
+	for (var i = 0; i < tabs.children.length; i++) {
+		if (tabs.children[i].dbId == layoutId) {
+			tab = tabs.children[i];
+			break;
+		}
+	}
+
+	document.getElementById(
+		"layout-tab" + activeLayout).children[0].classList.remove("active");
+	document.getElementById("layout" + activeLayout).classList.remove("active");
+	document.getElementById("layout" + activeLayout).classList.remove("show");
+
+	activeLayout = tab.id.slice(10);
+	document.getElementById("layout" + activeLayout).classList.add("active");
+	document.getElementById("layout" + activeLayout).classList.add("show");
+	document.getElementById(
+		"layout-tab" + activeLayout).children[0].classList.add("active");
+}
+
+function selectAppearance(appearanceId) {
+	var tabs = document.getElementById("appearance-tabs");
+	var tab;
+
+	for (var i = 0; i < tabs.children.length; i++) {
+		if (tabs.children[i].dbId == appearanceId) {
+			tab = tabs.children[i];
+			break;
+		}
+	}
+
+	document.getElementById("appearance-tab" + activeAppearance)
+		.children[0].classList.remove("active");
+	document.getElementById("appearance" + activeAppearance)
+		.classList.remove("active");
+	document.getElementById("appearance" + activeAppearance)
+		.classList.remove("show");
+
+	activeAppearance = tab.id.slice(14);
+	document.getElementById("appearance" + activeAppearance)
+		.classList.add("active");
+	document.getElementById("appearance" + activeAppearance)
+		.classList.add("show");
+	document.getElementById("appearance-tab" + activeAppearance)
+		.children[0].classList.add("active");
+}
+
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
-	$("#pencil-button").attr('class', 'nav-item');
-	pictureList = document.getElementById('projectPictures');
+  pictureList = document.getElementById('projectPictures');
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
@@ -470,18 +738,33 @@ $(document).ready(function(){
     window.location.href = '/projects/';
   }
 
-	moreDetails();
-	getProjects();
-	getPics();
+  $("#pencil-button").removeClass('hide');
+  $('#edit').click(function(){
+    window.location.href= '/editprojectinfo?proj_id=' + proj_id;
+  });
+  
+  moreDetails();
+  getProjects();
+  getPics();
 });
 
+$('#imagepopup').on('shown.bs.modal', function (event) {
+  var vert = ($(window).height() - $(this).find('#image-modal').outerHeight())/2;
+  var hor = ($(window).width() - $('.imagemodal').outerWidth())/2;
+  console.log("winh" + $(window).height());
+  console.log("winw" + $(window).width());
+  console.log("vert" + $(this).find('#image-modal').outerHeight());
+  console.log("hor" + $('.imagemodal').outerWidth());
+  $('#image-dialog').css({"margin-left" : hor, "margin-right" : hor, "margin-top" : vert, "margin-bottom" : vert});
+});
 $('#file-upload').change(function(){
 	$('#upload-form').submit();
 });
-$('form').submit(function(e) {
+$('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
+
 $('#imagepopup').on('show.bs.modal', function (e) {
   alert('hello')
 });

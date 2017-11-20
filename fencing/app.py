@@ -1,5 +1,5 @@
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, \
-    flash
+from flask import Flask, Blueprint, render_template, request, redirect, \
+    url_for, session
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
@@ -12,6 +12,7 @@ from api.email.Messages import Messages
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
+from api.decorators import async
 
 import os
 # Import python files with functionality
@@ -22,6 +23,8 @@ import api.pictures as Pictures
 import api.statuses as Statuses
 import api.admin as Admins
 import api.materials as Materials
+import api.layouts as Layouts
+import api.appearances as Appearances
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -40,6 +43,8 @@ app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
+app.register_blueprint(Layouts.layoutBlueprint)
+app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
 app.json_encoder = MyJSONEncoder
@@ -78,6 +83,14 @@ dbSession.commit()
 
 security = Security(app, userDatastore, confirm_register_form=ExtendedConfirmRegisterForm, register_form=ExtendedRegisterForm)
 
+@async
+def send_security_email(msg):
+    with app.app_context():
+       mail.send(msg)
+
+@security.send_mail_task
+def async_security_email(msg):
+    send_security_email(msg)
 
 test = 0
 # TODO: implement fresh login for password change
@@ -122,56 +135,54 @@ def setup_db():
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Not Reached"):
-        newStatus = Status(status_name = "Not Reached")
+        newStatus = Status(status_name = "Not Reached", status_number = 1)
         dbSession.add(newStatus)
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Paid"):
-        newStatus = Status(status_name = "Paid")
+        newStatus = Status(status_name = "Paid", status_number = 2)
         dbSession.add(newStatus)
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Appraisal Booked"):
-        newStatus = Status(status_name = "Appraisal Booked")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Appraised"):
-        newStatus = Status(status_name = "Appraised")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
-        newStatus = Status(status_name = "Quote Sent")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
-        newStatus = Status(status_name = "Waiting for Alberta1Call")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
-        newStatus = Status(status_name = "Installation Pending")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "Installing"):
-        newStatus = Status(status_name = "Installing")
-        dbSession.add(newStatus)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, Status.status_name, "No Longer Interested"):
-        newStatus = Status(status_name = "No Longer Interested")
+        newStatus = Status(status_name = "Appraisal Booked", status_number = 3)
         dbSession.add(newStatus)
         dbSession.commit()
 
     if not fieldExists(dbSession, Status.status_name, "Waiting for Appraisal"):
-        newStatus = Status(status_name = "Waiting for Appraisal")
+        newStatus = Status(status_name = "Waiting for Appraisal", status_number = 4)
         dbSession.add(newStatus)
         dbSession.commit()
-    Pictures.app_root = app.root_path
 
+    if not fieldExists(dbSession, Status.status_name, "Appraised"):
+        newStatus = Status(status_name = "Appraised", status_number = 5)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Quote Sent"):
+        newStatus = Status(status_name = "Quote Sent", status_number = 6)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Waiting for Alberta1Call"):
+        newStatus = Status(status_name = "Waiting for Alberta1Call", status_number = 7)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installation Pending"):
+        newStatus = Status(status_name = "Installation Pending", status_number = 8)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "Installing"):
+        newStatus = Status(status_name = "Installing", status_number = 9)
+        dbSession.add(newStatus)
+        dbSession.commit()
+
+    if not fieldExists(dbSession, Status.status_name, "No Longer Interested"):
+        newStatus = Status(status_name = "No Longer Interested", status_number = 10)
+        dbSession.add(newStatus)
+        dbSession.commit()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -210,21 +221,35 @@ def users():
 @login_required
 @roles_required('admin')
 def accountrequests():
-    users = dbSession.query(User).filter(User.active == False).all()
-    return render_template("accountrequests.html", company = "Admin", users = users)
+    return render_template("accountrequests.html", company = "Admin")
 
 @app.route('/acceptUser/', methods=['POST'])
 @login_required
 @roles_required('admin')
 def acceptUser():
+    """ accepts user, in app.py because of userDatastore """
     if request.method == 'POST':
-        user_id = request.form["user_id"]
+        user_id = request.values.get("user_id")
         user = dbSession.query(User).filter(User.id == user_id).all()
         userDatastore.activate_user(user[0])
         user[0].active = True
         dbSession.commit()
         users = dbSession.query(User).filter(User.active == False).all()
-        return render_template("accountrequests.html", company = "Admin", users = users)
+        return jsonify(users)
+
+@app.route('/deactivateUser/', methods=['POST'])
+@login_required
+@roles_required('admin')
+def deactivateUser():
+    """ accepts user, in app.py because of userDatastore """
+    if request.method == 'POST':
+        user_id = request.values.get("user_id")
+        user = dbSession.query(User).filter(User.id == user_id).all()
+        userDatastore.deactivate_user(user[0])
+        user[0].active = False
+        dbSession.commit()
+        users = dbSession.query(User).filter(User.active == True).all()
+        return jsonify(users)
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
 @login_required
@@ -369,25 +394,60 @@ def projectinfo():
         # POST?
         return render_template("projectinfo.html")
 
+@app.route('/removeLayout/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeLayout():
+    project_id = request.args.get('proj_id')
+    layout_id = request.json['layoutId']
+    Layouts.removeLayout(layout_id)
+    return "{}"
+
+@app.route('/removeAppearance/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeAppearance():
+    project_id = request.args.get('proj_id')
+    appearance_id = request.json['appearanceId']
+    Appearances.removeAppearance(appearance_id)
+    return "{}"
+
 @app.route('/saveDiagram/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')
-    image = request.form['image']
+
+    layout_id = None
+
+    if 'layoutId' in request.json:
+        layout_id = request.json['layoutId']
+
+    layout_name = request.json['name']
+    image = request.json['image']
     parsed = DiagramParser.parse(image)
     withLabels = DiagramLabels.addLengthLabels(image, parsed)
 
-    json_quotepic = Projects.getdrawiopic(project_id)
-    qid = json_quotepic[0].get("quote_id")
+    if withLabels is None:
+        withLabels = image
 
-    # If parsed is empty don't changed the drawing
-    if parsed is not None:
-        if not parsed.empty:
-            update = Projects.updatedrawiopic(qid, 5, withLabels, 0)
+    # If the layout already exists and the diagram is empty, do not update it
+    # (tell the client to refresh the page instead to get back the old diagram)
+    if layout_id is not None:
+        if parsed is None:
+            Layouts.updateLayoutName(layout_id, layout_name)
+            return '{"reload": 1}'
+        
+        if parsed.empty:
+            Layouts.updateLayoutName(layout_id, layout_name)
+            return '{"reload": 1}'
 
-    return redirect(url_for('projectinfo', proj_id = project_id))
+    layout_id = Layouts.updateLayoutInfo(project_id = project_id,
+        layout_id = layout_id, layout_name = layout_name,
+        layout_info = withLabels)
+
+    return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required
@@ -399,29 +459,13 @@ def deleteproject():
     dbSession.commit()
     return redirect(url_for("projects"))
 
-@app.route('/editprojectinfo/', methods = ['GET', 'POST'])
+@app.route('/editprojectinfo/', methods = ['GET'])
 @login_required
 @roles_required('primary')
 def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
-        if project_id is not None:
-            return render_template("editproject.html", company = current_user.company_name)
-        else:
-            # Error handling
-            pass
-
-    if request.method == "POST":
-        project_id = request.form['project_id']
-        project_name = request.form['project_name']
-        address = request.form['address']
-        status = request.form['status']
-        note = request.form['note']
-
-        Projects.updateProjectInfo(project_id = project_id, project_name = project_name,
-            address = address, status = status, note = note)
-
-        return redirect(url_for('projectinfo', proj_id = project_id))
+        return render_template("editproject.html", company = current_user.company_name)
 
 @app.route('/viewPrices/', methods = ['GET'])
 @login_required

@@ -1,12 +1,27 @@
 {% extends "basemaster.html" %}
 {% block content %}
-  <h1>Users</h1>
-    <div class="list-group list-group-flush small">
-      {% for user in users %}
-        <a class="list-group-item list-group-item-action" href="#">
-          <strong>{{ user.company_name }}</strong>
-          <div class="text-muted smaller">Joined {{ user.confirmed_at }}</div>
-        </a>
-      {% endfor %}
+<h1>Users</h1>
+<div class="list-group list-group-flush small" id="generate-users"></div>
+{% endblock %}
+{% block content2 %}
+<div class="modal fade" id="accept-modal" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="acceptModalLabel">Deactivate user?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Clicking deactivate will deactivate.</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" data-dismiss="modal" id="cancel-button">Cancel</button>
+        <button class="btn btn-danger" id="accept-button">Deactivate</button>
+      </div>
     </div>
+  </div>
+</div>
+{% endblock %}
+{% block content3 %}
+<script type="text/javascript" src='../static/js/users.js'></script>
 {% endblock %}

@@ -92,3 +92,19 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+function getStatus(){
+//get details
+  $.ajax({
+      type: 'GET',
+      url: '/getStatusList/',
+      success: function(result) {
+        dealStatuses(result);
+      }
+  });
+}
+function dealStatuses(statuses){
+  statuses.forEach(function(status) {
+    $('select[name=status]').append('<option value="' + status.status_name + '">' + status.status_name + '</option>');
+  });
+  $('.selectpicker').selectpicker('refresh'); 
+}
