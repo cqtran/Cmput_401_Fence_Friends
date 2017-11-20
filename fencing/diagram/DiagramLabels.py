@@ -1,3 +1,7 @@
+# This is currently not in use because there are too many factors that throw
+# off the label positions and the label size depends on the diagram size and so
+# are usually tiny
+
 import html, base64
 from xml.etree import ElementTree
 from diagram.DiagramParser import DiagramParser
