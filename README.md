@@ -18,6 +18,7 @@ Cavalry Fence Builder is a web app for fence installation companies. It allows a
 * Import/export tables (such as for accounting, customer information, and material lists)
 * View and edit prices for fence materials
 * Create individual accounts and associate them with companies
+* The server uses certbot to maintain ssl certificate
 
 ## Requirements
 
