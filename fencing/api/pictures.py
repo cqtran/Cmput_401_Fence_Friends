@@ -22,7 +22,7 @@ thumbnailSize = (128, 128)
 pictureDir = os.path.join('static', 'images', 'pictures')
 
 pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
-app_root = ''
+app_root = '/var/www/CMPUT401-FenceFriends/fencing/'
 
 @pictureBlueprint.route('/getPictureList/<int:project_id>', methods=['GET'])
 #@login_required
