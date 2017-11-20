@@ -103,6 +103,7 @@ function getProjects(){
 }
 
 $(document).ready(function(){
+  getStatus();
   getProjects();
 });
 

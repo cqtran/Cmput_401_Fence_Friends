@@ -1,5 +1,5 @@
 from flask.json import JSONEncoder
-from database.models import User, Customer, Status, Project, Quote, Picture, Material
+from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -36,18 +36,17 @@ class MyJSONEncoder(JSONEncoder):
                 'start_date'         : dump_datetime(obj.start_date),
                 'end_date'           : dump_datetime(obj.end_date),
                 'note'               : obj.note,
-                'project_name'       : obj.project_name
+                'project_name'       : obj.project_name,
+                'layout_selected'    : obj.layout_selected,
+    			'appearance_selected': obj.appearance_selected
             }
 
-        if isinstance(obj, Quote):
+        if isinstance(obj, Layout):
             return {
-                'quote_id'                : obj.quote_id,
+                'layout_id'               : obj.layout_id,
                 'project_id'              : obj.project_id,
-                'quote'                   : obj.quote,
-                'project_info'            : obj.project_info,
-                'note'                    : obj.note,
-                'last_modified'           : dump_datetime(obj.last_modified),
-                'appearance_selected'     : obj.appearance_selected
+                'layout_name'             : obj.layout_name,
+                'layout_info'             : obj.layout_info
             }
 
         if isinstance(obj, Picture):
@@ -66,10 +65,13 @@ class MyJSONEncoder(JSONEncoder):
         if isinstance(obj, Appearance):
             return {
                 'appearance_id'         : obj.appearance_id,
-                'project_id'            : obj.project_id
+                'appearance_name'       : obj.appearance_name,
+                'project_id'            : obj.project_id,
+                'panel_gap'             : obj.panel_gap,
+                'height'                : obj.height
                 #TODO: Define other columns related to materials
             }
-            
+
         return super(MyJSONEncoder, obj).default(obj)
 
 def dump_datetime(value):
