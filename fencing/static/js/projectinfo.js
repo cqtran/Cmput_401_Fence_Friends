@@ -12,8 +12,8 @@ var appearanceCount = 1;
 var tabLimit = 10;
 
 var drawiopic;
-var imgpath;
-var tbnpath;
+var imgPath;
+var tbnPath;
 var pictureList;
 var proj_id;
 
