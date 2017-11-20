@@ -64,7 +64,7 @@ function setLayoutName(number, loading, newName) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-	
+
 	if (newName == null) {
 		newName = prompt("Layout Name", tab.layoutName);
 	}
@@ -476,7 +476,7 @@ function makePictures(pictures){
     var final = document.createElement('a');
 
 		img.src =  tbnPath + picture.thumbnail_name;
-		img.alt =  picture.thumbnail_name + ' not found';
+		img.alt =  'Thumbnail not found';
     final.setAttribute('href', '#');
     final.setAttribute('class', 'PictureThumbnail card zero-padding');
     // this is where you want to go when you click
@@ -733,7 +733,7 @@ $(document).ready(function(){
   $('#edit').click(function(){
     window.location.href= '/editprojectinfo?proj_id=' + proj_id;
   });
-  
+
   moreDetails();
   getProjects();
 });

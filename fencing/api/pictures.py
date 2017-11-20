@@ -10,7 +10,7 @@ from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
-
+import uuid
 # https://stackoverflow.com/questions/8631076/what-is-the-fastest-way-to-generate-image-thumbnails-in-python
 from PIL import Image
 
@@ -41,16 +41,16 @@ def getPictureList(project_id):
 #@roles_required('primary')
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
-    print("testgasdfasfj")
     print(request.method)
     if request.method == 'POST':
-        print("before")
         project_id = request.form['proj_id']
         picture = request.files['picture']
-        print("after")
+        # Parse file type and file name
         filename = secure_filename(picture.filename)
         filename, file_extension = os.path.splitext(filename)
         if filename != '':
+            # Generate a unique file name to store the file
+            filename = str(uuid.uuid4())
             try:
                 # Store filepath into the database
                 newPicture = Picture(project_id = project_id,
