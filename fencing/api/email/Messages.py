@@ -79,10 +79,10 @@ class Messages:
 
 		return """
 			<div style="float:left; width:25%;">
-				HELLO
+				CAVALRY FENCE
 			</div>
 			<div style="float:left; width:75%;">
-				OH HELLO
+				GREGORY BAKER QUOTE
 				<table>
 					<tr class="bordered">
 						<th>DESCRIPTION</th>
