@@ -594,17 +594,18 @@ function moreDetails(){
       type: 'GET',
       url: '/projectdetails/' + proj_id,
       success: function(result) {
-      	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
-          tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-		  var layouts = result[2];
-		  var appearances = result[3];
-		  $('#companyNameNav').html(result[4]);
-		  var selectedLayout = result[5];
-		  var selectedAppearance = result[6];
-		  loadLayouts(layouts);
-		  loadAppearances(appearances);
-		  selectLayout(selectedLayout, layouts);
-		  selectAppearance(selectedAppearance, appearances);
+    	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
+        tbnPath = result[1].replace(/^'(.*)'$/, '$1');
+			  var layouts = result[2];
+			  var appearances = result[3];
+			  $('#companyNameNav').html(result[4]);
+			  var selectedLayout = result[5];
+			  var selectedAppearance = result[6];
+			  getPics();
+			  loadLayouts(layouts);
+			  loadAppearances(appearances);
+			  selectLayout(selectedLayout, layouts);
+			  selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
 		alert("Error");
@@ -735,7 +736,6 @@ $(document).ready(function(){
   
   moreDetails();
   getProjects();
-  getPics();
 });
 
 $('#imagepopup').on('shown.bs.modal', function (event) {
