@@ -512,7 +512,7 @@ function imagesError(){
 
 function editDiagram(image) {
 	var initial = image.getAttribute('src');
-	image.setAttribute('src', 'https://csahmad.github.io/drawio/war/images/ajax-loader.gif');
+	image.setAttribute('src', 'https://fencythat.cavalryfence.ca/images/ajax-loader.gif');
 	var iframe = document.createElement('iframe');
 	iframe.setAttribute('style', "position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;")
 	//iframe.setAttribute('frameborder', '0');
@@ -549,7 +549,7 @@ function editDiagram(image) {
 		}
 	};
 	window.addEventListener('message', receive);
-	iframe.setAttribute('src', 'https://csahmad.github.io/drawio/war/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json');
+	iframe.setAttribute('src', 'https://fencythat.cavalryfence.ca//?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json');
 	document.body.appendChild(iframe);
 };
 
@@ -763,8 +763,4 @@ $('#file-upload').change(function(){
 $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
-});
-
-$('#imagepopup').on('show.bs.modal', function (e) {
-  alert('hello')
 });

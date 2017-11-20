@@ -183,6 +183,7 @@ def setup_db():
         newStatus = Status(status_name = "No Longer Interested", status_number = 10)
         dbSession.add(newStatus)
         dbSession.commit()
+    Pictures.app_root = app.root_path
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -248,7 +249,7 @@ def deactivateUser():
         userDatastore.deactivate_user(user[0])
         user[0].active = False
         dbSession.commit()
-        users = dbSession.query(User).filter(User.active == True).all()
+        users = dbSession.query(User).filter(User.active == True).filter(User.id != current_user.id).all()
         return jsonify(users)
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
@@ -438,7 +439,7 @@ def saveDiagram():
         if parsed is None:
             Layouts.updateLayoutName(layout_id, layout_name)
             return '{"reload": 1}'
-        
+
         if parsed.empty:
             Layouts.updateLayoutName(layout_id, layout_name)
             return '{"reload": 1}'
