@@ -29,7 +29,7 @@ def getInactiveUsers():
 def getActiveUsers():
     """ Returns a list of active users"""
     if request.method == 'GET':
-        users = dbSession.query(User).filter(User.active == True).all()
+        users = dbSession.query(User).filter(User.active == True).filter(User.id != current_user.id).all()
         if len(users) == 0:
             return bad_request("No active users were found")
         return jsonify(users)
