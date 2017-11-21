@@ -17,6 +17,10 @@ var tbnPath;
 var pictureList;
 var proj_id;
 
+var urlRegex =
+	/(?:^|\s)https?:\/\/[^\.\s@]+[^\s@]+\.[a-z]{2,5}(?:\/[^\.\s@]*)?(?:$|\s)/g;
+var urlReplacement = '<a class="text-primary" href="$&" target="_blank">$&</a>';
+
 function setProgressTitle(title) {
 	var progressTitle = document.getElementById("progressTitle");
 	progressTitle.innerHTML = title;
@@ -473,9 +477,9 @@ function setProjectInfo(project){
 	if (project[0].end_date != null) {
 		document.getElementById('end_date').innerHTML = project[0].end_date;
 	}
-	var note = project[0].note;
+	var note = project[0].note.replace(urlRegex, urlReplacement);
 	if (!(note == null || note.trim() == "")) {
-		document.getElementById('savednote').innerHTML = project[0].note;
+		document.getElementById('savednote').innerHTML = note;
 		document.getElementById('noteContainer').style.display = "block";
 	}
 }
