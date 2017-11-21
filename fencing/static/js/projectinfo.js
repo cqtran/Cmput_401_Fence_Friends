@@ -262,7 +262,7 @@ function reloadPage() {
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
 }
 
-function saveActiveLayoutName(includeSelection) {
+function saveActiveLayoutName() {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
