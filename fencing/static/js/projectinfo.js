@@ -168,7 +168,7 @@ function addLayout(loading) {
 
 	if (!loading) {
 		setLayoutName(activeLayout, true);
-		saveActiveLayout();
+		saveActiveLayout(true);
 	}
 }
 
@@ -216,7 +216,7 @@ function addAppearance(loading) {
 
 	if (!loading) {
 		setAppearanceName(activeAppearance, true);
-		saveActiveAppearance();
+		saveActiveAppearance(true);
 	}
 }
 
@@ -262,7 +262,7 @@ function reloadPage() {
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
 }
 
-function saveActiveLayoutName() {
+function saveActiveLayoutName(includeSelection) {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
@@ -282,13 +282,18 @@ function saveActiveLayoutName() {
   });
 }
 
-function saveActiveLayout() {
+function saveActiveLayout(includeSelection) {
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
-	var dat =
-		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
+	var dat = {image: img, layoutId: layout_id, name: layout_name};
+
+	if (includeSelection) {
+		dat["saveSelection"] = "true";
+	}
+
+	var dat = JSON.stringify(dat);
 
 	$.ajax({
     type: 'POST',
@@ -313,19 +318,25 @@ function saveActiveLayout() {
   });
 }
 
-function saveActiveAppearance() {
+function saveActiveAppearance(includeSelection) {
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
 	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
 	var fenceHeight =
 	document.getElementById("fenceHeight" + activeAppearance).value;
-	var dat = JSON.stringify({
+	var dat = {
 		appearanceId: appearance_id,
 		name: appearance_name,
 		panelGap: panelGap,
 		fenceHeight: fenceHeight
-	});
+	};
+
+	if (includeSelection) {
+		dat["saveSelection"] = "true";
+	}
+
+	var dat = JSON.stringify(dat);
 
 	$.ajax({
     type: 'POST',

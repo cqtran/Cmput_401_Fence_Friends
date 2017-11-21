@@ -28,6 +28,12 @@ def saveAppearance():
 
     appearance_id = updateAppearanceInfo(project_id, appearance_id,
         appearance_name, panelGap, fenceHeight)
+    
+    if "saveSelection" in request.json:
+        project = dbSession.query(Project).filter(
+            Project.project_id == project_id).one()
+        project.appearance_selected = appearance_id
+        dbSession.commit()
 
     return "{" + '"appearanceId": {appearance_id}'.format(
         appearance_id=appearance_id) + "}"

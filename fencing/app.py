@@ -440,6 +440,12 @@ def saveDiagram():
     layout_id = Layouts.updateLayoutInfo(project_id = project_id,
         layout_id = layout_id, layout_name = layout_name,
         layout_info = image)
+    
+    if "saveSelection" in request.json:
+        project = dbSession.query(Project).filter(
+            Project.project_id == project_id).one()
+        project.layout_selected = layout_id
+        dbSession.commit()
 
     return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
 
