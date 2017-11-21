@@ -142,8 +142,8 @@ class DiagramParser:
 			
 			shape = shape[16:]
 
-			# Ignore buildings
 			if shape == 'building':
+				data.hasBuildings = True
 				continue
 			
 			rotationString = DiagramParser._getStyleValue(style, 'rotation')

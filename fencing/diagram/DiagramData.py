@@ -6,6 +6,7 @@ class DiagramData:
 	def __init__(self):
 		self._fences = []
 		self._gates = []
+		self.hasBuildings = False
 	
 	def __iter__(self):
 		for fencingEntity in self._fences:
@@ -32,6 +33,9 @@ class DiagramData:
 	
 	@property
 	def empty(self):
+		if self.hasBuildings:
+			return False
+
 		return len(self._fences) == 0 and len(self._gates) == 0
 
 	@property
