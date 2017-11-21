@@ -495,6 +495,7 @@ function makePictures(pictures){
 }
 
 function imagesError(){
+	$('#projectPictures').empty();
   var img = document.createElement('img');
   console.log(tbnPath);
   img.src =  tbnPath + 'No_picture_available.png';
@@ -644,6 +645,23 @@ function uploadPicture(e) {
   });
 }
 
+function deletePicture(e) {
+	var image = document.getElementById("imagepreview");
+	var imageNameArr = image.src.split("/");
+	var imageName = imageNameArr[imageNameArr.length-1]
+	console.log(imageName)
+
+	$.ajax({
+			type: 'DELETE',
+			url: '/deletePicture/?picName=' + imageName + "&proj_id=" + proj_id,
+			processData: false,
+			contentType: false,
+			success: function(response){
+				getPics();
+			}
+	});
+}
+
 function saveLayoutSelection() {
 	var selectedId = document.getElementById("layout-tab" + activeLayout).dbId;
 	var selectionData = JSON.stringify({selected: selectedId});
@@ -736,6 +754,11 @@ $(document).ready(function(){
 
   moreDetails();
   getProjects();
+});
+
+$('#imagepopup').on('click', '.btn-ok', function(e) {
+		console.log("Delete Picture");
+		deletePicture(e);
 });
 
 $('#imagepopup').on('shown.bs.modal', function (event) {
