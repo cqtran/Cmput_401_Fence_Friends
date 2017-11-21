@@ -26,7 +26,7 @@
 </div>
 
 <div class="container-fluid">
-  <div class="table-responsive">
+  <div class="table-responsive" id='priceTable'>
     <h4 class="text-green" style="font-weight: bold; padding-top: 10px;">Post Profiles (Sample)</h4>
     <table class="table">
      <tr>
@@ -48,7 +48,7 @@
        <th width="25%"></th>
      </tr>
     </table>
-    <h4 class="text-green" style="font-weight: bold; padding-top: 10px;">T&G (Sample)</h4>
+    <h4 class="text-green" style="font-weight: bold; padding-top: 10px;">TG (Sample)</h4>
     <table class="table">
      <tr>
        <th width="25%">Material Name</th>
@@ -57,13 +57,13 @@
        <th width="25%">Notes</th>
      </tr>
      <tr>
-       <td width="25%">W875TG3.50.25A .875x11.3"x50.25" T&G Almond"</td>
+       <td width="25%">W875TG3.50.25A .875x11.3"x50.25" TG Almond"</td>
        <td width="25%">13.02</td>
        <td width="25%">144</td>
        <td width="25%"></td>
      </tr>
      <tr>
-       <td width="25%">W875TG3.50.25P .875x11.3"x50.25" T&G Pebble"</td>
+       <td width="25%">W875TG3.50.25P .875x11.3"x50.25" TG Pebble"</td>
        <td width="25%">13.02</td>
        <td width="25%">144</td>
        <td width="25%"></td>
@@ -77,6 +77,8 @@
 <script type="text/javascript" src='../static/js/materials.js'></script> -->
 
 <script type="text/javascript">
+  var priceTable = document.getElementById('priceTable');
+
   function uploadPrices(e) {
     var message = 'Upload Prices File'
     console.log(message)
@@ -93,9 +95,46 @@
     });
   }
 
-  function getPriceList() {
+  function getPrices() {
     // TODO: GET request to materials API to get prices list by year and create tables
+    $.ajax({
+        type: 'GET',
+        url: '/getPriceList/',
+        success: function(result) {
+            updatePriceTable(result);
+        },
+        error: function(result) {
+            showError();
+        }
+    });
   }
+
+  function updatePriceTable(materialPrices) {
+    $('#priceTable').empty();
+    materialPrices.forEach(function(material) {
+      // Decide if the material is a new category. Then add a new header for the category
+      // Add the material as a new row
+    });
+  }
+
+  function addHeader() {
+
+  }
+
+  function addRow() {
+
+  }
+
+  function showError() {
+    $('#priceTable').empty();
+    var item = document.createElement('a');
+    item.appendChild(document.createTextNode('No material prices were found. Upload a csv file of material prices'));
+    priceTable.appendChild(item);
+  }
+
+  $(document).ready(function(){
+    getPrices();
+  });
 
   $('#file-upload').change(function(){
   	$('#upload-form').submit();
