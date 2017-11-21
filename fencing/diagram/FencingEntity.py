@@ -1,26 +1,30 @@
 import math
+from decimal import Decimal
+
+# Used for rotations:
+# https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
+# Accessed November 17, 2017
 
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
-	_inchesInPoint = 10
+	_inchesInPoint = Decimal(10)
 
 	def __init__(self, entityType, length, height, x, y, rotation,
 		toRemove=False, double=False):
 
-		self._entityType = entityType
-		self._width = length
-		self._length = length / FencingEntity._inchesInPoint
-		self._height = height
-		self._x = x
-		self._y = y
-		self._toRemove = toRemove
-		self._isDouble = double
-
 		if rotation is None:
 			rotation = 0
-		
-		self._rotation = rotation
+
+		self._entityType = entityType
+		self._length = length / FencingEntity._inchesInPoint
+		length = float(length)
+		self._x = FencingEntity._getX(x, y, length, height, rotation)
+		self._y = FencingEntity._getY(x, y, length, height, rotation)
+		self._x2 = FencingEntity._getX2(x, y, length, height, rotation)
+		self._y2 = FencingEntity._getY2(x, y, length, height, rotation)
+		self._toRemove = toRemove
+		self._isDouble = double
 	
 	def __str__(self):
 		entityType = self._entityType
@@ -38,66 +42,56 @@ class FencingEntity:
 		return self._entityType
 	
 	@property
-	def width(self):
-		return self._width
-	
-	@property
 	def length(self):
 		return self._length
 	
-	@property
-	def height(self):
-		return self._height
+	def _getX(x, y, width, height, rotation):
+		x0 = x + width / 2.0
+		y0 = y + height / 2.0
+		angle = math.radians(rotation)
+		return x0 + math.cos(angle) * (x - x0) - math.sin(angle) * (y - y0)
 	
 	@property
 	def x(self):
-		x0 = self._x  + self._width / 2.0
-		y0 = self._y + self._height / 2.0
-		x = self._x
-		y = self._y
-		angle = math.radians(self._rotation)
-		return x0 + math.cos(angle) * (x - x0) - math.sin(angle) * (y - y0)
+		return self._x
 	
-	# Used:
-	# https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
-	# Accessed November 17, 2017
+	def _getX2(x, y, width, height, rotation):
+		x0 = x + width / 2.0
+		y0 = y + height / 2.0
+		x2 = x + width
+		y2 = y + height
+		angle = math.radians(rotation)
+		return x0 + math.cos(angle) * (x2 - x0) - math.sin(angle) * (y2 - y0)
+
 	@property
 	def x2(self):
-		x0 = self._x  + self._width / 2.0
-		y0 = self._y + self._height / 2.0
-		x2 = self._x + self._width
-		y2 = self._y
-		angle = math.radians(self._rotation)
-		return x0 + math.cos(angle) * (x2 - x0) - math.sin(angle) * (y2 - y0)
+		return self._x2
+	
+	def _getY(x, y, width, height, rotation):
+		x0 = x + width / 2.0
+		y0 = y + height / 2.0
+		angle = math.radians(rotation)
+		return y0 + math.sin(angle) * (x - x0) + math.cos(angle) * (y - y0)
 	
 	@property
 	def y(self):
-		x0 = self._x  + self._width / 2.0
-		y0 = self._y + self._height / 2.0
-		x = self._x
-		y = self._y
-		angle = math.radians(self._rotation)
-		return y0 + math.sin(angle) * (x - x0) + math.cos(angle) * (y - y0)
+		return self._y
 	
-	# Used:
-	# https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
-	# Accessed November 17, 2017
+	def _getY2(x, y, width, height, rotation):
+		x0 = x + width / 2.0
+		y0 = y + height / 2.0
+		x2 = x + width
+		y2 = y + height
+		angle = math.radians(rotation)
+		return y0 + math.sin(angle) * (x2 - x0) + math.cos(angle) * (y2 - y0)
+
 	@property
 	def y2(self):
-		x0 = self._x  + self._width / 2.0
-		y0 = self._y + self._height / 2.0
-		x2 = self._x + self._width
-		y2 = self._y
-		angle = math.radians(self._rotation)
-		return y0 + math.sin(angle) * (x2 - x0) + math.cos(angle) * (y2 - y0)
+		return self._y2
 	
 	@property
-	def rotation(self):
-		return self._rotation
-	
-	@property
-	def toRemove(self, toRemove):
-		return self._isDouble
+	def toRemove(self):
+		return self._toRemove
 	
 	@property
 	def isDouble(self):

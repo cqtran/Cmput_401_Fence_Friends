@@ -1,5 +1,6 @@
 from flask import flash
 from xml.etree import ElementTree
+from decimal import Decimal
 from diagram.DiagramData import DiagramData
 from diagram.FencingEntity import FencingEntity
 import base64, zlib, urllib.parse, html, traceback
@@ -142,15 +143,15 @@ class DiagramParser:
 			
 			shape = shape[16:]
 
-			# Ignore buildings
 			if shape == 'building':
+				data.hasBuildings = True
 				continue
 			
 			rotationString = DiagramParser._getStyleValue(style, 'rotation')
 			rotation = None
 
 			if rotationString is not None:
-				rotation = int(rotationString)
+				rotation = float(rotationString)
 			
 			for geometry in cell:
 
@@ -167,10 +168,10 @@ class DiagramParser:
 				if widthString is None or xString is None or yString is None:
 					return None
 				
-				width = int(widthString)
-				height = int(heightString)
-				x = int(xString)
-				y = int(yString)
+				width = Decimal(widthString)
+				height = float(heightString)
+				x = float(xString)
+				y = float(yString)
 				
 				if shape == 'fence':
 					data.addFence(width, height, x, y, rotation,
