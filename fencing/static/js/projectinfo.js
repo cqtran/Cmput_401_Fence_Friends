@@ -17,9 +17,48 @@ var tbnPath;
 var pictureList;
 var proj_id;
 
+var punctuation = "\\.,\\)\\?\"':\\!;\\]\\}";
+
 var urlRegex =
-	/(?:^|\s)https?:\/\/[^\.\s@]+[^\s@]+\.[a-z]{2,5}(?:\/[^\.\s@]*)?(?:$|\s)/g;
+	RegExp(
+		"(?:^|\\s)https?:\\/\\/[^\\s]+?(?=[" + punctuation + "]?(?:$|\\s))",
+		"g"
+	);
 var urlReplacement = '<a class="text-primary" href="$&" target="_blank">$&</a>';
+
+// From:
+// https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
+// Accessed November 21, 2017
+var entityMap = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#39;',
+	'/': '&#x2F;',
+	'`': '&#x60;',
+	'=': '&#x3D;'
+};
+
+var angleBracketMap = {
+	'<': '&lt;',
+	'>': '&gt;'
+}
+
+// From:
+// https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
+// Accessed November 21, 2017
+function escapeHtml(string) {
+	return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
+function escapeAngleBrackets(string) {
+	return String(string).replace(/[<>]/g, function (s) {
+		return angleBracketMap[s];
+	});
+}
 
 function setProgressTitle(title) {
 	var progressTitle = document.getElementById("progressTitle");
@@ -75,6 +114,8 @@ function setLayoutName(number, loading, newName) {
 
 	if (newName != null) {
 
+		newName = escapeHtml(newName);
+
 		tab.layoutName = newName;
 
 		if (number == "1") {
@@ -104,6 +145,8 @@ function setAppearanceName(number, loading, newName) {
 	}
 
 	if (newName != null) {
+
+		newName = escapeHtml(newName);
 
 		tab.appearanceName = newName;
 
@@ -436,10 +479,14 @@ function loadAppearances(appearances){
 }
 
 function setProjectInfo(project){
-	document.getElementById('project-name').innerHTML = project[0].project_name;
-	document.getElementById('status').innerHTML = "■ " + project[0].status_name;
-	document.getElementById('address').innerHTML = project[0].address;
-	document.getElementById('start-date').innerHTML = project[0].start_date;
+	document.getElementById('project-name').innerHTML =
+		escapeHtml(project[0].project_name);
+	document.getElementById('status').innerHTML =
+		"■ " + escapeHtml(project[0].status_name);
+	document.getElementById('address').innerHTML =
+		escapeHtml(project[0].address);
+	document.getElementById('start-date').innerHTML =
+		escapeHtml(project[0].start_date);
 	if(project[0].status_name == "Paid"){
 	  document.getElementById("status").setAttribute('class', 'float-right paid-text');
 	}
@@ -475,9 +522,14 @@ function setProjectInfo(project){
 	document.getElementById('project_id').setAttribute('value', proj_id);
 
 	if (project[0].end_date != null) {
-		document.getElementById('end_date').innerHTML = project[0].end_date;
+		document.getElementById('end_date').innerHTML =
+			escapeHtml(project[0].end_date);
 	}
-	var note = project[0].note.replace(urlRegex, urlReplacement);
+	var note = project[0].note;
+	if (note == null) {
+		note = "";
+	}
+	note = escapeAngleBrackets(note).replace(urlRegex, urlReplacement);
 	if (!(note == null || note.trim() == "")) {
 		document.getElementById('savednote').innerHTML = note;
 		document.getElementById('noteContainer').style.display = "block";
