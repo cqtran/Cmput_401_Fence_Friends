@@ -268,6 +268,10 @@ function addAppearance(loading) {
 }
 
 function removeLayout(number) {
+	if (!confirm("Delete Layout?")) {
+		return;
+	}
+
 	removeLayoutFromDb(number);
 
 	var element = document.getElementById("layout" + number);
@@ -287,6 +291,10 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
+	if (!confirm("Delete Appearance?")) {
+		return;
+	}
+
 	removeAppearanceFromDb(number);
 
 	var element = document.getElementById("appearance" + number);
