@@ -530,7 +530,7 @@ function setProjectInfo(project){
 		note = "";
 	}
 	note = escapeAngleBrackets(note).replace(urlRegex, urlReplacement);
-	if (!(note == null || note.trim() == "")) {
+	if (note.trim() != "") {
 		document.getElementById('savednote').innerHTML = note;
 		document.getElementById('noteContainer').style.display = "block";
 	}
