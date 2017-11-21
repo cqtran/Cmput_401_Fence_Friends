@@ -1,4 +1,5 @@
 import math
+from decimal import Decimal
 
 # Used for rotations:
 # https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
@@ -7,7 +8,7 @@ import math
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
-	_inchesInPoint = 10
+	_inchesInPoint = Decimal(10)
 
 	def __init__(self, entityType, length, height, x, y, rotation,
 		toRemove=False, double=False):
@@ -17,6 +18,7 @@ class FencingEntity:
 
 		self._entityType = entityType
 		self._length = length / FencingEntity._inchesInPoint
+		length = float(length)
 		self._x = FencingEntity._getX(x, y, length, height, rotation)
 		self._y = FencingEntity._getY(x, y, length, height, rotation)
 		self._x2 = FencingEntity._getX2(x, y, length, height, rotation)
