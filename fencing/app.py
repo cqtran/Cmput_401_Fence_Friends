@@ -5,7 +5,6 @@ from flask_security import Security, login_required, \
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status
 from diagram.DiagramParser import DiagramParser
-from diagram.DiagramLabels import DiagramLabels
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
@@ -428,10 +427,6 @@ def saveDiagram():
     layout_name = request.json['name']
     image = request.json['image']
     parsed = DiagramParser.parse(image)
-    withLabels = DiagramLabels.addLengthLabels(image, parsed)
-
-    if withLabels is None:
-        withLabels = image
 
     # If the layout already exists and the diagram is empty, do not update it
     # (tell the client to refresh the page instead to get back the old diagram)
@@ -446,7 +441,13 @@ def saveDiagram():
 
     layout_id = Layouts.updateLayoutInfo(project_id = project_id,
         layout_id = layout_id, layout_name = layout_name,
-        layout_info = withLabels)
+        layout_info = image)
+    
+    if "saveSelection" in request.json:
+        project = dbSession.query(Project).filter(
+            Project.project_id == project_id).one()
+        project.layout_selected = layout_id
+        dbSession.commit()
 
     return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
 

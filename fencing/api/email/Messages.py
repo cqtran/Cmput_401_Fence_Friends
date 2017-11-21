@@ -23,6 +23,11 @@ class Messages:
 			background-color: #999;
 		}
 
+		img {
+			max-width: 100%;
+			max-height: 7.5in;
+		}
+
 		.right {
 			text-align: right;
 		}
