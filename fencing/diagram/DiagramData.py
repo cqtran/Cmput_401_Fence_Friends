@@ -35,6 +35,25 @@ class DiagramData:
 		for post in self.posts():
 			yield post
 	
+	def displayStrings(self):
+		"""I"""
+		counts = {}
+		strings = []
+
+		for item in self:
+			string = item.displayString()
+
+			if string in counts:
+				counts[string] += 1
+			
+			else:
+				counts[string] = 1
+		
+		for string in counts:
+			strings.append(str(counts[string]) + "× " + string)
+		
+		return strings
+	
 	@property
 	def empty(self):
 		if self.hasBuildings:
