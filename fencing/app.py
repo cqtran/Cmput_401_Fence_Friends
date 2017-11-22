@@ -431,11 +431,11 @@ def saveDiagram():
     if layout_id is not None:
         if parsed is None:
             Layouts.updateLayoutName(layout_id, layout_name)
-            return '{"reload": 1}'
+            return '{"reload":1}'
 
         if parsed.empty:
             Layouts.updateLayoutName(layout_id, layout_name)
-            return '{"reload": 1}'
+            return '{"reload":1}'
 
     layout_id = Layouts.updateLayoutInfo(project_id = project_id,
         layout_id = layout_id, layout_name = layout_name,
@@ -447,7 +447,8 @@ def saveDiagram():
         project.layout_selected = layout_id
         dbSession.commit()
 
-    return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
+    return jsonify({"layoutId": layout_id,
+        "displayStrings": parsed.displayStrings()})
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required

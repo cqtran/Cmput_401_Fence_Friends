@@ -172,6 +172,15 @@ function setActiveLayoutId(dbId) {
 		dbId.toString();
 }
 
+function setActiveDisplayStrings(displayStrings) {
+	var display = $("#layout" + activeLayout).find("p:first");
+	display.html("");
+
+	for (var i = 0; i < displayStrings.length; i++) {
+		display.append(displayStrings[i] + "<br>");
+	}
+}
+
 function setActiveAppearanceId(dbId) {
 	document.getElementById("appearance-tab" + activeAppearance).dbId =
 		dbId.toString();
@@ -363,6 +372,7 @@ function saveActiveLayout(includeSelection) {
 			}
 			else {
 				setActiveLayoutId(result["layoutId"]);
+				setActiveDisplayStrings(result["displayStrings"]);
 			}
     },
     error: function(xhr, textStatus, error) {
@@ -455,13 +465,15 @@ function loadLayout(layout, number) {
 	document.getElementById("layout-tab" + number).dbId = layout.layout_id;
 }
 
-function loadLayouts(layouts){
+function loadLayouts(layouts, displayStrings){
 	loadLayout(layouts[0], "1");
+	setActiveDisplayStrings(displayStrings[0]);
 	var currentLayout = 2;
 
 	for(var i = 1; i < layouts.length; i++) {
 		addLayout(true);
 		loadLayout(layouts[i], currentLayout.toString());
+		setActiveDisplayStrings(displayStrings[i]);
 		currentLayout++;
 	}
 }
@@ -677,8 +689,9 @@ function moreDetails(){
 			  $('#companyNameNav').html(result[4]);
 			  var selectedLayout = result[5];
 			  var selectedAppearance = result[6];
+			  var displayStrings = result[7];
 			  getPics();
-			  loadLayouts(layouts);
+			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);
 			  selectLayout(selectedLayout, layouts);
 			  selectAppearance(selectedAppearance, appearances);
