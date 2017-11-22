@@ -119,19 +119,28 @@ def deletePicture():
                 return bad_request("Invalid picture name or project id")
 
             # Delete picture and thumbnail files
-            try:
-                picturePath = os.path.join(app_root, pictureDir, picFilenames[0].file_name)
-                os.remove(picturePath)
-            except:
-                print('Picture at ' + picturePath + ' does not exist')
-
-            try:
-                thumbnailPath = os.path.join(app_root, thumbnailDir, picFilenames[0].thumbnail_name)
-                os.remove(thumbnailPath)
-            except:
-                print('Thumbnail at ' + thumbnailPath + ' does not exist')
+            deleteImageHelper(picFilenames[0].file_name)
+            deleteImageHelper(picFilenames[0].thumbnail_name)
 
             # Remove picture from database
             picToDelete.delete()
             dbSession.commit()
         return "{}"
+
+def deleteImageHelper(image_filename):
+    """ Deletes the given image of the filename. It will change directory
+     depending on if the filename has the thumbnail prefix or not"""
+    directory = ""
+    if image_filename.startswith(thumbnailPrefix):
+        # filename is a thumbnail
+        directory = thumbnailDir
+    else:
+        # filename is a picture
+        directory = pictureDir
+    try:
+        # remove the file if it exists
+        filePath = os.path.join(app_root, directory, image_filename)
+        os.remove(filePath)
+    except:
+        print('Image at ' + filePath + ' does not exist')
+    return
