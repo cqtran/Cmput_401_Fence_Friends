@@ -88,6 +88,7 @@ class DiagramData:
 	def posts(self):
 		posts = self._posts()
 
+		# Determine which posts are t posts
 		for post in posts:
 			if post.postType == "cornerPost":
 				continue
@@ -99,12 +100,17 @@ class DiagramData:
 	
 	def _posts(self):
 		pointCounts = {}
+		pointRemovals = set()
 
 		for fence in self._fences:
 			foundPoint1 = False
 			foundPoint2 = False
 			point1 = (fence.x, fence.y)
 			point2 = (fence.x2, fence.y2)
+
+			if fence.isRemoval:
+				pointRemovals.add(point1)
+				pointRemovals.add(point2)
 
 			for p in pointCounts:
 				if not foundPoint1 and DiagramData._pointsClose(point1, p):
@@ -126,20 +132,24 @@ class DiagramData:
 		posts = []
 		
 		for p in pointCounts:
+			isRemoval = p in pointRemovals
+
 			if pointCounts[p] > 1:
-				posts.append(Post("cornerPost", p[0], p[1]))
+				posts.append(Post("cornerPost", p[0], p[1],
+					isRemoval=isRemoval))
 			
 			else:
-				posts.append(Post("endPost", p[0], p[1]))
+				posts.append(Post("endPost", p[0], p[1],
+					isRemoval=isRemoval))
 		
 		return posts
 
-	def addFence(self, length, height, x, y, rotation, toRemove=False):
+	def addFence(self, length, height, x, y, rotation, isRemoval=False):
 		self._fences.append(FencingEntity('fence', length, height, x, y,
-			rotation, toRemove=toRemove))
+			rotation, isRemoval=isRemoval))
 	
-	def addGate(self, length, height, x, y, rotation, toRemove=False,
-		double=False):
+	def addGate(self, length, height, x, y, rotation, isRemoval=False,
+		isDouble=False):
 
 		self._gates.append(FencingEntity('gate', length, height, x, y, rotation,
-			toRemove=toRemove, double=double))
+			isRemoval=isRemoval, isDouble=isDouble))

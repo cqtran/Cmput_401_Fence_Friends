@@ -8,14 +8,24 @@ from decimal import Decimal
 class Post:
 	"""A post"""
 
-	def __init__(self, postType, x, y):
+	def __init__(self, postType, x, y, isRemoval=False):
 		self.postType = postType
 		self._point = (x, y)
+		self.isRemoval = isRemoval
 	
 	def __str__(self):
 		return self.postType
 	
 	def displayString(self):
+		"""Return this item as it would be displayed to the user"""
+		string = self._displayString()
+
+		if self.isRemoval:
+			return string + " (Removal)"
+		
+		return string
+	
+	def _displayString(self):
 		"""Return this item as it would be displayed to the user"""
 		if self.postType == "cornerPost":
 			return "Corner Post"
@@ -39,7 +49,7 @@ class FencingEntity:
 	_inchesInPoint = Decimal(10)
 
 	def __init__(self, entityType, length, height, x, y, rotation,
-		toRemove=False, double=False):
+		isRemoval=False, isDouble=False):
 
 		if rotation is None:
 			rotation = 0
@@ -51,8 +61,8 @@ class FencingEntity:
 		self._y = FencingEntity._getY(x, y, length, height, rotation)
 		self._x2 = FencingEntity._getX2(x, y, length, height, rotation)
 		self._y2 = FencingEntity._getY2(x, y, length, height, rotation)
-		self._toRemove = toRemove
-		self._isDouble = double
+		self._isRemoval = isRemoval
+		self._isDouble = isDouble
 	
 	def __str__(self):
 		entityType = self._entityType
@@ -60,10 +70,10 @@ class FencingEntity:
 		if self._isDouble:
 			entityType = "double " + entityType
 		
-		if self._toRemove:
-			entityType += " (remove)"
+		if self._isRemoval:
+			entityType += " (removal)"
 
-		return str(self._length) + '" ' + entityType
+		return str(self._length) + 'in ' + entityType
 	
 	def displayString(self):
 		"""Return this item as it would be displayed to the user"""
@@ -82,8 +92,8 @@ class FencingEntity:
 		
 		string = self.lengthString() + " " + string
 		
-		if self._toRemove:
-			string += " (To Remove)"
+		if self._isRemoval:
+			string += " (Removal)"
 		
 		return string
 	
@@ -140,20 +150,20 @@ class FencingEntity:
 		return self._y2
 	
 	@property
-	def toRemove(self):
-		return self._toRemove
+	def isRemoval(self):
+		return self._isRemoval
 	
 	@property
 	def isDouble(self):
 		return self._isDouble
 	
 	def _inchesString(self):
-		return str(int(self._length)) + '"'
+		return str(self._length) + '"'
 	
 	def _feetString(self):
 		feet = self._length // 12
 		inchesLeft = self._length % 12
-		return str(int(feet)) + "'" + str(int(inchesLeft)) + '"'
+		return str(int(feet)) + "'" + str(inchesLeft) + '"'
 	
 	def lengthString(self):
 		if self._entityType == "fence":
