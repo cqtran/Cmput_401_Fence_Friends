@@ -425,7 +425,6 @@ def saveDiagram():
     layout_name = request.json['name']
     image = request.json['image']
     parsed = DiagramParser.parse(image)
-    print("\n\n\n\n", parsed, "\n\n\n\n")
 
     # If the layout already exists and the diagram is empty, do not update it
     # (tell the client to refresh the page instead to get back the old diagram)
