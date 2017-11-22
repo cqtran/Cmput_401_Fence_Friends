@@ -5,6 +5,20 @@ from decimal import Decimal
 # https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python/34374437#34374437
 # Accessed November 17, 2017
 
+class Post:
+	"""A post"""
+
+	def __init__(self, postType, x, y):
+		self.postType = postType
+		self._point = (x, y)
+	
+	def __str__(self):
+		return self.postType
+	
+	@property
+	def point(self):
+		return self._point
+
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
