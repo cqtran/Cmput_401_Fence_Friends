@@ -107,7 +107,7 @@ function setLayoutName(number, loading, newName) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-	
+
 	if (newName == null) {
 		newName = prompt("Layout Name", tab.layoutName);
 	}
@@ -551,7 +551,7 @@ function makePictures(pictures){
     var final = document.createElement('a');
 
 		img.src =  tbnPath + picture.thumbnail_name;
-		img.alt =  picture.thumbnail_name + ' not found';
+		img.alt =  'Thumbnail not found';
     final.setAttribute('href', '#');
     final.setAttribute('class', 'PictureThumbnail card zero-padding');
     // this is where you want to go when you click
@@ -570,6 +570,7 @@ function makePictures(pictures){
 }
 
 function imagesError(){
+	$('#projectPictures').empty();
   var img = document.createElement('img');
   console.log(tbnPath);
   img.src =  tbnPath + 'No_picture_available.png';
@@ -719,6 +720,23 @@ function uploadPicture(e) {
   });
 }
 
+function deletePicture(e) {
+	var image = document.getElementById("imagepreview");
+	var imageNameArr = image.src.split("/");
+	var imageName = imageNameArr[imageNameArr.length-1]
+	console.log(imageName)
+
+	$.ajax({
+			type: 'DELETE',
+			url: '/deletePicture/?picName=' + imageName + "&proj_id=" + proj_id,
+			processData: false,
+			contentType: false,
+			success: function(response){
+				getPics();
+			}
+	});
+}
+
 function saveLayoutSelection() {
 	var selectedId = document.getElementById("layout-tab" + activeLayout).dbId;
 	var selectionData = JSON.stringify({selected: selectedId});
@@ -808,9 +826,14 @@ $(document).ready(function(){
   $('#edit').click(function(){
     window.location.href= '/editprojectinfo?proj_id=' + proj_id;
   });
-  
+
   moreDetails();
   getProjects();
+});
+
+$('#imagepopup').on('click', '.btn-ok', function(e) {
+		console.log("Delete Picture");
+		deletePicture(e);
 });
 
 $('#imagepopup').on('shown.bs.modal', function (event) {
