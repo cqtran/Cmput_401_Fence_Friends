@@ -68,6 +68,12 @@ brew link fontconfig
 pip3 install WeasyPrint
 ```
 
+### Pillow
+
+```bash
+pip3 install pillow
+```
+
 Other:<br>
 http://weasyprint.readthedocs.io/en/stable/install.html
 
