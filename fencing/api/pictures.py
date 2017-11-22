@@ -10,7 +10,7 @@ from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
-
+import uuid
 # https://stackoverflow.com/questions/8631076/what-is-the-fastest-way-to-generate-image-thumbnails-in-python
 from PIL import Image
 
@@ -41,16 +41,16 @@ def getPictureList(project_id):
 #@roles_required('primary')
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
-    print("testgasdfasfj")
     print(request.method)
     if request.method == 'POST':
-        print("before")
         project_id = request.form['proj_id']
         picture = request.files['picture']
-        print("after")
+        # Parse file type and file name
         filename = secure_filename(picture.filename)
         filename, file_extension = os.path.splitext(filename)
         if filename != '':
+            # Generate a unique file name to store the file
+            filename = str(uuid.uuid4())
             try:
                 # Store filepath into the database
                 newPicture = Picture(project_id = project_id,
@@ -98,3 +98,40 @@ def uploadPicture():
             except:
                 return bad_request("Invalid project id or an error when saving the file has occured")
         return bad_request("No file provided")
+
+@pictureBlueprint.route('/deletePicture/', methods = ['DELETE'])
+#@login_required
+#@roles_required('primary')
+def deletePicture():
+    if request.method == 'DELETE':
+        # Grab arguments
+        filename = request.args.get('picName')
+        project_id = request.args.get('proj_id')
+        print(filename)
+        print(project_id)
+        if filename != '':
+            # Query and find the picture in the database
+            picToDelete = dbSession.query(Picture).filter(Picture.project_id == project_id)
+            picToDelete = picToDelete.filter(Picture.file_name == filename)
+
+            picFilenames = picToDelete.all()
+            if len(picFilenames) == 0:
+                return bad_request("Invalid picture name or project id")
+
+            # Delete picture and thumbnail files
+            try:
+                picturePath = os.path.join(app_root, pictureDir, picFilenames[0].file_name)
+                os.remove(picturePath)
+            except:
+                print('Picture at ' + picturePath + ' does not exist')
+
+            try:
+                thumbnailPath = os.path.join(app_root, thumbnailDir, picFilenames[0].thumbnail_name)
+                os.remove(thumbnailPath)
+            except:
+                print('Thumbnail at ' + thumbnailPath + ' does not exist')
+
+            # Remove picture from database
+            picToDelete.delete()
+            dbSession.commit()
+        return "{}"
