@@ -15,6 +15,20 @@ class Post:
 	def __str__(self):
 		return self.postType
 	
+	def displayString(self):
+		"""Return this item as it would be displayed to the user"""
+		if self.postType == "cornerPost":
+			return "Corner Post"
+
+		if self.postType == "endPost":
+			return "End Post"
+		
+		if self.postType == "tPost":
+			return "T Post"
+		
+		print("Warning: unknown post type")
+		return str(self)
+	
 	@property
 	def point(self):
 		return self._point
@@ -50,6 +64,28 @@ class FencingEntity:
 			entityType += " (remove)"
 
 		return str(self._length) + '" ' + entityType
+	
+	def displayString(self):
+		"""Return this item as it would be displayed to the user"""
+		if self._entityType == "fence":
+			string = "Fence"
+		
+		elif self._entityType == "gate":
+			string = "Gate"
+		
+		else:
+			print("Warning: unknown fencing attribute type")
+			return str(self)
+		
+		if self._isDouble:
+			string = "Double " + string
+		
+		string = self.lengthString() + " " + string
+		
+		if self._toRemove:
+			string += " (To Remove)"
+		
+		return string
 	
 	@property
 	def entityType(self):

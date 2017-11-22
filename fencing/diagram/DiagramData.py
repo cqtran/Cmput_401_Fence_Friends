@@ -25,6 +25,16 @@ class DiagramData:
 		
 		return str(strings)
 	
+	def __iter__(self):
+		for fence in self._fences:
+			yield fence
+		
+		for gate in self._gates:
+			yield gate
+		
+		for post in self.posts():
+			yield post
+	
 	@property
 	def empty(self):
 		if self.hasBuildings:
