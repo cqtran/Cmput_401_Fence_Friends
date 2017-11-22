@@ -6,6 +6,9 @@ function removeCust(customer, torem){
 
 //add customer to html
 function addToList(customer){
+  if(chosenCustomers.length > 0){
+    return;
+  }
   //append to list of customers
   chosenCustomers.push(customer.cust_id);
   console.log(chosenCustomers);
