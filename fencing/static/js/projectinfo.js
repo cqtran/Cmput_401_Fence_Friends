@@ -175,6 +175,14 @@ function setActiveLayoutId(dbId) {
 function setActiveDisplayStrings(displayStrings) {
 	var display = $("#layout" + activeLayout).find("p:first");
 	display.html("");
+	var hr = $("#layout" + activeLayout).find("hr:first");
+	
+	if (displayStrings.length == 0) {
+		hr.css("display", "none");
+		return;
+	}
+
+	hr.css("display", "block");
 	var string;
 
 	for (var i = 0; i < displayStrings.length; i++) {
