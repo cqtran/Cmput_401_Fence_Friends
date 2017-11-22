@@ -1,37 +1,35 @@
-from diagram.FencingEntity import FencingEntity
+from diagram.FencingEntity import FencingEntity, Post
+from diagram.PointMath import PointMath
 
 class DiagramData:
 	"""Data extracted from a fence diagram"""
 
+	_maxPointDifference = 20.0
+
 	def __init__(self):
 		self._fences = []
 		self._gates = []
-	
-	def __iter__(self):
-		for fencingEntity in self._fences:
-			yield fencingEntity
-		
-		for fencingEntity in self._gates:
-			yield fencingEntity
+		self.hasBuildings = False
 	
 	def __str__(self):
-		fenceStrings = ', '.join([str(fence) for fence in self._fences])
-		gateStrings = ', '.join([str(gate) for gate in self._gates])
+		strings = []
 
-		if len(self._fences) > 0 and len(self._gates) > 0:
-			return '[' + fenceStrings + ', ' + gateStrings + ']'
+		for fence in self._fences:
+			strings.append(str(fence))
 		
-		elif len(self._fences) > 0:
-			return '[' + fenceStrings + ']'
+		for gate in self._gates:
+			strings.append(str(gate))
 		
-		elif len(self._gates) > 0:
-			return '[' + gateStrings + ']'
+		for post in self.posts():
+			strings.append(str(post))
 		
-		else:
-			return '[]'
+		return str(strings)
 	
 	@property
 	def empty(self):
+		if self.hasBuildings:
+			return False
+
 		return len(self._fences) == 0 and len(self._gates) == 0
 
 	@property
@@ -41,6 +39,90 @@ class DiagramData:
 	@property
 	def gates(self):
 		return self._gates
+	
+	def _pointsClose(point1, point2):
+		"""Return whether the given points are close"""
+		return abs(point1[0] - point2[0]) <= DiagramData._maxPointDifference \
+			and abs(point1[1] - point2[1]) <= DiagramData._maxPointDifference
+	
+	def _pointOnFence_(self, point, fence):
+		"""Return whether the given point is on the given fence"""
+		segmentPoint1 = (fence.x, fence.y)
+		segmentPoint2 = (fence.x2, fence.y2)
+		intersection = PointMath.perpendicularIntersection(point,
+			segmentPoint1, segmentPoint2)
+
+		if PointMath.pointInSegment(intersection, segmentPoint1,
+			segmentPoint2):
+
+			return DiagramData._pointsClose(point, intersection)
+		
+		return False
+	
+	def _pointOnFence(self, point):
+		"""
+		Return whether the given point is on a fence, but not at one of its ends
+		"""
+		for fence in self._fences:
+			if DiagramData._pointsClose(point, (fence.x, fence.y)):
+				continue
+			
+			if DiagramData._pointsClose(point, (fence.x2, fence.y2)):
+				continue
+
+			if self._pointOnFence_(point, fence):
+				return True
+		
+		return False
+	
+	def posts(self):
+		posts = self._posts()
+
+		for post in posts:
+			if post.postType == "cornerPost":
+				continue
+			
+			if self._pointOnFence(post.point):
+				post.postType = "tPost"
+		
+		return posts
+	
+	def _posts(self):
+		pointCounts = {}
+
+		for fence in self._fences:
+			foundPoint1 = False
+			foundPoint2 = False
+			point1 = (fence.x, fence.y)
+			point2 = (fence.x2, fence.y2)
+
+			for p in pointCounts:
+				if not foundPoint1 and DiagramData._pointsClose(point1, p):
+
+					pointCounts[p] += 1
+					foundPoint1 = True
+				
+				if not foundPoint2 and DiagramData._pointsClose(point2, p):
+
+					pointCounts[p] += 1
+					foundPoint2 = True
+				
+			if not foundPoint1:
+				pointCounts[point1] = 1
+				
+			if not foundPoint2:
+				pointCounts[point2] = 1
+		
+		posts = []
+		
+		for p in pointCounts:
+			if pointCounts[p] > 1:
+				posts.append(Post("cornerPost", p[0], p[1]))
+			
+			else:
+				posts.append(Post("endPost", p[0], p[1]))
+		
+		return posts
 
 	def addFence(self, length, height, x, y, rotation, toRemove=False):
 		self._fences.append(FencingEntity('fence', length, height, x, y,

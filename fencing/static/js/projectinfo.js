@@ -17,6 +17,49 @@ var tbnPath;
 var pictureList;
 var proj_id;
 
+var punctuation = "\\.,\\)\\?\"':\\!;\\]\\}";
+
+var urlRegex =
+	RegExp(
+		"(?:^|\\s)https?:\\/\\/[^\\s]+?(?=[" + punctuation + "]?(?:$|\\s))",
+		"g"
+	);
+var urlReplacement = '<a class="text-primary" href="$&" target="_blank">$&</a>';
+
+// From:
+// https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
+// Accessed November 21, 2017
+var entityMap = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#39;',
+	'/': '&#x2F;',
+	'`': '&#x60;',
+	'=': '&#x3D;'
+};
+
+var angleBracketMap = {
+	'<': '&lt;',
+	'>': '&gt;'
+}
+
+// From:
+// https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
+// Accessed November 21, 2017
+function escapeHtml(string) {
+	return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
+function escapeAngleBrackets(string) {
+	return String(string).replace(/[<>]/g, function (s) {
+		return angleBracketMap[s];
+	});
+}
+
 function setProgressTitle(title) {
 	var progressTitle = document.getElementById("progressTitle");
 	progressTitle.innerHTML = title;
@@ -64,12 +107,14 @@ function setLayoutName(number, loading, newName) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-	
+
 	if (newName == null) {
 		newName = prompt("Layout Name", tab.layoutName);
 	}
 
 	if (newName != null) {
+
+		newName = escapeHtml(newName);
 
 		tab.layoutName = newName;
 
@@ -100,6 +145,8 @@ function setAppearanceName(number, loading, newName) {
 	}
 
 	if (newName != null) {
+
+		newName = escapeHtml(newName);
 
 		tab.appearanceName = newName;
 
@@ -168,7 +215,7 @@ function addLayout(loading) {
 
 	if (!loading) {
 		setLayoutName(activeLayout, true);
-		saveActiveLayout();
+		saveActiveLayout(true);
 	}
 }
 
@@ -216,11 +263,15 @@ function addAppearance(loading) {
 
 	if (!loading) {
 		setAppearanceName(activeAppearance, true);
-		saveActiveAppearance();
+		saveActiveAppearance(true);
 	}
 }
 
 function removeLayout(number) {
+	if (!confirm("Delete Layout?")) {
+		return;
+	}
+
 	removeLayoutFromDb(number);
 
 	var element = document.getElementById("layout" + number);
@@ -240,6 +291,10 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
+	if (!confirm("Delete Appearance?")) {
+		return;
+	}
+
 	removeAppearanceFromDb(number);
 
 	var element = document.getElementById("appearance" + number);
@@ -282,13 +337,18 @@ function saveActiveLayoutName() {
   });
 }
 
-function saveActiveLayout() {
+function saveActiveLayout(includeSelection) {
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
 	var layout_name = tab.layoutName;
-	var dat =
-		JSON.stringify({image: img, layoutId: layout_id, name: layout_name});
+	var dat = {image: img, layoutId: layout_id, name: layout_name};
+
+	if (includeSelection) {
+		dat["saveSelection"] = "true";
+	}
+
+	var dat = JSON.stringify(dat);
 
 	$.ajax({
     type: 'POST',
@@ -313,19 +373,25 @@ function saveActiveLayout() {
   });
 }
 
-function saveActiveAppearance() {
+function saveActiveAppearance(includeSelection) {
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
 	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
 	var fenceHeight =
 	document.getElementById("fenceHeight" + activeAppearance).value;
-	var dat = JSON.stringify({
+	var dat = {
 		appearanceId: appearance_id,
 		name: appearance_name,
 		panelGap: panelGap,
 		fenceHeight: fenceHeight
-	});
+	};
+
+	if (includeSelection) {
+		dat["saveSelection"] = "true";
+	}
+
+	var dat = JSON.stringify(dat);
 
 	$.ajax({
     type: 'POST',
@@ -421,10 +487,14 @@ function loadAppearances(appearances){
 }
 
 function setProjectInfo(project){
-	document.getElementById('project-name').innerHTML = project[0].project_name;
-	document.getElementById('status').innerHTML = "■ " + project[0].status_name;
-	document.getElementById('address').innerHTML = project[0].address;
-	document.getElementById('start-date').innerHTML = project[0].start_date;
+	document.getElementById('project-name').innerHTML =
+		escapeHtml(project[0].project_name);
+	document.getElementById('status').innerHTML =
+		"■ " + escapeHtml(project[0].status_name);
+	document.getElementById('address').innerHTML =
+		escapeHtml(project[0].address);
+	document.getElementById('start-date').innerHTML =
+		escapeHtml(project[0].start_date);
 	if(project[0].status_name == "Paid"){
 	  document.getElementById("status").setAttribute('class', 'float-right paid-text');
 	}
@@ -460,11 +530,16 @@ function setProjectInfo(project){
 	document.getElementById('project_id').setAttribute('value', proj_id);
 
 	if (project[0].end_date != null) {
-		document.getElementById('end_date').innerHTML = project[0].end_date;
+		document.getElementById('end_date').innerHTML =
+			escapeHtml(project[0].end_date);
 	}
 	var note = project[0].note;
-	if (!(note == null || note.trim() == "")) {
-		document.getElementById('savednote').innerHTML = project[0].note;
+	if (note == null) {
+		note = "";
+	}
+	note = escapeAngleBrackets(note).replace(urlRegex, urlReplacement);
+	if (note.trim() != "") {
+		document.getElementById('savednote').innerHTML = note;
 		document.getElementById('noteContainer').style.display = "block";
 	}
 }
@@ -476,7 +551,7 @@ function makePictures(pictures){
     var final = document.createElement('a');
 
 		img.src =  tbnPath + picture.thumbnail_name;
-		img.alt =  picture.thumbnail_name + ' not found';
+		img.alt =  'Thumbnail not found';
     final.setAttribute('href', '#');
     final.setAttribute('class', 'PictureThumbnail card zero-padding');
     // this is where you want to go when you click
@@ -495,6 +570,7 @@ function makePictures(pictures){
 }
 
 function imagesError(){
+	$('#projectPictures').empty();
   var img = document.createElement('img');
   console.log(tbnPath);
   img.src =  tbnPath + 'No_picture_available.png';
@@ -644,6 +720,23 @@ function uploadPicture(e) {
   });
 }
 
+function deletePicture(e) {
+	var image = document.getElementById("imagepreview");
+	var imageNameArr = image.src.split("/");
+	var imageName = imageNameArr[imageNameArr.length-1]
+	console.log(imageName)
+
+	$.ajax({
+			type: 'DELETE',
+			url: '/deletePicture/?picName=' + imageName + "&proj_id=" + proj_id,
+			processData: false,
+			contentType: false,
+			success: function(response){
+				getPics();
+			}
+	});
+}
+
 function saveLayoutSelection() {
 	var selectedId = document.getElementById("layout-tab" + activeLayout).dbId;
 	var selectionData = JSON.stringify({selected: selectedId});
@@ -733,9 +826,14 @@ $(document).ready(function(){
   $('#edit').click(function(){
     window.location.href= '/editprojectinfo?proj_id=' + proj_id;
   });
-  
+
   moreDetails();
   getProjects();
+});
+
+$('#imagepopup').on('click', '.btn-ok', function(e) {
+		console.log("Delete Picture");
+		deletePicture(e);
 });
 
 $('#imagepopup').on('shown.bs.modal', function (event) {
