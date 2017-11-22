@@ -36,7 +36,7 @@ class DiagramData:
 			yield post
 	
 	def displayStrings(self):
-		"""I"""
+		"""Return the items as they would be displayed to the user"""
 		counts = {}
 		strings = []
 
