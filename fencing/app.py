@@ -4,7 +4,6 @@ from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
 from database.models import User, Role, Company, Customer, Project, Status, Picture
-from diagram.DiagramParser import DiagramParser
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
@@ -20,7 +19,6 @@ import api.customers as Customers
 import api.projects as Projects
 import api.pictures as Pictures
 import api.statuses as Statuses
-import api.admin as Admins
 import api.layouts as Layouts
 import api.appearances as Appearances
 #import api.errors as Errors
@@ -39,13 +37,12 @@ app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
 app.register_blueprint(Pictures.pictureBlueprint)
 app.register_blueprint(Statuses.statusBlueprint)
-app.register_blueprint(Admins.adminBlueprint)
 app.register_blueprint(Users.userBlueprint)
 app.register_blueprint(Layouts.layoutBlueprint)
 app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.json_encoder = MyJSONEncoder
-app.secret_key = os.urandom(24) # used for sessions
+#app.secret_key = os.urandom(24) # used for sessions
 
 app.config['DEBUG'] = True
 app.config['TESTING'] = False
@@ -253,18 +250,7 @@ def deactivateUser():
 @login_required
 @roles_required('primary')
 def newcustomer():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        pn = request.form['pn']
-        address = request.form['address']
-        # add customer to database
-        success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
-
-        return redirect(url_for('customers', company = current_user.company_name))
-
-    else:
-        return render_template("newcustomer.html", company = current_user.company_name)
+    return render_template("newcustomer.html", company = current_user.company_name)
 
 @app.route('/editcustomer/', methods=['GET', 'POST'])
 @login_required
@@ -391,64 +377,6 @@ def projectinfo():
     else:
         # POST?
         return render_template("projectinfo.html")
-
-@app.route('/removeLayout/', methods = ['POST'])
-@login_required
-@roles_required('primary')
-def removeLayout():
-    project_id = request.args.get('proj_id')
-    layout_id = request.json['layoutId']
-    Layouts.removeLayout(layout_id)
-    return "{}"
-
-@app.route('/removeAppearance/', methods = ['POST'])
-@login_required
-@roles_required('primary')
-def removeAppearance():
-    project_id = request.args.get('proj_id')
-    appearance_id = request.json['appearanceId']
-    Appearances.removeAppearance(appearance_id)
-    return "{}"
-
-@app.route('/saveDiagram/', methods = ['POST'])
-@login_required
-@roles_required('primary')
-def saveDiagram():
-    # parse draw io image and get coordinates and measurements
-    project_id = request.args.get('proj_id')
-
-    layout_id = None
-
-    if 'layoutId' in request.json:
-        layout_id = request.json['layoutId']
-
-    layout_name = request.json['name']
-    image = request.json['image']
-    parsed = DiagramParser.parse(image)
-
-    # If the layout already exists and the diagram is empty, do not update it
-    # (tell the client to refresh the page instead to get back the old diagram)
-    if layout_id is not None:
-        if parsed is None:
-            Layouts.updateLayoutName(layout_id, layout_name)
-            return '{"reload":1}'
-
-        if parsed.empty:
-            Layouts.updateLayoutName(layout_id, layout_name)
-            return '{"reload":1}'
-
-    layout_id = Layouts.updateLayoutInfo(project_id = project_id,
-        layout_id = layout_id, layout_name = layout_name,
-        layout_info = image)
-
-    if "saveSelection" in request.json:
-        project = dbSession.query(Project).filter(
-            Project.project_id == project_id).one()
-        project.layout_selected = layout_id
-        dbSession.commit()
-
-    return jsonify({"layoutId": layout_id,
-        "displayStrings": parsed.displayStrings()})
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required
