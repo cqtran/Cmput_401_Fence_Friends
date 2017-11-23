@@ -6,8 +6,7 @@
  */
 function pointsToFeet(points)
 {
-	var inchesInPoint = 10;
-	var totalInches = points / inchesInPoint;
+	var totalInches = points;
 	var feet = Math.floor(totalInches / 12);
 	var inchesLeft = totalInches % 12;
 	var feetString = feet + "'";

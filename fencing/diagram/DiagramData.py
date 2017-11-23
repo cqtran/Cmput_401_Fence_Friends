@@ -114,7 +114,7 @@ class DiagramData:
 
 		# Determine which posts are t posts
 		for post in posts:
-			if post.postType == "cornerPost":
+			if post.postType != "endPost":
 				continue
 			
 			if self._postOnFence(post):
@@ -156,14 +156,20 @@ class DiagramData:
 		posts = []
 		
 		for p in pointAddCounts:
-			if pointAddCounts[p] > 1:
+			if pointAddCounts[p] > 2:
+				posts.append(Post("tPost", p[0], p[1], isRemoval=False))
+			
+			elif pointAddCounts[p] > 1:
 				posts.append(Post("cornerPost", p[0], p[1], isRemoval=False))
 			
 			else:
 				posts.append(Post("endPost", p[0], p[1], isRemoval=False))
 		
 		for p in pointRemoveCounts:
-			if pointRemoveCounts[p] > 1:
+			if pointAddCounts[p] > 2:
+				posts.append(Post("tPost", p[0], p[1], isRemoval=True))
+
+			elif pointRemoveCounts[p] > 1:
 				posts.append(Post("cornerPost", p[0], p[1], isRemoval=True))
 			
 			else:
