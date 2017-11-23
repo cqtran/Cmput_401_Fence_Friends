@@ -142,5 +142,5 @@ def deleteImageHelper(image_filename):
         filePath = os.path.join(app_root, directory, image_filename)
         os.remove(filePath)
     except:
-        print('Image at ' + filePath + ' does not exist')
+        print('Could not delete image at: ' + filePath)
     return
