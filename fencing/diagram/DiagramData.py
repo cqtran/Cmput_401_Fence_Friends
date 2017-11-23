@@ -25,6 +25,35 @@ class DiagramData:
 		
 		return str(strings)
 	
+	def __iter__(self):
+		for fence in self._fences:
+			yield fence
+		
+		for gate in self._gates:
+			yield gate
+		
+		for post in self.posts():
+			yield post
+	
+	def displayStrings(self):
+		"""Return the items as they would be displayed to the user"""
+		counts = {}
+		strings = []
+
+		for item in self:
+			string = item.displayString()
+
+			if string in counts:
+				counts[string] += 1
+			
+			else:
+				counts[string] = 1
+		
+		for string in counts:
+			strings.append(str(counts[string]) + "× " + string)
+		
+		return strings
+	
 	@property
 	def empty(self):
 		if self.hasBuildings:
@@ -59,11 +88,16 @@ class DiagramData:
 		
 		return False
 	
-	def _pointOnFence(self, point):
+	def _postOnFence(self, post):
 		"""
-		Return whether the given point is on a fence, but not at one of its ends
+		Return whether the given post is on a fence, but not at one of its ends
 		"""
+		point = post.point
+
 		for fence in self._fences:
+			if fence.isRemoval != post.isRemoval:
+				continue
+
 			if DiagramData._pointsClose(point, (fence.x, fence.y)):
 				continue
 			
@@ -78,17 +112,19 @@ class DiagramData:
 	def posts(self):
 		posts = self._posts()
 
+		# Determine which posts are t posts
 		for post in posts:
 			if post.postType == "cornerPost":
 				continue
 			
-			if self._pointOnFence(post.point):
+			if self._postOnFence(post):
 				post.postType = "tPost"
 		
 		return posts
 	
 	def _posts(self):
-		pointCounts = {}
+		pointAddCounts = {}
+		pointRemoveCounts = {}
 
 		for fence in self._fences:
 			foundPoint1 = False
@@ -96,14 +132,18 @@ class DiagramData:
 			point1 = (fence.x, fence.y)
 			point2 = (fence.x2, fence.y2)
 
+			if fence.isRemoval:
+				pointCounts = pointRemoveCounts
+			
+			else:
+				pointCounts = pointAddCounts
+
 			for p in pointCounts:
 				if not foundPoint1 and DiagramData._pointsClose(point1, p):
-
 					pointCounts[p] += 1
 					foundPoint1 = True
 				
 				if not foundPoint2 and DiagramData._pointsClose(point2, p):
-
 					pointCounts[p] += 1
 					foundPoint2 = True
 				
@@ -115,21 +155,28 @@ class DiagramData:
 		
 		posts = []
 		
-		for p in pointCounts:
-			if pointCounts[p] > 1:
-				posts.append(Post("cornerPost", p[0], p[1]))
+		for p in pointAddCounts:
+			if pointAddCounts[p] > 1:
+				posts.append(Post("cornerPost", p[0], p[1], isRemoval=False))
 			
 			else:
-				posts.append(Post("endPost", p[0], p[1]))
+				posts.append(Post("endPost", p[0], p[1], isRemoval=False))
+		
+		for p in pointRemoveCounts:
+			if pointRemoveCounts[p] > 1:
+				posts.append(Post("cornerPost", p[0], p[1], isRemoval=True))
+			
+			else:
+				posts.append(Post("endPost", p[0], p[1], isRemoval=True))
 		
 		return posts
 
-	def addFence(self, length, height, x, y, rotation, toRemove=False):
+	def addFence(self, length, height, x, y, rotation, isRemoval=False):
 		self._fences.append(FencingEntity('fence', length, height, x, y,
-			rotation, toRemove=toRemove))
+			rotation, isRemoval=isRemoval))
 	
-	def addGate(self, length, height, x, y, rotation, toRemove=False,
-		double=False):
+	def addGate(self, length, height, x, y, rotation, isRemoval=False,
+		isDouble=False):
 
 		self._gates.append(FencingEntity('gate', length, height, x, y, rotation,
-			toRemove=toRemove, double=double))
+			isRemoval=isRemoval, isDouble=isDouble))

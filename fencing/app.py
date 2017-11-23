@@ -3,7 +3,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, \
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
-from database.models import User, Role, Company, Customer, Project, Status
+from database.models import User, Role, Company, Customer, Project, Status, Picture
 from diagram.DiagramParser import DiagramParser
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
@@ -433,30 +433,40 @@ def saveDiagram():
     if layout_id is not None:
         if parsed is None:
             Layouts.updateLayoutName(layout_id, layout_name)
-            return '{"reload": 1}'
+            return '{"reload":1}'
 
         if parsed.empty:
             Layouts.updateLayoutName(layout_id, layout_name)
-            return '{"reload": 1}'
+            return '{"reload":1}'
 
     layout_id = Layouts.updateLayoutInfo(project_id = project_id,
         layout_id = layout_id, layout_name = layout_name,
         layout_info = image)
-    
+
     if "saveSelection" in request.json:
         project = dbSession.query(Project).filter(
             Project.project_id == project_id).one()
         project.layout_selected = layout_id
         dbSession.commit()
 
-    return "{" + '"layoutId": {quote_id}'.format(quote_id=layout_id) + "}"
+    return jsonify({"layoutId": layout_id,
+        "displayStrings": parsed.displayStrings()})
 
 @app.route('/deleteproject/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def deleteproject():
+    proj_id = request.args.get("id")
+
+    # Delete image files
+    pictures = dbSession.query(Picture).filter(Picture.project_id == proj_id).all()
+    for image in pictures:
+        Pictures.deleteImageHelper(image.file_name)
+        Pictures.deleteImageHelper(image.thumbnail_name)
+
+    # Cascade delete all information related to project
     project = dbSession.query(Project).filter(
-        Project.project_id == request.args.get("id")).one()
+        Project.project_id == proj_id).one()
     dbSession.delete(project)
     dbSession.commit()
     return redirect(url_for("projects"))
