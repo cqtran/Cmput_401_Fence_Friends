@@ -38,6 +38,16 @@ def saveAppearance():
     return "{" + '"appearanceId": {appearance_id}'.format(
         appearance_id=appearance_id) + "}"
 
+
+@appearanceBlueprint.route('/removeAppearance/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeAppearance():
+    project_id = request.args.get('proj_id')
+    appearance_id = request.json['appearanceId']
+    removeAppearance(appearance_id)
+    return "{}"
+
 def createAppearance(project_id):
     newAppearance = Appearance(project_id = project_id,
         appearance_name = "Appearance 1", panel_gap = "0.01", height = "0.01")

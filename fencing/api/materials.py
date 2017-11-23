@@ -60,12 +60,13 @@ def uploadPrice():
                 print('MATERIAL: ' + row[0] + ' | ' + row[2] + ' | ' + category + ' | ' + row[5])
                 material_name = row[0]
                 my_price = row[2]
+                pieces_in_bundle = row[4]
                 note = row[5]
                 # Insert data into db
 
-                # newMaterial = Material()
-                #dbSession.add(newMaterial)
+                newMaterial = Material(material_name = material_name, my_price = my_price, pieces_in_bundle = pieces_in_bundle, category = category, note = note, company_name = current_user.company_name)
+                dbSession.add(newMaterial)
             # Otherwise, ignore row
-        #dbSession.commit()
+        dbSession.commit()
         return created_request('Prices were changed')
     return bad_request('Oops')

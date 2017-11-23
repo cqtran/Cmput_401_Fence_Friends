@@ -185,7 +185,7 @@ class Appearance(Base):
         self.panel_gap = panel_gap
         self.height = height
         # TODO: initialize data for other columns
-    
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -201,7 +201,21 @@ class Material(Base):
     __tablename__ = 'material'
     material_id = Column(Integer, primary_key=True)
     material_name = Column(String(255))
-    cost = Column(Numeric)
+    my_price = Column(Numeric)
+    pieces_in_bundle = Column(Numeric)
+    category = Column(String(255))
+    note = Column(String(255))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+    last_update = Column(DateTime(), default = datetime.datetime.utcnow)
+
+    def __init__(self, material_name, my_price, pieces_in_bundle, category, note, company_name, material_id = None):
+        self.material_id = material_id
+        self.material_name = material_name
+        self.my_price = my_price
+        self.pieces_in_bundle = pieces_in_bundle
+        self.category = category
+        self.note = note
+        self.company_name = company_name
 
 class Picture(Base):
     __tablename__ = 'picture'

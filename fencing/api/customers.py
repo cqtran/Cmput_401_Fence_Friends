@@ -44,15 +44,6 @@ def getCustomer(customer_id):
             return bad_request("The customer was not found")
         return jsonify(customer)
 
-@customerBlueprint.route('/autocomplete/', methods=["GET"])
-@login_required
-@roles_required('primary')
-def autocomplete():
-    # pulls in customers to populate dropdown table in new project
-    search = request.args.get("q")
-    customers = dbSession.query(Customer).filter(Customer.company_name == current_user.company_name).all()
-    return jsonify(customers)
-
 def addCustomer(name, email, ph, addr, cname):
     """Add a customer to the database with the given field values"""
     customer = Customer(email = email, first_name = name, cellphone = ph, company_name = cname)
