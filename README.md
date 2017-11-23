@@ -45,8 +45,6 @@ pip3 install mysql-connector==2.1.4
 pip3 install flask-sqlalchemy
 ```
 
-flask-sqlalchemy
-
 ### bcrypt
 
 ```bash
@@ -72,6 +70,12 @@ pip3 install WeasyPrint
 
 Other:<br>
 http://weasyprint.readthedocs.io/en/stable/install.html
+
+### Pillow
+
+```bash
+pip3 install pillow
+```
 
 ### Requests
 

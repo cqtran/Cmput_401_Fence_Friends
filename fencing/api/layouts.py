@@ -8,10 +8,13 @@ from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
+from diagram.DiagramParser import DiagramParser
 
 layoutBlueprint = Blueprint('layoutBlueprint', __name__, template_folder='templates')
 
 @layoutBlueprint.route('/saveLayoutName/', methods=['POST'])
+@login_required
+@roles_required('primary')
 def saveLayoutName():
     """ Update a layout's name """
     layout_id = request.json['layoutId']
@@ -21,32 +24,58 @@ def saveLayoutName():
     dbSession.commit()
     return "{}"
 
-@layoutBlueprint.route('/getLayoutList/<int:project_id>', methods=['GET'])
-#@login_required
-#@roles_required('primary')
-def getLayoutList(project_id):
-    """ Returns a list of layouts of a given project id """
-    pass
+@layoutBlueprint.route('/removeLayout/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def removeLayout():
+    project_id = request.args.get('proj_id')
+    layout_id = request.json['layoutId']
+    removeLayout(layout_id)
+    return "{}"
 
-@layoutBlueprint.route('/getLayout/<int:layout_id>', methods=['GET'])
-#@login_required
-#@roles_required('primary')
-def getLayout(layout_id):
-	""" Returns a layout of the given layout id """
-	pass
+@layoutBlueprint.route('/saveDiagram/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def saveDiagram():
+    # parse draw io image and get coordinates and measurements
+    project_id = request.args.get('proj_id')
 
-@layoutBlueprint.route('/updateLayout/<int:layout_id>', methods=['pass'])
-#@login_required
-#@roles_required('primary')
-def updateLayout(layout_id):
-	""" Returns a layout of the given layout id """
-	pass
+    layout_id = None
 
-def getLayoutHelper(project_id):
+    if 'layoutId' in request.json:
+        layout_id = request.json['layoutId']
+
+    layout_name = request.json['name']
+    image = request.json['image']
+    parsed = DiagramParser.parse(image)
+
+    # If the layout already exists and the diagram is empty, do not update it
+    # (tell the client to refresh the page instead to get back the old diagram)
+    if layout_id is not None:
+        if parsed is None:
+            updateLayoutName(layout_id, layout_name)
+            return '{"reload":1}'
+
+        if parsed.empty:
+            updateLayoutName(layout_id, layout_name)
+            return '{"reload":1}'
+
+    layout_id = updateLayoutInfo(project_id = project_id,
+        layout_id = layout_id, layout_name = layout_name,
+        layout_info = image)
+
+    if "saveSelection" in request.json:
+        project = dbSession.query(Project).filter(
+            Project.project_id == project_id).one()
+        project.layout_selected = layout_id
+        dbSession.commit()
+
+    return jsonify({"layoutId": layout_id,
+        "displayStrings": parsed.displayStrings()})
+def getLayouts(project_id):
 #TODO: function should be renamed in the future for clarity purposes
-	layouts = dbSession.query(Layout).filter(Layout.project_id == project_id).all()
-	json_response = [i.serialize for i in layouts]
-	return json_response
+    layouts = dbSession.query(Layout).filter(Layout.project_id == project_id).all()
+    return layouts
 
 def updateLayoutName(layout_id, layout_name):
     layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
