@@ -1,3 +1,5 @@
+var confirmed = false;
+
 var activeLayout = "1";
 var activeAppearance = "1";
 
@@ -43,6 +45,34 @@ var entityMap = {
 var angleBracketMap = {
 	'<': '&lt;',
 	'>': '&gt;'
+}
+
+function setConfirmed() {
+	confirmed = true;
+}
+
+function onConfirm(f, message, title) {
+	if (message == null) {
+		message = '';
+	}
+
+	if (title == null) {
+		title = '';
+	}
+
+	$('#confirmMessage').html(message);
+	$('#confirmTitle').html(title);
+	var modal = $('#confirm');
+	modal.modal('show');
+
+	modal.one('hidden.bs.modal',
+		function() {
+			if (confirmed) {
+				confirmed = false;
+				f();
+			}
+		}
+	);
 }
 
 // From:
@@ -287,10 +317,15 @@ function addAppearance(loading) {
 }
 
 function removeLayout(number) {
-	if (!confirm("Delete Layout?")) {
-		return;
+	var f = function() {
+		removeLayout_(number);
 	}
+	
+	onConfirm(f, "Clicking delete will permanently delete the layout.",
+		"Delete Layout?")
+}
 
+function removeLayout_(number) {
 	removeLayoutFromDb(number);
 
 	var element = document.getElementById("layout" + number);
@@ -310,10 +345,15 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
-	if (!confirm("Delete Appearance?")) {
-		return;
+	var f = function() {
+		removeAppearance_(number);
 	}
+	
+	onConfirm(f, "Clicking delete will permanently delete the appearance.",
+		"Delete Appearance?")
+}
 
+function removeAppearance_(number) {
 	removeAppearanceFromDb(number);
 
 	var element = document.getElementById("appearance" + number);
