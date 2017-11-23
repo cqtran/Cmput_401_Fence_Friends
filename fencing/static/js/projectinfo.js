@@ -555,6 +555,7 @@ function setProjectInfo(project){
 		"■ " + escapeHtml(project[0].status_name);
 	document.getElementById('address').innerHTML =
 		escapeHtml(project[0].address);
+		document.getElementById('address').href = 'https://www.google.com/maps/place/'+project[0].address;
 	document.getElementById('start-date').innerHTML =
 		escapeHtml(project[0].start_date);
 	if(project[0].status_name == "Paid"){

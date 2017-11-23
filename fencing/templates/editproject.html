@@ -36,9 +36,7 @@
       <div class="modal-body">Clicking delete will permanently delete the project.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-        <form method="post" action="{{ url_for('deleteproject', id=request.args.get('proj_id')) }}">
-            <input class="btn btn-danger btn-block" type="submit" value="Delete Project"/>
-        </form>
+        <button type="button" class="btn btn-danger" id="delete-project"/>Delete</button>
       </div>
     </div>
   </div>
