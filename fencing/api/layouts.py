@@ -42,11 +42,10 @@ def updateLayout(layout_id):
 	""" Returns a layout of the given layout id """
 	pass
 
-def getLayoutHelper(project_id):
+def getLayouts(project_id):
 #TODO: function should be renamed in the future for clarity purposes
-	layouts = dbSession.query(Layout).filter(Layout.project_id == project_id).all()
-	json_response = [i.serialize for i in layouts]
-	return json_response
+    layouts = dbSession.query(Layout).filter(Layout.project_id == project_id).all()
+    return layouts
 
 def updateLayoutName(layout_id, layout_name):
     layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()

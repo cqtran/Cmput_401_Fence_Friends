@@ -88,11 +88,16 @@ class DiagramData:
 		
 		return False
 	
-	def _pointOnFence(self, point):
+	def _postOnFence(self, post):
 		"""
-		Return whether the given point is on a fence, but not at one of its ends
+		Return whether the given post is on a fence, but not at one of its ends
 		"""
+		point = post.point
+
 		for fence in self._fences:
+			if fence.isRemoval != post.isRemoval:
+				continue
+
 			if DiagramData._pointsClose(point, (fence.x, fence.y)):
 				continue
 			
@@ -112,14 +117,14 @@ class DiagramData:
 			if post.postType == "cornerPost":
 				continue
 			
-			if self._pointOnFence(post.point):
+			if self._postOnFence(post):
 				post.postType = "tPost"
 		
 		return posts
 	
 	def _posts(self):
-		pointCounts = {}
-		pointRemovals = set()
+		pointAddCounts = {}
+		pointRemoveCounts = {}
 
 		for fence in self._fences:
 			foundPoint1 = False
@@ -128,17 +133,17 @@ class DiagramData:
 			point2 = (fence.x2, fence.y2)
 
 			if fence.isRemoval:
-				pointRemovals.add(point1)
-				pointRemovals.add(point2)
+				pointCounts = pointRemoveCounts
+			
+			else:
+				pointCounts = pointAddCounts
 
 			for p in pointCounts:
 				if not foundPoint1 and DiagramData._pointsClose(point1, p):
-
 					pointCounts[p] += 1
 					foundPoint1 = True
 				
 				if not foundPoint2 and DiagramData._pointsClose(point2, p):
-
 					pointCounts[p] += 1
 					foundPoint2 = True
 				
@@ -150,16 +155,19 @@ class DiagramData:
 		
 		posts = []
 		
-		for p in pointCounts:
-			isRemoval = p in pointRemovals
-
-			if pointCounts[p] > 1:
-				posts.append(Post("cornerPost", p[0], p[1],
-					isRemoval=isRemoval))
+		for p in pointAddCounts:
+			if pointAddCounts[p] > 1:
+				posts.append(Post("cornerPost", p[0], p[1], isRemoval=False))
 			
 			else:
-				posts.append(Post("endPost", p[0], p[1],
-					isRemoval=isRemoval))
+				posts.append(Post("endPost", p[0], p[1], isRemoval=False))
+		
+		for p in pointRemoveCounts:
+			if pointRemoveCounts[p] > 1:
+				posts.append(Post("cornerPost", p[0], p[1], isRemoval=True))
+			
+			else:
+				posts.append(Post("endPost", p[0], p[1], isRemoval=True))
 		
 		return posts
 

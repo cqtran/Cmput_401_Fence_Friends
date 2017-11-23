@@ -1,3 +1,5 @@
+var confirmed = false;
+
 var activeLayout = "1";
 var activeAppearance = "1";
 
@@ -43,6 +45,34 @@ var entityMap = {
 var angleBracketMap = {
 	'<': '&lt;',
 	'>': '&gt;'
+}
+
+function setConfirmed() {
+	confirmed = true;
+}
+
+function onConfirm(f, message, title) {
+	if (message == null) {
+		message = '';
+	}
+
+	if (title == null) {
+		title = '';
+	}
+
+	$('#confirmMessage').html(message);
+	$('#confirmTitle').html(title);
+	var modal = $('#confirm');
+	modal.modal('show');
+
+	modal.one('hidden.bs.modal',
+		function() {
+			if (confirmed) {
+				confirmed = false;
+				f();
+			}
+		}
+	);
 }
 
 // From:
@@ -172,6 +202,25 @@ function setActiveLayoutId(dbId) {
 		dbId.toString();
 }
 
+function setActiveDisplayStrings(displayStrings) {
+	var display = $("#layout" + activeLayout).find("p:first");
+	display.html("");
+	var hr = $("#layout" + activeLayout).find("hr:first");
+	
+	if (displayStrings.length == 0) {
+		hr.css("display", "none");
+		return;
+	}
+
+	hr.css("display", "block");
+	var string;
+
+	for (var i = 0; i < displayStrings.length; i++) {
+		string = "<b>" + displayStrings[i].replace("×", "×</b>");
+		display.append(string + "<br>");
+	}
+}
+
 function setActiveAppearanceId(dbId) {
 	document.getElementById("appearance-tab" + activeAppearance).dbId =
 		dbId.toString();
@@ -268,10 +317,15 @@ function addAppearance(loading) {
 }
 
 function removeLayout(number) {
-	if (!confirm("Delete Layout?")) {
-		return;
+	var f = function() {
+		removeLayout_(number);
 	}
+	
+	onConfirm(f, "Clicking delete will permanently delete the layout.",
+		"Delete Layout?")
+}
 
+function removeLayout_(number) {
 	removeLayoutFromDb(number);
 
 	var element = document.getElementById("layout" + number);
@@ -291,10 +345,15 @@ function removeLayout(number) {
 }
 
 function removeAppearance(number) {
-	if (!confirm("Delete Appearance?")) {
-		return;
+	var f = function() {
+		removeAppearance_(number);
 	}
+	
+	onConfirm(f, "Clicking delete will permanently delete the appearance.",
+		"Delete Appearance?")
+}
 
+function removeAppearance_(number) {
 	removeAppearanceFromDb(number);
 
 	var element = document.getElementById("appearance" + number);
@@ -363,6 +422,7 @@ function saveActiveLayout(includeSelection) {
 			}
 			else {
 				setActiveLayoutId(result["layoutId"]);
+				setActiveDisplayStrings(result["displayStrings"]);
 			}
     },
     error: function(xhr, textStatus, error) {
@@ -455,13 +515,15 @@ function loadLayout(layout, number) {
 	document.getElementById("layout-tab" + number).dbId = layout.layout_id;
 }
 
-function loadLayouts(layouts){
+function loadLayouts(layouts, displayStrings){
 	loadLayout(layouts[0], "1");
+	setActiveDisplayStrings(displayStrings[0]);
 	var currentLayout = 2;
 
 	for(var i = 1; i < layouts.length; i++) {
 		addLayout(true);
 		loadLayout(layouts[i], currentLayout.toString());
+		setActiveDisplayStrings(displayStrings[i]);
 		currentLayout++;
 	}
 }
@@ -677,8 +739,9 @@ function moreDetails(){
 			  $('#companyNameNav').html(result[4]);
 			  var selectedLayout = result[5];
 			  var selectedAppearance = result[6];
+			  var displayStrings = result[7];
 			  getPics();
-			  loadLayouts(layouts);
+			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);
 			  selectLayout(selectedLayout, layouts);
 			  selectAppearance(selectedAppearance, appearances);
