@@ -86,8 +86,8 @@ def getProject(project_id):
         return jsonify(project)
 
 @projectBlueprint.route('/addproject/', methods=['POST'])
-login_required
-roles_required('primary')
+@login_required
+@roles_required('primary')
 def addproject():
     if request.method == 'POST':
         customer = request.values.get("customer")
