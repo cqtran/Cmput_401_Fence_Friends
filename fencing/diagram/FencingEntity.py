@@ -56,6 +56,8 @@ class FencingEntity:
 
 		self._entityType = entityType
 		self._length = length / FencingEntity._inchesInPoint
+		# Round to three decimal places, then remove trailing zeros
+		self._length = round(self._length, 3).normalize()
 		length = float(length)
 		self._x = FencingEntity._getX(x, y, length, height, rotation)
 		self._y = FencingEntity._getY(x, y, length, height, rotation)
