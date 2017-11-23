@@ -46,8 +46,6 @@ class Post:
 class FencingEntity:
 	"""A fencing entity (fence segment or gate)"""
 
-	_inchesInPoint = Decimal(10)
-
 	def __init__(self, entityType, length, height, x, y, rotation,
 		isRemoval=False, isDouble=False):
 
@@ -55,7 +53,7 @@ class FencingEntity:
 			rotation = 0
 
 		self._entityType = entityType
-		self._length = length / FencingEntity._inchesInPoint
+		self._length = length
 		# Round to three decimal places, then remove trailing zeros
 		self._length = round(self._length, 3).normalize()
 		length = float(length)

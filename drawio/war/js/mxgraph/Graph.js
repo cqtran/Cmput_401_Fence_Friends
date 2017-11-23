@@ -6,10 +6,10 @@
  */
 function pointsToFeet(points)
 {
-	var inchesInPoint = 10;
-	var totalInches = points / inchesInPoint;
+	var totalInches = points;
 	var feet = Math.floor(totalInches / 12);
 	var inchesLeft = totalInches % 12;
+	inchesLeft = Math.round(inchesLeft * 100) / 100;
 	var feetString = feet + "'";
 	var inchesLeftString = inchesLeft + '"';
 	var totalInchesString = totalInches + '"';
