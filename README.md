@@ -134,6 +134,15 @@ This repository contains a modified copy of draw.io.
 
 https://fencythat.cavalryfence.ca/
 
+## Required for Building
+
+### Apache Ant
+
+Mac OS (assuming Homebrew is installed):
+```bash
+brew install ant
+```
+
 ## Build
 
 In the drawio/etc/build folder, run:
