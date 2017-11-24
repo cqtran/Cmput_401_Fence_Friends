@@ -157,7 +157,7 @@ function setLayoutName(number, loading, newName) {
 				newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveLayoutName();
@@ -189,7 +189,7 @@ function setAppearanceName(number, loading, newName) {
 				newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveAppearance();
