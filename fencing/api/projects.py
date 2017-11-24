@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Project, Customer, Layout, Status
+from database.models import Project, Customer, Layout, Status, Picture
 from diagram.DiagramParser import DiagramParser
 from flask.json import jsonify
 import json
@@ -8,7 +8,7 @@ from flask import Blueprint, request
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
-from api.errors import bad_request
+from api.errors import *
 import api.layouts as Layouts
 import api.appearances as Appearances
 import api.pictures as Pictures
@@ -148,6 +148,28 @@ def updateProject():
 
         print("done")
         return jsonify(project_id)
+
+@projectBlueprint.route('/deleteproject/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteproject():
+    proj_id = request.values.get("proj_id")
+    print(proj_id)
+    removeProject(proj_id)
+
+    return created_request("Good")
+
+def removeProject(proj_id):
+    # Delete image files
+    pictures = dbSession.query(Picture).filter(Picture.project_id == proj_id).all()
+    for image in pictures:
+        Pictures.deleteImageHelper(image.file_name)
+        Pictures.deleteImageHelper(image.thumbnail_name)
+
+    # Cascade delete all information related to project
+    project = dbSession.query(Project).filter(Project.project_id == proj_id).one()
+    dbSession.delete(project)
+    dbSession.commit()
 
 def updateProjectInfo(project_id, project_name, address, status, note, customer):
     """ Updates the project information of a given project id """
