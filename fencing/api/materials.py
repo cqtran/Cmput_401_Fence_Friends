@@ -77,9 +77,3 @@ def uploadPrice():
         dbSession.commit()
         return created_request('Prices were changed')
     return bad_request('Request is not a POST request')
-
-@materialBlueprint.route('/uploadValues/', methods=['POST'])
-#@login_required
-#@roles_required('primary')
-def uploadValues():
-    pass

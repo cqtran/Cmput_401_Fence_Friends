@@ -22,6 +22,7 @@ import api.statuses as Statuses
 import api.layouts as Layouts
 import api.appearances as Appearances
 import api.materials as Materials
+import api.estimates as Estimates
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -43,6 +44,7 @@ app.register_blueprint(Layouts.layoutBlueprint)
 app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
+app.register_blueprint(Estimates.estimateBlueprint)
 app.json_encoder = MyJSONEncoder
 #app.secret_key = os.urandom(24) # used for sessions
 
@@ -404,6 +406,12 @@ def editprojectinfo():
 @roles_required('primary')
 def viewPrices():
     return render_template("prices.html", company = current_user.company_name)
+
+@app.route('/viewEstimates/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def viewEstimates():
+    return render_template("estimates.html", company = current_user.company_name)
 
 @app.errorhandler(404)
 def page_not_found(e):

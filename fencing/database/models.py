@@ -219,20 +219,39 @@ class Material(Base):
 
 class Style(Base):
     __tablename__ = 'style'
-    style_name = Column(String(255), primary_key=True)
+    name = Column(String(255), primary_key=True)
+    value = Column(Integer)
 
-class Colours(Base):
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+class Colour(Base):
     __tablename__ = 'color'
-    style_name = Column(String(255), primary_key=True)
-    #value
+    name = Column(String(255), primary_key=True)
+    value = Column(Integer)
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
 class Height(Base):
     __tablename__ = 'height'
-    style_name = Column(String(255), primary_key=True)
-    #value
+    name = Column(String(255), primary_key=True)
+    value = Column(Integer)
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
 class Gate(Base):
     __tablename__ = 'gate'
-    style_name = Column(String(255), primary_key=True)
-    #value
+    name = Column(String(255), primary_key=True)
+    value = Column(Integer)
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
 
 class Picture(Base):
     __tablename__ = 'picture'

@@ -1,5 +1,5 @@
 from flask.json import JSONEncoder
-from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance
+from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -77,6 +77,30 @@ class MyJSONEncoder(JSONEncoder):
                 'panel_gap'             : obj.panel_gap,
                 'height'                : obj.height
                 #TODO: Define other columns related to materials
+            }
+
+        if isinstance(obj, Style):
+            return {
+                'name'                  : obj.name,
+                'value'                 : obj.value
+            }
+
+        if isinstance(obj, Colour):
+            return {
+                'name'                  : obj.name,
+                'value'                 : obj.value
+            }
+
+        if isinstance(obj, Height):
+            return {
+                'name'                  : obj.name,
+                'value'                 : obj.value
+            }
+
+        if isinstance(obj, Gate):
+            return {
+                'name'                  : obj.name,
+                'value'                 : obj.value
             }
 
         return super(MyJSONEncoder, obj).default(obj)

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <h1>Fencing Estimation Values</h1>
+</div>
+<hr class="mt-2">
+<div class="container-fluid">
+  <form id="upload-form" enctype=multipart/form-data >
+		<input class="form-control" type="hidden" name="company_name" id="company_name" />
+		<div class="row">
+			<div class="col-sm-12 less-padding">
+				<label for="file-upload" class="btn btn-primary btn-block">
+				    Update Estimation Values
+				</label>
+		  		<input class="btn btn-primary btn-block" id="file-upload" type="file" name="estimates" accept=".csv">
+			</div>
+	  	</div>
+	</form>
+
+  <select class="selectpicker" id="year" data-style="btn-primary" data-width="auto">
+    <option value="2017">2017</option>
+    <option value="2016">2016</option>
+    <option value="2015">2015</option>
+  </select>
+
+</div>
+
+<div class="container-fluid">
+  <div class="table-responsive" id='estimateTable'>
+    <h4 class="text-green" style="font-weight: bold; padding-top: 10px;">Style (Sample)</h4>
+    <table class="table">
+     <tr>
+       <th width="30%">Name</th>
+       <th width="30%">Value</th>
+     </tr>
+     <tr>
+       <td width="30%">Full Privacy</td>
+       <td width="30%">55</td>
+     </tr>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block content2 %}
+<!-- reference to js file
+<script type="text/javascript" src='../static/js/estimates.js'></script> -->
+{% endblock %}
