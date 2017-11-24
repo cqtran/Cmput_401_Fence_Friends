@@ -1,18 +1,15 @@
 /**
  * Convert points to feet and inches where each point is treated as an inch
- * Treats one point as one inch
  * points: The value in points as a Number
  * Returns a string
  */
 function pointsToFeet(points)
 {
-	var totalInches = points;
-	var feet = Math.floor(totalInches / 12);
-	var inchesLeft = totalInches % 12;
+	var feet = Math.floor(points / 12);
+	var inchesLeft = points % 12;
 	var feetString = feet + "'";
 	var inchesLeftString = inchesLeft + '"';
-	var totalInchesString = totalInches + '"';
-	return feetString + inchesLeftString + " (" + totalInchesString + ")";
+	return feetString + inchesLeftString;
 }
 
 /**
@@ -6658,12 +6655,16 @@ if (typeof mxVertexHandler != 'undefined')
 					var s = this.state.view.scale;
 					var shapeType = this.state.style["shape"];
 					var width = this.roundLength(this.bounds.width / s);
-					if (shapeType == "mxgraph.fencing.fence" ||
-						shapeType == "mxgraph.fencing.gate" ||
-						shapeType == "mxgraph.fencing.double_gate")
+					if (shapeType == "mxgraph.fencing.fence")
 					{
 						
 						this.hint.innerHTML = pointsToFeet(width);
+					}
+					else if (shapeType == "mxgraph.fencing.gate" ||
+						shapeType == "mxgraph.fencing.double_gate")
+					{
+						
+						this.hint.innerHTML = width + '"';
 					}
 					else
 					{
