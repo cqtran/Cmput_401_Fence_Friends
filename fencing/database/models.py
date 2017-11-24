@@ -53,7 +53,7 @@ class Company(Base):
 class Customer(Base):
     __tablename__ = 'customer'
     customer_id = Column(Integer, primary_key=True)
-    email = Column(String(255), unique=True)
+    email = Column(String(255))
     first_name = Column(String(255))
     cellphone = Column(String(20))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name', ondelete="CASCADE"))
@@ -185,7 +185,7 @@ class Appearance(Base):
         self.panel_gap = panel_gap
         self.height = height
         # TODO: initialize data for other columns
-    
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
