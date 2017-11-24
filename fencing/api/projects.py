@@ -111,8 +111,15 @@ def projectdetails(project_id):
         layouts = Layouts.getLayouts(project_id)
         json_layouts = [i.serialize for i in layouts]
         parsedLayouts = [DiagramParser.parse(i.layout_info) for i in layouts]
-        displayStrings = [i.displayStrings() for i in parsedLayouts]
+        displayStrings = []
         json_appearances = Appearances.getAppearanceList(project_id)
+
+        for layout in parsedLayouts:
+            if layout is None:
+                displayStrings.append([])
+            
+            else:
+                displayStrings.append(layout.displayStrings())
 
         # Get relative path to project pictures
         imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
