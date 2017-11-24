@@ -217,7 +217,8 @@ function setActiveDisplayStrings(displayStrings) {
 	var string;
 
 	for (var i = 0; i < displayStrings.length; i++) {
-		string = "<b>" + displayStrings[i].replace("×", "×</b>");
+		string = "<b>" + displayStrings[i].replace("×", "×</b>").replace(
+			"(Removal)", "<span style='color:grey;'>(Removal)</span>");
 		display.append(string + "<br>");
 	}
 }
