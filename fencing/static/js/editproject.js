@@ -43,6 +43,22 @@ function getProjectData(){
       }
   });
 }
+function deleteProject(){
+  $.ajax({
+      type: 'POST',
+      url: '/deleteproject/',
+      data: { 
+          proj_id: proj_id,
+      },
+      datatype: 'json',
+      success: function(result) {
+          window.location.href = '/projects';
+      },
+      error: function(result) {
+          alert('error');
+      }
+  });
+}
 function removeCust(customer, torem){
   return customer != torem;
 }
@@ -155,4 +171,8 @@ $(document).ready(function(){
   }
   getStatus();
   getProjectData();
+});
+
+$('#delete-project').click(function(){
+  deleteProject();
 });

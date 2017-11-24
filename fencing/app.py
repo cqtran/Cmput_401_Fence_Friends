@@ -252,7 +252,18 @@ def deactivateUser():
 @login_required
 @roles_required('primary')
 def newcustomer():
-    return render_template("newcustomer.html", company = current_user.company_name)
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        pn = request.form['pn']
+        address = request.form['address']
+        # add customer to database
+        success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
+
+        return redirect(url_for('customers', company = current_user.company_name))
+
+    else:
+        return render_template("newcustomer.html", company = current_user.company_name)
 
 @app.route('/editcustomer/', methods=['GET', 'POST'])
 @login_required
@@ -379,25 +390,6 @@ def projectinfo():
     else:
         # POST?
         return render_template("projectinfo.html")
-
-@app.route('/deleteproject/', methods = ['POST'])
-@login_required
-@roles_required('primary')
-def deleteproject():
-    proj_id = request.args.get("id")
-
-    # Delete image files
-    pictures = dbSession.query(Picture).filter(Picture.project_id == proj_id).all()
-    for image in pictures:
-        Pictures.deleteImageHelper(image.file_name)
-        Pictures.deleteImageHelper(image.thumbnail_name)
-
-    # Cascade delete all information related to project
-    project = dbSession.query(Project).filter(
-        Project.project_id == proj_id).one()
-    dbSession.delete(project)
-    dbSession.commit()
-    return redirect(url_for("projects"))
 
 @app.route('/editprojectinfo/', methods = ['GET'])
 @login_required
