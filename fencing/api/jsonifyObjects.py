@@ -62,8 +62,8 @@ class MyJSONEncoder(JSONEncoder):
             return {
                 'material_id'           : obj.material_id,
                 'material_name'         : obj.material_name,
-                'my_price'              : obj.my_price,
-                'pieces_in_bundle'      : obj.pieces_in_bundle,
+                'my_price'              : str(obj.my_price),
+                'pieces_in_bundle'      : str(obj.pieces_in_bundle),
                 'category'              : obj.category,
                 'note'                  : obj.note,
                 'company_name'          : obj.company_name

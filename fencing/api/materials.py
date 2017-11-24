@@ -8,7 +8,7 @@ from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
-
+from decimal import Decimal
 import json
 import io
 import csv
@@ -22,8 +22,7 @@ def getPriceList():
     """ Returns a list of prices to a company for a certain year """
     if request.method == 'GET':
         materials = dbSession.query(Material)
-        #materials = materials.filter(Material.company_name == current_user.company_name).all()
-        materials = materials.all()
+        materials = materials.filter(Material.company_name == current_user.company_name).all()
         if len(materials) == 0:
             return bad_request('No materials and prices were found for this company')
         return jsonify(materials)
@@ -57,10 +56,18 @@ def uploadPrice():
                 category = row[0]
             if row[1].startswith('$') and row[2].startswith('$'):
                 # Material
-                print('MATERIAL: ' + row[0] + ' | ' + row[2] + ' | ' + category + ' | ' + row[5])
+                try:
+                    my_price = Decimal(row[2][1:])
+                except:
+                    print('My Price value could not be converted into a Decimal, default to 0')
+                    my_price = 0
+
+                try:
+                    pieces_in_bundle = Decimal(row[4])
+                except:
+                    print('Pieces in bundle value could not be converted into a number, default to 1')
+                    pieces_in_bundle = 1
                 material_name = row[0]
-                my_price = row[2]
-                pieces_in_bundle = row[4]
                 note = row[5]
                 # Insert data into db
 
@@ -69,4 +76,10 @@ def uploadPrice():
             # Otherwise, ignore row
         dbSession.commit()
         return created_request('Prices were changed')
-    return bad_request('Oops')
+    return bad_request('Request is not a POST request')
+
+@materialBlueprint.route('/uploadValues/', methods=['POST'])
+#@login_required
+#@roles_required('primary')
+def uploadValues():
+    pass

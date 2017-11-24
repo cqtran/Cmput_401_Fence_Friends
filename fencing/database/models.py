@@ -201,12 +201,12 @@ class Material(Base):
     __tablename__ = 'material'
     material_id = Column(Integer, primary_key=True)
     material_name = Column(String(255))
-    my_price = Column(Numeric)
+    my_price = Column(Numeric(12, 2))
     pieces_in_bundle = Column(Numeric)
     category = Column(String(255))
     note = Column(String(255))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
-    last_update = Column(DateTime(), default = datetime.datetime.utcnow)
+    #last_update = Column(DateTime(), default = datetime.datetime.utcnow)
 
     def __init__(self, material_name, my_price, pieces_in_bundle, category, note, company_name, material_id = None):
         self.material_id = material_id
@@ -216,6 +216,23 @@ class Material(Base):
         self.category = category
         self.note = note
         self.company_name = company_name
+
+class Style(Base):
+    __tablename__ = 'style'
+    style_name = Column(String(255), primary_key=True)
+
+class Colours(Base):
+    __tablename__ = 'color'
+    style_name = Column(String(255), primary_key=True)
+    #value
+class Height(Base):
+    __tablename__ = 'height'
+    style_name = Column(String(255), primary_key=True)
+    #value
+class Gate(Base):
+    __tablename__ = 'gate'
+    style_name = Column(String(255), primary_key=True)
+    #value
 
 class Picture(Base):
     __tablename__ = 'picture'
