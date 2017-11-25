@@ -28,9 +28,15 @@
 
 <body class="fixed-nav sticky-footer bg-green" id="page-top">
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-green" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark static-top bg-green" id="mainNav">
     <div align="left"><a href="{{ url_for('customers') }}"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></a></div>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="input-group search-bar collapsed-search" id="search-bar">
+      <input onfocus="expandSearch()" onfocusout="collapseSearch()" id="search-typeahead" class="col-12 typeahead form-control no-border" type="search" placeholder="Search for..." style="margin-top: 0; width: 100%;">
+      <span onclick="focusSearch()" class="input-group-addon search-icon">
+          <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
+      </span>
+    </div>
+    <button id="mobile-menu" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -72,30 +78,17 @@
           </ul>
         </li>
       </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item bg-darkgreen">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item delete-admin">
-            <div class="input-group" id="search-bar">
-              <input id="search-typeahead" class="col-12 typeahead form-control no-border" type="text" placeholder="Search for..." style="margin-top: 0; width: 100%;">
-              <span class="input-group-addon search-icon">
-                  <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
-              </span>
-            </div>
-        </li>
         <li class="nav-item hide delete-admin" id="pencil-button">
           <a class="nav-link ml-lg-2" id="edit" href="#">
             <i class="fa fa-pencil" aria-hidden="true"></i>
+            <span class="d-lg-none d-xl-none">Edit</span>
           </a>
         </li>
         <li class="nav-item dropdown delete-admin">
           <a class="nav-link dropdown-toggle mr-lg-2 ml-lg-2" id="newDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-plus" aria-hidden="true"></i>
+            <span class="d-lg-none d-xl-none">New</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="newDropdown">
             <!-- handles new dropdown !-->
@@ -171,6 +164,7 @@
   <script src="../static/js/typeahead.bundle.js"></script>
   <script src="../static/js/handlebars-v4.0.11.js"></script>
   <script type="text/javascript" src='../static/js/app.js'></script>
+  <script type="text/javascript" src='../static/js/search-bar.js'></script>
   {% block content2 %}{% endblock %}
 
 </body>

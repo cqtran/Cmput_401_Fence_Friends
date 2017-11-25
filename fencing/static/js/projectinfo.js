@@ -201,7 +201,7 @@ function setLayoutName_(number, loading, newName, noClose) {
 			tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' + newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveLayoutName();
@@ -243,7 +243,7 @@ function setAppearanceName_(number, loading, newName, noClose) {
 			tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' + newName;
 		}
 
-		bodyText.innerHTML = "<b>" + newName + '</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveAppearance();
