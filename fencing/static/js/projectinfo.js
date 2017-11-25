@@ -78,6 +78,29 @@ function onConfirm(f, message, title) {
 	);
 }
 
+function onInput(f, prompt, defaultValue) {
+	if (prompt == null) {
+		prompt = '';
+	}
+
+	$('#inputTitle').html(prompt);
+	var modal = $('#input');
+	var inputText = $('#inputText');
+	modal.modal('show');
+
+	if (defaultValue == null) {
+		defaultValue = '';
+	}
+
+	inputText.val(defaultValue);
+
+	modal.one('hidden.bs.modal',
+		function() {
+			f(inputText.val());
+		}
+	);
+}
+
 // From:
 // https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
 // Accessed November 21, 2017
@@ -137,13 +160,24 @@ function setActiveAppearance(number) {
 }
 
 function setLayoutName(number, loading, newName, noClose) {
+	if (newName == null) {
+		var f = function(input) {
+			setLayoutName_(number, loading, input, noClose);
+		}
+		
+		var tab = document.getElementById("layout-tab" + activeLayout);
+		onInput(f, "Layout Name", tab.layoutName);
+	}
+
+	else {
+		setLayoutName_(number, loading, newName, noClose);
+	}
+}
+
+function setLayoutName_(number, loading, newName, noClose) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-
-	if (newName == null) {
-		newName = prompt("Layout Name", tab.layoutName);
-	}
 
 	if (newName != null) {
 
@@ -168,13 +202,24 @@ function setLayoutName(number, loading, newName, noClose) {
 }
 
 function setAppearanceName(number, loading, newName, noClose) {
+	if (newName == null) {
+		var f = function(input) {
+			setAppearanceName_(number, loading, input, noClose);
+		}
+
+		var tab = document.getElementById("appearance-tab" + activeAppearance);
+		onInput(f, "Appearance Name", tab.appearanceName);
+	}
+
+	else {
+		setAppearanceName_(number, loading, newName, noClose);
+	}
+}
+
+function setAppearanceName_(number, loading, newName, noClose) {
 	var tab = document.getElementById("appearance-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("appearance" + number).children[0];
-
-	if (newName == null) {
-		newName = prompt("Appearance Name", tab.appearanceName);
-	}
 
 	if (newName != null) {
 
@@ -326,7 +371,7 @@ function removeLayout(number) {
 	}
 	
 	onConfirm(f, "Clicking delete will permanently delete the layout.",
-		"Delete Layout?")
+		"Delete Layout?");
 }
 
 function setLayoutCloseButton() {
@@ -375,7 +420,7 @@ function removeAppearance(number) {
 	}
 	
 	onConfirm(f, "Clicking delete will permanently delete the appearance.",
-		"Delete Appearance?")
+		"Delete Appearance?");
 }
 
 function removeAppearance_(number) {
@@ -933,6 +978,22 @@ $(document).ready(function(){
 
   moreDetails();
   getProjects();
+
+  // From:
+  // https://stackoverflow.com/questions/16493280/close-bootstrap-modal/16493402#16493402
+  // Accessed November 24, 2017
+  document.getElementById('inputText').onkeypress = function(e){
+    if (!e) {
+		e = window.event;
+	}
+
+	var keyCode = e.keyCode || e.which;
+	
+	// Enter pressed
+    if (keyCode == '13') {
+      $('#input').modal('toggle');
+    }
+  }
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {
