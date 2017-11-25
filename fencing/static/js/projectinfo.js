@@ -314,9 +314,13 @@ function addLayout(loading) {
 	layoutCount += 1;
 
 	if (!loading) {
-		setLayoutName(activeLayout, true);
-		saveActiveLayout(true);
-		setLayoutCloseButton();
+		var f = function(input) {
+			setLayoutName_(activeLayout, true, input);
+			saveActiveLayout(true);
+			setLayoutCloseButton();
+		}
+		
+		onInput(f, "Layout Name", "Untitled");
 	}
 }
 
@@ -363,9 +367,13 @@ function addAppearance(loading) {
 	appearanceCount += 1;
 
 	if (!loading) {
-		setAppearanceName(activeAppearance, true);
-		saveActiveAppearance(true);
-		setAppearanceCloseButton();
+		var f = function(input) {
+			setAppearanceName_(activeAppearance, true, input);
+			saveActiveAppearance(true);
+			setAppearanceCloseButton();
+		}
+		
+		onInput(f, "Appearance Name", "Untitled");
 	}
 }
 
