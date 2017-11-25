@@ -992,7 +992,9 @@ $(document).ready(function(){
   getProjects();
 
   $('#input').one('shown.bs.modal', function() {
-	$('#inputText').focus();
+	var inputText = $('#inputText');
+	inputText.focus();
+	inputText.select();
   });
 });
 
