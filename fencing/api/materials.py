@@ -45,7 +45,6 @@ def uploadPrice():
 
         category = ''
         for row in csv_input:
-            #TODO: Parse the csv file.
             if row[2] == 'My Price' and row[4] == 'Pieces in Bundle':
                 # Category
                 print(row)

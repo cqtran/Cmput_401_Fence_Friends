@@ -19,28 +19,116 @@ estimateBlueprint = Blueprint('estimateBlueprint', __name__, template_folder='te
 #@login_required
 #@roles_required('primary')
 def getStyleEsimates():
-    pass
+    """ Returns a list of Styles for the current_user's company """
+    if request.method == 'GET':
+        styles = dbSession.query(Style)
+        styles = styles.filter(Style.company_name == current_user.company_name).all()
+        if len(styles) == 0:
+            return bad_request('No style estimate values were found')
+        return jsonify(styles)
 
 @estimateBlueprint.route('/getColourEsimates/', methods=['GET'])
 #@login_required
 #@roles_required('primary')
 def getColourEsimates():
-    pass
+    """ Returns a list of colours for the current_user's company """
+    if request.method == 'GET':
+        colours = dbSession.query(Colour)
+        colours = colours.filter(Colour.company_name == current_user.company_name).all()
+        if len(colours) == 0:
+            return bad_request('No colour estimate values were found')
+        return jsonify(colours)
 
 @estimateBlueprint.route('/getHeightEsimates/', methods=['GET'])
 #@login_required
 #@roles_required('primary')
 def getHeightEsimates():
-    pass
+    """ Returns a list of fence heights for the current_user's company """
+    if request.method == 'GET':
+        heights = dbSession.query(Height)
+        heights = heights.filter(Height.company_name == current_user.company_name).all()
+        if len(heights) == 0:
+            return bad_request('No height estimate values were found')
+        return jsonify(heights)
 
 @estimateBlueprint.route('/getGateEsimates/', methods=['GET'])
 #@login_required
 #@roles_required('primary')
 def getGateEsimates():
+    """ Returns a list of gate estimates for the current_user's company """
+    if request.method == 'GET':
+        gates = dbSession.query(Gate)
+        gates = gates.filter(Gate.company_name == current_user.company_name).all()
+        if len(gates) == 0:
+            return bad_request('No gate estimate values were found')
+        return jsonify(gates)
+
+@estimateBlueprint.route('/calculateEstimate/', methods=['POST'])
+#@login_required
+#@roles_required('primary')
+def calculateEstimate():
+    """ Calculates a cost estimate for the customer depending on what they
+        have chosen for their fence. Calculation formula is as follows:
+
+        For Fences;
+            cost = length (base price + style + height + ((border colour + panel colour)/2))
+        For Gates;
+            cost = gate value
+    """
     pass
 
 @estimateBlueprint.route('/uploadEstimates/', methods=['POST'])
 #@login_required
 #@roles_required('primary')
 def uploadEstimates():
-    pass
+    """ Parses the given csv file into estimate values """
+    company_name = current_user.company_name
+    if request.method == 'POST':
+        estimateFile = request.files['estimates']
+        if not estimateFile:
+            return bad_request('Invalid estimate values file uploaded')
+        stream = io.StringIO(estimateFile.stream.read().decode("UTF8"), newline=None)
+        csv_input = csv.reader(stream)
+        print(csv_input)
+        # Clear materials list? This will cause issues for appearances due to ForeignKeys
+        # dbSession.query(Material.company_name == current_user.company_name).delete()
+
+        category = ''
+        for row in csv_input:
+            #TODO: Parse the csv file
+            # Change the category in which the data is saved into
+            if row[0] == 'Style':
+                category = 'Style'
+            if row[0] == 'Colour':
+                category = 'Colour'
+            if row[0] == 'Height':
+                category = 'Height'
+            if row[0] == 'Gate':
+                category = 'Gate'
+            if row != '':
+                name = row[0]
+                try:
+                    value = row[1]
+                except:
+                    value = 0
+                insertEstimateValue(category, name, value, company)
+        dbSession.commit()
+        return created_request('Estimate values were updated')
+    return bad_request('Request is not a POST request')
+
+def insertEstimateValue(category, name, value, company):
+    if category == 'Style':
+        newStyle = Style(style = name, value = value, company_name = company)
+        dbSession.add(newStyle)
+    elif category == 'Colour':
+        newColour = Colour(colour = name, value = value, company_name = company)
+        dbSession.add(newColour)
+    elif category == 'Height':
+        newHeight = Height(height = name, value = value, company_name = company)
+        dbSession.add(newHeight)
+    elif category == 'Gate':
+        newGate = Gate(gate = name, value = value, company_name = company)
+        dbSession.add(newGate)
+    else:
+        print('Category not found, no data inserted')
+    return

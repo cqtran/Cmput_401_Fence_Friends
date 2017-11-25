@@ -219,39 +219,47 @@ class Material(Base):
 
 class Style(Base):
     __tablename__ = 'style'
-    name = Column(String(255), primary_key=True)
-    value = Column(Integer)
+    style = Column(String(255), primary_key=True)
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, name, value):
-        self.name = name
+    def __init__(self, style, value, company_name):
+        self.style = style
         self.value = value
+        self.company_name = company_name
 
 class Colour(Base):
-    __tablename__ = 'color'
-    name = Column(String(255), primary_key=True)
-    value = Column(Integer)
+    __tablename__ = 'colour'
+    colour = Column(String(255), primary_key=True)
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, name, value):
-        self.name = name
+    def __init__(self, colour, value, company_name):
+        self.colour = colour
         self.value = value
+        self.company_name = company_name
 
 class Height(Base):
     __tablename__ = 'height'
-    name = Column(String(255), primary_key=True)
-    value = Column(Integer)
+    height = Column(String(255), primary_key=True)
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, name, value):
-        self.name = name
+    def __init__(self, height, value, company_name):
+        self.height = height
         self.value = value
+        self.company_name = company_name
 
 class Gate(Base):
     __tablename__ = 'gate'
-    name = Column(String(255), primary_key=True)
-    value = Column(Integer)
+    gate = Column(String(255), primary_key=True)
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, name, value):
-        self.name = name
+    def __init__(self, gate, value, company_name):
+        self.gate = gate
         self.value = value
+        self.company_name = company_name
 
 class Picture(Base):
     __tablename__ = 'picture'
