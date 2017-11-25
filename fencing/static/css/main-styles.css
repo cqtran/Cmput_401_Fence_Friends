@@ -34,10 +34,6 @@ Accessed November 25, 2017
   border-right: none !important;
 }
 
-#no-border {
-  border: none !important;
-}
-
 /* So clear search button always shows on wider screens */
 @media (min-width: 992px) {
   #search-typeahead::-webkit-search-cancel-button {
