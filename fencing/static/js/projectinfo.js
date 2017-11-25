@@ -96,7 +96,11 @@ function onInput(f, prompt, defaultValue) {
 
 	modal.one('hidden.bs.modal',
 		function() {
-			f(inputText.val());
+			var text = inputText.val().trim();
+			if (text == '') {
+				text = defaultValue;
+			}
+			f(text);
 		}
 	);
 }
