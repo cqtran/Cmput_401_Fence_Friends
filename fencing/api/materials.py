@@ -41,7 +41,7 @@ def uploadPrice():
         csv_input = csv.reader(stream)
         print(csv_input)
         # Clear materials list? This will cause issues for appearances due to ForeignKeys
-        # dbSession.query(Material.company_name == current_user.company_name).delete()
+        dbSession.query(Material).filter(Material.company_name == current_user.company_name).delete()
 
         category = ''
         for row in csv_input:

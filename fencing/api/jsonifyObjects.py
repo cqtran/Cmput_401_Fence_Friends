@@ -81,6 +81,7 @@ class MyJSONEncoder(JSONEncoder):
 
         if isinstance(obj, Style):
             return {
+                'id'                    : obj.style_id,
                 'name'                  : obj.style,
                 'value'                 : str(obj.value),
                 'company_name'          : obj.company_name
@@ -88,6 +89,7 @@ class MyJSONEncoder(JSONEncoder):
 
         if isinstance(obj, Colour):
             return {
+                'id'                    : obj.colour_id,
                 'name'                  : obj.colour,
                 'value'                 : str(obj.value),
                 'company_name'          : obj.company_name
@@ -95,6 +97,7 @@ class MyJSONEncoder(JSONEncoder):
 
         if isinstance(obj, Height):
             return {
+                'id'                    : obj.height_id,
                 'name'                  : obj.height,
                 'value'                 : str(obj.value),
                 'company_name'          : obj.company_name
@@ -102,6 +105,7 @@ class MyJSONEncoder(JSONEncoder):
 
         if isinstance(obj, Gate):
             return {
+                'id'                    : obj.gate_id,
                 'name'                  : obj.gate,
                 'value'                 : str(obj.value),
                 'company_name'          : obj.company_name

@@ -219,44 +219,52 @@ class Material(Base):
 
 class Style(Base):
     __tablename__ = 'style'
-    style = Column(String(255), primary_key=True)
+    style_id = Column(Integer, primary_key=True)
+    style = Column(String(255))
     value = Column(Numeric(12, 2))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, style, value, company_name):
+    def __init__(self, style, value, company_name, style_id = None):
+        self.style_id = style_id
         self.style = style
         self.value = value
         self.company_name = company_name
 
 class Colour(Base):
     __tablename__ = 'colour'
-    colour = Column(String(255), primary_key=True)
+    colour_id = Column(Integer, primary_key=True)
+    colour = Column(String(255))
     value = Column(Numeric(12, 2))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, colour, value, company_name):
+    def __init__(self, colour, value, company_name, colour_id = None):
+        self.colour_id = colour_id
         self.colour = colour
         self.value = value
         self.company_name = company_name
 
 class Height(Base):
     __tablename__ = 'height'
-    height = Column(String(255), primary_key=True)
+    height_id = Column(Integer, primary_key=True)
+    height = Column(String(255))
     value = Column(Numeric(12, 2))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, height, value, company_name):
+    def __init__(self, height, value, company_name, height_id = None):
+        self.height_id = height_id
         self.height = height
         self.value = value
         self.company_name = company_name
 
 class Gate(Base):
     __tablename__ = 'gate'
-    gate = Column(String(255), primary_key=True)
+    gate_id = Column(Integer, primary_key=True)
+    gate = Column(String(255))
     value = Column(Numeric(12, 2))
     company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
 
-    def __init__(self, gate, value, company_name):
+    def __init__(self, gate, value, company_name, gate_id = None):
+        self.gate_id = gate_id
         self.gate = gate
         self.value = value
         self.company_name = company_name
