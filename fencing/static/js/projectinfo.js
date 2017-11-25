@@ -990,6 +990,10 @@ $(document).ready(function(){
 
   moreDetails();
   getProjects();
+
+  $('#input').one('shown.bs.modal', function() {
+	$('#inputText').focus();
+  });
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {
