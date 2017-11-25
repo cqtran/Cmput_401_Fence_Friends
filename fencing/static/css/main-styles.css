@@ -1,6 +1,6 @@
+/* So clear search button always shows on wider screens */
 @media (min-width: 992px) {
-  /* So clear search button shows */
-  input[type=search]::-webkit-search-cancel-button {
+  #search-typeahead::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
   }
 }
@@ -20,13 +20,17 @@
   transition: width 0.2s;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
   .collapsed-search {
     width: 10em;
   }
   
   .expanded-search {
     width: 66vw;
+  }
+
+  .expanded-input::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
   }
 }
 
