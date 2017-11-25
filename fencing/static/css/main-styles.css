@@ -1,6 +1,6 @@
 @media (max-width: 992px) {
   .search-bar {
-    width: 7em;
+    width: 10em;
     -webkit-transition: width 0.25s; /* Safari */
     transition: width 0.25s;
   }
@@ -8,6 +8,12 @@
   .search-bar:focus-within {
     position: absolute;
     width: 75vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    width: 1em;
   }
 }
 
