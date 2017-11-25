@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../static/favicon/favicon-16x16.png">
   <link rel="manifest" href="../static/favicon/manifest.json">
   <link rel="mask-icon" href="../static/favicon/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#329664">
   <title>Cavalry Fence Builder</title>
   <!-- Bootstrap core CSS-->
   <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 <body class="fixed-nav sticky-footer bg-green" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark static-top bg-green" id="mainNav">
-    <div align="left"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></div>
+    <div align="left"><a href="{{ url_for('customers') }}"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></a></div>
     <div class="input-group search-bar collapsed-search" id="search-bar">
       <input onfocus="expandSearch()" onfocusout="collapseSearch()" id="search-typeahead" class="col-12 typeahead form-control no-border" type="search" placeholder="Search for..." style="margin-top: 0; width: 100%;">
       <span onclick="focusSearch()" class="input-group-addon search-icon">

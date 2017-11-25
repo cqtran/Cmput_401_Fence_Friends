@@ -1,5 +1,8 @@
 var confirmed = false;
 
+var firstLayout = "1";
+var firstAppearance = "1";
+
 var activeLayout = "1";
 var activeAppearance = "1";
 
@@ -75,6 +78,37 @@ function onConfirm(f, message, title) {
 	);
 }
 
+function onInput(f, prompt, defaultValue) {
+	if (prompt == null) {
+		prompt = '';
+	}
+
+	$('#inputTitle').html(prompt);
+	var modal = $('#input');
+	var inputText = $('#inputText');
+	modal.modal('show');
+
+	if (defaultValue == null) {
+		defaultValue = '';
+	}
+
+	inputText.val(defaultValue);
+
+	modal.one('hidden.bs.modal',
+		function() {
+			var text = inputText.val().trim();
+			if (text == '') {
+				text = defaultValue;
+			}
+			f(text);
+		}
+	);
+}
+
+function closeInput() {
+	$('#inputOkay').click();
+}
+
 // From:
 // https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
 // Accessed November 21, 2017
@@ -133,14 +167,25 @@ function setActiveAppearance(number) {
 	saveAppearanceSelection();
 }
 
-function setLayoutName(number, loading, newName) {
+function setLayoutName(number, loading, newName, noClose) {
+	if (newName == null) {
+		var f = function(input) {
+			setLayoutName_(number, loading, input, noClose);
+		}
+		
+		var tab = document.getElementById("layout-tab" + activeLayout);
+		onInput(f, "Layout Name", tab.layoutName);
+	}
+
+	else {
+		setLayoutName_(number, loading, newName, noClose);
+	}
+}
+
+function setLayoutName_(number, loading, newName, noClose) {
 	var tab = document.getElementById("layout-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("layout" + number).children[0];
-
-	if (newName == null) {
-		newName = prompt("Layout Name", tab.layoutName);
-	}
 
 	if (newName != null) {
 
@@ -148,13 +193,12 @@ function setLayoutName(number, loading, newName) {
 
 		tab.layoutName = newName;
 
-		if (number == "1") {
+		if (noClose) {
 			tabText.innerHTML = newName;
 		}
 
 		else {
-			tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' +
-				newName;
+			tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' + newName;
 		}
 
 		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
@@ -165,14 +209,25 @@ function setLayoutName(number, loading, newName) {
 	}
 }
 
-function setAppearanceName(number, loading, newName) {
+function setAppearanceName(number, loading, newName, noClose) {
+	if (newName == null) {
+		var f = function(input) {
+			setAppearanceName_(number, loading, input, noClose);
+		}
+
+		var tab = document.getElementById("appearance-tab" + activeAppearance);
+		onInput(f, "Appearance Name", tab.appearanceName);
+	}
+
+	else {
+		setAppearanceName_(number, loading, newName, noClose);
+	}
+}
+
+function setAppearanceName_(number, loading, newName, noClose) {
 	var tab = document.getElementById("appearance-tab" + number);
 	var tabText = tab.children[0];
 	var bodyText = document.getElementById("appearance" + number).children[0];
-
-	if (newName == null) {
-		newName = prompt("Appearance Name", tab.appearanceName);
-	}
 
 	if (newName != null) {
 
@@ -180,13 +235,12 @@ function setAppearanceName(number, loading, newName) {
 
 		tab.appearanceName = newName;
 
-		if (number == "1") {
+		if (noClose) {
 			tabText.innerHTML = newName;
 		}
 
 		else {
-			tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' +
-				newName;
+			tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' + newName;
 		}
 
 		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
@@ -216,7 +270,8 @@ function setActiveDisplayStrings(displayStrings) {
 	var string;
 
 	for (var i = 0; i < displayStrings.length; i++) {
-		string = "<b>" + displayStrings[i].replace("×", "×</b>");
+		string = "<b>" + displayStrings[i].replace("×", "×</b>").replace(
+			"(Removal)", "<span style='color:grey;'>(Removal)</span>");
 		display.append(string + "<br>");
 	}
 }
@@ -263,8 +318,13 @@ function addLayout(loading) {
 	layoutCount += 1;
 
 	if (!loading) {
-		setLayoutName(activeLayout, true);
-		saveActiveLayout(true);
+		var f = function(input) {
+			setLayoutName_(activeLayout, true, input);
+			saveActiveLayout(true);
+			setLayoutCloseButton();
+		}
+		
+		onInput(f, "Layout Name", "Untitled");
 	}
 }
 
@@ -311,8 +371,13 @@ function addAppearance(loading) {
 	appearanceCount += 1;
 
 	if (!loading) {
-		setAppearanceName(activeAppearance, true);
-		saveActiveAppearance(true);
+		var f = function(input) {
+			setAppearanceName_(activeAppearance, true, input);
+			saveActiveAppearance(true);
+			setAppearanceCloseButton();
+		}
+		
+		onInput(f, "Appearance Name", "Untitled");
 	}
 }
 
@@ -322,11 +387,29 @@ function removeLayout(number) {
 	}
 	
 	onConfirm(f, "Clicking delete will permanently delete the layout.",
-		"Delete Layout?")
+		"Delete Layout?");
+}
+
+function setLayoutCloseButton() {
+	var tab = document.getElementById("layout-tab" + firstLayout);
+	setLayoutName(firstLayout, true, tab.layoutName, layoutCount == 1);
+}
+
+function setAppearanceCloseButton() {
+	var tab = document.getElementById("appearance-tab" + firstAppearance);
+	setAppearanceName(firstAppearance, true, tab.appearanceName,
+		appearanceCount == 1);
 }
 
 function removeLayout_(number) {
 	removeLayoutFromDb(number);
+
+	var layout;
+
+	if (firstLayout == number) {
+		layout = $("#layout" + firstLayout).next();
+		firstLayout = layout.attr("id").slice(6);
+	}
 
 	var element = document.getElementById("layout" + number);
 	element.parentNode.removeChild(element);
@@ -334,14 +417,17 @@ function removeLayout_(number) {
 	element.parentNode.removeChild(element);
 
 	if (activeLayout == number) {
-		setActiveLayout("1");
-		document.getElementById("layout1").classList.add("active");
-		document.getElementById("layout1").classList.add("show");
-		document.getElementById("layout-tab1").children[0].classList.add("active");
+		setActiveLayout(firstLayout);
+		layout = document.getElementById("layout" + firstLayout);
+		var layoutTab = document.getElementById("layout-tab" + firstLayout);
+		layout.classList.add("active");
+		layout.classList.add("show");
+		layoutTab.children[0].classList.add("active");
 	}
 
 	deletedLayout = number;
 	layoutCount -= 1;
+	setLayoutCloseButton();
 }
 
 function removeAppearance(number) {
@@ -350,11 +436,18 @@ function removeAppearance(number) {
 	}
 	
 	onConfirm(f, "Clicking delete will permanently delete the appearance.",
-		"Delete Appearance?")
+		"Delete Appearance?");
 }
 
 function removeAppearance_(number) {
 	removeAppearanceFromDb(number);
+
+	var appearance;
+
+	if (firstAppearance == number) {
+		appearance = $("#appearance" + firstAppearance).next();
+		firstAppearance = appearance.attr("id").slice(10);
+	}
 
 	var element = document.getElementById("appearance" + number);
 	element.parentNode.removeChild(element);
@@ -362,14 +455,18 @@ function removeAppearance_(number) {
 	element.parentNode.removeChild(element);
 
 	if (activeAppearance == number) {
-		setActiveAppearance("1");
-		document.getElementById("appearance1").classList.add("active");
-		document.getElementById("appearance1").classList.add("show");
-		document.getElementById("appearance-tab1").children[0].classList.add("active");
+		setActiveAppearance(firstAppearance);
+		appearance = document.getElementById("appearance" + firstAppearance);
+		var appearanceTab = document.getElementById(
+			"appearance-tab" + firstAppearance);
+		appearance.classList.add("active");
+		appearance.classList.add("show");
+		appearanceTab.children[0].classList.add("active");
 	}
 
 	deletedAppearance = number;
 	appearanceCount -= 1;
+	setAppearanceCloseButton();
 }
 
 function reloadPage() {
@@ -526,6 +623,8 @@ function loadLayouts(layouts, displayStrings){
 		setActiveDisplayStrings(displayStrings[i]);
 		currentLayout++;
 	}
+
+	setLayoutCloseButton();
 }
 
 function loadAppearance(appearance, number) {
@@ -546,6 +645,8 @@ function loadAppearances(appearances){
 		loadAppearance(appearances[i], currentAppearance.toString());
 		currentAppearance++;
 	}
+
+	setAppearanceCloseButton();
 }
 
 function setProjectInfo(project){
@@ -893,6 +994,12 @@ $(document).ready(function(){
 
   moreDetails();
   getProjects();
+
+  $('#input').on('shown.bs.modal', function() {
+	var inputText = $('#inputText');
+	inputText.focus();
+	inputText.select();
+  });
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {
