@@ -64,7 +64,8 @@ def getProjectList(customer_id):
 
         if search is not None and search != "":
             projectList = projectList.filter(
-                Project.project_name.contains(search))
+                or_(Project.project_name.contains(search),
+                Project.address.contains(search)))
 
         projectList = projectList.filter(Project.status_name == Status.status_name).order_by(Status.status_number)
         projectList = projectList.order_by(desc(Project.start_date)).all()
@@ -115,8 +116,15 @@ def projectdetails(project_id):
         layouts = Layouts.getLayouts(project_id)
         json_layouts = [i.serialize for i in layouts]
         parsedLayouts = [DiagramParser.parse(i.layout_info) for i in layouts]
-        displayStrings = [i.displayStrings() for i in parsedLayouts]
+        displayStrings = []
         json_appearances = Appearances.getAppearanceList(project_id)
+
+        for layout in parsedLayouts:
+            if layout is None:
+                displayStrings.append([])
+            
+            else:
+                displayStrings.append(layout.displayStrings())
 
         # Get relative path to project pictures
         imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))

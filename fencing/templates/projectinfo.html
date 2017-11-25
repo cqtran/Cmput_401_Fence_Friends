@@ -50,6 +50,24 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
+<div class="modal fade" id="input" tabindex="-1" role="dialog" aria-labelledby="inputTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inputTitle"></h5>
+      </div>
+      <div class="modal-body">
+				<form onsubmit="closeInput()" action="javascript:void(0);">
+					<input type="text" class="form-control" id="inputText">
+				</form>
+			</div>
+      <div class="modal-footer">
+				<button id="inputOkay" type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--top name and status -->
 <div class="container-fluid">
   <div class="row justify-content-between">
@@ -61,7 +79,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <ul id="layout-tabs" class="nav nav-tabs flex-wrap">
   <li id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
-    <a class="nav-link active" data-toggle="tab" href="#layout1">Layout 1</a>
+    <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#layout1">Layout 1</a>
   </li>
 	<li id="add-layout" class="nav-item">
     <a class="nav-link" onclick="addLayout()" href="#" style="color:grey;">+</a>
@@ -70,7 +88,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="layouts" class="tab-content">
   <div id="layout1" class="tab-pane fade in show active">
-		<a style="display:block; margin-top:1em; margin-bottom:1em;" href="#" onclick="setLayoutName('1')"><b>Layout 1</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<a style="display:block; margin-top:1em; margin-bottom:1em;" href="#" onclick="setLayoutName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
 		<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
 			<td>
 				<img id="image1" style="max-width:100%;cursor:pointer; max-height: 50vh;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://fencythat.cavalryfence.ca/?client=1&lightbox=1&edit=_blank');}})(this);"/>
@@ -84,7 +102,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <ul id="appearance-tabs" class="nav nav-tabs flex-wrap">
   <li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
-    <a class="nav-link active" data-toggle="tab" href="#appearance1">Appearance 1</a>
+    <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#appearance1">Appearance 1</a>
   </li>
 	<li id="add-appearance" class="nav-item">
     <a class="nav-link" onclick="addAppearance()" href="#" style="color:grey;">+</a>
@@ -93,7 +111,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="appearances" class="tab-content">
 	<div id="appearance1" class="tab-pane fade in show active">
-		<a style="display:block; margin-top:1em; margin-bottom:1em;" href="#" onclick="setAppearanceName('1')"><b>Appearance 1</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<a style="display:block; margin-top:1em; margin-bottom:1em;" href="#" onclick="setAppearanceName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
 		<div class="form-group">
 			<label for="panelGap1">Panel Gap</label>
 			<input onchange="saveActiveAppearance()" id="panelGap1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">

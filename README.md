@@ -2,6 +2,10 @@
 
 Cavalry Fence Builder is a web app for fence installation companies. It allows a fence business to track projects and financial data, calculate quotes, generate material lists, and send quotes to clients and material lists to suppliers.
 
+## URL
+
+https://app.cavalryfence.ca/
+
 ## Core Features
 
 * Draw fence diagrams
@@ -121,3 +125,38 @@ In the "fencing" folder, run:
 ```bash
 python3 app.py --help
 ```
+
+# draw.io
+
+This repository contains a modified copy of draw.io.
+
+## URL
+
+https://fencythat.cavalryfence.ca/
+
+## Required for Building
+
+### Apache Ant
+
+Mac OS (assuming Homebrew is installed):
+```bash
+brew install ant
+```
+
+## Build
+
+In the drawio/etc/build folder, run:
+```bash
+ant
+```
+
+## Run
+
+1. In the drawio/war folder, run:
+```bash
+python3 -m http.server 8000
+```
+
+2. While that is running, access drawio with:
+
+http://0.0.0.0:8000/index.html?offline=1&https=0
