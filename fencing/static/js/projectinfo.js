@@ -991,7 +991,7 @@ $(document).ready(function(){
   moreDetails();
   getProjects();
 
-  $('#input').one('shown.bs.modal', function() {
+  $('#input').on('shown.bs.modal', function() {
 	var inputText = $('#inputText');
 	inputText.focus();
 	inputText.select();
