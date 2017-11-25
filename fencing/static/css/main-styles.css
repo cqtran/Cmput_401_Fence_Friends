@@ -1,3 +1,85 @@
+/*
+Tab styling modified from:
+https://bootsnipp.com/snippets/featured/material-design-tab-style
+Accessed November 25, 2017
+*/
+
+.nav-tabs > li {
+  margin-top: 0.1em;
+}
+
+.nav-tabs > li > a {
+  border-bottom: 0.1em solid #ddd !important;
+}
+
+.nav-tabs > li > a.active {
+  color: #329664 !important;
+  border-bottom: 0.1em solid #329664 !important;
+}
+
+.nav-tabs > li > a:hover {
+  color: #505050 !important;
+  border-bottom: 0.1em solid #505050 !important;
+}
+
+.nav-tabs > li > a.active:hover {
+  color: #329664 !important;
+  border-bottom: 0.1em solid #329664 !important;
+}
+
+.nav-tabs > li > a {
+  color: #808080 !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* So clear search button always shows on wider screens */
+@media (min-width: 992px) {
+  #search-typeahead::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+  }
+}
+
+#mobile-menu {
+  -webkit-transition: opacity 0.5s; /* Safari */
+  transition: opacity 0.5s;
+}
+
+.hidden-menu {
+  position:absolute;
+  opacity: 0;
+}
+
+.search-bar {
+  -webkit-transition: width 0.2s; /* Safari */
+  transition: width 0.2s;
+}
+
+@media (max-width: 991px) {
+  .collapsed-search {
+    width: 10em;
+  }
+  
+  .expanded-search {
+    width: 66vw;
+  }
+
+  .expanded-input::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+  }
+}
+
+@media (max-width: 767px) {
+  .collapsed-search {
+    width: 1em;
+  }
+
+  .expanded-search {
+    width: 90vw;
+  }
+}
+
 .fixed-tab-width {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -12,6 +94,7 @@ h1 {
 }
 body{
   hyphens: auto;
+  padding-top: 0px !important;
 }
 a, a:hover {
   color: inherit;

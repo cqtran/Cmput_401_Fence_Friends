@@ -60,7 +60,8 @@ def getProjectList(customer_id):
 
         if search is not None and search != "":
             projectList = projectList.filter(
-                Project.project_name.contains(search))
+                or_(Project.project_name.contains(search),
+                Project.address.contains(search)))
 
         projectList = projectList.filter(Project.status_name == Status.status_name).order_by(Status.status_number)
         projectList = projectList.order_by(desc(Project.start_date)).all()
