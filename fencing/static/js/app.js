@@ -40,7 +40,7 @@ var projects = new Bloodhound({
                 return {
                     value: project.project_name,
                     proj_id: project.project_id,
-                    address: project.cellphone,
+                    address: project.address,
                     status: project.status_name,
                 };
             });
