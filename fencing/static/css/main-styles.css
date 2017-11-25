@@ -19,13 +19,17 @@
   }
   
   .expanded-search {
-    width: 90vw;
+    width: 66vw;
   }
 }
 
 @media (max-width: 768px) {
   .collapsed-search {
     width: 1em;
+  }
+
+  .expanded-search {
+    width: 90vw;
   }
 }
 
