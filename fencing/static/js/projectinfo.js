@@ -101,6 +101,10 @@ function onInput(f, prompt, defaultValue) {
 	);
 }
 
+function closeInput() {
+	$('#inputOkay').click();
+}
+
 // From:
 // https://stackoverflow.com/questions/24816/escaping-html-strings-with-jquery/12034334#12034334
 // Accessed November 21, 2017
@@ -978,22 +982,6 @@ $(document).ready(function(){
 
   moreDetails();
   getProjects();
-
-  // From:
-  // https://stackoverflow.com/questions/16493280/close-bootstrap-modal/16493402#16493402
-  // Accessed November 24, 2017
-  document.getElementById('inputText').onkeypress = function(e){
-    if (!e) {
-		e = window.event;
-	}
-
-	var keyCode = e.keyCode || e.which;
-	
-	// Enter pressed
-    if (keyCode == '13') {
-      $('#input').modal('toggle');
-    }
-  }
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {

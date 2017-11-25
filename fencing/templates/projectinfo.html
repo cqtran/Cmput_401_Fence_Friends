@@ -57,10 +57,12 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
         <h5 class="modal-title" id="inputTitle"></h5>
       </div>
       <div class="modal-body">
-				<input type="text" class="form-control" id="inputText">
+				<form onsubmit="closeInput()" action="javascript:void(0);">
+					<input type="text" class="form-control" id="inputText">
+				</form>
 			</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="setInput()">Okay</button>
+				<button id="inputOkay" type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
       </div>
     </div>
   </div>
