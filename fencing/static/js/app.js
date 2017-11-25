@@ -62,7 +62,12 @@ $('#search-bar .typeahead').typeahead({
     source: customers.ttAdapter(),
     templates: {
         header: Handlebars.compile("<div class='container-fluid'><h3 class='text-green'>Customer</h3><hr class='mt-2'></div>"),
-        suggestion: Handlebars.compile("<div class='container-fluid'><p><b>{{value}}</b> - Phone {{phone}} </p></div>")
+        suggestion: Handlebars.compile("\
+        {{#if phone}}\
+            <div class='container-fluid'><p><b>{{value}}</b> - Phone {{phone}} </p></div>\
+        {{else}}\
+            <div class='container-fluid'><p><b>{{value}}</b> </p></div>\
+        {{/if}}")
     }
   },
   {
@@ -71,7 +76,12 @@ $('#search-bar .typeahead').typeahead({
     source: projects.ttAdapter(),
     templates: {
         header: Handlebars.compile("<div class='container-fluid'><h3 class='text-green'>Projects</h3><hr class='mt-2'></div>"),
-        suggestion: Handlebars.compile("<div class='container-fluid'><p class='top-bot-pad'><b>{{value}}</b> - Status - {{status}} - Address {{address}} </p></div>")
+        suggestion: Handlebars.compile("\
+        {{#if address}}\
+            <div class='container-fluid'><p class='top-bot-pad'><b>{{value}}</b> - Status - {{status}} - Address {{address}} </p></div>\
+        {{else}}\
+            <div class='container-fluid'><p class='top-bot-pad'><b>{{value}}</b> - Status - {{status}} </p></div>\
+        {{/if}}")
     }
   }).on('typeahead:selected', function(event, selection) {
   
