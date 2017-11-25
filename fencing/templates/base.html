@@ -30,9 +30,9 @@
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark static-top bg-green" id="mainNav">
     <div align="left"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></div>
-    <div class="input-group search-bar" id="search-bar">
-      <input id="search-typeahead" class="col-12 typeahead form-control no-border" type="text" placeholder="Search for..." style="margin-top: 0; width: 100%;">
-      <span onclick="document.getElementById('search-typeahead').focus();" class="input-group-addon search-icon">
+    <div class="input-group search-bar collapsed-search" id="search-bar">
+      <input onfocus="expandSearch()" onfocusout="collapseSearch()" id="search-typeahead" class="col-12 typeahead form-control no-border" type="text" placeholder="Search for..." style="margin-top: 0; width: 100%;">
+      <span onclick="focusSearch()" class="input-group-addon search-icon">
           <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
       </span>
     </div>
@@ -162,6 +162,7 @@
   <script src="../static/js/typeahead.bundle.js"></script>
   <script src="../static/js/handlebars-v4.0.11.js"></script>
   <script type="text/javascript" src='../static/js/app.js'></script>
+  <script type="text/javascript" src='../static/js/search-bar.js'></script>
   {% block content2 %}{% endblock %}
 
 </body>

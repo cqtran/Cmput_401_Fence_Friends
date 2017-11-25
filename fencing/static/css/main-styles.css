@@ -1,18 +1,21 @@
+.search-bar {
+  -webkit-transition: width 0.25s; /* Safari */
+  transition: width 0.25s;
+}
+
 @media (max-width: 992px) {
-  .search-bar {
+  .collapsed-search {
     width: 10em;
-    -webkit-transition: width 0.25s; /* Safari */
-    transition: width 0.25s;
   }
   
-  .search-bar:focus-within {
+  .expanded-search {
     position: absolute;
     width: 75vw;
   }
 }
 
 @media (max-width: 768px) {
-  .search-bar {
+  .collapsed-search {
     width: 1em;
   }
 }
