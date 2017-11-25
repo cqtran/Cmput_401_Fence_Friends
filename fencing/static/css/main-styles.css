@@ -9,8 +9,8 @@
 }
 
 .search-bar {
-  -webkit-transition: width 0.25s; /* Safari */
-  transition: width 0.25s;
+  -webkit-transition: width 0.2s; /* Safari */
+  transition: width 0.2s;
 }
 
 @media (max-width: 992px) {
