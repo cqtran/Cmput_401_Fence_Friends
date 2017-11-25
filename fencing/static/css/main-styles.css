@@ -1,3 +1,13 @@
+#mobile-menu {
+  -webkit-transition: opacity 0.5s; /* Safari */
+  transition: opacity 0.5s;
+}
+
+.hidden-menu {
+  position:absolute;
+  opacity: 0;
+}
+
 .search-bar {
   -webkit-transition: width 0.25s; /* Safari */
   transition: width 0.25s;
