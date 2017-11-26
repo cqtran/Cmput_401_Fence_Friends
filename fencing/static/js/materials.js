@@ -43,7 +43,9 @@ function updatePriceTable(materialPrices) {
       priceTable.appendChild(makeHeader(lastCategory));
       // Create a new table with table headers
       lastTable = makeTable();
-      priceTable.appendChild(lastTable);
+      var final = document.createElement('div');
+      final.appendChild(lastTable);
+      priceTable.appendChild(final);
     }
     // Add the material as a new row in the table
     lastTable.appendChild(makeRow(material));
@@ -52,55 +54,45 @@ function updatePriceTable(materialPrices) {
 
 function makeTable() {
   // Returns a new table with table headers
-   var table = document.createElement('table');
-   table.setAttribute('class', 'table')
-   var headerRow = document.createElement('tr');
+  var table = document.createElement('table');
+  table.setAttribute('class', 'table table-responsive');
+  var headerRow = document.createElement('tr');
 
-   var col1 = document.createElement('th');
-   col1.setAttribute('width', '40%');
-   col1.innerHTML = 'Material Name';
-   headerRow.appendChild(col1);
+  var col1 = document.createElement('th');
+  col1.setAttribute('width', '40%');
+  col1.innerHTML = 'Material Name';
+  headerRow.appendChild(col1);
 
-   var col2 = document.createElement('th');
-   col2.setAttribute('width', '15%');
-   col2.innerHTML = 'My Price';
-   headerRow.appendChild(col2);
+  var col2 = document.createElement('th');
+  col2.setAttribute('width', '15%');
+  col2.innerHTML = 'My Price';
+  headerRow.appendChild(col2);
 
-   var col3 = document.createElement('th');
-   col3.setAttribute('width', '15%');
-   col3.innerHTML = 'Pieces in Bundle';
-   headerRow.appendChild(col3);
+  var col3 = document.createElement('th');
+  col3.setAttribute('width', '15%');
+  col3.innerHTML = 'Pieces in Bundle';
+  headerRow.appendChild(col3);
 
-   var col4 = document.createElement('th');
-   col4.setAttribute('width', '30%');
-   col4.innerHTML = 'Notes';
-   headerRow.appendChild(col4);
+  var col4 = document.createElement('th');
+  col4.setAttribute('width', '30%');
+  col4.innerHTML = 'Notes';
+  headerRow.appendChild(col4);
 
-   table.appendChild(headerRow);
-   return table;
+  table.appendChild(headerRow);
+  return table;
 }
 
 function makeHeader(string) {
   // Returns a new header
   var header = document.createElement('h4');
-  header.setAttribute('class', 'text-green accordion');
+  header.setAttribute('class', 'text-green');
   header.setAttribute('style', 'font-weight: bold; padding-top: 10px;');
   header.innerHTML = string;
 
   // Add accordion functionality to header classes
-  // Source: https://www.w3schools.com/howto/howto_js_accordion.asp
   header.onclick = function(){
-      /* Toggle between adding and removing the "active" class,
-      to highlight the button that controls the panel */
-      this.classList.toggle("active");
-
-      /* Toggle between hiding and showing the active panel */
-      var panel = this.nextElementSibling;
-      if (panel.style.display === "block") {
-          panel.style.display = "none";
-      } else {
-          panel.style.display = "block";
-      }
+      /* toggle if is shows */
+      $(this).next().slideToggle();
   }
   return header;
 }

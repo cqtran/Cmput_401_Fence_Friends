@@ -36,50 +36,42 @@ function updateEstimateTable(result, category) {
   result.forEach(function(row) {
     table.appendChild(makeRow(row));
   });
-  estimateTable.appendChild(table);
+  var final = document.createElement('div');
+  final.appendChild(table);
+  estimateTable.appendChild(final);
 }
 
 function makeTable() {
   // Returns a new table with table headers
-   var table = document.createElement('table');
-   table.setAttribute('class', 'table');
-   var headerRow = document.createElement('tr');
+  var table = document.createElement('table');
+  table.setAttribute('class', 'table');
+  var headerRow = document.createElement('tr');
 
-   var col1 = document.createElement('th');
-   col1.setAttribute('width', '50%');
-   col1.innerHTML = 'Name';
-   headerRow.appendChild(col1);
+  var col1 = document.createElement('th');
+  col1.setAttribute('width', '50%');
+  col1.innerHTML = 'Name';
+  headerRow.appendChild(col1);
 
-   var col2 = document.createElement('th');
-   col2.setAttribute('width', '50%');
-   col2.innerHTML = 'Value';
-   headerRow.appendChild(col2);
+  var col2 = document.createElement('th');
+  col2.setAttribute('width', '50%');
+  col2.innerHTML = 'Value';
+  headerRow.appendChild(col2);
 
-   table.appendChild(headerRow);
-   return table;
+  table.appendChild(headerRow);
+  return table;
 }
 
 function makeHeader(string) {
   // Returns a new header
   var header = document.createElement('h4');
-  header.setAttribute('class', 'text-green accordion');
+  header.setAttribute('class', 'text-green');
   header.setAttribute('style', 'font-weight: bold; padding-top: 10px;');
   header.innerHTML = string;
 
   // Add accordion functionality to header classes
-  // Source: https://www.w3schools.com/howto/howto_js_accordion.asp
   header.onclick = function(){
-      /* Toggle between adding and removing the "active" class,
-      to highlight the button that controls the panel */
-      this.classList.toggle("active");
-
-      /* Toggle between hiding and showing the active panel */
-      var panel = this.nextElementSibling;
-      if (panel.style.display === "block") {
-          panel.style.display = "none";
-      } else {
-          panel.style.display = "block";
-      }
+    /* toggle if is shows */
+    $(this).next().slideToggle();
   }
   return header;
 }
