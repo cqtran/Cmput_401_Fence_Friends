@@ -59,9 +59,16 @@ Accessed November 25, 2017
   border-right: none !important;
 }
 
-/* So clear search button shows */
+/* So clear search button shows (older browsers) */
 #search-typeahead::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
+}
+
+/*
+So clear search button shows (need this version so Safari renders properly)
+*/
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button !important;
 }
 
 @media (min-width: 992px) {
