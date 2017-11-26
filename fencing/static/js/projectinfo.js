@@ -14,7 +14,7 @@ var deletedAppearance = null;
 
 var layoutCount = 1;
 var appearanceCount = 1;
-var tabLimit = 10;
+var tabLimit = 25;
 
 var drawiopic;
 var imgPath;
