@@ -124,7 +124,7 @@ function dealStatuses(statuses){
 function focusSearch() {
   if($(window).width() < 768){
     $('#companyNameNav').addClass('small-hide');
-    $('#search-div').addClass('col-10');
+    $('#search-div').addClass('col-9');
     $('#search-icon-span').removeClass('search-icon').addClass('search-icon-green');
     $('#search-bar').removeClass('remove');
     document.getElementById("search-typeahead").focus();
@@ -132,7 +132,7 @@ function focusSearch() {
 }
 
 function collapseSearch() {
-  $('#search-div').removeClass('col-10');
+  $('#search-div').removeClass('col-9');
   $('#search-bar').addClass('remove');
   $('#search-icon-span').removeClass('search-icon-green').addClass('search-icon');
   $('#companyNameNav').removeClass('small-hide');
