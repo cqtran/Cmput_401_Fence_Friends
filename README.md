@@ -2,6 +2,20 @@
 
 Cavalry Fence Builder is a web app for fence installation companies. It allows a fence business to track projects and financial data, calculate quotes, generate material lists, and send quotes to clients and material lists to suppliers.
 
+* [Cavalry Fence Builder](#cavalry-fence-builder)
+  - [URL](#url)
+  - [Core Features](#core-features)
+  - [Requirements](#requirements)
+  - [Run](#run)
+  - [Run in Debug Mode](#run-in-debug-mode)
+  - [Run Tests](#run-tests)
+  - [Help](#help)
+* [draw.io](#drawio)
+  - [URL](#url-1)
+  - [Required for Building](#required-for-building)
+  - [Build](#build)
+  - [Run](#run-1)
+
 ## URL
 
 https://app.cavalryfence.ca/

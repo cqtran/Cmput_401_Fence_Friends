@@ -4,6 +4,10 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.no-highlight strong {
+  font-weight: normal !important;
+}
+
 .nav-tabs > li {
   margin-top: 0.1em;
   font-weight: bolder;
@@ -48,6 +52,11 @@ Accessed November 25, 2017
 #mobile-menu {
   -webkit-transition: opacity 0.5s; /* Safari */
   transition: opacity 0.5s;
+}
+
+.hidden-menu {
+  position: absolute;
+  opacity: 0;
 }
 
 .searching-bar {
