@@ -44,7 +44,6 @@ Accessed November 25, 2017
   -webkit-appearance: searchfield-cancel-button;
 }
 
-/* So clear search button always shows on wider screens */
 @media (min-width: 992px) {
   .navbar-collapse {
     flex-basis: auto;
