@@ -29,12 +29,16 @@
 <body class="fixed-nav sticky-footer bg-green" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark static-top bg-green" id="mainNav">
-    <div align="left"><a href="{{ url_for('customers') }}"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></a></div>
-    <div class="input-group search-bar collapsed-search" id="search-bar">
-      <input onfocus="expandSearch()" onfocusout="collapseSearch()" id="search-typeahead" class="col-12 typeahead form-control no-border" type="search" placeholder="Search for..." style="margin-top: 0; width: 100%;">
-      <span onclick="focusSearch()" class="input-group-addon search-icon">
-          <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
-      </span>
+    <div align="left">
+      <a href="{{ url_for('customers') }}"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></a>
+    </div>
+    <div class="nav navbar-nav ml-auto mr-2" id="search-div">
+      <div class="input-group searching-bar remove collapsed-search delete-admin" id="search-bar">
+        <input onfocusout="collapseSearch()" id="search-typeahead" class="col-12 typeahead form-control no-border" type="search" placeholder="Search for..." style="margin-top: 0; width: 100%;">
+        <span onclick="focusSearch()" class="input-group-addon search-icon" id="search-icon-span">
+            <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
+        </span>
+      </div>      
     </div>
     <button id="mobile-menu" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -80,7 +84,7 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item hide delete-admin" id="pencil-button">
-          <a class="nav-link ml-lg-2" id="edit" href="#">
+          <a class="nav-link" id="edit" href="#">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             <span class="d-lg-none d-xl-none">Edit</span>
           </a>
@@ -164,7 +168,6 @@
   <script src="../static/js/typeahead.bundle.js"></script>
   <script src="../static/js/handlebars-v4.0.11.js"></script>
   <script type="text/javascript" src='../static/js/app.js'></script>
-  <script type="text/javascript" src='../static/js/search-bar.js'></script>
   {% block content2 %}{% endblock %}
 
 </body>
