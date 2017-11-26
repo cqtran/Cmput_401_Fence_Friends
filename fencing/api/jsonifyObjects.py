@@ -1,5 +1,5 @@
 from flask.json import JSONEncoder
-from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance
+from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -59,8 +59,15 @@ class MyJSONEncoder(JSONEncoder):
             }
 
         if isinstance(obj, Material):
-            # TODO
-            return{}
+            return {
+                'material_id'           : obj.material_id,
+                'material_name'         : obj.material_name,
+                'my_price'              : str(obj.my_price),
+                'pieces_in_bundle'      : str(obj.pieces_in_bundle),
+                'category'              : obj.category,
+                'note'                  : obj.note,
+                'company_name'          : obj.company_name
+            }
 
         if isinstance(obj, Appearance):
             return {
@@ -70,6 +77,38 @@ class MyJSONEncoder(JSONEncoder):
                 'panel_gap'             : obj.panel_gap,
                 'height'                : obj.height
                 #TODO: Define other columns related to materials
+            }
+
+        if isinstance(obj, Style):
+            return {
+                'id'                    : obj.style_id,
+                'name'                  : obj.style,
+                'value'                 : str(obj.value),
+                'company_name'          : obj.company_name
+            }
+
+        if isinstance(obj, Colour):
+            return {
+                'id'                    : obj.colour_id,
+                'name'                  : obj.colour,
+                'value'                 : str(obj.value),
+                'company_name'          : obj.company_name
+            }
+
+        if isinstance(obj, Height):
+            return {
+                'id'                    : obj.height_id,
+                'name'                  : obj.height,
+                'value'                 : str(obj.value),
+                'company_name'          : obj.company_name
+            }
+
+        if isinstance(obj, Gate):
+            return {
+                'id'                    : obj.gate_id,
+                'name'                  : obj.gate,
+                'value'                 : str(obj.value),
+                'company_name'          : obj.company_name
             }
 
         return super(MyJSONEncoder, obj).default(obj)

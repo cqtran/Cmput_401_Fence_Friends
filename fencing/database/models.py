@@ -201,7 +201,73 @@ class Material(Base):
     __tablename__ = 'material'
     material_id = Column(Integer, primary_key=True)
     material_name = Column(String(255))
-    cost = Column(Numeric)
+    my_price = Column(Numeric(12, 2))
+    pieces_in_bundle = Column(Numeric)
+    category = Column(String(255))
+    note = Column(String(255))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+    #last_update = Column(DateTime(), default = datetime.datetime.utcnow)
+
+    def __init__(self, material_name, my_price, pieces_in_bundle, category, note, company_name, material_id = None):
+        self.material_id = material_id
+        self.material_name = material_name
+        self.my_price = my_price
+        self.pieces_in_bundle = pieces_in_bundle
+        self.category = category
+        self.note = note
+        self.company_name = company_name
+
+class Style(Base):
+    __tablename__ = 'style'
+    style_id = Column(Integer, primary_key=True)
+    style = Column(String(255))
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+
+    def __init__(self, style, value, company_name, style_id = None):
+        self.style_id = style_id
+        self.style = style
+        self.value = value
+        self.company_name = company_name
+
+class Colour(Base):
+    __tablename__ = 'colour'
+    colour_id = Column(Integer, primary_key=True)
+    colour = Column(String(255))
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+
+    def __init__(self, colour, value, company_name, colour_id = None):
+        self.colour_id = colour_id
+        self.colour = colour
+        self.value = value
+        self.company_name = company_name
+
+class Height(Base):
+    __tablename__ = 'height'
+    height_id = Column(Integer, primary_key=True)
+    height = Column(String(255))
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+
+    def __init__(self, height, value, company_name, height_id = None):
+        self.height_id = height_id
+        self.height = height
+        self.value = value
+        self.company_name = company_name
+
+class Gate(Base):
+    __tablename__ = 'gate'
+    gate_id = Column(Integer, primary_key=True)
+    gate = Column(String(255))
+    value = Column(Numeric(12, 2))
+    company_name = Column('company_name', String(255), ForeignKey('company.company_name'))
+
+    def __init__(self, gate, value, company_name, gate_id = None):
+        self.gate_id = gate_id
+        self.gate = gate
+        self.value = value
+        self.company_name = company_name
 
 class Picture(Base):
     __tablename__ = 'picture'

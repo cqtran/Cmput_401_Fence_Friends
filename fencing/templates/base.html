@@ -69,8 +69,11 @@
             <span class="nav-link-text">Settings</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
-            <li class="delete-admin">
-              <a href="#">Update Prices</a>
+            <li>
+              <a href="{{ url_for('viewPrices') }}">View/Update Prices</a>
+            </li>
+            <li>
+              <a href="{{ url_for('viewEstimates') }}">View/Update Estimations</a>
             </li>
             <li class="delete-admin">
               <!-- if not sub account -->
