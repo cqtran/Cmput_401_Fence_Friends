@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <h1>Accounting</h1>
+</div>
+<hr class="mt-2">
+
+<div class="container-fluid">
+  <button id = 'exportSummary'>Export Accounting Summary</button>
+</div>
+
+<div class="container-fluid">
+  <div class="row" id="accountingTable"></div>
+</div>
+{% endblock %}
+{% block content2 %}
+<script type="text/javascript" src='../static/js/accounting.js'></script>
+{% endblock %}
