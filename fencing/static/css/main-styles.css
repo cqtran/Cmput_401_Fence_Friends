@@ -6,6 +6,7 @@ Accessed November 25, 2017
 
 .nav-tabs > li {
   margin-top: 0.1em;
+  font-weight: bolder;
 }
 
 .nav-tabs > li > a {
@@ -39,6 +40,9 @@ Accessed November 25, 2017
   #search-typeahead::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
   }
+  .navbar-collapse {
+    flex-basis: auto;
+  }
 }
 
 #mobile-menu {
@@ -46,40 +50,49 @@ Accessed November 25, 2017
   transition: opacity 0.5s;
 }
 
-.hidden-menu {
-  position:absolute;
-  opacity: 0;
-}
-
-.search-bar {
+.searching-bar {
   -webkit-transition: width 0.2s; /* Safari */
   transition: width 0.2s;
 }
 
-@media (max-width: 991px) {
-  .collapsed-search {
-    width: 10em;
-  }
-  
-  .expanded-search {
-    width: 66vw;
-  }
-
-  .expanded-input::-webkit-search-cancel-button {
-    -webkit-appearance: searchfield-cancel-button;
-  }
-}
-
 @media (max-width: 767px) {
-  .collapsed-search {
-    width: 1em;
+  .remove .twitter-typeahead {
+    display: none !important;
   }
-
-  .expanded-search {
-    width: 90vw;
+  .search-icon {
+    color: rgba(255,255,255,.5);
+    background-color: #329664;
+    border: 0;
+    font-weight: bold;
+  }
+  .search-icon:hover{
+    cursor: pointer;
+    color: rgba(255,255,255,.75);
+    background-color: #329664;
+    border: 0;
+    font-weight: bold;
+  }
+  .small-hide {
+    display: none !important;
   }
 }
-
+@media (min-width: 768px){
+  .search-icon {
+    color: #329664;
+    background-color: #ffffff;
+    border: 0;
+    font-weight: bold;
+  }
+  #search-div {
+    width: 300px;
+  }
+}
+.search-icon-green {
+  color: #329664;
+  background-color: #ffffff;
+  border: 0;
+  font-weight: bold;
+}
 .fixed-tab-width {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -285,12 +298,6 @@ input[type="file"] {
   padding: 5px 10px;
  text-align: center;
 }
-.search-icon {
-  color: #329664;
-  background-color: #ffffff;
-  border: 0;
-  font-weight: bold;
-}
 .vertical-center {
   min-height: 100%;
   display: flex;
@@ -368,7 +375,7 @@ span.twitter-typeahead {
   width: 100%;
 }
 .input-group span.twitter-typeahead {
-  display: block !important;
+  display: block;
   height: 34px;
 }
 .input-group span.twitter-typeahead .tt-menu,
