@@ -4,6 +4,12 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+/* No line under modal title */
+.modal-header {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
 .no-highlight strong {
   font-weight: normal !important;
 }
