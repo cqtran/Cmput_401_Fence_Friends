@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <h1>Fencing Estimate Values</h1>
+</div>
+<hr class="mt-2">
+<div class="container-fluid">
+  <form id="upload-form" enctype=multipart/form-data >
+		<input class="form-control" type="hidden" name="company_name" id="company_name" />
+		<div class="row">
+			<div class="col-sm-12 less-padding">
+				<label for="file-upload" class="btn btn-primary btn-block">
+				    Update Estimate Values
+				</label>
+		  		<input class="btn btn-primary btn-block" id="file-upload" type="file" name="estimates" accept=".csv">
+			</div>
+	  	</div>
+	</form>
+</div>
+
+<div class="container-fluid" id='estimateTable'></div>
+{% endblock %}
+{% block content2 %}
+<!-- reference to js file -->
+<script type="text/javascript" src='../static/js/estimates.js'></script>
+{% endblock %}

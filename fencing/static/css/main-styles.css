@@ -16,6 +16,12 @@ Accessed November 25, 2017
   filter: grayscale(0%);
 }
 
+/* No line under modal title */
+.modal-header {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
 .no-highlight strong {
   font-weight: normal !important;
 }
