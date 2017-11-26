@@ -104,7 +104,7 @@ Accessed November 25, 2017
   display: block;
 }
 
-.close:hover, .closeTab:hover {
+.closeTab:hover {
   color: #400;
 }
 
