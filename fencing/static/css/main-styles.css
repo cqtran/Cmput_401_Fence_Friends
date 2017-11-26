@@ -4,6 +4,18 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.newPicture {
+  -webkit-transition: -webkit-filter 0.5s;
+  transition: filter 0.5s;
+  -webkit-filter: grayscale(100%); /* Safari */
+  filter: grayscale(100%);
+}
+
+.newPicture:hover {
+  -webkit-filter: grayscale(0%); /* Safari */
+  filter: grayscale(0%);
+}
+
 /* No line under modal title */
 .modal-header {
   border-top: none !important;

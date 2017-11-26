@@ -708,40 +708,54 @@ function setProjectInfo(project){
 	}
 }
 
-function makePictures(pictures){
-	$('#projectPictures').empty();
-  pictures.forEach(function(picture) {
-    var img = document.createElement('img');
-    var final = document.createElement('a');
+function makeNewPictureButton() {
+	var img = document.createElement('img');
+	var final = document.createElement('a');
 
-		img.src =  tbnPath + picture.thumbnail_name;
-		img.alt =  'Thumbnail not found';
-    final.setAttribute('href', '#');
-    final.setAttribute('class', 'PictureThumbnail card zero-padding');
-    // this is where you want to go when you click
-    final.addEventListener('click', function(){
-      $('#imagepreview').attr('src', imgPath + picture.file_name);
-			$('#imagepopup').modal('show');
-    });
-    //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
-    final.appendChild(img);
+	img.height = '50';
+	img.width = '50';
+	img.src = tbnPath + "New_Picture.png";
+	img.alt = 'Thumbnail not found';
+	final.setAttribute('href', '#');
+	final.setAttribute('class', 'PictureThumbnail newPicture zero-padding');
+
+	final.addEventListener('click', function(){
+		$("#file-upload").click();
+	});
+
+	final.appendChild(img);
+	pictureList.appendChild(final);
+}
+
+function makePictures(pictures) {
+	$('#projectPictures').empty();
+	makeNewPictureButton();
+
+	pictures.forEach(function(picture) {
+		var img = document.createElement('img');
+		var final = document.createElement('a');
+
+		img.src = tbnPath + picture.thumbnail_name;
+		img.alt = 'Thumbnail not found';
+		final.setAttribute('href', '#');
+		final.setAttribute('class', 'PictureThumbnail card zero-padding');
+		// this is where you want to go when you click
+		final.addEventListener('click', function(){
+		$('#imagepreview').attr('src', imgPath + picture.file_name);
+				$('#imagepopup').modal('show');
+		});
+		//link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
+		final.appendChild(img);
 
 		//img.className += 'img-thumbnail'
 		// Add it to the list:
 		pictureList.appendChild(final);
-
-  })
+	})
 }
 
 function imagesError(){
 	$('#projectPictures').empty();
-  var img = document.createElement('img');
-  console.log(tbnPath);
-  img.src =  tbnPath + 'No_picture_available.png';
-  img.alt =  'No picture available';
-  img.height = '150';
-  img.width = '150';
-  pictureList.appendChild(img);
+	makeNewPictureButton();
 }
 
 function editDiagram(image) {
@@ -865,8 +879,11 @@ function getPics(){
       success: function(result) {
       	makePictures(result);
       },
-      error: function(result) {
-          imagesError();
+      error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+        imagesError();
       }
   });
 }
