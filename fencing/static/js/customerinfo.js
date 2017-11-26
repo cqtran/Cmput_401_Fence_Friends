@@ -97,7 +97,9 @@ function getCustInfo(){
       success: function(result) {
           $('#title').html(result[0].first_name);
           $('#phone').html(result[0].cellphone);
+          $('#phone').attr('href', 'tel:' +result[0].cellphone);
           $('#email').html(result[0].email);
+          $('#email').attr('href', 'mailto:' + result[0].email);
           $('#companyNameNav').html(result[0].company_name);
       },
       error: function(result) {
