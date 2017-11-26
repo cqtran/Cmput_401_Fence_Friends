@@ -756,14 +756,6 @@ function makePictures(pictures) {
 function imagesError(){
 	$('#projectPictures').empty();
 	makeNewPictureButton();
-	return;
-	var img = document.createElement('img');
-	console.log(tbnPath);
-	img.src =  tbnPath + 'No_picture_available.png';
-	img.alt =  'No picture available';
-	img.height = '150';
-	img.width = '150';
-	pictureList.appendChild(img);
 }
 
 function editDiagram(image) {
