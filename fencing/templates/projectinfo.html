@@ -71,10 +71,11 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <!--top name and status -->
 <div class="container-fluid">
   <div class="row justify-content-between">
-    <h1 id="project-name"></h1>
+		<h1 id="project-name"></h1>
     <h4 class="float-right" id="status" style="padding-top: 10px; font-weight: bold;"></h4>
-  </div>
+	</div>
 </div>
+<a href="{{ url_for('customerinfo') }}?cust_id=" class="text-muted paddingless" id="customer-name"></a>
 <hr class="mt-2">
 
 <ul id="layout-tabs" class="nav nav-tabs flex-wrap">

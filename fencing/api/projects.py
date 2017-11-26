@@ -114,6 +114,10 @@ def projectdetails(project_id):
         parsedLayouts = [DiagramParser.parse(i.layout_info) for i in layouts]
         displayStrings = []
         json_appearances = Appearances.getAppearanceList(project_id)
+        customer = dbSession.query(Customer).filter(
+            Customer.customer_id == project.customer_id).one()
+        customerName = customer.first_name
+        customerId = customer.customer_id
 
         for layout in parsedLayouts:
             if layout is None:
@@ -128,7 +132,8 @@ def projectdetails(project_id):
 
         company = current_user.company_name
         lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
-            selectedLayout, selectedAppearance, displayStrings]
+            selectedLayout, selectedAppearance, displayStrings, customerName,
+            customerId]
 
         return jsonify(lst)
 

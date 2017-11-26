@@ -856,6 +856,10 @@ function moreDetails(){
 			  var selectedLayout = result[5];
 			  var selectedAppearance = result[6];
 			  var displayStrings = result[7];
+			  var customerName = $('#customer-name');
+			  customerName.text(result[8]);
+			  var oldHref = customerName.attr('href');
+			  customerName.attr('href', oldHref + result[9] + '&status=All');
 			  getPics();
 			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);
