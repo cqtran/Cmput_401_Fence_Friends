@@ -14,6 +14,8 @@ Accessed November 25, 2017
 }
 
 .nav-tabs > li > a {
+  -webkit-transition: color 0.25s; /* Safari */
+  transition: color 0.25s;
   border-bottom: 0.1em solid #ddd !important;
 }
 
@@ -94,6 +96,20 @@ Accessed November 25, 2017
   width: 10em;
   overflow: hidden;
   display: block;
+}
+
+.name-edit {
+  -webkit-transition: color 0.25s; /* Safari */
+  transition: color 0.25s;
+  color: #505050;
+  font-weight: bolder;
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.name-edit:hover {
+  color: black;
 }
 
 h1 {
