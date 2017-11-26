@@ -20,7 +20,7 @@ function confirmDeactivate(id) {
 function showError(){
   requestList.empty();
   var item = document.createElement('h6');
-  item.appendChild(document.createTextNode('No active users we\'re found.'));
+  item.appendChild(document.createTextNode('No active users were found.'));
   document.getElementById('generate-users').appendChild(item);
 }
 

@@ -21,7 +21,7 @@ function confirmAccept(id) {
 function showError(){
   requestList.empty();
   var item = document.createElement('h6');
-  item.appendChild(document.createTextNode('No account requests users we\'re found.'));
+  item.appendChild(document.createTextNode('No account requests users were found.'));
   document.getElementById('generate-users').appendChild(item);
 }
 
