@@ -102,6 +102,7 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
 function getStatus(){
 //get details
   $.ajax({
@@ -112,9 +113,27 @@ function getStatus(){
       }
   });
 }
+
 function dealStatuses(statuses){
   statuses.forEach(function(status) {
     $('select[name=status]').append('<option value="' + status.status_name + '">' + status.status_name + '</option>');
   });
   $('.selectpicker').selectpicker('refresh'); 
+}
+
+function focusSearch() {
+  if($(window).width() < 768){
+    $('#companyNameNav').addClass('small-hide');
+    $('#search-div').addClass('col-9');
+    $('#search-icon-span').removeClass('search-icon').addClass('search-icon-green');
+    $('#search-bar').removeClass('remove');
+    document.getElementById("search-typeahead").focus();
+  }
+}
+
+function collapseSearch() {
+  $('#search-div').removeClass('col-9');
+  $('#search-bar').addClass('remove');
+  $('#search-icon-span').removeClass('search-icon-green').addClass('search-icon');
+  $('#companyNameNav').removeClass('small-hide');
 }
