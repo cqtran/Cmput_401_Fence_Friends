@@ -33,14 +33,14 @@
       <a href="{{ url_for('customers') }}"><strong class="navbar-brand mb-0" id="companyNameNav">{{ company }}</strong></a>
     </div>
     <div class="nav navbar-nav ml-auto mr-2" id="search-div">
-      <div class="input-group searching-bar remove collapsed-search delete-admin" id="search-bar">
+      <div class="input-group searching-bar remove delete-admin" id="search-bar">
         <input onfocusout="collapseSearch()" id="search-typeahead" class="col-12 typeahead form-control no-border" type="search" placeholder="Search for..." style="margin-top: 0; width: 100%;">
         <span onclick="focusSearch()" class="input-group-addon search-icon" id="search-icon-span">
             <i class="fa fa-search" style="padding-bottom: 0.125rem; padding-top: 0.125rem;"></i>
         </span>
       </div>      
     </div>
-    <button id="mobile-menu" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
