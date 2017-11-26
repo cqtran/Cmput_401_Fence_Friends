@@ -4,6 +4,10 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.no-highlight strong {
+  font-weight: normal !important;
+}
+
 .nav-tabs > li {
   margin-top: 0.1em;
 }
