@@ -98,6 +98,10 @@ Accessed November 25, 2017
   display: block;
 }
 
+.close:hover, .closeTab:hover {
+  color: #400;
+}
+
 .name-edit {
   -webkit-transition: color 0.25s; /* Safari */
   transition: color 0.25s;
