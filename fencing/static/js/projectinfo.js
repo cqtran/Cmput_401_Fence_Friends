@@ -1,5 +1,5 @@
 var attachmentPathLength = 20;
-var pdf;
+var pdf = null;
 
 var confirmed = false;
 
@@ -1095,7 +1095,8 @@ $('#view-material-list').submit(function(e) {
     }
 	});
 });
-$('#pdf').on("hidden.bs.modal", function() {
+
+function deleteAttachment() {
 	$.ajax({
     type: 'POST',
     url: "/deleteAttachment/?attachment=" + pdf.slice(attachmentPathLength),
@@ -1107,4 +1108,17 @@ $('#pdf').on("hidden.bs.modal", function() {
 		console.log(error);
     }
 	});
+}
+
+$('#pdf').on("hidden.bs.modal", function() {
+	deleteAttachment();
+	pdf = null;
 });
+
+window.onbeforeunload = function() {
+	if (pdf != null) {
+		deleteAttachment();
+	}
+
+	return;
+}
