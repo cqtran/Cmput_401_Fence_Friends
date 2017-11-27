@@ -9,3 +9,4 @@ Camera
 		- Free for commercial use
 	* https://pixabay.com/en/camera-photo-image-digital-camera-1085704/
 	* Accessed November 26, 2017
+	* Color modified for use in app

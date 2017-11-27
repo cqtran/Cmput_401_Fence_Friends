@@ -12,7 +12,7 @@ from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
 from api.decorators import async
 
-import os
+import os, traceback
 # Import python files with functionality
 import api.users as Users
 import api.customers as Customers
@@ -56,7 +56,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_FLASH_MESSAGES'] = False
 
@@ -313,9 +313,10 @@ def viewMaterialList():
         attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment))
+        url = url_for("static", filename=attachment)
+        return jsonify({"url": url})
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return jsonify({"reload": 1})
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
@@ -333,9 +334,10 @@ def viewQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment))
+        url = url_for("static", filename=attachment)
+        return jsonify({"url": url})
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return jsonify({"reload": 1})
 
 @app.route('/sendQuote/', methods = ['POST'])
 @login_required
@@ -412,6 +414,29 @@ def viewPrices():
 @roles_required('primary')
 def viewEstimates():
     return render_template("estimates.html", company = current_user.company_name)
+
+@app.route('/deleteAttachment/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteAttachment():
+    path = request.args.get("attachment")
+
+    if ".." in path or path.startswith("/") or path.startswith("\\") or \
+        path.count("/") > 1 or path.count("\\") > 1:
+
+        raise Exception("Invalid path passed to deleteAttachment")
+    
+    if not (path.startswith("quotes/") or path.startswith("materials/")):
+        raise Exception("Invalid path passed to deleteAttachment")
+    
+    try:
+        os.remove(Email.staticFolder + "attachments/" + path)
+        return "{}"
+    
+    except:
+        traceback.print_exc()
+        print("Error: could not delete attachment " + path)
+        return "{}"
 
 @app.errorhandler(404)
 def page_not_found(e):

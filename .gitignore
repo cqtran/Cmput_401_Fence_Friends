@@ -1,8 +1,8 @@
 .DS_Store
 *.pyc
 .idea/
-Quote.pdf
-Material List.pdf
+/fencing/static/attachments/quotes/*.pdf
+/fencing/static/attachments/materials/*.pdf
 /fencing/static/images/thumbnails/tbn_*.png
 /fencing/static/images/pictures/*
 !/fencing/static/images/pictures/pictures

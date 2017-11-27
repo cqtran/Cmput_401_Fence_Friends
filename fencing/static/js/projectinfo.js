@@ -1,3 +1,6 @@
+var attachmentPathLength = 20;
+var pdf = null;
+
 var confirmed = false;
 
 var firstLayout = "1";
@@ -513,7 +516,6 @@ function saveActiveLayout(includeSelection) {
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
     success: function(result) {
-			returndata = result;
 			if (result["reload"]) {
 				reloadPage();
 			}
@@ -557,7 +559,6 @@ function saveActiveAppearance(includeSelection) {
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
     success: function(result) {
-			returndata = result;
 			setActiveAppearanceId(result["appearanceId"]);
     },
     error: function(xhr, textStatus, error) {
@@ -856,6 +857,10 @@ function moreDetails(){
 			  var selectedLayout = result[5];
 			  var selectedAppearance = result[6];
 			  var displayStrings = result[7];
+			  var customerName = $('#customer-name');
+			  customerName.text(result[8]);
+			  var oldHref = customerName.attr('href');
+			  customerName.attr('href', oldHref + result[9] + '&status=All');
 			  getPics();
 			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);
@@ -1040,3 +1045,82 @@ $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
+$('#view-quote').submit(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+    type: 'POST',
+    url: "/viewQuote/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    success: function(result) {
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			pdf = result['url'];
+			$('pdfFallback').attr('href', pdf);
+			$('#pdfContent').attr('src', pdf);
+			$('#pdf').modal("show");
+		}
+    },
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+});
+$('#view-material-list').submit(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+    type: 'POST',
+    url: "/viewMaterialList/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    success: function(result) {
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			pdf = result['url'];
+			$('pdfFallback').attr('href', pdf);
+			$('#pdfContent').attr('src', pdf);
+			$('#pdf').modal("show");
+		}
+    },
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+});
+
+function deleteAttachment() {
+	$.ajax({
+    type: 'POST',
+    url: "/deleteAttachment/?attachment=" + pdf.slice(attachmentPathLength),
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+}
+
+$('#pdf').on("hidden.bs.modal", function() {
+	deleteAttachment();
+	pdf = null;
+});
+
+window.onbeforeunload = function() {
+	if (pdf != null) {
+		deleteAttachment();
+	}
+
+	return;
+}

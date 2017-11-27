@@ -17,8 +17,6 @@ import os
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
 @projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
-@login_required
-@roles_required('primary')
 def saveAppearanceSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -29,8 +27,6 @@ def saveAppearanceSelection():
     return "{}"
 
 @projectBlueprint.route('/saveLayoutSelection/', methods=['POST'])
-@login_required
-@roles_required('primary')
 def saveLayoutSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -42,8 +38,8 @@ def saveLayoutSelection():
 
 @projectBlueprint.route('/getProjectList/', defaults={'customer_id': None}, methods=['GET'])
 @projectBlueprint.route('/getProjectList/<int:customer_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def getProjectList(customer_id):
     """ Returns a list of projects. If a customer id is provided, the list will contain
     only contain projects to the given customer id """
@@ -75,8 +71,8 @@ def getProjectList(customer_id):
         return jsonify(projectList)
 
 @projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def getProject(project_id):
     """ Returns a single project of a given project id """
     if request.method == "GET":
@@ -87,8 +83,8 @@ def getProject(project_id):
         return jsonify(project)
 
 @projectBlueprint.route('/addproject/', methods=['POST'])
-@login_required
-@roles_required('primary')
+#login_required
+#roles_required('primary')
 def addproject():
     if request.method == 'POST':
         customer = request.values.get("customer")
@@ -118,6 +114,10 @@ def projectdetails(project_id):
         parsedLayouts = [DiagramParser.parse(i.layout_info) for i in layouts]
         displayStrings = []
         json_appearances = Appearances.getAppearanceList(project_id)
+        customer = dbSession.query(Customer).filter(
+            Customer.customer_id == project.customer_id).one()
+        customerName = customer.first_name
+        customerId = customer.customer_id
 
         for layout in parsedLayouts:
             if layout is None:
@@ -132,7 +132,8 @@ def projectdetails(project_id):
 
         company = current_user.company_name
         lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
-            selectedLayout, selectedAppearance, displayStrings]
+            selectedLayout, selectedAppearance, displayStrings, customerName,
+            customerId]
 
         return jsonify(lst)
 

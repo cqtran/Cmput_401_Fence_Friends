@@ -22,11 +22,11 @@ thumbnailSize = (128, 128)
 pictureDir = os.path.join('static', 'images', 'pictures')
 
 pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='templates')
-app_root = '/var/www/CMPUT401-FenceFriends/fencing/'
+app_root = ''
 
 @pictureBlueprint.route('/getPictureList/<int:project_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def getPictureList(project_id):
     """ Returns a list of pictures for a given project id"""
     if request.method == 'GET':
@@ -37,14 +37,15 @@ def getPictureList(project_id):
         return jsonify(pictures)
 
 @pictureBlueprint.route('/uploadPicture/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
     print(request.method)
     if request.method == 'POST':
         project_id = request.form['proj_id']
         picture = request.files['picture']
+        # Parse file type and file name
         filename = secure_filename(picture.filename)
         filename, file_extension = os.path.splitext(filename)
         if filename != '':
@@ -61,7 +62,7 @@ def uploadPicture():
                 picturePath = os.path.join(app_root, pictureDir, filename + file_extension)
                 print('Picture stored at: ' + picturePath + '\n')
                 picture.save(picturePath)
-                print("actually saved")
+
                 # Create thumbnail of picture
                 thumb = Image.open(picturePath)
 
@@ -95,13 +96,12 @@ def uploadPicture():
                 dbSession.commit()
                 return created_request("Picture was uploaded")
             except:
-                print("couldnt save")
                 return bad_request("Invalid project id or an error when saving the file has occured")
         return bad_request("No file provided")
 
 @pictureBlueprint.route('/deletePicture/', methods = ['DELETE'])
-@login_required
-@roles_required('primary')
+#@login_required
+#@roles_required('primary')
 def deletePicture():
     if request.method == 'DELETE':
         # Grab arguments
