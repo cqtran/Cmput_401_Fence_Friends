@@ -1059,6 +1059,7 @@ $('#view-quote').submit(function(e) {
 		}
 		else {
 			pdf = result['url'];
+			$('pdfFallback').attr('href', pdf);
 			$('#pdfContent').attr('src', pdf);
 			$('#pdf').modal("show");
 		}
@@ -1084,6 +1085,7 @@ $('#view-material-list').submit(function(e) {
 		}
 		else {
 			pdf = result['url'];
+			$('pdfFallback').attr('href', pdf);
 			$('#pdfContent').attr('src', pdf);
 			$('#pdf').modal("show");
 		}
