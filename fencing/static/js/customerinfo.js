@@ -2,6 +2,11 @@
 var projectList = document.getElementById('projectlist');
 var cust_id;
 
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
+}
+
 function updateProjects(projects){
   $('#projectlist').empty();
   projects.forEach(function(project) {
@@ -126,8 +131,11 @@ $(document).ready(function(){
   var url = window.location.querystring;
   cust_id = getParameterByName('cust_id');
   if(cust_id == null) {
-    alert("Customer does not exist.");
-    window.location.href = '/';
+    $('#message').on('hidden.bs.modal', function() {
+      window.location.href = '/';
+    });
+  
+    showMessage("Customer does not exist.");
   }
   $("#pencil-button").removeClass('hide');
   $('#edit').click(function(){

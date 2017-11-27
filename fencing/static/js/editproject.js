@@ -2,6 +2,10 @@ var chosenCustomers = [];
 var proj_id;
 var statusList;
 
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
+}
 
 function projectData(project){
   document.getElementById('project_name').value = project[0].project_name;
@@ -55,7 +59,7 @@ function deleteProject(){
           window.location.href = '/projects';
       },
       error: function(result) {
-          alert('error');
+          showMessage('error');
       }
   });
 }
@@ -135,12 +139,12 @@ $('#edit-form').submit(function(e) {
             window.location.href = '/projectinfo?proj_id=' + proj_id;
         },
         error: function(result) {
-            alert('error');
+            showMessage('error');
         }
     });
   }
   else {
-    alert("A customer must be selected.");
+    showMessage("A customer must be selected.");
   }
 });
 
@@ -166,8 +170,11 @@ $(document).ready(function(){
   statusList = document.getElementById('status');
   proj_id = getParameterByName('proj_id');
   if(proj_id == null) {
-    alert("Project does not exist.");
-    window.location.href = '/projects/';
+    $('#message').on('hidden.bs.modal', function() {
+      window.location.href = '/projects/';
+    });
+  
+    showMessage("Project does not exist.");
   }
   getStatus();
   getProjectData();

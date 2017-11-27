@@ -41,8 +41,17 @@
     </div>
   </div>
 </div>
-
 <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirmDelete">Delete Project</button>
+<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="message-text" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block content2 %}
 <script type="text/javascript" src='../static/js/editproject.js'></script>
