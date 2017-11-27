@@ -127,7 +127,7 @@ $(document).ready(function(){
   cust_id = getParameterByName('cust_id');
   if(cust_id == null) {
     alert("Customer does not exist.");
-    window.location.href = '/customers/';
+    window.location.href = '/';
   }
   $("#pencil-button").removeClass('hide');
   $('#edit').click(function(){
