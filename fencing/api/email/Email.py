@@ -28,13 +28,9 @@ class Email:
 				stylesheets=Messages.stylesheets)
 			return filePath
 		
-		except BaseException as e:
-			traceback.print_exc()
-			flash("Error creating attachment", "danger")
-			return None
-		
 		except:
 			flash("Error creating attachment", "danger")
+			traceback.print_exc()
 			return None
 
 	def send(app, mail, senderName, recipientEmail, subject, message, kind,
@@ -87,9 +83,6 @@ class Email:
 			flash(errorMessage + " (OSError)", "danger")
 			traceback.print_exc()
 		
-		except BaseException as e:
-			flash(errorMessage + " (unknown exception)", "danger")
-			traceback.print_exc()
-		
 		except:
 			flash(errorMessage + " (unknown exception)", "danger")
+			traceback.print_exc()

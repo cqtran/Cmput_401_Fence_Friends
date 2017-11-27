@@ -16,13 +16,9 @@ class DiagramParser:
 		try:
 			return DiagramParser._parse(compressedString)
 		
-		except BaseException as e:
-			flash("Error saving diagram", "danger")
-			traceback.print_exc()
-			return None
-		
 		except:
 			flash("Error saving diagram", "danger")
+			traceback.print_exc()
 			return None
 	
 	def _initialDecode(string):
