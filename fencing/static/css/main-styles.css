@@ -14,6 +14,9 @@ Accessed November 25, 2017
 .pdf-modal-content {
   height: 100vh;
   width: 100vw;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important; 
 }
 
 .pdf-modal-body {
