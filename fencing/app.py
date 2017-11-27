@@ -421,7 +421,9 @@ def viewEstimates():
 def deleteAttachment():
     path = request.args.get("attachment")
 
-    if ".." in path or path.startswith("/") or path.count("/") > 1:
+    if ".." in path or path.startswith("/") or path.startswith("\\") or \
+        path.count("/") > 1 or path.count("\\") > 1:
+
         raise Exception("Invalid path passed to deleteAttachment")
     
     if not (path.startswith("quotes/") or path.startswith("materials/")):
