@@ -4,6 +4,10 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.btn.btn-primary:disabled {
+  background-color: grey;
+}
+
 .pdf-modal-dialog {
   height: 100vh;
   width: 100vw;
