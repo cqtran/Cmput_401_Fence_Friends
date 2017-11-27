@@ -32,6 +32,23 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
+<div class="modal fade" id="pdf" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog pdf-modal-dialog" role="document">
+    <div class="modal-content pdf-modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pdf-modal-body">
+				<iframe width="100%" height="100%" id="pdfContent">
+					Your browser does not support iframe. <a id="pdfFallback" target="_blank">Click here</a> to view the PDF.
+				</iframe>
+			</div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirmTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -185,12 +202,12 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	</form>
 	<div class="row">
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form method="post" target="_blank" action="{{url_for('viewQuote', proj_id=request.args.get('proj_id'))}}">
+			<form id="view-quote" method="post" action="javascript:void(0);">
 				<input class="btn btn-primary btn-block" type="submit" value="View Quote"/>
 			</form>
 		</div>
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form method="post" target="_blank" action="{{url_for('viewMaterialList', proj_id=request.args.get('proj_id'))}}">
+			<form id="view-material-list" method="post" action="javascript:void(0);">
 				<input class="btn btn-primary btn-block" type="submit" value="View Material List"/>
 			</form>
 		</div>

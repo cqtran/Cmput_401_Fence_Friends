@@ -4,6 +4,31 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.btn.btn-primary:disabled {
+  background-color: grey;
+}
+
+.pdf-modal-dialog {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  position: fixed;
+}
+
+.pdf-modal-content {
+  height: 100vh;
+  width: 100vw;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important; 
+}
+
+.pdf-modal-body {
+  padding: 0;
+  width: 100%;
+  height: 60vh;
+}
+
 .newPicture {
   -webkit-transition: -webkit-filter 0.5s;
   transition: filter 0.5s;

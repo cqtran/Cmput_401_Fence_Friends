@@ -54,8 +54,10 @@ class Email:
 			if attachmentPath is not None:
 				attachmentPath = Email.staticFolder + attachmentPath
 
+				attachmentName = kind.title() + ".pdf"
+
 				with app.open_resource(attachmentPath) as fp:
-					m.attach(attachmentPath, "image/png", fp.read())
+					m.attach(attachmentName, "application/pdf", fp.read())
 				
 				try:
 					os.remove(attachmentPath)
