@@ -1,3 +1,6 @@
+var attachmentPathLength = 20;
+var pdf;
+
 var confirmed = false;
 
 var firstLayout = "1";
@@ -513,7 +516,6 @@ function saveActiveLayout(includeSelection) {
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
     success: function(result) {
-			returndata = result;
 			if (result["reload"]) {
 				reloadPage();
 			}
@@ -557,7 +559,6 @@ function saveActiveAppearance(includeSelection) {
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
     success: function(result) {
-			returndata = result;
 			setActiveAppearanceId(result["appearanceId"]);
     },
     error: function(xhr, textStatus, error) {
@@ -1043,4 +1044,67 @@ $('#file-upload').change(function(){
 $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
+});
+$('#view-quote').submit(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+    type: 'POST',
+    url: "/viewQuote/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    success: function(result) {
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			pdf = result['url'];
+			$('#pdfContent').attr('src', pdf);
+			$('#pdf').modal("show");
+		}
+    },
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+});
+$('#view-material-list').submit(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+    type: 'POST',
+    url: "/viewMaterialList/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    success: function(result) {
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			pdf = result['url'];
+			$('#pdfContent').attr('src', pdf);
+			$('#pdf').modal("show");
+		}
+    },
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+});
+$('#pdf').on("hidden.bs.modal", function() {
+	$.ajax({
+    type: 'POST',
+    url: "/deleteAttachment/?attachment=" + pdf.slice(attachmentPathLength),
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
 });
