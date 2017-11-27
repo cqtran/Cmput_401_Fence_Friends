@@ -17,7 +17,7 @@ var deletedAppearance = null;
 
 var layoutCount = 1;
 var appearanceCount = 1;
-var tabLimit = 25;
+var tabLimit = 15;
 
 var drawiopic;
 var imgPath;
@@ -110,6 +110,11 @@ function onInput(f, prompt, defaultValue) {
 
 function closeInput() {
 	$('#inputOkay').click();
+}
+
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
 }
 
 // From:
@@ -286,7 +291,8 @@ function setActiveAppearanceId(dbId) {
 
 function addLayout(loading) {
 	if (layoutCount >= tabLimit) {
-		alert("Cannot have more than " + tabLimit.toString() + " layouts");
+		showMessage(
+			"Cannot have more than " + tabLimit.toString() + " layouts");
 		return;
 	}
 
@@ -333,7 +339,8 @@ function addLayout(loading) {
 
 function addAppearance(loading) {
 	if (appearanceCount >= tabLimit) {
-		alert("Cannot have more than " + tabLimit.toString() + " appearances");
+		showMessage(
+			"Cannot have more than " + tabLimit.toString() + " appearances");
 		return;
 	}
 
@@ -580,7 +587,7 @@ function removeLayoutFromDb(number) {
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
-			alert("Error");
+			showMessage("Error");
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
@@ -599,7 +606,7 @@ function removeAppearanceFromDb(number) {
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
-			alert("Error");
+			showMessage("Error");
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
@@ -814,7 +821,7 @@ function save(url) {
 					if (wnd != null) {
 						wnd.close();
 					}
-					alert('Error ' + req.status);
+					showMessage('Error ' + req.status);
 				}
 				else if (wnd != null) {
 					wnd.location.href = url;
@@ -835,7 +842,7 @@ function getProjects(){
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
-		alert("Error");
+		showMessage("Error");
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -868,7 +875,7 @@ function moreDetails(){
 			  selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
-		alert("Error");
+		showMessage("Error");
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -1005,8 +1012,11 @@ $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
-    alert("Project does not exist.");
-    window.location.href = '/projects/';
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+
+    showMessage("Project does not exist.");
   }
 
   $("#pencil-button").removeClass('hide');
