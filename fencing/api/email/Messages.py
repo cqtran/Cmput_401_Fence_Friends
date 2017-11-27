@@ -5,8 +5,8 @@ from database.models import Layout
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
 
-	quotePath = "Quote.pdf"
-	materialListPath = "Material List.pdf"
+	quotePath = "attachments/quotes"
+	materialListPath = "attachments/materials"
 
 	stylesheets=[CSS(string="""
 		table {

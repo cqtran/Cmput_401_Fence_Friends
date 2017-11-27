@@ -7,7 +7,7 @@ from weasyprint import HTML
 from database.models import Company, Customer, Project
 from database.db import dbSession
 from api.email.Messages import Messages
-import os, traceback
+import os, traceback, uuid
 
 SENDER_EMAIL = 'cmput401fence@gmail.com'
 
@@ -16,18 +16,14 @@ class Email:
 
 	staticFolder = None
 
-	def makeAttachment(filePath, content):
+	def makeAttachment(folderPath, content):
 		"""
 		Make an attachment and return the file path or None if there was an
 		exception
 		"""
 		try:
+			filePath = folderPath + "/" + str(uuid.uuid4()) + ".pdf"
 			fullPath = Email.staticFolder + filePath
-
-			# If there is an old attachment, delete it
-			if os.path.isfile(fullPath):
-				os.remove(fullPath)
-			
 			HTML(string=content).write_pdf(fullPath,
 				stylesheets=Messages.stylesheets)
 			return filePath
@@ -61,8 +57,15 @@ class Email:
 
 			if attachmentPath is not None:
 				attachmentPath = Email.staticFolder + attachmentPath
+
 				with app.open_resource(attachmentPath) as fp:
 					m.attach(attachmentPath, "image/png", fp.read())
+				
+				try:
+					os.remove(attachmentPath)
+				
+				except:
+					print("Warning: could not delete attachment")
 
 			mail.send(m)
 			
