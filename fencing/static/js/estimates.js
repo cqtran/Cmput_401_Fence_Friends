@@ -65,7 +65,8 @@ function makeHeader(string) {
   // Returns a new header
   var header = document.createElement('h4');
   header.setAttribute('class', 'text-green');
-  header.setAttribute('style', 'font-weight: bold; padding-top: 10px;');
+  header.setAttribute(
+    'style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
   header.innerHTML = string;
 
   // Add accordion functionality to header classes
