@@ -4,6 +4,11 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.menu-modal-content {
+  background-color: transparent;
+  border: none;
+}
+
 .btn.btn-primary:disabled {
   background-color: grey;
 }
