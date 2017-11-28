@@ -313,6 +313,7 @@ function addLayout(loading) {
 	var cloneTab = activeTab.cloneNode(true);
 	cloneTab.id = "layout-tab" + lastLayout;
 	cloneTab.setAttribute("onclick", "setActiveLayout('" + lastLayout + "')");
+	cloneTab.setAttribute("oncontextmenu", "layoutMenu(event, '" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#layout" + lastLayout;
 	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Untitled';
@@ -367,6 +368,7 @@ function addAppearance(loading) {
 	var cloneTab = activeTab.cloneNode(true);
 	cloneTab.id = "appearance-tab" + lastAppearance;
 	cloneTab.setAttribute("onclick", "setActiveAppearance('" + lastAppearance + "')");
+	cloneTab.setAttribute("oncontextmenu", "appearanceMenu(event, '" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#appearance" + lastAppearance;
 	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Untitled';
@@ -481,6 +483,84 @@ function removeAppearance_(number) {
 
 function reloadPage() {
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
+}
+
+function deleteOtherLayouts(number) {
+	$('#menu').modal('hide');
+
+	var numbers = [];
+	var n = null;
+	$("[id^=layout-tab]").each(function(index, element) {
+		if (element.id == "layout-tabs") {
+			return;
+		}
+
+		n = element.id.slice(10);
+
+		if (n == number) {
+			return;
+		}
+
+		numbers.push(n);
+	});
+
+	var f = function() {
+		for (var i = 0; i < numbers.length; i++) {
+			removeLayout_(numbers[i]);
+		}
+	};
+
+	onConfirm(f, "Clicking delete will permanently delete all other layouts.",
+		"Delete Other Layouts?");
+}
+
+function deleteOtherAppearances(number) {
+	$('#menu').modal('hide');
+
+	var numbers = [];
+	var n = null;
+	$("[id^=appearance-tab]").each(function(index, element) {
+		if (element.id == "appearance-tabs") {
+			return;
+		}
+
+		n = element.id.slice(14);
+
+		if (n == number) {
+			return;
+		}
+
+		numbers.push(n);
+	});
+
+	var f = function() {
+		for (var i = 0; i < numbers.length; i++) {
+			removeAppearance_(numbers[i]);
+		}
+	};
+
+	onConfirm(f, "Clicking delete will permanently delete all other appearances.",
+		"Delete Other Appearances?");
+}
+
+function layoutMenu(event, number) {
+	event.preventDefault();
+
+	$('#delete-others').click(function() {
+		deleteOtherLayouts(number);
+	});
+
+	$('#menu').modal('show');
+}
+
+function appearanceMenu(event, number) {
+	event.preventDefault();
+
+	$('#delete-others').click(function() {
+		deleteOtherAppearances(number);
+	});
+
+	$('#menu').modal('show');
 }
 
 function saveActiveLayoutName() {
