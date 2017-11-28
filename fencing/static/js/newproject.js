@@ -82,6 +82,19 @@ $('#add-project .typeahead').typeahead({
     }
   }).on('typeahead:selected', function(event, selection) {
   if(!chosenCustomers.includes(selection.cust_id)){
+    markDirty();
     addToList(selection);
   }
 });
+
+function confirmDiscard() {
+  return "Discard changes?";
+}
+
+function markDirty() {
+  window.onbeforeunload = confirmDiscard;
+}
+
+function markClean() {
+  window.onbeforeunload = null;
+}
