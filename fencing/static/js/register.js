@@ -1,6 +1,11 @@
 var companyValid = 0; //0 = invalid, 1 = valid
 var emailValid = 0; //0 = invalid, 1 = valid
 
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
+}
+
 function checkMail(){
   //checks if email has been taken
   $.ajax({
@@ -17,7 +22,7 @@ function checkMail(){
       }
     },
     error: function(result) {
-        alert("Email already registered.");
+        showMessage("Email already registered.");
     }
   });
 }
@@ -37,7 +42,7 @@ function checkCompany(){
       }
     },
     error: function(result) {
-        alert("Company name already registered.");
+        showMessage("Company name already registered.");
     }
   });
 }
@@ -53,7 +58,7 @@ $('#submit-button').click(function(){
   companyValid = 0;
   emailValid = 0;
   if(($('#password').val().length < 8) || ($('#password-confirm').val().length < 8)){
-    alert("Password must be at least 8 characters long.");
+    showMessage("Password must be at least 8 characters long.");
   }
   else{
     checkCompany();
