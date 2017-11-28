@@ -79,7 +79,7 @@ function addFirstToList(customer){
     <div class="col-12"> \
       <div class="row justify-content-between"> \
         <p class="top-bot-pad"><b>' + customer.first_name + '</b> - Phone ' + customer.cellphone + ' </p> \
-        <button class="btn btn-grey float-right" type="button" id="' + customer.customer_id + '"> \
+        <button onclick="markDirty()" class="btn btn-grey float-right" type="button" id="' + customer.customer_id + '"> \
           <i class="fa fa-times" aria-hidden="true"></i> \
         </button> \
       </div> \
