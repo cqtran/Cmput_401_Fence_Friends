@@ -127,8 +127,9 @@ function focusSearch() {
     $('#search-div').addClass('col-9');
     $('#search-icon-span').removeClass('search-icon').addClass('search-icon-green');
     $('#search-bar').removeClass('remove');
-    document.getElementById("search-typeahead").focus();
   }
+
+  document.getElementById("search-typeahead").focus();
 }
 
 function collapseSearch() {

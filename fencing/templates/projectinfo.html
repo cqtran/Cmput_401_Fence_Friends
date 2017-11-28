@@ -17,6 +17,19 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 {% endif %}
 {% endwith %}
 
+<div class="modal fade" id="menu" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content menu-modal-content">
+      <div class="modal-body menu-modal-body">
+				<div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action" id="delete-others">Delete others</a>
+					<a href="#" class="list-group-item list-group-item-action" data-dismiss="modal">Cancel</a>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>
+
 <div id="progress" class="modal fade">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -85,6 +98,17 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
+<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="message-text" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--top name and status -->
 <div class="container-fluid">
   <div class="row justify-content-between">
@@ -96,7 +120,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <hr class="mt-2">
 
 <ul id="layout-tabs" class="nav nav-tabs flex-wrap">
-  <li id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
+  <li id="layout-tab1" onclick="setActiveLayout('1')" oncontextmenu="layoutMenu(event, '1')" class="nav-item">
     <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#layout1">Layout 1</a>
   </li>
 	<li id="add-layout" class="nav-item">
@@ -119,7 +143,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <hr class="mt-2">
 
 <ul id="appearance-tabs" class="nav nav-tabs flex-wrap">
-  <li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
+  <li id="appearance-tab1" onclick="setActiveAppearance('1')" oncontextmenu="appearanceMenu(event, '1')" class="nav-item">
     <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#appearance1">Appearance 1</a>
   </li>
 	<li id="add-appearance" class="nav-item">

@@ -17,7 +17,7 @@ var deletedAppearance = null;
 
 var layoutCount = 1;
 var appearanceCount = 1;
-var tabLimit = 25;
+var tabLimit = 15;
 
 var drawiopic;
 var imgPath;
@@ -110,6 +110,11 @@ function onInput(f, prompt, defaultValue) {
 
 function closeInput() {
 	$('#inputOkay').click();
+}
+
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
 }
 
 // From:
@@ -286,7 +291,8 @@ function setActiveAppearanceId(dbId) {
 
 function addLayout(loading) {
 	if (layoutCount >= tabLimit) {
-		alert("Cannot have more than " + tabLimit.toString() + " layouts");
+		showMessage(
+			"Cannot have more than " + tabLimit.toString() + " layouts");
 		return;
 	}
 
@@ -307,6 +313,7 @@ function addLayout(loading) {
 	var cloneTab = activeTab.cloneNode(true);
 	cloneTab.id = "layout-tab" + lastLayout;
 	cloneTab.setAttribute("onclick", "setActiveLayout('" + lastLayout + "')");
+	cloneTab.setAttribute("oncontextmenu", "layoutMenu(event, '" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#layout" + lastLayout;
 	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Untitled';
@@ -333,7 +340,8 @@ function addLayout(loading) {
 
 function addAppearance(loading) {
 	if (appearanceCount >= tabLimit) {
-		alert("Cannot have more than " + tabLimit.toString() + " appearances");
+		showMessage(
+			"Cannot have more than " + tabLimit.toString() + " appearances");
 		return;
 	}
 
@@ -360,6 +368,7 @@ function addAppearance(loading) {
 	var cloneTab = activeTab.cloneNode(true);
 	cloneTab.id = "appearance-tab" + lastAppearance;
 	cloneTab.setAttribute("onclick", "setActiveAppearance('" + lastAppearance + "')");
+	cloneTab.setAttribute("oncontextmenu", "appearanceMenu(event, '" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#appearance" + lastAppearance;
 	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Untitled';
@@ -476,6 +485,84 @@ function reloadPage() {
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
 }
 
+function deleteOtherLayouts(number) {
+	$('#menu').modal('hide');
+
+	var numbers = [];
+	var n = null;
+	$("[id^=layout-tab]").each(function(index, element) {
+		if (element.id == "layout-tabs") {
+			return;
+		}
+
+		n = element.id.slice(10);
+
+		if (n == number) {
+			return;
+		}
+
+		numbers.push(n);
+	});
+
+	var f = function() {
+		for (var i = 0; i < numbers.length; i++) {
+			removeLayout_(numbers[i]);
+		}
+	};
+
+	onConfirm(f, "Clicking delete will permanently delete all other layouts.",
+		"Delete Other Layouts?");
+}
+
+function deleteOtherAppearances(number) {
+	$('#menu').modal('hide');
+
+	var numbers = [];
+	var n = null;
+	$("[id^=appearance-tab]").each(function(index, element) {
+		if (element.id == "appearance-tabs") {
+			return;
+		}
+
+		n = element.id.slice(14);
+
+		if (n == number) {
+			return;
+		}
+
+		numbers.push(n);
+	});
+
+	var f = function() {
+		for (var i = 0; i < numbers.length; i++) {
+			removeAppearance_(numbers[i]);
+		}
+	};
+
+	onConfirm(f, "Clicking delete will permanently delete all other appearances.",
+		"Delete Other Appearances?");
+}
+
+function layoutMenu(event, number) {
+	event.preventDefault();
+
+	$('#delete-others').click(function() {
+		deleteOtherLayouts(number);
+	});
+
+	$('#menu').modal('show');
+}
+
+function appearanceMenu(event, number) {
+	event.preventDefault();
+
+	$('#delete-others').click(function() {
+		deleteOtherAppearances(number);
+	});
+
+	$('#menu').modal('show');
+}
+
 function saveActiveLayoutName() {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
@@ -580,7 +667,7 @@ function removeLayoutFromDb(number) {
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
-			alert("Error");
+			showMessage("Error");
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
@@ -599,7 +686,7 @@ function removeAppearanceFromDb(number) {
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
-			alert("Error");
+			showMessage("Error");
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
@@ -814,7 +901,7 @@ function save(url) {
 					if (wnd != null) {
 						wnd.close();
 					}
-					alert('Error ' + req.status);
+					showMessage('Error ' + req.status);
 				}
 				else if (wnd != null) {
 					wnd.location.href = url;
@@ -835,7 +922,10 @@ function getProjects(){
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
-		alert("Error");
+		if (proj_id != null) {
+			showMessage("Error");
+		}
+
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -868,7 +958,10 @@ function moreDetails(){
 			  selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
-		alert("Error");
+		if (proj_id != null) {
+			showMessage("Error");
+		}
+		
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -1005,8 +1098,11 @@ $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
-    alert("Project does not exist.");
-    window.location.href = '/projects/';
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+
+    showMessage("Project does not exist.");
   }
 
   $("#pencil-button").removeClass('hide');
