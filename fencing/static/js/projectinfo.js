@@ -842,7 +842,10 @@ function getProjects(){
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
-		showMessage("Error");
+		if (proj_id != null) {
+			showMessage("Error");
+		}
+
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -875,7 +878,10 @@ function moreDetails(){
 			  selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
-		showMessage("Error");
+		if (proj_id != null) {
+			showMessage("Error");
+		}
+		
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
