@@ -12,7 +12,7 @@ from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
 from api.decorators import async
 
-import os
+import os, traceback
 # Import python files with functionality
 import api.users as Users
 import api.customers as Customers
@@ -21,6 +21,8 @@ import api.pictures as Pictures
 import api.statuses as Statuses
 import api.layouts as Layouts
 import api.appearances as Appearances
+import api.materials as Materials
+import api.estimates as Estimates
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -41,6 +43,8 @@ app.register_blueprint(Users.userBlueprint)
 app.register_blueprint(Layouts.layoutBlueprint)
 app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
+app.register_blueprint(Materials.materialBlueprint)
+app.register_blueprint(Estimates.estimateBlueprint)
 app.json_encoder = MyJSONEncoder
 #app.secret_key = os.urandom(24) # used for sessions
 
@@ -309,9 +313,10 @@ def viewMaterialList():
         attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment))
+        url = url_for("static", filename=attachment)
+        return jsonify({"url": url})
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return jsonify({"reload": 1})
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
@@ -329,9 +334,10 @@ def viewQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        return redirect(url_for("static", filename=attachment))
+        url = url_for("static", filename=attachment)
+        return jsonify({"url": url})
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return jsonify({"reload": 1})
 
 @app.route('/sendQuote/', methods = ['POST'])
 @login_required
@@ -397,9 +403,48 @@ def editprojectinfo():
         project_id = request.args.get('proj_id')
         return render_template("editproject.html", company = current_user.company_name)
 
+@app.route('/viewPrices/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def viewPrices():
+    return render_template("prices.html", company = current_user.company_name)
+
+@app.route('/viewEstimates/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def viewEstimates():
+    return render_template("estimates.html", company = current_user.company_name)
+
+@app.route('/deleteAttachment/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteAttachment():
+    path = request.args.get("attachment")
+
+    if ".." in path or path.startswith("/") or path.startswith("\\") or \
+        path.count("/") > 1 or path.count("\\") > 1:
+
+        raise Exception("Invalid path passed to deleteAttachment")
+    
+    if not (path.startswith("quotes/") or path.startswith("materials/")):
+        raise Exception("Invalid path passed to deleteAttachment")
+    
+    try:
+        os.remove(Email.staticFolder + "attachments/" + path)
+        return "{}"
+    
+    except:
+        traceback.print_exc()
+        print("Error: could not delete attachment " + path)
+        return "{}"
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 if __name__ == "__main__":
 

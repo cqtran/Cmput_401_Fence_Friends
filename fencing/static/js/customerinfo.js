@@ -2,6 +2,11 @@
 var projectList = document.getElementById('projectlist');
 var cust_id;
 
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
+}
+
 function updateProjects(projects){
   $('#projectlist').empty();
   projects.forEach(function(project) {
@@ -97,7 +102,9 @@ function getCustInfo(){
       success: function(result) {
           $('#title').html(result[0].first_name);
           $('#phone').html(result[0].cellphone);
+          $('#phone').attr('href', 'tel:' +result[0].cellphone);
           $('#email').html(result[0].email);
+          $('#email').attr('href', 'mailto:' + result[0].email);
           $('#companyNameNav').html(result[0].company_name);
       },
       error: function(result) {
@@ -124,8 +131,11 @@ $(document).ready(function(){
   var url = window.location.querystring;
   cust_id = getParameterByName('cust_id');
   if(cust_id == null) {
-    alert("Customer does not exist.");
-    window.location.href = '/customers/';
+    $('#message').on('hidden.bs.modal', function() {
+      window.location.href = '/';
+    });
+  
+    showMessage("Customer does not exist.");
   }
   $("#pencil-button").removeClass('hide');
   $('#edit').click(function(){

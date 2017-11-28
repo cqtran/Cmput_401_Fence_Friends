@@ -17,6 +17,19 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 {% endif %}
 {% endwith %}
 
+<div class="modal fade" id="menu" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content menu-modal-content">
+      <div class="modal-body menu-modal-body">
+				<div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action" id="delete-others">Delete others</a>
+					<a href="#" class="list-group-item list-group-item-action" data-dismiss="modal">Cancel</a>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>
+
 <div id="progress" class="modal fade">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -28,6 +41,23 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 		  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pdf" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog pdf-modal-dialog" role="document">
+    <div class="modal-content pdf-modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pdf-modal-body">
+				<iframe width="100%" height="100%" id="pdfContent">
+					Your browser does not support iframe. <a id="pdfFallback" target="_blank">Click here</a> to view the PDF.
+				</iframe>
+			</div>
     </div>
   </div>
 </div>
@@ -68,17 +98,29 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
+<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="message-text" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--top name and status -->
 <div class="container-fluid">
   <div class="row justify-content-between">
-    <h1 id="project-name"></h1>
+		<h1 id="project-name"></h1>
     <h4 class="float-right" id="status" style="padding-top: 10px; font-weight: bold;"></h4>
-  </div>
+	</div>
 </div>
+<a href="{{ url_for('customerinfo') }}?cust_id=" class="text-muted paddingless" id="customer-name"></a>
 <hr class="mt-2">
 
 <ul id="layout-tabs" class="nav nav-tabs flex-wrap">
-  <li id="layout-tab1" onclick="setActiveLayout('1')" class="nav-item">
+  <li id="layout-tab1" onclick="setActiveLayout('1')" oncontextmenu="layoutMenu(event, '1')" class="nav-item">
     <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#layout1">Layout 1</a>
   </li>
 	<li id="add-layout" class="nav-item">
@@ -88,7 +130,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="layouts" class="tab-content">
   <div id="layout1" class="tab-pane fade in show active">
-		<a style="display:block; margin-top:1em; margin-bottom:1em;" href="#" onclick="setLayoutName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<a class="name-edit" href="#" onclick="setLayoutName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
 		<div class="container make-centre" id="overlay" style="padding-bottom: 40px;">
 			<td>
 				<img id="image1" style="max-width:100%;cursor:pointer; max-height: 50vh;" onclick="editDiagram(this);" <img id="drawiopic"  style="cursor:pointer;max-width:100%;" onclick="(function(img){if(img.wnd!=null&&!img.wnd.closed){img.wnd.focus();}else{var r=function(evt){if(evt.data=='ready'&&evt.source==img.wnd){img.wnd.postMessage(decodeURIComponent(img.getAttribute('src')),'*');window.removeEventListener('message',r);}};window.addEventListener('message',r);img.wnd=window.open('https://fencythat.cavalryfence.ca/?client=1&lightbox=1&edit=_blank');}})(this);"/>
@@ -101,7 +143,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 <hr class="mt-2">
 
 <ul id="appearance-tabs" class="nav nav-tabs flex-wrap">
-  <li id="appearance-tab1" onclick="setActiveAppearance('1')" class="nav-item">
+  <li id="appearance-tab1" onclick="setActiveAppearance('1')" oncontextmenu="appearanceMenu(event, '1')" class="nav-item">
     <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#appearance1">Appearance 1</a>
   </li>
 	<li id="add-appearance" class="nav-item">
@@ -111,7 +153,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 
 <div id="appearances" class="tab-content">
 	<div id="appearance1" class="tab-pane fade in show active">
-		<a style="display:block; margin-top:1em; margin-bottom:1em;" href="#" onclick="setAppearanceName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<a class="name-edit" href="#" onclick="setAppearanceName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
 		<div class="form-group">
 			<label for="panelGap1">Panel Gap</label>
 			<input onchange="saveActiveAppearance()" id="panelGap1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
@@ -126,7 +168,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	<div class="row justify-content-between">
 		<div class="col-lg-6 col-md-6">
 			<h4 class="text-green" style="font-weight: bold;">Address</h4>
-			<a class="no-top-padding" id="address" style="font-weight: bold;" id="address"></a>
+			<a target="_blank" class="no-top-padding" id="address" style="font-weight: bold;" id="address"></a>
 		</div>
 		<!-- or class="float-right" -->
 		<div class="col-lg-6 col-md-6">
@@ -171,7 +213,7 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 </div>
 
 <div class="container-fluid">
-	<form id="upload-form" enctype=multipart/form-data >
+	<form class="d-none" id="upload-form" enctype=multipart/form-data >
 		<input class="form-control" type="hidden" name="proj_id" id="project_id" />
 		<div class="row">
 			<div class="col-sm-12 less-padding">
@@ -184,12 +226,12 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	</form>
 	<div class="row">
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form method="post" target="_blank" action="{{url_for('viewQuote', proj_id=request.args.get('proj_id'))}}">
+			<form id="view-quote" method="post" action="javascript:void(0);">
 				<input class="btn btn-primary btn-block" type="submit" value="View Quote"/>
 			</form>
 		</div>
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form method="post" target="_blank" action="{{url_for('viewMaterialList', proj_id=request.args.get('proj_id'))}}">
+			<form id="view-material-list" method="post" action="javascript:void(0);">
 				<input class="btn btn-primary btn-block" type="submit" value="View Material List"/>
 			</form>
 		</div>

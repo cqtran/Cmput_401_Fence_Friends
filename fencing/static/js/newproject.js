@@ -1,5 +1,10 @@
 var chosenCustomers = [];
 
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
+}
+
 function removeCust(customer, torem){
   return customer != torem;
 }
@@ -55,12 +60,12 @@ $('form').submit(function(e) {
             window.location.href = '/projectinfo?proj_id=' + id;
         },
         error: function(result) {
-            alert('error');
+            showMessage('error');
         }
     });
   }
   else {
-    alert("A customer must be selected.");
+    showMessage("A customer must be selected.");
   }
 });
 
@@ -77,6 +82,19 @@ $('#add-project .typeahead').typeahead({
     }
   }).on('typeahead:selected', function(event, selection) {
   if(!chosenCustomers.includes(selection.cust_id)){
+    markDirty();
     addToList(selection);
   }
 });
+
+function confirmDiscard() {
+  return "Discard changes?";
+}
+
+function markDirty() {
+  window.onbeforeunload = confirmDiscard;
+}
+
+function markClean() {
+  window.onbeforeunload = null;
+}

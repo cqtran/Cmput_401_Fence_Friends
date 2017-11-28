@@ -1,20 +1,23 @@
+<details>
+<summary>Contents</summary>
+&bull; <a href="#cavalry-fence-builder">Cavalry Fence Builder</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#url">URL</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#core-features">Core Features</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#requirements">Requirements</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run">Run</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-in-debug-mode">Run in Debug Mode</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-tests">Run Tests</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#help">Help</a><br>
+&bull; <a href="#drawio">draw.io</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#url-1">URL</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#required-for-building">Required for Building</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#build">Build</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-1">Run</a>
+</details>
+
 # Cavalry Fence Builder
 
 Cavalry Fence Builder is a web app for fence installation companies. It allows a fence business to track projects and financial data, calculate quotes, generate material lists, and send quotes to clients and material lists to suppliers.
-
-* [Cavalry Fence Builder](#cavalry-fence-builder)
-  - [URL](#url)
-  - [Core Features](#core-features)
-  - [Requirements](#requirements)
-  - [Run](#run)
-  - [Run in Debug Mode](#run-in-debug-mode)
-  - [Run Tests](#run-tests)
-  - [Help](#help)
-* [draw.io](#drawio)
-  - [URL](#url-1)
-  - [Required for Building](#required-for-building)
-  - [Build](#build)
-  - [Run](#run-1)
 
 ## URL
 

@@ -1,3 +1,6 @@
+var attachmentPathLength = 20;
+var pdf = null;
+
 var confirmed = false;
 
 var firstLayout = "1";
@@ -14,7 +17,7 @@ var deletedAppearance = null;
 
 var layoutCount = 1;
 var appearanceCount = 1;
-var tabLimit = 25;
+var tabLimit = 15;
 
 var drawiopic;
 var imgPath;
@@ -107,6 +110,11 @@ function onInput(f, prompt, defaultValue) {
 
 function closeInput() {
 	$('#inputOkay').click();
+}
+
+function showMessage(message) {
+	$('#message-text').html(message);
+	$('#message').modal('show');
 }
 
 // From:
@@ -283,7 +291,8 @@ function setActiveAppearanceId(dbId) {
 
 function addLayout(loading) {
 	if (layoutCount >= tabLimit) {
-		alert("Cannot have more than " + tabLimit.toString() + " layouts");
+		showMessage(
+			"Cannot have more than " + tabLimit.toString() + " layouts");
 		return;
 	}
 
@@ -304,6 +313,7 @@ function addLayout(loading) {
 	var cloneTab = activeTab.cloneNode(true);
 	cloneTab.id = "layout-tab" + lastLayout;
 	cloneTab.setAttribute("onclick", "setActiveLayout('" + lastLayout + "')");
+	cloneTab.setAttribute("oncontextmenu", "layoutMenu(event, '" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#layout" + lastLayout;
 	link.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + lastLayout + '\')" type="button">×</button>Untitled';
@@ -330,7 +340,8 @@ function addLayout(loading) {
 
 function addAppearance(loading) {
 	if (appearanceCount >= tabLimit) {
-		alert("Cannot have more than " + tabLimit.toString() + " appearances");
+		showMessage(
+			"Cannot have more than " + tabLimit.toString() + " appearances");
 		return;
 	}
 
@@ -357,6 +368,7 @@ function addAppearance(loading) {
 	var cloneTab = activeTab.cloneNode(true);
 	cloneTab.id = "appearance-tab" + lastAppearance;
 	cloneTab.setAttribute("onclick", "setActiveAppearance('" + lastAppearance + "')");
+	cloneTab.setAttribute("oncontextmenu", "appearanceMenu(event, '" + lastLayout + "')");
 	var link = cloneTab.children[0];
 	link.href = "#appearance" + lastAppearance;
 	link.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + lastAppearance + '\')" type="button">×</button>Untitled';
@@ -473,6 +485,84 @@ function reloadPage() {
 	window.location.replace("/projectinfo/?proj_id=" + proj_id);
 }
 
+function deleteOtherLayouts(number) {
+	$('#menu').modal('hide');
+
+	var numbers = [];
+	var n = null;
+	$("[id^=layout-tab]").each(function(index, element) {
+		if (element.id == "layout-tabs") {
+			return;
+		}
+
+		n = element.id.slice(10);
+
+		if (n == number) {
+			return;
+		}
+
+		numbers.push(n);
+	});
+
+	var f = function() {
+		for (var i = 0; i < numbers.length; i++) {
+			removeLayout_(numbers[i]);
+		}
+	};
+
+	onConfirm(f, "Clicking delete will permanently delete all other layouts.",
+		"Delete Other Layouts?");
+}
+
+function deleteOtherAppearances(number) {
+	$('#menu').modal('hide');
+
+	var numbers = [];
+	var n = null;
+	$("[id^=appearance-tab]").each(function(index, element) {
+		if (element.id == "appearance-tabs") {
+			return;
+		}
+
+		n = element.id.slice(14);
+
+		if (n == number) {
+			return;
+		}
+
+		numbers.push(n);
+	});
+
+	var f = function() {
+		for (var i = 0; i < numbers.length; i++) {
+			removeAppearance_(numbers[i]);
+		}
+	};
+
+	onConfirm(f, "Clicking delete will permanently delete all other appearances.",
+		"Delete Other Appearances?");
+}
+
+function layoutMenu(event, number) {
+	event.preventDefault();
+
+	$('#delete-others').click(function() {
+		deleteOtherLayouts(number);
+	});
+
+	$('#menu').modal('show');
+}
+
+function appearanceMenu(event, number) {
+	event.preventDefault();
+
+	$('#delete-others').click(function() {
+		deleteOtherAppearances(number);
+	});
+
+	$('#menu').modal('show');
+}
+
 function saveActiveLayoutName() {
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
@@ -513,7 +603,6 @@ function saveActiveLayout(includeSelection) {
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
     success: function(result) {
-			returndata = result;
 			if (result["reload"]) {
 				reloadPage();
 			}
@@ -557,7 +646,6 @@ function saveActiveAppearance(includeSelection) {
 	  contentType: "application/json;charset=UTF-8",
 	  dataType: "json",
     success: function(result) {
-			returndata = result;
 			setActiveAppearanceId(result["appearanceId"]);
     },
     error: function(xhr, textStatus, error) {
@@ -579,7 +667,7 @@ function removeLayoutFromDb(number) {
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
-			alert("Error");
+			showMessage("Error");
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
@@ -598,7 +686,7 @@ function removeAppearanceFromDb(number) {
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
-			alert("Error");
+			showMessage("Error");
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
@@ -708,40 +796,54 @@ function setProjectInfo(project){
 	}
 }
 
-function makePictures(pictures){
-	$('#projectPictures').empty();
-  pictures.forEach(function(picture) {
-    var img = document.createElement('img');
-    var final = document.createElement('a');
+function makeNewPictureButton() {
+	var img = document.createElement('img');
+	var final = document.createElement('a');
 
-		img.src =  tbnPath + picture.thumbnail_name;
-		img.alt =  'Thumbnail not found';
-    final.setAttribute('href', '#');
-    final.setAttribute('class', 'PictureThumbnail card zero-padding');
-    // this is where you want to go when you click
-    final.addEventListener('click', function(){
-      $('#imagepreview').attr('src', imgPath + picture.file_name);
-			$('#imagepopup').modal('show');
-    });
-    //link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
-    final.appendChild(img);
+	img.height = '50';
+	img.width = '50';
+	img.src = tbnPath + "New_Picture.png";
+	img.alt = 'Thumbnail not found';
+	final.setAttribute('href', '#');
+	final.setAttribute('class', 'PictureThumbnail newPicture zero-padding');
+
+	final.addEventListener('click', function(){
+		$("#file-upload").click();
+	});
+
+	final.appendChild(img);
+	pictureList.appendChild(final);
+}
+
+function makePictures(pictures) {
+	$('#projectPictures').empty();
+	makeNewPictureButton();
+
+	pictures.forEach(function(picture) {
+		var img = document.createElement('img');
+		var final = document.createElement('a');
+
+		img.src = tbnPath + picture.thumbnail_name;
+		img.alt = 'Thumbnail not found';
+		final.setAttribute('href', '#');
+		final.setAttribute('class', 'PictureThumbnail card zero-padding');
+		// this is where you want to go when you click
+		final.addEventListener('click', function(){
+		$('#imagepreview').attr('src', imgPath + picture.file_name);
+				$('#imagepopup').modal('show');
+		});
+		//link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
+		final.appendChild(img);
 
 		//img.className += 'img-thumbnail'
 		// Add it to the list:
 		pictureList.appendChild(final);
-
-  })
+	})
 }
 
 function imagesError(){
 	$('#projectPictures').empty();
-  var img = document.createElement('img');
-  console.log(tbnPath);
-  img.src =  tbnPath + 'No_picture_available.png';
-  img.alt =  'No picture available';
-  img.height = '150';
-  img.width = '150';
-  pictureList.appendChild(img);
+	makeNewPictureButton();
 }
 
 function editDiagram(image) {
@@ -799,7 +901,7 @@ function save(url) {
 					if (wnd != null) {
 						wnd.close();
 					}
-					alert('Error ' + req.status);
+					showMessage('Error ' + req.status);
 				}
 				else if (wnd != null) {
 					wnd.location.href = url;
@@ -820,7 +922,10 @@ function getProjects(){
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
-		alert("Error");
+		if (proj_id != null) {
+			showMessage("Error");
+		}
+
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -842,6 +947,10 @@ function moreDetails(){
 			  var selectedLayout = result[5];
 			  var selectedAppearance = result[6];
 			  var displayStrings = result[7];
+			  var customerName = $('#customer-name');
+			  customerName.text(result[8]);
+			  var oldHref = customerName.attr('href');
+			  customerName.attr('href', oldHref + result[9] + '&status=All');
 			  getPics();
 			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);
@@ -849,7 +958,10 @@ function moreDetails(){
 			  selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
-		alert("Error");
+		if (proj_id != null) {
+			showMessage("Error");
+		}
+		
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -865,8 +977,11 @@ function getPics(){
       success: function(result) {
       	makePictures(result);
       },
-      error: function(result) {
-          imagesError();
+      error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+        imagesError();
       }
   });
 }
@@ -983,8 +1098,11 @@ $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
-    alert("Project does not exist.");
-    window.location.href = '/projects/';
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+
+    showMessage("Project does not exist.");
   }
 
   $("#pencil-button").removeClass('hide');
@@ -1023,3 +1141,82 @@ $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
+$('#view-quote').submit(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+    type: 'POST',
+    url: "/viewQuote/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    success: function(result) {
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			pdf = result['url'];
+			$('pdfFallback').attr('href', pdf);
+			$('#pdfContent').attr('src', pdf);
+			$('#pdf').modal("show");
+		}
+    },
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+});
+$('#view-material-list').submit(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+    type: 'POST',
+    url: "/viewMaterialList/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    success: function(result) {
+		if (result["reload"]) {
+			reloadPage();
+		}
+		else {
+			pdf = result['url'];
+			$('pdfFallback').attr('href', pdf);
+			$('#pdfContent').attr('src', pdf);
+			$('#pdf').modal("show");
+		}
+    },
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+});
+
+function deleteAttachment() {
+	$.ajax({
+    type: 'POST',
+    url: "/deleteAttachment/?attachment=" + pdf.slice(attachmentPathLength),
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
+}
+
+$('#pdf').on("hidden.bs.modal", function() {
+	deleteAttachment();
+	pdf = null;
+});
+
+window.onbeforeunload = function() {
+	if (pdf != null) {
+		deleteAttachment();
+	}
+
+	return;
+}

@@ -29,11 +29,14 @@ function createCustomers(customers){
 
     link.appendChild(inner);
     item.setAttribute('class', 'card mb-2 full-width');
-    final.setAttribute('class', 'less-padding card-row col-lg-4 col-md-6')
+    final.setAttribute('class', 'less-padding card-row col-lg-4 col-md-6');
 
     // this is where you want to go when you click
     //item.setAttribute('onclick', 'window.location.href="{{ url_for('projects') }}"' )
-    link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
+    link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')');
+    link.setAttribute('oncontextmenu',
+      'customerMenu(event,'+customer.customer_id+')');
+    link.setAttribute('class', 'no-select');
 
     item.appendChild(link);
     final.appendChild(item);
@@ -76,3 +79,13 @@ $(document).ready(function(){
     }
   });
 });
+
+function customerMenu(event, id) {
+  event.preventDefault();
+
+	$('#edit-customer').click(function() {
+		window.location.href = '/editcustomer?cust_id=' + id;
+	});
+
+	$('#menu').modal('show');
+}
