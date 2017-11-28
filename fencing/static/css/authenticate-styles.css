@@ -22,3 +22,18 @@ h1 {
 .bg-green {
   background-color: #329664;
 }
+
+.modal-body {
+  color: black;
+}
+
+.modal-button {
+  background-color: #329664;
+  color: white;
+}
+
+.modal-button:hover,
+.modal-button:focus {
+  background-color: #2b724f;
+  color: white;
+}

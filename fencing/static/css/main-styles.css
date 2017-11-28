@@ -4,6 +4,20 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+/*
+From:
+https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting-using-css/4407335#4407335
+Accessed November 27, 2017
+*/
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
 .menu-modal-content {
   background-color: transparent;
   border: none;
