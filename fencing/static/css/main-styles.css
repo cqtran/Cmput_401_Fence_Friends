@@ -7,6 +7,11 @@ Accessed November 25, 2017
 .menu-modal-content {
   background-color: transparent;
   border: none;
+  margin: 0 !important;
+}
+
+.menu-modal-body {
+  padding: 0;
 }
 
 .btn.btn-primary:disabled {
