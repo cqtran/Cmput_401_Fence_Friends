@@ -128,6 +128,14 @@ $(document).ready(function(){
         {"data": "amount"}
       ]
   });
+  alert($('#dataTable').DataTable().columns()[0])
+
+  $('#dataTable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
 
 
   //getSummary();
