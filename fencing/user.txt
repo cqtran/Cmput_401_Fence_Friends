@@ -1,4 +1,0 @@
-root
-password
-testdata
-localhost

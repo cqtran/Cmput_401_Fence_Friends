@@ -8,12 +8,38 @@ function custData(cust) {
   $('#companyNameNav').html(cust[0].company_name);
 }
 
+function showMessage(message) {
+  $('#message-text').html(message);
+  $('#message').modal('show');
+}
+
 function confirmDiscard() {
-  return "Discard Changes?";
+  return "Discard changes?";
 }
 
 function markDirty() {
-  window.onbeforeload = confirmDiscard;
+  window.onbeforeunload = confirmDiscard;
+}
+
+function markClean() {
+  window.onbeforeunload = null;
+}
+
+function deleteCustomer(){
+  $.ajax({
+      type: 'POST',
+      url: '/deletecustomer/',
+      data: { 
+          cust_id: cust_id,
+      },
+      datatype: 'json',
+      success: function(result) {
+          window.location.href = '/';
+      },
+      error: function(result) {
+          showMessage('error');
+      }
+  });
 }
 
 function makeClean() {
@@ -70,5 +96,7 @@ $(document).ready(function() {
   }
   getCustomerData();
 });
-
+$('#delete-project').click(function(){
+  deleteCustomer();
+});
 
