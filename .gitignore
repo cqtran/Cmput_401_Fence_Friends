@@ -7,3 +7,4 @@ user.txt
 /fencing/static/images/thumbnails/tbn_*.png
 /fencing/static/images/pictures/*
 !/fencing/static/images/pictures/pictures
+fencing/database/user.txt
