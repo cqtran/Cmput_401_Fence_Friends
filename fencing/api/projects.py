@@ -206,7 +206,7 @@ def createProject(customerId, statusName, address, companyName, project_name):
     #Access MySQL and add in account
     newProject = Project(customer_id = customerId, address = address,
             status_name = statusName, end_date = None, note = '',
-            project_name = project_name, company_name = companyName, layout_selected=None, appearance_selected=None)
+            project_name = project_name, company_name = companyName, finalize = False, layout_selected=None, appearance_selected=None)
     dbSession.add(newProject)
     dbSession.commit()
     newAppearance = Appearances.createAppearance(newProject.project_id)

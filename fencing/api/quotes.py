@@ -1,0 +1,67 @@
+from sqlalchemy import *
+from database.db import dbSession, init_db
+from database.models import Project, Layout, Appearance
+from flask.json import jsonify
+
+from flask import Blueprint, request
+from flask_security.core import current_user
+from flask_security import login_required
+from flask_security.decorators import roles_required
+from api.errors import *
+from decimal import Decimal
+
+quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
+
+@quoteBlueprint.route('/finalizeQuote/', methods=['POST'])
+#@login_required
+#@roles_required('primary')
+def finalizeQuote():
+    if request.method == 'POST':
+        """ Given a project ID, layout ID, and appearance ID calculate a quote """
+        project_id = request.form['project_id']
+
+        project = dbSession.query(Project).filter(Project.project_id == project_id).one()
+
+        if project is None:
+            return bad_request('Project does not exist')
+        project.finalize = True
+        layout_id = project.layout_id
+        appearance_id = project.appearance_id
+
+        layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
+        appearance = dbSession.query(Appearance).filter(Appearance.appearance_id == appearance_id).one()
+        if layout is None or appearance is None:
+            return bad_request('Invalid layout or appearance')
+
+        # Get layout info and pass to parser
+        # layout.layout_info
+
+        # Get appearance info and calculate a quote with the formula
+        # quote  = length(style + height + base_price + ((border_colour + panel_colour) / 2))
+
+        # Calculate needed materials and material expenses
+
+        # Save the quote information
+        # newQuote = Quote(project_id = project_id, amount = quote, amount_gst = quote * 0.05, material_expense = material_expense, material_expense_gst = material_expense_gst)
+        # dbSession.add(newQuote)
+        # dbSession.commit()
+
+        return created_request('Quote has been generated')
+    return bad_request('Request is not a POST request')
+
+@quoteBlueprint.route('/abandonQuote/', methods=['POST'])
+#@login_required
+#@roles_required('primary')
+def abandonQuote():
+    if request.method == 'POST':
+        """ Given a project ID, turn finalize into false """
+        project_id = request.form['project_id']
+
+        project = dbSession.query(Project).filter(Project.project_id == project_id).one()
+
+        if project is None:
+            return bad_request('Project does not exist')
+        project.finalize = False
+        dbSession.commit()
+        return created_request('Quote abandoned')
+    return bad_request('Request is not a POST request')

@@ -106,9 +106,10 @@ class Project(Base):
     project_name = Column("project_name", String(50))
     layout_selected = Column('layout_selected', Integer, ForeignKey('layout.layout_id', ondelete="SET NULL"))
     appearance_selected = Column('appearance_selected', Integer, ForeignKey('appearance.appearance_id', ondelete="SET NULL"))
+    finalize = Column(Boolean())
 
     def __init__(self, customer_id, status_name, address, end_date, note,
-                 project_name, company_name, layout_selected, appearance_selected, project_id = None):
+                 project_name, company_name, layout_selected, appearance_selected, finalize, project_id = None):
         self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
@@ -119,6 +120,7 @@ class Project(Base):
         self.company_name = company_name
         self.layout_selected = layout_selected
         self.appearance_selected = appearance_selected
+        self.finalize = finalize
 
     @property
     def serialize(self):

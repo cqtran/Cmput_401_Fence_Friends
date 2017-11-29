@@ -38,7 +38,8 @@ class MyJSONEncoder(JSONEncoder):
                 'note'               : obj.note,
                 'project_name'       : obj.project_name,
                 'layout_selected'    : obj.layout_selected,
-    			'appearance_selected': obj.appearance_selected
+    			'appearance_selected': obj.appearance_selected,
+                'finalize'           : obj.finalize
             }
 
         if isinstance(obj, Layout):
