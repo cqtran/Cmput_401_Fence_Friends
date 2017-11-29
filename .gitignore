@@ -1,8 +1,10 @@
 .DS_Store
 *.pyc
 .idea/
+user.txt
 /fencing/static/attachments/quotes/*.pdf
 /fencing/static/attachments/materials/*.pdf
 /fencing/static/images/thumbnails/tbn_*.png
 /fencing/static/images/pictures/*
 !/fencing/static/images/pictures/pictures
+fencing/database/user.txt

@@ -33,8 +33,6 @@ from flask.json import jsonify
 
 import argparse
 
-Email.staticFolder = os.path.dirname(os.path.abspath(__file__)) + "/static/"
-
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
@@ -184,6 +182,7 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
     Pictures.app_root = app.root_path
+    Email.staticFolder = app.root_path + "/static/"
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -427,14 +426,14 @@ def deleteAttachment():
         path.count("/") > 1 or path.count("\\") > 1:
 
         raise Exception("Invalid path passed to deleteAttachment")
-    
+
     if not (path.startswith("quotes/") or path.startswith("materials/")):
         raise Exception("Invalid path passed to deleteAttachment")
-    
+
     try:
         os.remove(Email.staticFolder + "attachments/" + path)
         return "{}"
-    
+
     except:
         traceback.print_exc()
         print("Error: could not delete attachment " + path)

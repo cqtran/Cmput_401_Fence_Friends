@@ -16,8 +16,8 @@ import csv
 materialBlueprint = Blueprint('materialBlueprint', __name__, template_folder='templates')
 
 @materialBlueprint.route('/getPriceList/', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def getPriceList():
     """ Returns a list of prices to a company for a certain year """
     if request.method == 'GET':
@@ -28,8 +28,8 @@ def getPriceList():
         return jsonify(materials)
 
 @materialBlueprint.route('/uploadPrice/', methods=['POST'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def uploadPrice():
     """ Parses the given csv file into fencing materials prices for a given company """
     company_name = current_user.company_name
