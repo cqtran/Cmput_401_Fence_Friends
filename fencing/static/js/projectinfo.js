@@ -25,6 +25,8 @@ var tbnPath;
 var pictureList;
 var proj_id;
 
+var finalized = true;
+
 var punctuation = "\\.,\\)\\?\"':\\!;\\]\\}";
 
 var urlRegex =
@@ -1209,6 +1211,24 @@ function deleteAttachment() {
 		console.log(error);
     }
 	});
+}
+
+function toggleFinalized() {
+	finalized = !finalized;
+
+	if (finalized) {
+		$("#finalize").removeClass("finalize-off");
+		$("#finalize-check").removeClass("finalize-check-off");
+		$("#finalize-text").html("Finalized");
+	}
+
+	else {
+		$("#finalize").addClass("finalize-off");
+		$("#finalize-check").addClass("finalize-check-off");
+		$("#finalize-text").html("Finalize");
+	}
+
+	// TODO: Save finalized to database
 }
 
 $('#pdf').on("hidden.bs.modal", function() {

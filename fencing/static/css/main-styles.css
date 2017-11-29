@@ -8,11 +8,6 @@ Accessed November 25, 2017
   display: none;
 }
 
-.finalize {
-  -webkit-transition: width 0.5s; /* Safari */
-  transition: width 0.5s;
-}
-
 .finalize-off {
   background-color: white !important;
   color: grey !important;
