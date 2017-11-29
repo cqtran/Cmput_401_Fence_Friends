@@ -4,6 +4,27 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.finalize-check-off {
+  display: none;
+}
+
+.finalize {
+  -webkit-transition: width 0.5s; /* Safari */
+  transition: width 0.5s;
+}
+
+.finalize-off {
+  background-color: white !important;
+  color: grey !important;
+  border: 0.2em solid grey !important;
+}
+
+.finalize-off:hover,
+.finalize-off:active {
+  color: #329664 !important;
+  border: 0.2em solid #329664 !important;
+}
+
 /*
 From:
 https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting-using-css/4407335#4407335
