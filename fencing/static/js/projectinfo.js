@@ -178,6 +178,11 @@ function setActiveAppearance(number) {
 }
 
 function setLayoutName(number, loading, newName, noClose) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	if (newName == null) {
 		var f = function(input) {
 			setLayoutName_(number, loading, input, noClose);
@@ -220,6 +225,11 @@ function setLayoutName_(number, loading, newName, noClose) {
 }
 
 function setAppearanceName(number, loading, newName, noClose) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	if (newName == null) {
 		var f = function(input) {
 			setAppearanceName_(number, loading, input, noClose);
@@ -292,6 +302,11 @@ function setActiveAppearanceId(dbId) {
 }
 
 function addLayout(loading) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	if (layoutCount >= tabLimit) {
 		showMessage(
 			"Cannot have more than " + tabLimit.toString() + " layouts");
@@ -341,6 +356,11 @@ function addLayout(loading) {
 }
 
 function addAppearance(loading) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	if (appearanceCount >= tabLimit) {
 		showMessage(
 			"Cannot have more than " + tabLimit.toString() + " appearances");
@@ -390,6 +410,11 @@ function addAppearance(loading) {
 }
 
 function removeLayout(number) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	var f = function() {
 		removeLayout_(number);
 	}
@@ -439,6 +464,11 @@ function removeLayout_(number) {
 }
 
 function removeAppearance(number) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	var f = function() {
 		removeAppearance_(number);
 	}
@@ -580,6 +610,11 @@ function saveActiveLayoutName() {
 }
 
 function saveActiveLayout(includeSelection) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
@@ -616,6 +651,14 @@ function saveActiveLayout(includeSelection) {
 }
 
 function saveActiveAppearance(includeSelection) {
+	if (finalized) {
+		$("#message").on("hidden.bs.modal", function() {
+			location.reload();
+		});
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
@@ -853,7 +896,7 @@ function imagesError(){
 
 function editDiagram(image) {
 	if (finalized) {
-		showMessage("Cannot edit finalized diagrams");
+		showMessage("Cannot edit finalized projects");
 		return;
 	}
 
