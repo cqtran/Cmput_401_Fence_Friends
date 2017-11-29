@@ -3,10 +3,11 @@ from flask import Flask, Blueprint, render_template, request, redirect, \
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
-from database.models import User, Role, Company, Customer, Project, Status, Picture
+from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
+from diagram.DiagramParser import DiagramParser
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -331,7 +332,10 @@ def viewQuote():
         Customer.customer_id == project.customer_id).one()
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
-    attachmentString = Messages.quoteAttachment(project, customer)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.quoteAttachment(project, customer, parsed)
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:

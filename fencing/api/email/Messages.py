@@ -1,6 +1,7 @@
 from weasyprint import CSS
 from database.db import dbSession
 from database.models import Layout
+from priceCalculation.QuoteCalculation import QuoteCalculation
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -72,8 +73,23 @@ class Messages:
 			""".format(supplier=supplier,
 				company_email=company.email)
 
-	def quoteAttachment(project, customer):
+	def quoteAttachment(project, customer, parsed):
 		"""Generate the content of a quote attachment and return it"""
+		prices = QuoteCalculation.prices(parsed)
+		subtotal = QuoteCalculation.subtotal(prices)
+		gstPercent = QuoteCalculation.gstPercent
+		gst = subtotal * gstPercent
+		total = subtotal + gst
+		priceStrings = []
+
+		for price in prices:
+			priceStrings.append(
+				'''<tr class="bordered">
+					<td class="bordered">{name}</td>
+					<td class="right bordered">$ {price}</td>
+				</tr>'''.format(name=price[0], price=price[1])
+			)
+
 		diagram = dbSession.query(Layout).filter(
 			Layout.layout_id == project.layout_selected).one().layout_info
 
@@ -93,29 +109,18 @@ class Messages:
 						<th>DESCRIPTION</th>
 						<th>PRICE</th> 
 					</tr>
-					<tr class="bordered">
-						<td class="bordered">4'6" North Line (West of garage)</td>
-						<td class="right bordered">$ 207.00</td>
-					</tr>
-					<tr class="tableBreak bordered">
-						<td class="bordered">38' North Line (East of garage 7'+(5x6')+1')</td>
-						<td class="right bordered">$ 1,748.00</td>
-					</tr>
+					{prices}
 					<tr class="bordered">
 						<td class="right bordered">Subtotal</td>
-						<td class="right bordered"><b>$ 12,003.00</b></td>
+						<td class="right bordered"><b>$ {subtotal}</b></td>
 					</tr>
 					<tr class="tableBreak bordered">
-						<td class="right bordered">GST 5.00%</td>
-						<td class="right bordered"><b>$ 600.15</b></td>
+						<td class="right bordered">GST {gstPercent}%</td>
+						<td class="right bordered"><b>$ {gst}</b></td>
 					</tr>
 					<tr class="greyCell">
-						<td><b>Total (Plain Rails, Picket only on Front Gate)</b></td>
-						<td class="right"><b>$ 12,603.15</b></td>
-					</tr>
-					<tr class="greyCell">
-						<td><b>Total (Deco Rails, Picket only on Front Gate)</b></td>
-						<td class="right"><b>$ 13,001.10</b></td>
+						<td><b>Total</b></td>
+						<td class="right"><b>$ {total}</b></td>
 					</tr>
 				</table>
 				<b><span class="bottom">
@@ -130,7 +135,9 @@ class Messages:
 					Signature:_____________________________________________
 				</span></b>
 			</div>
-			""".format(pageBreak=pageBreak, diagram=diagram)
+			""".format(pageBreak=pageBreak, diagram=diagram,
+				prices="".join(priceStrings), subtotal=subtotal,
+				gstPercent=gstPercent, gst=gst, total=total)
 	
 	def materialListAttachment(project):
 		"""Generate the content of a material list attachment and return it"""
