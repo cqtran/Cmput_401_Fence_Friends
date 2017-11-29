@@ -18,6 +18,8 @@ import datetime
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
 @projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
+@login_required
+@roles_required('primary')
 def saveAppearanceSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -28,6 +30,8 @@ def saveAppearanceSelection():
     return "{}"
 
 @projectBlueprint.route('/saveLayoutSelection/', methods=['POST'])
+@login_required
+@roles_required('primary')
 def saveLayoutSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -39,8 +43,8 @@ def saveLayoutSelection():
 
 @projectBlueprint.route('/getProjectList/', defaults={'customer_id': None}, methods=['GET'])
 @projectBlueprint.route('/getProjectList/<int:customer_id>', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def getProjectList(customer_id):
     """ Returns a list of projects. If a customer id is provided, the list will contain
     only contain projects to the given customer id """
@@ -72,8 +76,8 @@ def getProjectList(customer_id):
         return jsonify(projectList)
 
 @projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def getProject(project_id):
     """ Returns a single project of a given project id """
     if request.method == "GET":
@@ -84,8 +88,8 @@ def getProject(project_id):
         return jsonify(project)
 
 @projectBlueprint.route('/addproject/', methods=['POST'])
-#login_required
-#roles_required('primary')
+@login_required
+@roles_required('primary')
 def addproject():
     if request.method == 'POST':
         customer = request.values.get("customer")
@@ -97,8 +101,7 @@ def addproject():
                                          current_user.company_name, projectname)
         return jsonify(proj_id)
 
-# delete later, just for testing note ---- i think we need this
-# I dont think we should have this hosted like this. These belong in their respective API files, Pictures and Layouts
+
 @projectBlueprint.route('/projectdetails/', defaults={'project_id': None}, methods=['GET'])
 @projectBlueprint.route('/projectdetails/<int:project_id>', methods=['GET'])
 @login_required
