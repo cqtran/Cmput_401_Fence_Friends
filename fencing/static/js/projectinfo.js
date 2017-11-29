@@ -25,7 +25,7 @@ var tbnPath;
 var pictureList;
 var proj_id;
 
-var finalized = true;
+var finalized = false;
 
 var punctuation = "\\.,\\)\\?\"':\\!;\\]\\}";
 
@@ -929,6 +929,8 @@ function getProjects(){
       type: 'GET',
       url: '/getProject/' + proj_id,
       success: function(result) {
+		finalized = result[0].finalize;
+		updateFinalized(true);
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
@@ -1220,7 +1222,10 @@ function deleteAttachment() {
 
 function toggleFinalized() {
 	finalized = !finalized;
+	updateFinalized();
+}
 
+function updateFinalized(loading) {
 	if (finalized) {
 		$("#finalize").removeClass("finalize-off");
 		$("#finalize-check").removeClass("finalize-check-off");
@@ -1233,18 +1238,20 @@ function toggleFinalized() {
 		$("#finalize-text").html("Finalize");
 	}
 
-	$.ajax({
-    type: 'POST',
-	url: "/finalizeQuote/?proj_id=" + proj_id,
-	data: JSON.stringify({finalize: finalized}),
-	contentType: "application/json;charset=UTF-8",
-	dataType: "json",
-    error: function(xhr, textStatus, error) {
-		console.log(xhr.statusText);
-		console.log(textStatus);
-		console.log(error);
-    }
-	});
+	if (!loading) {
+		$.ajax({
+		type: 'POST',
+		url: "/finalizeQuote/?proj_id=" + proj_id,
+		data: JSON.stringify({finalize: finalized}),
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+		}
+		});
+	}
 }
 
 $('#pdf').on("hidden.bs.modal", function() {

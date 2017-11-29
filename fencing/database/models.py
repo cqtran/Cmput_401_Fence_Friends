@@ -135,7 +135,8 @@ class Project(Base):
             'note'                      : self.note,
             'project_name'              : self.project_name,
             'layout_selected'           : self.layout_selected,
-			'appearance_selected'       : self.appearance_selected
+			'appearance_selected'       : self.appearance_selected,
+            'finalize'                  : self.finalize
         }
 
 class Layout(Base):

@@ -37,6 +37,7 @@ def finalizeQuote():
             return created_request('Finalize set to false')
 
         project.finalize = True
+        dbSession.commit()
         layout_id = project.layout_selected
         appearance_id = project.appearance_selected
 
