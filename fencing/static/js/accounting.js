@@ -114,13 +114,25 @@ $(document).ready(function(){
       },
       "columns": [
         {"data": "quote_id"},
-        {"data": "project_id"},
+        {"data": "project_id",
+          "render": function(data, type, row, meta){
+            if(type === 'display'){
+                data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
+            }
+
+            return data;
+          }
+        },
         {"data": "amount"},
         {"data": "amount_gst"},
         {"data": "amount"}
       ]
   });
 
+
   //getSummary();
-  //getQuotes()
 });
+
+function changePage(proj_id){
+  window.location.href = '/projectinfo?proj_id=' + proj_id;
+}
