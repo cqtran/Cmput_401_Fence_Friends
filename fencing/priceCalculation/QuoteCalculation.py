@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 class QuoteCalculation:
-	"""Calculate prices"""
+	"""Calculate quote price"""
 
 	gstPercent = Decimal("5.00")
 
