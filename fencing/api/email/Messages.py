@@ -3,7 +3,7 @@ from database.db import dbSession
 from database.models import Layout
 from priceCalculation.QuoteCalculation import QuoteCalculation
 from priceCalculation.MaterialListCalculation import MaterialListCalculation
-import priceCalculation.priceCalculation as priceCalculation
+import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
 from database.models import Appearance
 
@@ -83,7 +83,7 @@ class Messages:
 			Appearance.appearance_id == project.appearance_selected)
 		prices = QuoteCalculation.prices(parsed, appearance)
 		subtotal = PriceCalculation.subtotal(prices)
-		gstPercent = QuoteCalculation.gstPercent
+		gstPercent = PriceCalculation.gstPercent
 		gst = subtotal * gstPercent
 		total = subtotal + gst
 		priceStrings = []
@@ -145,10 +145,40 @@ class Messages:
 				prices="".join(priceStrings), subtotal=subtotal,
 				gstPercent=gstPercent, gst=gst, total=total)
 	
-	def materialListAttachment(project):
+	def materialListAttachment(project, parsed):
 		"""Generate the content of a material list attachment and return it"""
-		return """
-			<b>Steel</b><br>
+		appearance = dbSession.query(Appearance).filter(
+			Appearance.appearance_id == project.appearance_selected)
+		prices = MaterialListCalculation.prices(parsed, appearance)
+		subtotal = PriceCalculation.subtotal(prices)
+		gstPercent = PriceCalculation.gstPercent
+		gst = subtotal * gstPercent
+		total = subtotal + gst
+		categories = {}
+		categoryStrings = []
+
+		for price in prices:
+			category = price[2]
+
+			if category not in categories:
+				categories[category] = []
+			
+			categories[category].append(price)
+		
+		for category in categories:
+			priceStrings = []
+			categoryString = "<b>{0}</b><br>".format(category)
+			
+			for price in categories[category]:
+				priceStrings.append(price[0] + " | $" + str(price[1]))
+			
+			categoryString += "<br>".join(priceStrings)
+			categoryStrings.append(categoryString)
+		
+		return "<br><br>".join(categoryStrings)
+
+		#return """
+		"""<b>Steel</b><br>
 			7 steel posts<br>
 			5 steel uchannel<br>
 			1 L steel<br>

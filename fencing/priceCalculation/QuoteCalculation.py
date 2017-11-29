@@ -3,8 +3,6 @@ from decimal import Decimal
 class QuoteCalculation:
 	"""Calculate quote price"""
 
-	gstPercent = Decimal("5.00")
-
 	def prices(parsed, appearance):
 		"""Return a list of pairs with each item's name and price"""
 		prices = []

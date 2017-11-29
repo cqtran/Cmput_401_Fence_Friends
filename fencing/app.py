@@ -310,7 +310,10 @@ def viewMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    attachmentString = Messages.materialListAttachment(project)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.materialListAttachment(project, parsed)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
