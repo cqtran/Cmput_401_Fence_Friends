@@ -172,7 +172,7 @@ class Quote(Base):
     #layout_id = Column('layout_id', Integer, ForeignKey('layout.layout_id', ondelete="CASCADE"))
     #appearance_id = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
-    def __init__ (self, project_id, amount, amount_gst, material_expense, material_expense, material_expense_gst, gst_rate,  quote_id = None):
+    def __init__ (self, project_id, amount, amount_gst, material_expense, material_expense_gst, gst_rate,  quote_id = None):
         self.quote_id = quote_id
         self.project_id = project_id
         self.amount = amount

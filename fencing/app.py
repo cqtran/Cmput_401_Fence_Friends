@@ -446,6 +446,13 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+@app.route('/accounting/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def accounting():
+    return render_template("accounting.html", company = current_user.company_name)
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description = 'Run Cavalry Fence Builder')
