@@ -38,23 +38,6 @@ function showError() {
   // Append item to document
 }
 
-function getQuotes() {
-  // TODO: GET request to materials API to get prices list by year and create tables
-    console.log("good")
-  $.ajax({
-      type: 'GET',
-      url: '/getAccountingSummary/',
-      success: function(result) {
-          console.log("we made it")
-          update_quote_table(result);
-      },
-      error: function(result) {
-          //showError();
-          console.log('Error')
-      }
-  });
-}
-
 function update_quote_table(quotes) {
   var table = document.getElementById('tableBody');
   $('#tableBody').empty();
@@ -100,8 +83,20 @@ function makeRow(quote) {
 }
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
-  $('#dataTable').DataTable();
+  $('#dataTable').DataTable({
+      "ajax" :{
+        "type": 'POST',
+        "url": '/getAccountingSummary/',
+      },
+      "columns": [
+        {"data": "quote_id"},
+        {"data": "project_id"},
+        {"data": "amount"},
+        {"data": "amount_gst"},
+        {"data": "amount"}
+      ]
+  });
 
-  getSummary();
-  getQuotes()
+  //getSummary();
+  //getQuotes()
 });

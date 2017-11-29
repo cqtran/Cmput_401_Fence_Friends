@@ -11,21 +11,23 @@ from api.errors import bad_request
 
 accountingBlueprint = Blueprint('accountingBlueprint', __name__, template_folder='templates')
 
-@accountingBlueprint.route('/getAccountingSummary/', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@accountingBlueprint.route('/getAccountingSummary/', methods=['POST'])
+@login_required
+@roles_required('primary')
 def getAccountingSummary():
     """ Returns a list of accounting related calculations """
-    if request.method == 'GET':
+    if request.method == 'POST':
         quote = dbSession.query(Quote).all()
+        send = {"data" : quote}
+        print("here")
         if len(quote) == 0:
             return bad_request('no quotes were found')
-        return jsonify(quote)
+        return jsonify(send)
     pass
 
 @accountingBlueprint.route('/exportAccountingSummary/', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def exportAccountingSummary():
     """ Returns a downloadable file of the accounting summary """
     #return send_from_directory(directory=uploads, filename=filename)
