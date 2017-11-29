@@ -38,72 +38,39 @@ function showError() {
   // Append item to document
 }
 
-function exportTableToCSV($table, filename) {
-                var $headers = $table.find('tr:has(th)')
-                    ,$rows = $table.find('tr:has(td)')
 
-                    // Temporary delimiter characters unlikely to be typed by keyboard
-                    // This is to avoid accidentally splitting the actual contents
-                    ,tmpColDelim = String.fromCharCode(11) // vertical tab character
-                    ,tmpRowDelim = String.fromCharCode(0) // null character
+function extractData(){
+  var rows = $('#dataTable').DataTable().rows().data();
+  var export_file = [];
+  var row;
+  export_file.push("Job Number,Description,Amount,GST,Total");
+  for(var i = 0; i< rows.length; i++ ){
+      row = [];
+      row.push(rows[i]['quote_id']);
+      row.push(rows[i]['project_id']);
+      row.push(rows[i]['amount']);
+      row.push(rows[i]['amount_gst']);
+      row.push(rows[i]['amount']);
+      export_file.push(row.join(','));
 
-                    // actual delimiter characters for CSV format
-                    ,colDelim = '","'
-                    ,rowDelim = '"\r\n"';
 
-                    // Grab text from table into CSV formatted string
-                    var csv = '"';
-                    csv += formatRows($headers.map(grabRow));
-                    csv += rowDelim;
-                    csv += formatRows($rows.map(grabRow)) + '"';
 
-                    // Data URI
-                    var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+}
+  download("download.csv", export_file.join('\n'))}
 
-                // For IE (tested 10+)
-                if (window.navigator.msSaveOrOpenBlob) {
-                    var blob = new Blob([decodeURIComponent(encodeURI(csv))], {
-                        type: "text/csv;charset=utf-8;"
-                    });
-                    navigator.msSaveBlob(blob, filename);
-                } else {
-                    $(this)
-                        .attr({
-                            'download': filename
-                            ,'href': csvData
-                            //,'target' : '_blank' //if you want it to open in a new window
-                    });
-                }
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
 
-                //------------------------------------------------------------
-                // Helper Functions
-                //------------------------------------------------------------
-                // Format the output so it has the appropriate delimiters
-                function formatRows(rows){
-                    return rows.get().join(tmpRowDelim)
-                        .split(tmpRowDelim).join(rowDelim)
-                        .split(tmpColDelim).join(colDelim);
-                }
-                // Grab and format a row from the table
-                function grabRow(i,row){
+  element.style.display = 'none';
+  document.body.appendChild(element);
 
-                    var $row = $(row);
-                    //for some reason $cols = $row.find('td') || $row.find('th') won't work...
-                    var $cols = $row.find('td');
-                    if(!$cols.length) $cols = $row.find('th');
+  element.click();
 
-                    return $cols.map(grabCol)
-                                .get().join(tmpColDelim);
-                }
-                // Grab and format a column from the table
-                function grabCol(j,col){
-                    var $col = $(col),
-                        $text = $col.text();
+  document.body.removeChild(element);
+}
 
-                    return $text.replace('"', '""'); // escape double quotes
-
-                }
-            }
 
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
@@ -128,14 +95,10 @@ $(document).ready(function(){
         {"data": "amount"}
       ]
   });
-  alert($('#dataTable').DataTable().columns()[0])
 
-  $('#dataTable').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    } );
+
+
+
 
 
   //getSummary();
