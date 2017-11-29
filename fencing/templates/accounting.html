@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-
 <div class="container-fluid">
   <h1>Accounting</h1>
 </div>
@@ -15,7 +12,6 @@
 
 <div class=" mb-lg-3">
     <div class="table-responsive">
-
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
@@ -31,40 +27,8 @@
               <th colspan="5">Total</th>
             </tr>
           </tfoot>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>If you are seeing this, your database is empty bruh</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>This is job 2</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>This is job 3</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr>            <tr>
-              <td>4</td>
-              <td>This is job 4</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr>            <tr>
-              <td>5</td>
-              <td>This is job 5</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr>
+          <tbody id="tableBody">
+
           </tbody>
         </table>
     </div>
@@ -79,101 +43,10 @@
 </div>
 {% endblock %}
 {% block content2 %}
+<script type="text/javascript" src="../static/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../static/vendor/datatables/dataTables.bootstrap4.js"></script>
+<script type="text/javascript" src="../static/js/Chart.min.js"></script>
 <script type="text/javascript" src='../static/js/accounting.js'></script>
-<script src="../static/js/Chart.min.js"></script>
-<script src="../static/vendor/datatables/jquery.dataTables.js"></script>
-<script src="../static/vendor/datatables/dataTables.bootstrap4.js"></script>
-<script src="../static/js/sb-admin-datatables.min.js"></script>
-
-        <script>
-        var table = document.getElementById('dataTable')
-function getQuotes() {
-  // TODO: GET request to materials API to get prices list by year and create tables
-    console.log("good")
-  $.ajax({
-      type: 'GET',
-      url: '/getAccountingSummary/',
-      success: function(result) {
-          console.log("we made it")
-          update_quote_table(result);
-      },
-      error: function(result) {
-          //showError();
-          console.log('Error')
-      }
-  });
-}
-
-function update_quote_table(quotes) {
-  $('#dataTable').empty();
-  var thead = document.createElement('thead');
-  var thead_row = document.createElement('tr');
-  var jn = document.createElement('th');
-  jn.innerHTML = 'Job Number';
-  thead_row.appendChild(jn);
-  var des = document.createElement('th');
-  des.innerHTML = 'Description';
-  thead_row.appendChild(des);
-  var amt = document.createElement('th');
-  amt.innerHTML = 'Amount';
-  thead_row.appendChild(amt);
-  var gst = document.createElement('th');
-  gst.innerHTML = 'GST';
-  thead_row.appendChild(gst);
-  var total = document.createElement('th');
-  total.innerHTML = 'Total';
-  thead_row.appendChild(total);
-
-
-  thead.appendChild(thead_row);
-  table.appendChild(thead);
-
-  var tbody = document.createElement('tbody');
-
-  quotes.forEach(function(quote) {
-    // Insert each quote as a new table row
-    tbody.appendChild(makeRow(quote));
-  });
-  table.appendChild(tbody);
-}
-
-function makeRow(quote) {
-    var row = document.createElement('tr');
-
-    var project_id = document.createElement('td');
-    project_id.innerHTML = quote.project_id
-    row.appendChild(project_id);
-
-    var project_id = document.createElement('td');
-    project_id.innerHTML = '-'
-    row.appendChild(project_id);
-
-    var project_id = document.createElement('td');
-    project_id.innerHTML = quote.amount
-    row.appendChild(project_id);
-
-    var project_id = document.createElement('td');
-    project_id.innerHTML = quote.amount_gst
-    row.appendChild(project_id);
-
-    var project_id = document.createElement('td');
-    var amount = parseFloat(quote.amount);
-    var gst = parseFloat(quote.amount_gst);
-
-    var total = amount + gst;
-    var fixedtotal = total.toFixed(2)
-
-    console.log(fixedtotal);
-
-    project_id.innerHTML = fixedtotal
-
-
-    row.appendChild(project_id);
-    return row;
-}
-getQuotes()
-</script>
-
 {% endblock %}
 
 
