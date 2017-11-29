@@ -9,6 +9,7 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
 from decimal import Decimal
+from diagram.DiagramParser import DiagramParser
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
 
@@ -45,8 +46,9 @@ def finalizeQuote():
             return bad_request('Invalid layout or appearance')
 
         # Get layout info and pass to parser
-        # layout.layout_info
-
+        layout.layout_info
+        parsed = DiagramParser.parse(layout.layout_info)
+        print(parsed)
         # Get appearance info and calculate a quote with the formula
         # quote  = length(style + height + base_price + ((border_colour + panel_colour) / 2))
 
