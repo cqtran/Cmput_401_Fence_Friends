@@ -1,13 +1,14 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Customer
+from database.models import Customer, Project
+from api.projects import removeProject
 
 from flask import Blueprint, request
 from flask.json import jsonify
 from flask_security.core import current_user
 from flask_security import login_required
 from flask_security.decorators import roles_required
-from api.errors import bad_request
+from api.errors import *
 
 customerBlueprint = Blueprint('customerBlueprint', __name__, template_folder='templates')
 
@@ -51,6 +52,28 @@ def addCustomer(name, email, ph, addr, cname):
     dbSession.commit()
 
     return True
+
+@customerBlueprint.route('/deletecustomer/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def deleteproject():
+    cust_id = request.values.get("cust_id")
+    print(cust_id)
+    removeCustomer(cust_id)
+
+    return created_request("Good")
+
+def removeCustomer(cust_id):
+    #Get all projects
+    projects = dbSession.query(Project).filter(Project.customer_id == cust_id)
+
+    for proj in projects:
+        removeProject(proj.project_id)
+
+    # Cascade delete all information related to project
+    cust = dbSession.query(Customer).filter(Customer.customer_id == cust_id).one()
+    dbSession.delete(cust)
+    dbSession.commit()
 
 @customerBlueprint.route('/updatecustomer/', methods=['POST'])
 @login_required
