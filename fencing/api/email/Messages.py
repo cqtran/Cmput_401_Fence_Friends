@@ -2,6 +2,8 @@ from weasyprint import CSS
 from database.db import dbSession
 from database.models import Layout
 from priceCalculation.QuoteCalculation import QuoteCalculation
+from database.db import dbSession
+from database.models import Appearance
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -75,7 +77,9 @@ class Messages:
 
 	def quoteAttachment(project, customer, parsed):
 		"""Generate the content of a quote attachment and return it"""
-		prices = QuoteCalculation.prices(parsed)
+		appearance = dbSession.query(Appearance).filter(
+			Appearance.appearance_id == project.appearance_selected)
+		prices = QuoteCalculation.prices(parsed, appearance)
 		subtotal = QuoteCalculation.subtotal(prices)
 		gstPercent = QuoteCalculation.gstPercent
 		gst = subtotal * gstPercent

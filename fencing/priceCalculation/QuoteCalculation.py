@@ -5,7 +5,7 @@ class QuoteCalculation:
 
 	gstPercent = Decimal("5.00")
 
-	def prices(parsed):
+	def prices(parsed, appearance):
 		"""Return a list of pairs with each item's name and price"""
 		prices = []
 
