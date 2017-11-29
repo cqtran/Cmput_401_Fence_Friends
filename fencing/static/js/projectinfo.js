@@ -852,6 +852,11 @@ function imagesError(){
 }
 
 function editDiagram(image) {
+	if (finalized) {
+		showMessage("Cannot edit finalized diagrams");
+		return;
+	}
+
 	var initial = image.getAttribute('src');
 	image.setAttribute('src', 'https://fencythat.cavalryfence.ca/images/ajax-loader.gif');
 	var iframe = document.createElement('iframe');
