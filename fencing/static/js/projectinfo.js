@@ -951,6 +951,7 @@ function moreDetails(){
 			  customerName.text(result[8]);
 			  var oldHref = customerName.attr('href');
 			  customerName.attr('href', oldHref + result[9] + '&status=All');
+			  alert(result[10][0][0][0].length);
 			  getPics();
 			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);

@@ -2,8 +2,11 @@
 from sqlalchemy import create_engine, MetaData, exists
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
-with open("user.txt", "r") as user:
+_path = os.path.dirname(os.path.abspath(__file__))
+
+with open(_path + "/user.txt", "r") as user:
 	lines = user.readlines()
 
 username = lines[0].strip()

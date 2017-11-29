@@ -2,6 +2,7 @@ from sqlalchemy import *
 from database.db import dbSession, init_db
 from database.models import Project, Customer, Layout, Status, Picture
 from diagram.DiagramParser import DiagramParser
+from diagram.JsonDiagramData import JsonDiagramData
 from flask.json import jsonify
 import json
 from flask import Blueprint, request
@@ -113,6 +114,7 @@ def projectdetails(project_id):
         json_layouts = [i.serialize for i in layouts]
         parsedLayouts = [DiagramParser.parse(i.layout_info) for i in layouts]
         displayStrings = []
+        jsonDiagramData = []
         json_appearances = Appearances.getAppearanceList(project_id)
         customer = dbSession.query(Customer).filter(
             Customer.customer_id == project.customer_id).one()
@@ -122,9 +124,11 @@ def projectdetails(project_id):
         for layout in parsedLayouts:
             if layout is None:
                 displayStrings.append([])
+                jsonDiagramData.append([])
             
             else:
                 displayStrings.append(layout.displayStrings())
+                jsonDiagramData.append(JsonDiagramData.parse(layout))
 
         # Get relative path to project pictures
         imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
@@ -133,7 +137,7 @@ def projectdetails(project_id):
         company = current_user.company_name
         lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
             selectedLayout, selectedAppearance, displayStrings, customerName,
-            customerId]
+            customerId, jsonDiagramData]
 
         return jsonify(lst)
 
