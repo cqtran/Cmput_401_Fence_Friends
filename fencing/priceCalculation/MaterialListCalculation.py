@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-class QuoteCalculation:
-	"""Calculate quote price"""
+class MaterialListCalculation:
+	"""Calculate material list price"""
 
 	gstPercent = Decimal("5.00")
 
@@ -11,13 +11,13 @@ class QuoteCalculation:
 
 		for item in parsed:
 			if item.entityType == "fence":
-				prices.append(QuoteCalculation._fencePrice(item))
+				prices.append(MaterialListCalculation._fencePrice(item))
 			
 			elif item.entityType == "gate":
-				prices.append(QuoteCalculation._gatePrice(item))
+				prices.append(MaterialListCalculation._gatePrice(item))
 			
 			elif item.entityType == "post":
-				prices.append(QuoteCalculation._postPrice(item))
+				prices.append(MaterialListCalculation._postPrice(item))
 
 		return prices
 	
