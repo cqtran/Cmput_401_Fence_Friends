@@ -1,5 +1,6 @@
 from flask.json import JSONEncoder
 from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate
+import decimal
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -114,6 +115,9 @@ class MyJSONEncoder(JSONEncoder):
                 'value'                 : str(obj.value),
                 'company_name'          : obj.company_name
             }
+
+        if type(obj) == decimal.Decimal:
+            return str(obj)
 
         return super(MyJSONEncoder, obj).default(obj)
 

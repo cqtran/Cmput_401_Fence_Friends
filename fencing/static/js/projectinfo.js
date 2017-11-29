@@ -716,12 +716,15 @@ function loadLayouts(layouts, displayStrings){
 }
 
 function loadAppearance(appearance, number) {
-	var form = $("appearance" + number + " > div");
+	var form = $("#appearance" + number + " > div");
 	form.find("#basePrice").val(appearance.base_price);
 	form.find("#height").val(appearance.height);
 	form.find("#style").val(appearance.style);
 	form.find("#borderColor").val(appearance.borderColor);
 	form.find("#panelColor").val(appearance.panelColor);
+	setAppearanceName(number, true, appearance.appearance_name);
+	document.getElementById("appearance-tab" + number).dbId =
+		appearance.appearance_id;
 }
 
 function loadAppearances(appearances){

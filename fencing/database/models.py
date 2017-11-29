@@ -190,7 +190,7 @@ class Appearance(Base):
         self.style = style
         self.height = height
         self.border_colour = border_colour
-        self.panel_clour = panel_clour
+        self.panel_colour = panel_colour
         self.base_price = base_price
         # TODO: initialize data for other columns
 
@@ -201,8 +201,11 @@ class Appearance(Base):
             'appearance_id'             : self.appearance_id,
             'appearance_name'           : self.appearance_name,
             'project_id'                : self.project_id,
-            'panel_gap'                 : self.panel_gap,
-            'height'                    : self.height
+            'style'                     : self.style,
+            'height'                    : self.height,
+            'border_colour'             : self.border_colour,
+            'panel_colour'              : self.panel_colour,
+            'base_price'                : self.base_price
         }
 
 class Material(Base):
