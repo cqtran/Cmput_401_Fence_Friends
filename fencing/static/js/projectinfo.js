@@ -357,12 +357,6 @@ function addAppearance(loading) {
 		"setAppearanceName('" + lastAppearance + "')");
 	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
-	var formGroup = clone.children[1];
-	formGroup.children[0].setAttribute("for", "panelGap" + lastAppearance);
-	formGroup.children[1].id = "panelGap" + lastAppearance;
-	formGroup.children[2].setAttribute("for", "fenceHeight" + lastAppearance);
-	formGroup.children[3].id = "fenceHeight" + lastAppearance;
-
 	document.getElementById("appearances").appendChild(clone);
 
 	var cloneTab = activeTab.cloneNode(true);
@@ -623,14 +617,20 @@ function saveActiveAppearance(includeSelection) {
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
-	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
-	var fenceHeight =
-	document.getElementById("fenceHeight" + activeAppearance).value;
+	var form = $("appearance" + activeAppearance + " > div");
+	var basePrice = form.find("#basePrice").val();
+	var height = form.find("#height").val();
+	var style = form.find("#style").val();
+	var borderColor = form.find("#borderColor").val();
+	var panelColor = form.find("#panelColor").val();
 	var dat = {
 		appearanceId: appearance_id,
 		name: appearance_name,
-		panelGap: panelGap,
-		fenceHeight: fenceHeight
+		basePrice: basePrice,
+		height: height,
+		style: style,
+		borderColor: borderColor,
+		panelColor: panelColor
 	};
 
 	if (includeSelection) {
@@ -716,12 +716,12 @@ function loadLayouts(layouts, displayStrings){
 }
 
 function loadAppearance(appearance, number) {
-	document.getElementById("panelGap" + number).value = appearance.panel_gap;
-	document.getElementById("fenceHeight" + number).value =
-		appearance.height;
-	setAppearanceName(number, true, appearance.appearance_name);
-	document.getElementById("appearance-tab" + number).dbId =
-		appearance.appearance_id;
+	var form = $("appearance" + number + " > div");
+	form.find("#basePrice").val(appearance.base_price);
+	form.find("#height").val(appearance.height);
+	form.find("#style").val(appearance.style);
+	form.find("#borderColor").val(appearance.borderColor);
+	form.find("#panelColor").val(appearance.panelColor);
 }
 
 function loadAppearances(appearances){
@@ -951,7 +951,6 @@ function moreDetails(){
 			  customerName.text(result[8]);
 			  var oldHref = customerName.attr('href');
 			  customerName.attr('href', oldHref + result[9] + '&status=All');
-			  alert(result[10][0][0][0].length);
 			  getPics();
 			  loadLayouts(layouts, displayStrings);
 			  loadAppearances(appearances);

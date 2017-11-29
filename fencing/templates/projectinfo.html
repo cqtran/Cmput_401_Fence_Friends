@@ -155,10 +155,24 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	<div id="appearance1" class="tab-pane fade in show active">
 		<a class="name-edit" href="#" onclick="setAppearanceName('1')">Untitled&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></a>
 		<div class="form-group">
-			<label for="panelGap1">Panel Gap</label>
-			<input onchange="saveActiveAppearance()" id="panelGap1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
-			<label for="fenceHeight1">Fence Height</label>
-			<input onchange="saveActiveAppearance()" id="fenceHeight1" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
+			<label for="basePrice">Base Price</label>
+			<input onchange="saveActiveAppearance()" id="basePrice" type="number" class="form-control" min="0.00" step="0.01" value="0.00" oninput="validity.valid||(value='');">
+			<select class="form-control" id="height" name="height">
+				<option value="Height 1">Height 1</option>
+				<option value="Height 2">Height 2</option>
+			</select>
+			<select class="form-control" id="style" name="style">
+				<option value="Style 1">Style 1</option>
+				<option value="Style 2">Style 2</option>
+			</select>
+			<select class="form-control" id="borderColor" name="borderColor">
+				<option value="Color 1">Color 1</option>
+				<option value="Color 1">Color 2</option>
+			</select>
+			<select class="form-control" id="panelColor" name="panelColor">
+				<option value="Color 1">Color 1</option>
+				<option value="Color 1">Color 2</option>
+			</select>
 		</div>
 	</div>
 </div>
