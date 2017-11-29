@@ -25,9 +25,9 @@ def saveAppearance():
     appearance_name = request.json['name']
     style = request.json['style']
     height = request.json['height']
-    border_colour = request.json['border_colour']
-    panel_colour = request.json['panel_colour']
-    base_price = request.json['base_price']
+    border_colour = request.json['borderColor']
+    panel_colour = request.json['panelColor']
+    base_price = request.json['basePrice']
 
     appearance_id = updateAppearanceInfo(project_id, appearance_id,
         appearance_name, style, height, border_colour, panel_colour, base_price)
