@@ -14,6 +14,7 @@ import api.layouts as Layouts
 import api.appearances as Appearances
 import api.pictures as Pictures
 import os
+import datetime
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
@@ -125,7 +126,7 @@ def projectdetails(project_id):
             if layout is None:
                 displayStrings.append([])
                 jsonDiagramData.append([])
-            
+
             else:
                 displayStrings.append(layout.displayStrings())
                 jsonDiagramData.append(JsonDiagramData.parse(layout))
@@ -155,9 +156,13 @@ def updateProject():
         address = request.values.get("address")
         status = request.values.get("status")
         note = request.values.get("note")
+        end_date = None
+
+        if status == 'Paid' or status == 'No Longer Interested':
+            end_date = datetime.datetime.utcnow()
 
         updateProjectInfo(project_id = project_id, project_name = project_name,
-            address = address, status = status, note = note, customer = customer)
+            address = address, status = status, note = note, customer = customer, end_date = end_date)
 
         print("done")
         return jsonify(project_id)
@@ -184,7 +189,7 @@ def removeProject(proj_id):
     dbSession.delete(project)
     dbSession.commit()
 
-def updateProjectInfo(project_id, project_name, address, status, note, customer):
+def updateProjectInfo(project_id, project_name, address, status, note, customer, end_date):
     """ Updates the project information of a given project id """
     project = dbSession.query(Project).filter(Project.project_id == project_id).all()
 
@@ -192,7 +197,7 @@ def updateProjectInfo(project_id, project_name, address, status, note, customer)
     project[0].address = address
     project[0].status_name = status
     project[0].note = note
-
+    project[0].end_date = end_date
     dbSession.commit()
     return True
 

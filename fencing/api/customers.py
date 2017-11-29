@@ -52,6 +52,22 @@ def addCustomer(name, email, ph, addr, cname):
 
     return True
 
+@customerBlueprint.route('/updatecustomer/', methods=['POST'])
+@login_required
+@roles_required('primary')
+def updateCustomer():
+    if request.method == "POST":
+        customer_id = request.values.get("cust_id")
+        f_name = request.values.get("fname")
+        email = request.values.get("email")
+        cell = request.values.get("cellphone")
+
+        updateCustomerInfo(customer_id = customer_id, email = email, first_name = f_name,
+                            cellphone = cell)
+
+        print("done")
+        return jsonify(customer_id)
+
 def updateCustomerInfo(customer_id, email, first_name, cellphone):
     """ Updates the customer information of a given customer id """
     customer = dbSession.query(Customer).filter(Customer.customer_id == customer_id).all()
