@@ -1,8 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block content %}
+<h1>Edit Customer</h1>
 
-<body>
-    <h1>Edit Customer</h1>
-
-</body>
-</html>
+<form id="edit-form">
+  <label for="status">Status</label>
+  <br>
+  <label for="project_name" class="required">Customer Name</label>
+  <input onchange="markDirty()" class="form-control" id="cust_name" type="text" name="f_name" value="" pattern=".*\S+.*" maxlength="50" required>
+  <label for="address" style="padding-top: 1rem;">Email</label>
+  <input onchange="markDirty()" class="form-control" id="email" type="text" name="email" value="" maxlength="50">
+  <label for="address" style="padding-top: 1rem;">Cell Phone</label>
+  <input onchange="markDirty()" class="form-control" id="cellphone" type="text" name="cp" value="" maxlength="50">
+  <input class="btn btn-primary btn-block bottom-margin" type="submit" value = "Save Information" style="padding-bottom: 1rem;">
+</form>
+{% endblock %}
+{% block content2 %}
+<script type="text/javascript" src='../static/js/editcustomer.js'></script>
+{% endblock %}
