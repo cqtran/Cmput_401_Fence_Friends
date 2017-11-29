@@ -617,7 +617,7 @@ function saveActiveAppearance(includeSelection) {
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
-	var form = $("appearance" + activeAppearance + " > div");
+	var form = $("#appearance" + activeAppearance + " > div");
 	var basePrice = form.find("#basePrice").val();
 	var height = form.find("#height").val();
 	var style = form.find("#style").val();
@@ -720,8 +720,8 @@ function loadAppearance(appearance, number) {
 	form.find("#basePrice").val(appearance.base_price);
 	form.find("#height").val(appearance.height);
 	form.find("#style").val(appearance.style);
-	form.find("#borderColor").val(appearance.borderColor);
-	form.find("#panelColor").val(appearance.panelColor);
+	form.find("#borderColor").val(appearance.border_colour);
+	form.find("#panelColor").val(appearance.panel_colour);
 	setAppearanceName(number, true, appearance.appearance_name);
 	document.getElementById("appearance-tab" + number).dbId =
 		appearance.appearance_id;
