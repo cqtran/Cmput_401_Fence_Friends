@@ -21,6 +21,7 @@ import api.pictures as Pictures
 import api.statuses as Statuses
 import api.layouts as Layouts
 import api.appearances as Appearances
+import api.quotes as Quotes
 import api.materials as Materials
 import api.estimates as Estimates
 #import api.errors as Errors
@@ -40,6 +41,7 @@ app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Users.userBlueprint)
 app.register_blueprint(Layouts.layoutBlueprint)
 app.register_blueprint(Appearances.appearanceBlueprint)
+app.register_blueprint(Quotes.quoteBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
 app.register_blueprint(Estimates.estimateBlueprint)

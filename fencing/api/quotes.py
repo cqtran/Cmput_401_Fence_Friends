@@ -24,7 +24,7 @@ def finalizeQuote():
         Generate and save the quote if finalize is True
         """
 
-        project_id = request.form['project_id']
+        project_id = request.args.get('proj_id')
         finalize = request.json['finalize']
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
 
@@ -37,8 +37,8 @@ def finalizeQuote():
             return created_request('Finalize set to false')
 
         project.finalize = True
-        layout_id = project.layout_id
-        appearance_id = project.appearance_id
+        layout_id = project.layout_selected
+        appearance_id = project.appearance_selected
 
         layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
         appearance = dbSession.query(Appearance).filter(Appearance.appearance_id == appearance_id).one()

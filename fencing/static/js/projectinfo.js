@@ -1228,7 +1228,18 @@ function toggleFinalized() {
 		$("#finalize-text").html("Finalize");
 	}
 
-	// TODO: Save finalized to database
+	$.ajax({
+    type: 'POST',
+	url: "/finalizeQuote/?proj_id=" + proj_id,
+	data: JSON.stringify({finalize: finalized}),
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+    error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+    }
+	});
 }
 
 $('#pdf').on("hidden.bs.modal", function() {
