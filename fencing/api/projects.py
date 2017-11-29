@@ -13,10 +13,13 @@ import api.layouts as Layouts
 import api.appearances as Appearances
 import api.pictures as Pictures
 import os
+import datetime
 
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
 @projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
+@login_required
+@roles_required('primary')
 def saveAppearanceSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -27,6 +30,8 @@ def saveAppearanceSelection():
     return "{}"
 
 @projectBlueprint.route('/saveLayoutSelection/', methods=['POST'])
+@login_required
+@roles_required('primary')
 def saveLayoutSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -38,8 +43,8 @@ def saveLayoutSelection():
 
 @projectBlueprint.route('/getProjectList/', defaults={'customer_id': None}, methods=['GET'])
 @projectBlueprint.route('/getProjectList/<int:customer_id>', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def getProjectList(customer_id):
     """ Returns a list of projects. If a customer id is provided, the list will contain
     only contain projects to the given customer id """
@@ -71,8 +76,8 @@ def getProjectList(customer_id):
         return jsonify(projectList)
 
 @projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def getProject(project_id):
     """ Returns a single project of a given project id """
     if request.method == "GET":
@@ -83,8 +88,8 @@ def getProject(project_id):
         return jsonify(project)
 
 @projectBlueprint.route('/addproject/', methods=['POST'])
-#login_required
-#roles_required('primary')
+@login_required
+@roles_required('primary')
 def addproject():
     if request.method == 'POST':
         customer = request.values.get("customer")
@@ -96,8 +101,7 @@ def addproject():
                                          current_user.company_name, projectname)
         return jsonify(proj_id)
 
-# delete later, just for testing note ---- i think we need this
-# I dont think we should have this hosted like this. These belong in their respective API files, Pictures and Layouts
+
 @projectBlueprint.route('/projectdetails/', defaults={'project_id': None}, methods=['GET'])
 @projectBlueprint.route('/projectdetails/<int:project_id>', methods=['GET'])
 @login_required
@@ -122,7 +126,7 @@ def projectdetails(project_id):
         for layout in parsedLayouts:
             if layout is None:
                 displayStrings.append([])
-            
+
             else:
                 displayStrings.append(layout.displayStrings())
 
@@ -151,9 +155,13 @@ def updateProject():
         address = request.values.get("address")
         status = request.values.get("status")
         note = request.values.get("note")
+        end_date = None
+
+        if status == 'Paid' or status == 'No Longer Interested':
+            end_date = datetime.datetime.utcnow()
 
         updateProjectInfo(project_id = project_id, project_name = project_name,
-            address = address, status = status, note = note, customer = customer)
+            address = address, status = status, note = note, customer = customer, end_date = end_date)
 
         print("done")
         return jsonify(project_id)
@@ -180,7 +188,7 @@ def removeProject(proj_id):
     dbSession.delete(project)
     dbSession.commit()
 
-def updateProjectInfo(project_id, project_name, address, status, note, customer):
+def updateProjectInfo(project_id, project_name, address, status, note, customer, end_date):
     """ Updates the project information of a given project id """
     project = dbSession.query(Project).filter(Project.project_id == project_id).all()
 
@@ -188,7 +196,7 @@ def updateProjectInfo(project_id, project_name, address, status, note, customer)
     project[0].address = address
     project[0].status_name = status
     project[0].note = note
-
+    project[0].end_date = end_date
     dbSession.commit()
     return True
 

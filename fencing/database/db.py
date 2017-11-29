@@ -2,10 +2,22 @@
 from sqlalchemy import create_engine, MetaData, exists
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import os
+
+_path = os.path.dirname(os.path.abspath(__file__))
+
+with open(_path + "/user.txt", "r") as user:
+	lines = user.readlines()
+
+username = lines[0].strip()
+password = lines[1].strip()
+database = lines[2].strip()
+host = lines[3].strip()
 
 engine = create_engine(
-	#change password to your db password and root to your db username
-    'mysql+mysqlconnector://root:password@localhost/testdata',
+    'mysql+mysqlconnector://{username}:{password}@{host}/{database}'.format(
+		username=username, password=password, database=database, host=host
+	),
     pool_recycle=3600
 )
 
