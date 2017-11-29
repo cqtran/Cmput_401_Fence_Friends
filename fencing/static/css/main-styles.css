@@ -65,8 +65,8 @@ Accessed November 27, 2017
   filter: grayscale(0%);
 }
 
-/* No line under modal title */
-.modal-header {
+/* No lines in modal */
+.modal-header, .modal-footer {
   border-top: none !important;
   border-bottom: none !important;
 }
