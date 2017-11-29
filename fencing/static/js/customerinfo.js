@@ -97,7 +97,9 @@ function getCustInfo(){
       success: function(result) {
           $('#title').html(result[0].first_name);
           $('#phone').html(result[0].cellphone);
+          $('#phone').attr('href', 'tel:' +result[0].cellphone);
           $('#email').html(result[0].email);
+          $('#email').attr('href', 'mailto:' + result[0].email);
           $('#companyNameNav').html(result[0].company_name);
       },
       error: function(result) {
@@ -106,20 +108,41 @@ function getCustInfo(){
   });
 }
 
-
+//get customers projects
+function getProjects(){
+  $.ajax({
+      type: 'GET',
+      url: '/getProjectList/' + cust_id + '?status=' + $('#status').val(),
+      success: function(result) {
+          updateProjects(result);
+      },
+      error: function(result) {
+          showError();
+      }
+  });
+}
 
 $(document).ready(function(){
   var url = window.location.querystring;
   cust_id = getParameterByName('cust_id');
-  console.log(cust_id);
   if(cust_id == null) {
-    alert("Customer does not exist. IT CALLED");
-    //window.location.href = '/customers/';
+    alert("Customer does not exist.");
+    window.location.href = '/customers/';
   }
   $("#pencil-button").removeClass('hide');
+  $('#edit').click(function(){
     window.location.href = '/editcustomer?cust_id=' + cust_id;
   });
   getStatus();
   getCustInfo();
   getProjects();
-};
+});
+
+//sort by this
+$('#status').on('change', function() {
+  getProjects();
+});
+
+function projectClicked(id) {
+	window.location.href = '/projectinfo?proj_id=' + id;
+}
