@@ -17,13 +17,24 @@ quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='template
 #@roles_required('primary')
 def finalizeQuote():
     if request.method == 'POST':
-        """ Given a project ID, layout ID, and appearance ID calculate a quote """
-        project_id = request.form['project_id']
+        """
+        Given a project ID and a boolean finalize.
+        Turn finalize to false if finalize is False.
+        Generate and save the quote if finalize is True
+        """
 
+        project_id = request.form['project_id']
+        finalize = request.json['finalize']
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
 
         if project is None:
             return bad_request('Project does not exist')
+
+        if not finalize:
+            project.finalize = False
+            dbSession.commit()
+            return created_request('Finalize set to false')
+
         project.finalize = True
         layout_id = project.layout_id
         appearance_id = project.appearance_id
@@ -47,21 +58,4 @@ def finalizeQuote():
         # dbSession.commit()
 
         return created_request('Quote has been generated')
-    return bad_request('Request is not a POST request')
-
-@quoteBlueprint.route('/abandonQuote/', methods=['POST'])
-#@login_required
-#@roles_required('primary')
-def abandonQuote():
-    if request.method == 'POST':
-        """ Given a project ID, turn finalize into false """
-        project_id = request.form['project_id']
-
-        project = dbSession.query(Project).filter(Project.project_id == project_id).one()
-
-        if project is None:
-            return bad_request('Project does not exist')
-        project.finalize = False
-        dbSession.commit()
-        return created_request('Quote abandoned')
     return bad_request('Request is not a POST request')

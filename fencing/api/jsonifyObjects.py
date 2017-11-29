@@ -75,8 +75,11 @@ class MyJSONEncoder(JSONEncoder):
                 'appearance_id'         : obj.appearance_id,
                 'appearance_name'       : obj.appearance_name,
                 'project_id'            : obj.project_id,
-                'panel_gap'             : obj.panel_gap,
-                'height'                : obj.height
+                'style'                 : obj.style,
+                'height'                : obj.height,
+                'border_colour'         : obj.border_colour,
+                'panel_colour'          : obj.panel_colour,
+                'base_price'            : str(obj.base_price)
                 #TODO: Define other columns related to materials
             }
 

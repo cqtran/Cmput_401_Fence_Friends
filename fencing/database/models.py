@@ -176,16 +176,22 @@ class Appearance(Base):
     appearance_id = Column(Integer, primary_key=True)
     appearance_name = Column(String(100))
     project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
-    panel_gap = Column(String(100))
+    style = Column(String(100))
     height = Column(String(100))
+    border_colour = Column(String(100))
+    panel_colour = Column(String(100))
+    base_price = Column(Numeric(12, 2))
     # TODO: Columns referencing material list
 
-    def __init__ (self, appearance_name, project_id, panel_gap, height, appearance_id=None):
+    def __init__ (self, appearance_name, project_id, style, height, border_colour, panel_colour, base_price, appearance_id=None):
         self.appearance_id = appearance_id
         self.appearance_name = appearance_name
         self.project_id = project_id
-        self.panel_gap = panel_gap
+        self.style = style
         self.height = height
+        self.border_colour = border_colour
+        self.panel_clour = panel_clour
+        self.base_price = base_price
         # TODO: initialize data for other columns
 
     @property
