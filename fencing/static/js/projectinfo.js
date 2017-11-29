@@ -508,7 +508,7 @@ function removeAppearance_(number) {
 }
 
 function reloadPage() {
-	window.location.replace("/projectinfo/?proj_id=" + proj_id);
+	location.reload();
 }
 
 function deleteOtherLayouts(number) {
@@ -653,7 +653,7 @@ function saveActiveLayout(includeSelection) {
 function saveActiveAppearance(includeSelection) {
 	if (finalized) {
 		$("#message").on("hidden.bs.modal", function() {
-			location.reload();
+			reloadPage();
 		});
 		showMessage("Cannot edit finalized projects");
 		return;
