@@ -11,7 +11,7 @@
   <input onchange="markDirty()" class="form-control" id="email" type="text" name="email" value="" maxlength="50">
   <label for="address" style="padding-top: 1rem;">Cell Phone</label>
   <input onchange="markDirty()" class="form-control" id="cellphone" type="text" name="cp" value="" maxlength="50">
-  <input class="btn btn-primary btn-block bottom-margin mt-1" type="submit" value = "Save Information">
+  <input onclick="markClean()" class="btn btn-primary btn-block bottom-margin mt-1" type="submit" value = "Save Information">
 </form>
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -25,7 +25,7 @@
       <div class="modal-body">Clicking delete will permanently delete the project.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-        <button onclick="makeClean()" type="button" class="btn btn-danger" id="delete-project"/>Delete</button>
+        <button onclick="markClean()" type="button" class="btn btn-danger" id="delete-project"/>Delete</button>
       </div>
     </div>
   </div>

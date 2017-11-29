@@ -14,11 +14,15 @@ function showMessage(message) {
 }
 
 function confirmDiscard() {
-  return "Discard Changes?";
+  return "Discard changes?";
 }
 
 function markDirty() {
-  window.onbeforeload = confirmDiscard;
+  window.onbeforeunload = confirmDiscard;
+}
+
+function markClean() {
+  window.onbeforeunload = null;
 }
 
 function deleteCustomer(){
