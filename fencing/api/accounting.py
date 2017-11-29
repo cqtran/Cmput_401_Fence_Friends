@@ -16,6 +16,11 @@ accountingBlueprint = Blueprint('accountingBlueprint', __name__, template_folder
 #@roles_required('primary')
 def getAccountingSummary():
     """ Returns a list of accounting related calculations """
+    if request.method == 'GET':
+        quote = dbSession.query(Quote).all()
+        if len(quote) == 0:
+            return bad_request('no quotes were found')
+        return jsonify(quote)
     pass
 
 @accountingBlueprint.route('/exportAccountingSummary/', methods=['GET'])
@@ -25,3 +30,15 @@ def exportAccountingSummary():
     """ Returns a downloadable file of the accounting summary """
     #return send_from_directory(directory=uploads, filename=filename)
     pass
+
+
+
+
+def getQuoteInfo():
+
+    quote = dbSession.query(Quote).all()
+
+    dbSession.commit()
+
+
+    return quote

@@ -23,6 +23,7 @@ import api.layouts as Layouts
 import api.appearances as Appearances
 import api.materials as Materials
 import api.estimates as Estimates
+import api.accounting as Accounting
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -45,6 +46,7 @@ app.register_blueprint(Appearances.appearanceBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
 app.register_blueprint(Estimates.estimateBlueprint)
+app.register_blueprint(Accounting.accountingBlueprint)
 app.json_encoder = MyJSONEncoder
 #app.secret_key = os.urandom(24) # used for sessions
 
@@ -450,6 +452,8 @@ def internal_server_error(e):
 @login_required
 @roles_required('primary')
 def accounting():
+    info = Accounting.getQuoteInfo()
+    print("\n\n", info, "\n\n")
     return render_template("accounting.html", company = current_user.company_name)
 
 

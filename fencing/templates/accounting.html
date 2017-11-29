@@ -9,7 +9,6 @@
 </div>
 <hr class="mt-2">
 
-
 <!-- Example DataTables Card-->
 <b>Revenue</b>
     <style>b {font-size: 300%}</style>
@@ -69,51 +68,6 @@
         </table>
     </div>
 </div><!-- Example DataTables Card-->
-<b>Expenses</b>
-    
-    <div id="dataTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="dataTable_length"><label>Show <select name="dataTable_length" aria-controls="dataTable" class="form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="dataTable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable"></label></div></div></div><div class="row"><div class="col-sm-12"><table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-          <thead>
-            <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Job Number: activate to sort column descending" style="width: 134px;">Job Number</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending" style="width: 128px;">Description</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Amount: activate to sort column ascending" style="width: 90px;">Amount</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="GST: activate to sort column ascending" style="width: 53px;">GST</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Total: activate to sort column ascending" style="width: 63px;">Total</th></tr>
-          </thead>
-          <tfoot>
-            <tr><th colspan="5" rowspan="1">Total</th></tr>
-          </tfoot>
-          <tbody>
-
-
-
-          <tr role="row" class="odd">
-              <td class="sorting_1">1</td>
-              <td>This is job 123423</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr><tr role="row" class="even">
-              <td class="sorting_1">2</td>
-              <td>This is job 2</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr><tr role="row" class="odd">
-              <td class="sorting_1">3</td>
-              <td>This is job 3</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr><tr role="row" class="even">
-              <td class="sorting_1">4</td>
-              <td>This is job 4</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr><tr role="row" class="odd">
-              <td class="sorting_1">5</td>
-              <td>This is job 5</td>
-              <td>1000</td>
-              <td>50</td>
-              <td>1050</td>
-            </tr></tbody>
-        </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 5 of 5 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
 
 <div class="container-fluid">
   <button id = 'exportSummary'>Export Accounting Summary</button>
@@ -129,6 +83,86 @@
 <script src="../static/vendor/datatables/jquery.dataTables.js"></script>
 <script src="../static/vendor/datatables/dataTables.bootstrap4.js"></script>
 <script src="../static/js/sb-admin-datatables.min.js"></script>
+
+        <script>
+        var table = document.getElementById('dataTable')
+function getQuotes() {
+  // TODO: GET request to materials API to get prices list by year and create tables
+    console.log("good")
+  $.ajax({
+      type: 'GET',
+      url: '/getAccountingSummary/',
+      success: function(result) {
+          console.log("we made it")
+          update_quote_table(result);
+      },
+      error: function(result) {
+          //showError();
+          console.log('Error')
+      }
+  });
+}
+
+function update_quote_table(quotes) {
+  $('#dataTable').empty();
+  var thead = document.createElement('thead');
+  var thead_row = document.createElement('tr');
+  var jn = document.createElement('th');
+  jn.innerHTML = 'Job Number';
+  thead_row.appendChild(jn);
+  var des = document.createElement('th');
+  des.innerHTML = 'Description';
+  thead_row.appendChild(des);
+  var amt = document.createElement('th');
+  amt.innerHTML = 'Amount';
+  thead_row.appendChild(amt);
+  var gst = document.createElement('th');
+  gst.innerHTML = 'GST';
+  thead_row.appendChild(gst);
+  var total = document.createElement('th');
+  total.innerHTML = 'Total';
+  thead_row.appendChild(total);
+
+
+  thead.appendChild(thead_row);
+  table.appendChild(thead);
+
+  var tbody = document.createElement('tbody');
+
+  quotes.forEach(function(quote) {
+    // Insert each quote as a new table row
+    tbody.appendChild(makeRow(quote));
+  });
+  table.appendChild(tbody);
+}
+
+function makeRow(quote) {
+    var row = document.createElement('tr');
+
+    var project_id = document.createElement('td');
+    project_id.innerHTML = quote.project_id
+    row.appendChild(project_id);
+
+    var project_id = document.createElement('td');
+    project_id.innerHTML = '-'
+    row.appendChild(project_id);
+
+    var project_id = document.createElement('td');
+    project_id.innerHTML = quote.amount
+    row.appendChild(project_id);
+
+    var project_id = document.createElement('td');
+    project_id.innerHTML = quote.amount_gst
+    row.appendChild(project_id);
+
+    var project_id = document.createElement('td');
+    project_id.innerHTML = quote.amount + quote.amount_gst
+    row.appendChild(project_id);
+    return row;
+}
+getQuotes()
+</script>
+
 {% endblock %}
 
 
