@@ -1,3 +1,5 @@
+#TODO: Delete this if we never use it
+
 class JsonDiagramData:
 	"""Parsed diagram data as it is passed to the client"""
 
