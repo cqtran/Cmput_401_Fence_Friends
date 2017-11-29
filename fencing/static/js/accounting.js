@@ -38,49 +38,73 @@ function showError() {
   // Append item to document
 }
 
-function update_quote_table(quotes) {
-  var table = document.getElementById('tableBody');
-  $('#tableBody').empty();
-  quotes.forEach(function(quote) {
-    // Insert each quote as a new table row
-    table.appendChild(makeRow(quote));
-  });
-}
+function exportTableToCSV($table, filename) {
+                var $headers = $table.find('tr:has(th)')
+                    ,$rows = $table.find('tr:has(td)')
 
-function makeRow(quote) {
-    var row = document.createElement('tr');
+                    // Temporary delimiter characters unlikely to be typed by keyboard
+                    // This is to avoid accidentally splitting the actual contents
+                    ,tmpColDelim = String.fromCharCode(11) // vertical tab character
+                    ,tmpRowDelim = String.fromCharCode(0) // null character
 
-    var project_id = document.createElement('td');
-    project_id.innerHTML = quote.project_id
-    row.appendChild(project_id);
+                    // actual delimiter characters for CSV format
+                    ,colDelim = '","'
+                    ,rowDelim = '"\r\n"';
 
-    var project_id = document.createElement('td');
-    project_id.innerHTML = '-'
-    row.appendChild(project_id);
+                    // Grab text from table into CSV formatted string
+                    var csv = '"';
+                    csv += formatRows($headers.map(grabRow));
+                    csv += rowDelim;
+                    csv += formatRows($rows.map(grabRow)) + '"';
 
-    var project_id = document.createElement('td');
-    project_id.innerHTML = quote.amount
-    row.appendChild(project_id);
+                    // Data URI
+                    var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
 
-    var project_id = document.createElement('td');
-    project_id.innerHTML = quote.amount_gst
-    row.appendChild(project_id);
+                // For IE (tested 10+)
+                if (window.navigator.msSaveOrOpenBlob) {
+                    var blob = new Blob([decodeURIComponent(encodeURI(csv))], {
+                        type: "text/csv;charset=utf-8;"
+                    });
+                    navigator.msSaveBlob(blob, filename);
+                } else {
+                    $(this)
+                        .attr({
+                            'download': filename
+                            ,'href': csvData
+                            //,'target' : '_blank' //if you want it to open in a new window
+                    });
+                }
 
-    var project_id = document.createElement('td');
-    var amount = parseFloat(quote.amount);
-    var gst = parseFloat(quote.amount_gst);
+                //------------------------------------------------------------
+                // Helper Functions
+                //------------------------------------------------------------
+                // Format the output so it has the appropriate delimiters
+                function formatRows(rows){
+                    return rows.get().join(tmpRowDelim)
+                        .split(tmpRowDelim).join(rowDelim)
+                        .split(tmpColDelim).join(colDelim);
+                }
+                // Grab and format a row from the table
+                function grabRow(i,row){
 
-    var total = amount + gst;
-    var fixedtotal = total.toFixed(2)
+                    var $row = $(row);
+                    //for some reason $cols = $row.find('td') || $row.find('th') won't work...
+                    var $cols = $row.find('td');
+                    if(!$cols.length) $cols = $row.find('th');
 
-    console.log(fixedtotal);
+                    return $cols.map(grabCol)
+                                .get().join(tmpColDelim);
+                }
+                // Grab and format a column from the table
+                function grabCol(j,col){
+                    var $col = $(col),
+                        $text = $col.text();
 
-    project_id.innerHTML = fixedtotal
+                    return $text.replace('"', '""'); // escape double quotes
 
+                }
+            }
 
-    row.appendChild(project_id);
-    return row;
-}
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
   $('#dataTable').DataTable({
