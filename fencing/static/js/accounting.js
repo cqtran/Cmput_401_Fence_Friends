@@ -214,3 +214,23 @@ $(document).ready(function(){
 function changePage(proj_id){
   window.location.href = '/projectinfo?proj_id=' + proj_id;
 }
+
+function slider(){
+  /* toggle if is shows */
+  console.log("tetsing");
+  $(this).next().slideToggle();
+  swapCaret(this);
+}
+function swapCaret(header) {
+  var i = $(header).find('i:first');
+
+  if (i.hasClass('fa-caret-down')) {
+    i.removeClass('fa-caret-down');
+    i.addClass('fa-caret-left');
+  }
+
+  else {
+    i.removeClass('fa-caret-left');
+    i.addClass('fa-caret-down');
+  }
+}
