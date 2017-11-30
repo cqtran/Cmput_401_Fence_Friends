@@ -81,7 +81,7 @@ class Messages:
 	def quoteAttachment(project, customer, parsed):
 		"""Generate the content of a quote attachment and return it"""
 		appearance = dbSession.query(Appearance).filter(
-			Appearance.appearance_id == project.appearance_selected)
+			Appearance.appearance_id == project.appearance_selected).one()
 		appearanceValues = Quotes.getAppearanceValues(appearance)
 		prices = QuoteCalculation.prices(parsed, appearanceValues[0],
 			appearanceValues[1], appearanceValues[2], appearanceValues[3])
