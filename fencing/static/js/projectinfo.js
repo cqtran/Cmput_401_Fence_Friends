@@ -204,7 +204,7 @@ function setLayoutName_(number, loading, newName, noClose) {
 
 	if (newName != null) {
 
-		newName = escapeHtml(newName);
+		newName = escapeAngleBrackets(newName);
 
 		tab.layoutName = newName;
 
@@ -251,7 +251,7 @@ function setAppearanceName_(number, loading, newName, noClose) {
 
 	if (newName != null) {
 
-		newName = escapeHtml(newName);
+		newName = escapeAngleBrackets(newName);
 
 		tab.appearanceName = newName;
 
