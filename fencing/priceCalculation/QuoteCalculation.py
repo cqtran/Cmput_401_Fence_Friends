@@ -27,6 +27,8 @@ class QuoteCalculation:
 			return (fence.displayString(), Decimal("1.00") * fence.length)
 	
 	def _gatePrice(gate):
+		# ----> Eric: Gates have .isDouble if you need it
+
 		if gate.isRemoval:
 			return (gate.displayString(), Decimal("0.25") * gate.length)
 		
