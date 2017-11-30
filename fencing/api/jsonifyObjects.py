@@ -1,5 +1,6 @@
 from flask.json import JSONEncoder
-from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate, Quote
+from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate
+import decimal
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -38,7 +39,8 @@ class MyJSONEncoder(JSONEncoder):
                 'note'               : obj.note,
                 'project_name'       : obj.project_name,
                 'layout_selected'    : obj.layout_selected,
-    			'appearance_selected': obj.appearance_selected
+    			'appearance_selected': obj.appearance_selected,
+                'finalize'           : obj.finalize
             }
 
         if isinstance(obj, Layout):
@@ -74,8 +76,11 @@ class MyJSONEncoder(JSONEncoder):
                 'appearance_id'         : obj.appearance_id,
                 'appearance_name'       : obj.appearance_name,
                 'project_id'            : obj.project_id,
-                'panel_gap'             : obj.panel_gap,
-                'height'                : obj.height
+                'style'                 : obj.style,
+                'height'                : obj.height,
+                'border_colour'         : obj.border_colour,
+                'panel_colour'          : obj.panel_colour,
+                'base_price'            : str(obj.base_price)
                 #TODO: Define other columns related to materials
             }
 
@@ -116,11 +121,14 @@ class MyJSONEncoder(JSONEncoder):
                 'project_id'            : obj.project_id,
                 'amount'                : str(obj.amount),
                 'amount_gst'            : str(obj.amount_gst),
-                'amount_total'                : str(obj.amount_total),
+                'amount_total'          : str(obj.amount_total),
                 'material_expense'      : str(obj.material_expense),
                 'material_expense_gst'  : str(obj.material_expense_gst),
                 'material_expense_total': str(obj.material_expense_total)
             }
+
+        if type(obj) == decimal.Decimal:
+            return str(obj)
 
         return super(MyJSONEncoder, obj).default(obj)
 

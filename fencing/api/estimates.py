@@ -15,14 +15,25 @@ import csv
 
 estimateBlueprint = Blueprint('estimateBlueprint', __name__, template_folder='templates')
 
+def getStyles():
+    return dbSession.query(Style).filter(
+        Style.company_name == current_user.company_name).all()
+
+def getColours():
+    return dbSession.query(Colour).filter(
+        Colour.company_name == current_user.company_name).all()
+
+def getHeights():
+    return dbSession.query(Height).filter(
+        Height.company_name == current_user.company_name).all()
+
 @estimateBlueprint.route('/getStyleEstimates/', methods=['GET'])
 @login_required
 @roles_required('primary')
 def getStyleEstimates():
     """ Returns a list of Styles for the current_user's company """
     if request.method == 'GET':
-        styles = dbSession.query(Style)
-        styles = styles.filter(Style.company_name == current_user.company_name).all()
+        styles = getStyles()
         if len(styles) == 0:
             return bad_request('No style estimate values were found')
         return jsonify(styles)
@@ -33,8 +44,7 @@ def getStyleEstimates():
 def getColourEstimates():
     """ Returns a list of colours for the current_user's company """
     if request.method == 'GET':
-        colours = dbSession.query(Colour)
-        colours = colours.filter(Colour.company_name == current_user.company_name).all()
+        colours = getColours()
         if len(colours) == 0:
             return bad_request('No colour estimate values were found')
         return jsonify(colours)
@@ -45,8 +55,7 @@ def getColourEstimates():
 def getHeightEstimates():
     """ Returns a list of fence heights for the current_user's company """
     if request.method == 'GET':
-        heights = dbSession.query(Height)
-        heights = heights.filter(Height.company_name == current_user.company_name).all()
+        heights = getHeights()
         if len(heights) == 0:
             return bad_request('No height estimate values were found')
         return jsonify(heights)
@@ -62,20 +71,6 @@ def getGateEstimates():
         if len(gates) == 0:
             return bad_request('No gate estimate values were found')
         return jsonify(gates)
-
-@estimateBlueprint.route('/calculateEstimate/', methods=['POST'])
-@login_required
-@roles_required('primary')
-def calculateEstimate():
-    """ Calculates a cost estimate for the customer depending on what they
-        have chosen for their fence. Calculation formula is as follows:
-
-        For Fences;
-            cost = length (base price + style + height + ((border colour + panel colour)/2))
-        For Gates;
-            cost = gate value
-    """
-    pass
 
 @estimateBlueprint.route('/uploadEstimates/', methods=['POST'])
 @login_required

@@ -3,10 +3,11 @@ from flask import Flask, Blueprint, render_template, request, redirect, \
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
-from database.models import User, Role, Company, Customer, Project, Status, Picture
+from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
+from diagram.DiagramParser import DiagramParser
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -21,6 +22,7 @@ import api.pictures as Pictures
 import api.statuses as Statuses
 import api.layouts as Layouts
 import api.appearances as Appearances
+import api.quotes as Quotes
 import api.materials as Materials
 import api.estimates as Estimates
 import api.accounting as Accounting
@@ -41,6 +43,7 @@ app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Users.userBlueprint)
 app.register_blueprint(Layouts.layoutBlueprint)
 app.register_blueprint(Appearances.appearanceBlueprint)
+app.register_blueprint(Quotes.quoteBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
 app.register_blueprint(Estimates.estimateBlueprint)
@@ -309,7 +312,10 @@ def viewMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    attachmentString = Messages.materialListAttachment(project)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.materialListAttachment(project, parsed)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
@@ -331,7 +337,10 @@ def viewQuote():
         Customer.customer_id == project.customer_id).one()
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
-    attachmentString = Messages.quoteAttachment(project, customer)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.quoteAttachment(project, customer, parsed)
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
@@ -441,7 +450,7 @@ def deleteAttachment():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html', company=current_user.company_name), 404
 
 @app.errorhandler(500)
 def internal_server_error(e):

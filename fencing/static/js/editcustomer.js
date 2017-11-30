@@ -6,7 +6,7 @@ function custData(cust) {
   document.getElementById('cust_name').value = cust[0].first_name;
   document.getElementById('email').value = cust[0].email;
   document.getElementById('cellphone').value = cust[0].cellphone;
-  $('#companyNameNav').html(cust[0].company_name);
+  $('#companyNameNav').text(cust[0].company_name);
 }
 
 function showMessage(message) {

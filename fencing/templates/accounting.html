@@ -11,7 +11,7 @@
     <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#revenue-container">Revenue</a>
   </li>
   <li id="cost-tab" class="nav-item">
-    <a class="nav-link fixed-tab-width" data-toggle="tab" href="#cost-container">Cost</a>
+    <a class="nav-link fixed-tab-width" data-toggle="tab" href="#cost-container">Expenses</a>
   </li>
 </ul>
 
@@ -24,9 +24,9 @@
                   <tr>
                     <th>Job Number</th>
                     <th>Description</th>
-                    <th>Amount</th>
+                    <th>Revenue</th>
                     <th>GST</th>
-                    <th>Total</th>
+                    <th>Customer Paid</th>
                   </tr>
                 </thead>
                 <tfoot>
@@ -73,11 +73,6 @@
         <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable')">Export Table</button>
       </div>
   </div>
-</div>
-
-<!-- What is this and do we need it? -->
-<div class="container-fluid">
-  <div class="row" id="accountingTable"></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"  ></script>

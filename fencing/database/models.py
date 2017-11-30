@@ -106,9 +106,10 @@ class Project(Base):
     project_name = Column("project_name", String(50))
     layout_selected = Column('layout_selected', Integer, ForeignKey('layout.layout_id', ondelete="SET NULL"))
     appearance_selected = Column('appearance_selected', Integer, ForeignKey('appearance.appearance_id', ondelete="SET NULL"))
+    finalize = Column(Boolean())
 
     def __init__(self, customer_id, status_name, address, end_date, note,
-                 project_name, company_name, layout_selected, appearance_selected, project_id = None):
+                 project_name, company_name, layout_selected, appearance_selected, finalize, project_id = None):
         self.project_id = project_id
         self.customer_id = customer_id
         self.status_name = status_name
@@ -119,6 +120,7 @@ class Project(Base):
         self.company_name = company_name
         self.layout_selected = layout_selected
         self.appearance_selected = appearance_selected
+        self.finalize = finalize
 
     @property
     def serialize(self):
@@ -133,7 +135,8 @@ class Project(Base):
             'note'                      : self.note,
             'project_name'              : self.project_name,
             'layout_selected'           : self.layout_selected,
-			'appearance_selected'       : self.appearance_selected
+			'appearance_selected'       : self.appearance_selected,
+            'finalize'                  : self.finalize
         }
 
 class Layout(Base):
@@ -171,8 +174,6 @@ class Quote(Base):
     material_expense_gst = Column(Numeric(12, 2))
     material_expense_total = Column(Numeric(12, 2))
     gst_rate = Column(Numeric(12, 2))
-    #layout_id = Column('layout_id', Integer, ForeignKey('layout.layout_id', ondelete="CASCADE"))
-    #appearance_id = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
     def __init__ (self, project_id, amount, amount_gst, amount_total, material_expense, material_expense_gst, material_expense_total, gst_rate,  quote_id = None):
         self.quote_id = quote_id
@@ -190,16 +191,22 @@ class Appearance(Base):
     appearance_id = Column(Integer, primary_key=True)
     appearance_name = Column(String(100))
     project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
-    panel_gap = Column(String(100))
+    style = Column(String(100))
     height = Column(String(100))
+    border_colour = Column(String(100))
+    panel_colour = Column(String(100))
+    base_price = Column(Numeric(12, 2))
     # TODO: Columns referencing material list
 
-    def __init__ (self, appearance_name, project_id, panel_gap, height, appearance_id=None):
+    def __init__ (self, appearance_name, project_id, style, height, border_colour, panel_colour, base_price, appearance_id=None):
         self.appearance_id = appearance_id
         self.appearance_name = appearance_name
         self.project_id = project_id
-        self.panel_gap = panel_gap
+        self.style = style
         self.height = height
+        self.border_colour = border_colour
+        self.panel_colour = panel_colour
+        self.base_price = base_price
         # TODO: initialize data for other columns
 
     @property
@@ -209,8 +216,11 @@ class Appearance(Base):
             'appearance_id'             : self.appearance_id,
             'appearance_name'           : self.appearance_name,
             'project_id'                : self.project_id,
-            'panel_gap'                 : self.panel_gap,
-            'height'                    : self.height
+            'style'                     : self.style,
+            'height'                    : self.height,
+            'border_colour'             : self.border_colour,
+            'panel_colour'              : self.panel_colour,
+            'base_price'                : self.base_price
         }
 
 class Material(Base):
