@@ -21,7 +21,7 @@
   <input onchange="markDirty()" class="form-control" id="address" type="text" name="address" value="Address" maxlength="50">
   <label for="note" style="padding-top: 1rem;">Note</label>
   <textarea onchange="markDirty()" class="form-control mb-lg-2" id="note" name="note" rows="3" cols="30" placeholder="Save or update note" maxlength="350"></textarea>
-  <input class="btn btn-primary btn-block bottom-margin" type="submit" value = "Save Information"/>
+  <input id="save" class="btn btn-primary btn-block bottom-margin" type="submit" value="Save Information"/>
 </form>
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -36,6 +36,24 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
         <button onclick="markClean()" type="button" class="btn btn-danger" id="delete-project"/>Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmDiscard" tabindex="-1" role="dialog" aria-labelledby="confirmDiscardTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDiscardTitle">Discard Changes?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Your changes have not been saved.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+        <button id="confirmDiscardSave" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+        <button id="confirmDiscardOkay" type="button" class="btn btn-danger" data-dismiss="modal">Discard</button>
       </div>
     </div>
   </div>

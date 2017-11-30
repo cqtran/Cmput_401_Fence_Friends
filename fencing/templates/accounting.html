@@ -6,44 +6,54 @@
 </div>
 <hr class="mt-2">
 
-<!-- Example DataTables Card-->
-<b>Revenue</b>
-    <style>b {font-size: 300%}</style>
+<ul id="table-tabs" class="nav nav-tabs flex-wrap">
+  <li id="revenue-tab" class="nav-item">
+    <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#revenue-container">Revenue</a>
+  </li>
+  <li id="cost-tab" class="nav-item">
+    <a class="nav-link fixed-tab-width" data-toggle="tab" href="#cost-container">Cost</a>
+  </li>
+</ul>
 
-<div class=" mb-lg-3">
-    <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-              <th>Job Number</th>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>GST</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th colspan="5">Total</th>
-            </tr>
-          </tfoot>
-          <tbody id="tableBody">
-
-          </tbody>
-        </table>
-    </div>
-</div><!-- Example DataTables Card-->
-
-<div class="container-fluid">
-  <button class="btn btn-primary" id="exportSummary" onclick="extractData()">Export Accounting Summary</button>
+<div id="table-containers" class="tab-content">
+  <div style="padding-top: 1em;" id="revenue-container" class="tab-pane fade in show active">
+      <div class=" mb-lg-3">
+          <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Job Number</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>GST</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th colspan="5">Total</th>
+                  </tr>
+                </tfoot>
+                <tbody id="tableBody">
+      
+                </tbody>
+              </table>
+          </div>
+      </div> 
+      <div class="container-fluid">
+        <button class="btn btn-primary" id="exportSummary" onclick="extractData()">Export Table</button>
+      </div>
+  </div>
+  
+  <div id="cost-container" class="tab-pane fade in">
+    BABABOOEY
+  </div>
 </div>
 
+<!-- What is this and do we need it? -->
 <div class="container-fluid">
   <div class="row" id="accountingTable"></div>
 </div>
-
-
-
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"  ></script>
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"  ></script>

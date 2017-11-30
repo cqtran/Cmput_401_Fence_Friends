@@ -92,9 +92,14 @@ $(document).ready(function(){
         },
         {"data": "amount"},
         {"data": "amount_gst"},
-        {"data": "amount"}
+        {"data": "amount_total"}
       ]
   });
+
+  // Remove "Search:" and add search icon
+  var dataTableLabel = $('#dataTable_filter > label');
+  dataTableLabel.html(dataTableLabel.children());            // Remove text
+  dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
 
 
