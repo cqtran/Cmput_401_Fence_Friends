@@ -1329,6 +1329,7 @@ function updateFinalized(loading) {
 		}
 		});
 	}
+}
 
 function noProject(){
 	$('#message').on('hidden.bs.modal', function() {
