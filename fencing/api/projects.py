@@ -135,7 +135,7 @@ def projectdetails(project_id):
         imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
         tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
 
-        heights = [i.height + "'" for i in Estimates.getHeights()]
+        heights = [i.height for i in Estimates.getHeights()]
         styles = [i.style for i in Estimates.getStyles()]
         colours = [i.colour for i in Estimates.getColours()]
 

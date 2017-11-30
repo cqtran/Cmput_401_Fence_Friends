@@ -664,7 +664,7 @@ function saveActiveAppearance(includeSelection) {
 	var appearance_name = tab.appearanceName;
 	var form = $("#appearance" + activeAppearance + " > div");
 	var basePrice = form.find("#basePrice").val();
-	var height = form.find("#height").val().slice(0, -1);
+	var height = form.find("#height").val();
 	var style = form.find("#style").val();
 	var borderColor = form.find("#borderColor").val();
 	var panelColor = form.find("#panelColor").val();
@@ -1025,9 +1025,15 @@ function moreDetails(){
   });
 }
 
-function makeOption(value) {
+function makeOption(value, addFeet) {
+	var feet = "'";
+
+	if (!addFeet) {
+		feet = '';
+	}
+
 	value = escapeAngleBrackets(value);
-	return '<option value="' + value + '">' + value + '</option>';
+	return '<option value="' + value + '">' + value + feet + '</option>';
 }
 
 function loadAppearanceValues(heights, styles, colours) {
@@ -1044,7 +1050,7 @@ function loadAppearanceValues(heights, styles, colours) {
 	panelColor.empty();
 
 	for (i = 0; i < heights.length; i++) {
-		height.append(makeOption(heights[i]));
+		height.append(makeOption(heights[i], true));
 	}
 
 	for (i = 0; i < styles.length; i++) {
