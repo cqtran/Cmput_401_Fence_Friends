@@ -25,8 +25,7 @@ pictureBlueprint = Blueprint('pictureBlueprint', __name__, template_folder='temp
 app_root = ''
 
 @pictureBlueprint.route('/getPictureList/<int:project_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getPictureList(project_id):
     """ Returns a list of pictures for a given project id"""
     if request.method == 'GET':
@@ -37,8 +36,7 @@ def getPictureList(project_id):
         return jsonify(pictures)
 
 @pictureBlueprint.route('/uploadPicture/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
     print(request.method)
@@ -100,8 +98,7 @@ def uploadPicture():
         return bad_request("No file provided")
 
 @pictureBlueprint.route('/deletePicture/', methods = ['DELETE'])
-@login_required
-@roles_required('primary')
+
 def deletePicture():
     if request.method == 'DELETE':
         # Grab arguments

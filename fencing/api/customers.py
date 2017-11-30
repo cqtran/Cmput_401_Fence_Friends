@@ -14,8 +14,7 @@ customerBlueprint = Blueprint('customerBlueprint', __name__, template_folder='te
 
 @customerBlueprint.route('/getCustomerList/', defaults={'company_name': None}, methods=['GET'])
 @customerBlueprint.route('/getCustomerList/<company_name>', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getCustomerList(company_name):
     """ Returns a list of customers. If a company name is provided, the list will
     only contain customers from that company"""
@@ -34,8 +33,7 @@ def getCustomerList(company_name):
         return jsonify(customers)
 
 @customerBlueprint.route('/getCustomer/<int:customer_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getCustomer(customer_id):
     """ Returns a response for a single customer of the given customer id """
     if request.method == 'GET':
@@ -54,8 +52,7 @@ def addCustomer(name, email, ph, addr, cname):
     return True
 
 @customerBlueprint.route('/deletecustomer/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def deleteproject():
     cust_id = request.values.get("cust_id")
     print(cust_id)
@@ -76,8 +73,7 @@ def removeCustomer(cust_id):
     dbSession.commit()
 
 @customerBlueprint.route('/updatecustomer/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def updateCustomer():
     if request.method == "POST":
         customer_id = request.values.get("cust_id")

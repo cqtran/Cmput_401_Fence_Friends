@@ -13,8 +13,7 @@ from diagram.DiagramParser import DiagramParser
 layoutBlueprint = Blueprint('layoutBlueprint', __name__, template_folder='templates')
 
 @layoutBlueprint.route('/saveLayoutName/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def saveLayoutName():
     """ Update a layout's name """
     layout_id = request.json['layoutId']
@@ -25,8 +24,7 @@ def saveLayoutName():
     return "{}"
 
 @layoutBlueprint.route('/removeLayout/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def removeLayout():
     project_id = request.args.get('proj_id')
     layout_id = request.json['layoutId']
@@ -34,8 +32,7 @@ def removeLayout():
     return "{}"
 
 @layoutBlueprint.route('/saveDiagram/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def saveDiagram():
     # parse draw io image and get coordinates and measurements
     project_id = request.args.get('proj_id')

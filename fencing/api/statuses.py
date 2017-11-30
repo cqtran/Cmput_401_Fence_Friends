@@ -13,8 +13,7 @@ from api.errors import bad_request
 statusBlueprint = Blueprint('statusBlueprint', __name__, template_folder='templates')
 
 @statusBlueprint.route('/getStatusList/', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getStatusList():
     """ Returns the list of statuses """
     if request.method == "GET":

@@ -16,8 +16,7 @@ import csv
 estimateBlueprint = Blueprint('estimateBlueprint', __name__, template_folder='templates')
 
 @estimateBlueprint.route('/getStyleEstimates/', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getStyleEstimates():
     """ Returns a list of Styles for the current_user's company """
     if request.method == 'GET':
@@ -28,8 +27,7 @@ def getStyleEstimates():
         return jsonify(styles)
 
 @estimateBlueprint.route('/getColourEstimates/', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getColourEstimates():
     """ Returns a list of colours for the current_user's company """
     if request.method == 'GET':
@@ -40,8 +38,7 @@ def getColourEstimates():
         return jsonify(colours)
 
 @estimateBlueprint.route('/getHeightEstimates/', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getHeightEstimates():
     """ Returns a list of fence heights for the current_user's company """
     if request.method == 'GET':
@@ -52,8 +49,7 @@ def getHeightEstimates():
         return jsonify(heights)
 
 @estimateBlueprint.route('/getGateEstimates/', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getGateEstimates():
     """ Returns a list of gate estimates for the current_user's company """
     if request.method == 'GET':
@@ -64,8 +60,7 @@ def getGateEstimates():
         return jsonify(gates)
 
 @estimateBlueprint.route('/calculateEstimate/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def calculateEstimate():
     """ Calculates a cost estimate for the customer depending on what they
         have chosen for their fence. Calculation formula is as follows:
@@ -78,8 +73,7 @@ def calculateEstimate():
     pass
 
 @estimateBlueprint.route('/uploadEstimates/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def uploadEstimates():
     """ Parses the given csv file into estimate values """
     company_name = current_user.company_name
