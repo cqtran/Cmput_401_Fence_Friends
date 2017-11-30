@@ -664,7 +664,7 @@ function saveActiveAppearance(includeSelection) {
 	var appearance_name = tab.appearanceName;
 	var form = $("#appearance" + activeAppearance + " > div");
 	var basePrice = form.find("#basePrice").val();
-	var height = form.find("#height").val();
+	var height = form.find("#height").val().slice(0, -1);
 	var style = form.find("#style").val();
 	var borderColor = form.find("#borderColor").val();
 	var panelColor = form.find("#panelColor").val();
