@@ -12,6 +12,7 @@ from api.errors import *
 import api.layouts as Layouts
 import api.appearances as Appearances
 import api.pictures as Pictures
+import api.estimates as Estimates
 import os
 import datetime
 
@@ -134,10 +135,14 @@ def projectdetails(project_id):
         imgPath = repr(os.path.join('..', Pictures.pictureDir, ''))
         tbnPath = repr(os.path.join('..', Pictures.thumbnailDir, ''))
 
+        heights = [i.height for i in Estimates.getHeights()]
+        styles = [i.style for i in Estimates.getStyles()]
+        colours = [i.colour for i in Estimates.getColours()]
+
         company = current_user.company_name
         lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
             selectedLayout, selectedAppearance, displayStrings, customerName,
-            customerId]
+            customerId, heights, styles, colours]
 
         return jsonify(lst)
 

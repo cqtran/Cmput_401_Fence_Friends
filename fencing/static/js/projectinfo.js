@@ -994,23 +994,24 @@ function moreDetails(){
       type: 'GET',
       url: '/projectdetails/' + proj_id,
       success: function(result) {
-    	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
-        tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-			  var layouts = result[2];
-			  var appearances = result[3];
-			  $('#companyNameNav').html(result[4]);
-			  var selectedLayout = result[5];
-			  var selectedAppearance = result[6];
-			  var displayStrings = result[7];
-			  var customerName = $('#customer-name');
-			  customerName.text(result[8]);
-			  var oldHref = customerName.attr('href');
-			  customerName.attr('href', oldHref + result[9] + '&status=All');
-			  getPics();
-			  loadLayouts(layouts, displayStrings);
-			  loadAppearances(appearances);
-			  selectLayout(selectedLayout, layouts);
-			  selectAppearance(selectedAppearance, appearances);
+    	imgPath = result[0].replace(/^'(.*)'$/, '$1');
+		tbnPath = result[1].replace(/^'(.*)'$/, '$1');
+		loadAppearanceValues(result[10], result[11], result[12]);
+		var layouts = result[2];
+		var appearances = result[3];
+		$('#companyNameNav').html(result[4]);
+		var selectedLayout = result[5];
+		var selectedAppearance = result[6];
+		var displayStrings = result[7];
+		var customerName = $('#customer-name');
+		customerName.text(result[8]);
+		var oldHref = customerName.attr('href');
+		customerName.attr('href', oldHref + result[9] + '&status=All');
+		getPics();
+		loadLayouts(layouts, displayStrings);
+		loadAppearances(appearances);
+		selectLayout(selectedLayout, layouts);
+		selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
 		if (proj_id != null) {
@@ -1022,6 +1023,37 @@ function moreDetails(){
 		console.log(error);
       }
   });
+}
+
+function makeOption(value) {
+	return '<option value="' + value + '">' + value + '</option>';
+}
+
+function loadAppearanceValues(heights, styles, colours) {
+	var form = $("#appearance1 > div");
+	var height = form.find("#height");
+	var style = form.find("#style");
+	var borderColor = form.find("#borderColor");
+	var panelColor = form.find("#panelColor");
+	var i;
+
+	height.empty();
+	style.empty();
+	borderColor.empty();
+	panelColor.empty();
+
+	for (i = 0; i < heights.length; i++) {
+		height.append(makeOption(heights[i]));
+	}
+
+	for (i = 0; i < styles.length; i++) {
+		style.append(makeOption(styles[i]));
+	}
+
+	for (i = 0; i < colours.length; i++) {
+		borderColor.append(makeOption(colours[i]));
+		panelColor.append(makeOption(colours[i]));
+	}
 }
 
 //get details
