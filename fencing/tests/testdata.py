@@ -10,9 +10,9 @@ def companyTestData():
     dbSession.commit()
 
 def statusTestData():
-    status1 = Status(status_name = "Not Reached")
-    status2 = Status(status_name = "In Progress")
-    status3 = Status(status_name = "Complete")
+    status1 = Status(status_name = "Not Reached", 1)
+    status2 = Status(status_name = "In Progress", 2)
+    status3 = Status(status_name = "Complete", 3)
     dbSession.add(status1)
     dbSession.add(status2)
     dbSession.add(status3)
