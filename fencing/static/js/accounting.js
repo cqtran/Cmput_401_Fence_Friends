@@ -39,7 +39,7 @@ function showError() {
 }
 
 
-function extractData(tablename){
+function extractData(tablename, filename){
   var rows = $(tablename).DataTable().rows().data();
   var export_file = [];
   var row;
@@ -56,7 +56,7 @@ function extractData(tablename){
 
 
 }
-  download("download.csv", export_file.join('\n'))}
+  download(filename + ".csv", export_file.join('\n'))}
 
 function download(filename, text) {
   var element = document.createElement('a');
