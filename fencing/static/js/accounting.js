@@ -96,6 +96,12 @@ $(document).ready(function(){
       ]
   });
 
+  // Remove "Search:" and add search icon
+  var dataTable_filter = $('#dataTable_filter');
+  var dataTableLabel = dataTable_filter.find("label");
+  dataTableLabel.html(dataTableLabel.children());
+  dataTableLabel.prepend('<i class="fa fa-search"></i>');
+
 
 
 
