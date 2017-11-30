@@ -122,6 +122,11 @@ $(document).ready(function(){
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
+  // Remove "Search:" and add search icon
+  var dataTableLabel = $('#costTable_filter > label');
+  dataTableLabel.html(dataTableLabel.children());            // Remove text
+  dataTableLabel.prepend('<i class="fa fa-search"></i>');
+
 
 
 
