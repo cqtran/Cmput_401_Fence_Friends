@@ -241,6 +241,9 @@ input[type="file"] {
   border: 0;
   font-weight: bold;
 }
+.link-to-project:hover {
+  cursor: pointer;
+}
 .btn-grey {
   margin: 0.25rem;
   padding-top: 0.25rem;
