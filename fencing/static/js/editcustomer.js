@@ -106,7 +106,7 @@ $(document).ready(function() {
   $("a").click(function(event) {
     var href = $(this).attr("href");
 
-    if (!isDirty || href.startsWith("#")) {
+    if (!isDirty || href.startsWith("#") || href == "" || href == null) {
       return;
     }
 
