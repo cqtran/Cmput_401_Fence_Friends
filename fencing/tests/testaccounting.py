@@ -11,7 +11,7 @@ import api.projects as Projects
 
 
 
-class TestProject(unittest.TestCase):
+class TestAccount(unittest.TestCase):
     def setUp(self):
         """ Initialize, clear, and set starting data """
 
@@ -25,3 +25,14 @@ class TestProject(unittest.TestCase):
 
         projectTestData()
         quoteTestData()
+
+
+    def tearDown(self):
+        """Clear all tables"""
+        for tbl in reversed (Base.metadata.sorted_tables):
+            engine.execute(tbl.delete())
+        dbSession.remove()
+
+    def test_createAccounting(self):
+        print("yeeezzzz")
+        pass
