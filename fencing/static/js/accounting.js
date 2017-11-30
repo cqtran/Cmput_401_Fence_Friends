@@ -97,9 +97,8 @@ $(document).ready(function(){
   });
 
   // Remove "Search:" and add search icon
-  var dataTable_filter = $('#dataTable_filter');
-  var dataTableLabel = dataTable_filter.find("label");
-  dataTableLabel.html(dataTableLabel.children());
+  var dataTableLabel = $('#dataTable_filter > label');
+  dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
 
