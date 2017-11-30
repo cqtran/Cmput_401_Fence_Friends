@@ -978,7 +978,7 @@ function getProjects(){
       },
       error: function(xhr, textStatus, error) {
 		if (proj_id != null) {
-			showMessage("Error");
+			noProject();
 		}
 
 		console.log(xhr.statusText);
@@ -1162,7 +1162,6 @@ function selectLayout(layoutId) {
 function selectAppearance(appearanceId) {
 	var tabs = document.getElementById("appearance-tabs");
 	var tab;
-
 	for (var i = 0; i < tabs.children.length; i++) {
 		if (tabs.children[i].dbId == appearanceId) {
 			tab = tabs.children[i];
@@ -1192,11 +1191,7 @@ $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
-	$('#message').on('hidden.bs.modal', function() {
-		window.location.href = '/projects/';
-	});
-
-    showMessage("Project does not exist.");
+  	noProject();
   }
 
   $("#pencil-button").removeClass('hide');
@@ -1334,6 +1329,12 @@ function updateFinalized(loading) {
 		}
 		});
 	}
+
+function noProject(){
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+  showMessage("Project does not exist.");
 }
 
 $('#pdf').on("hidden.bs.modal", function() {
