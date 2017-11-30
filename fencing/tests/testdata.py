@@ -1,5 +1,5 @@
 from datetime import datetime
-from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material
+from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material, Layout
 from database.db import dbSession
 
 def companyTestData():
@@ -30,12 +30,21 @@ def customerTestData():
 
 # Helper function for inserting project test data
 def projectTestData():
-    newProject1 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Bear St', end_date = None, note = 'A fun fencing project', project_name = "Kat's house fence", company_name = 'Fence', project_id = 1)
-    newProject2 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Grand Ave', end_date = None, note = 'Dog lives here', project_name = "Kat's second house fence", company_name = 'Fence', project_id = 2)
-    newProject3 = Project(customer_id = 3, status_name = 'Complete',  address = 'Park St', end_date = None, note = 'Concrete fence', project_name = "Jason's fence for company building", company_name = 'Fence', project_id = 3)
+    newProject1 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Bear St', end_date = None, note = 'A fun fencing project', project_name = "Kat's house fence", company_name = 'Fence', project_id = 1, layout_selected = 1, appearance_selected = 1)
+    newProject2 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Grand Ave', end_date = None, note = 'Dog lives here', project_name = "Kat's second house fence", company_name = 'Fence', project_id = 2, layout_selected = 2, appearance_selected = 1)
+    newProject3 = Project(customer_id = 3, status_name = 'Complete',  address = 'Park St', end_date = None, note = 'Concrete fence', project_name = "Jason's fence for company building", company_name = 'Fence', project_id = 3, layout_selected = 3, appearance_selected = 1)
     dbSession.add(newProject1)
     dbSession.add(newProject2)
     dbSession.add(newProject3)
+    dbSession.commit()
+
+def testLayoutData():
+    newLayout1 = Layout(layout_id = 1, project_id = 1, layout_name = "Layout 1", layout_info = "TEXT")
+    newLayout2 = Layout(layout_id = 2, project_id = 2, layout_name = "Test 2", layout_info = "TEXT")
+    newLayout3 = Layout(layout_id = 3, project_id = 3, layout_name = "Test 3", layout_info = "TEXT")
+    dbSession.add(newLayout1)
+    dbSession.add(newLayout2)
+    dbSession.add(newLayout3)
     dbSession.commit()
 
 # Helper function for inserting user test data
