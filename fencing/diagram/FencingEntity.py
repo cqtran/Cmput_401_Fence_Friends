@@ -37,6 +37,9 @@ class Post:
 		if self.postType == "tPost":
 			return "T Post"
 		
+		if self.postType == "gatePost":
+			return "Gate Post"
+		
 		print("Warning: unknown post type")
 		return str(self)
 	
