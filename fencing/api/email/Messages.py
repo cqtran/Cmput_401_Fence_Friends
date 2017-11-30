@@ -6,6 +6,7 @@ from priceCalculation.MaterialListCalculation import MaterialListCalculation
 import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
 from database.models import Appearance
+import api.quotes as Quotes
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -81,7 +82,9 @@ class Messages:
 		"""Generate the content of a quote attachment and return it"""
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected)
-		prices = QuoteCalculation.prices(parsed, appearance)
+		appearanceValues = Quotes.getAppearanceValues(appearance)
+		prices = QuoteCalculation.prices(parsed, appearanceValues[0],
+			appearanceValues[1], appearanceValues[2], appearanceValues[3])
 		subtotal = PriceCalculation.subtotal(prices)
 		gstPercent = PriceCalculation.gstPercent
 		gst = subtotal * gstPercent
