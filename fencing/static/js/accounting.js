@@ -92,7 +92,7 @@ $(document).ready(function(){
         },
         {"data": "amount"},
         {"data": "amount_gst"},
-        {"data": "amount"}
+        {"data": "amount_total"}
       ]
   });
 
