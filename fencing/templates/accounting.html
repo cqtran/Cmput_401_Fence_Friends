@@ -6,79 +6,83 @@
 </div>
 <hr class="mt-2">
 
-<ul id="table-tabs" class="nav nav-tabs flex-wrap">
-  <li id="revenue-tab" class="nav-item">
-    <a class="nav-link active fixed-tab-width" data-toggle="tab" href="#revenue-container">Revenue</a>
-  </li>
-  <li id="cost-tab" class="nav-item">
-    <a class="nav-link fixed-tab-width" data-toggle="tab" href="#cost-container">Expenses</a>
-  </li>
-</ul>
-
-<div id="table-containers" class="tab-content">
-  <div id="revenue-container" class="tab-pane fade in show active mt-3">
-      <div class=" mb-lg-3">
-          <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th>Job Number</th>
-                    <th>Project</th>
-                    <th>Revenue</th>
-                    <th>GST</th>
-                    <th>Customer Paid</th>
-                  </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                  <th colspan="2">Total</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                </tfoot>
-                <tbody>
-      
-                </tbody>
-              </table>
-          </div>
-      </div> 
-      <div class="container-fluid">
-        <button class="btn btn-primary" id="exportSummary" onclick="extractData('#dataTable', 'revenue')">Export Table</button>
-      </div>
+<div class="container-fluid mt-3" style="cursor: pointer;" onclick="slider()">
+  <div class="row">
+    <h2 class="col-6 text-green" style="font-weight: bold;">Expenses</h2>
+    <h2 class="col-6 text-green text-right" style="font-weight: bold;"><i class="fa fa-caret-down" aria-hidden="true"></i></h2>
   </div>
-  
-  <div id="cost-container" class="tab-pane fade in mt-3">
-    <div class=" mb-lg-3">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="costTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Job Number</th>
-                  <th>Project</th>
-                  <th>Expenses</th>
-                  <th>GST</th>
-                  <th>Paid</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th colspan="2">Total</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </tfoot>
-              <tbody>
-
-              </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="container-fluid">
-      <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable', 'expenses')">Export Table</button>
-    </div>
 </div>
+<hr class="mt-2">
+<div id="revenue-container" class="container-fluid mt-3">
+  <div class=" mb-lg-3">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Project</th>
+              <th>Revenue</th>
+              <th>GST</th>
+              <th>Customer Paid</th>
+            </tr>
+          </thead>
+          <tfoot>
+          <tr>
+            <th colspan="2">Total</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          </tfoot>
+          <tbody>
+
+          </tbody>
+        </table>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <button class="btn btn-primary" id="exportSummary" onclick="extractData('#dataTable', 'revenue')">Export Table</button>
+  </div>
+</div>
+
+<div class="container-fluid mt-3" style="cursor: pointer;" onclick="slider()">
+  <div class="row">
+    <h2 class="col-6 text-green" style="font-weight: bold;">Expenses</h2>
+    <h2 class="col-6 text-green text-right" style="font-weight: bold;"><i class="fa fa-caret-down" aria-hidden="true"></i></h2>
+  </div>
+</div>
+<hr class="mt-2">
+<div id="cost-container" class="container-fluid mt-3 mb-3">
+  <div class="mb-lg-3">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="costTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Project</th>
+              <th>Expenses</th>
+              <th>GST</th>
+              <th>Paid</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th colspan="2">Total</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </tfoot>
+          <tbody>
+          </tbody>
+        </table>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable', 'expenses')">Export Table</button>
+  </div>
+</div>
+
 
 
 
