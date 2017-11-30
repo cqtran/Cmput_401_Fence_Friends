@@ -2,6 +2,12 @@
 var projectList = document.getElementById('projectlist');
 var cust_id;
 
+function escapeAngleBrackets(string) {
+	return String(string).replace(/[<>]/g, function (s) {
+		return angleBracketMap[s];
+	});
+}
+
 function showMessage(message) {
 	$('#message-text').html(message);
 	$('#message').modal('show');
@@ -100,12 +106,12 @@ function getCustInfo(){
       type: 'GET',
       url: '/getCustomer/' + cust_id,
       success: function(result) {
-          $('#title').html(result[0].first_name);
-          $('#phone').html(result[0].cellphone);
-          $('#phone').attr('href', 'tel:' +result[0].cellphone);
-          $('#email').html(result[0].email);
-          $('#email').attr('href', 'mailto:' + result[0].email);
-          $('#companyNameNav').html(result[0].company_name);
+          $('#title').text(result[0].first_name);
+          $('#phone').text(result[0].cellphone);
+          $('#phone').attr('href', 'tel:' + escapeAngleBrackets(result[0].cellphone));
+          $('#email').text(result[0].email);
+          $('#email').attr('href', 'mailto:' + escapeAngleBrackets(result[0].email));
+          $('#companyNameNav').text(result[0].company_name);
       },
       error: function(result) {
           showError();
