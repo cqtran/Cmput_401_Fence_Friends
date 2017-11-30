@@ -1068,7 +1068,6 @@ function selectLayout(layoutId) {
 function selectAppearance(appearanceId) {
 	var tabs = document.getElementById("appearance-tabs");
 	var tab;
-
 	for (var i = 0; i < tabs.children.length; i++) {
 		if (tabs.children[i].dbId == appearanceId) {
 			tab = tabs.children[i];
@@ -1098,11 +1097,7 @@ $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
-	$('#message').on('hidden.bs.modal', function() {
-		window.location.href = '/projects/';
-	});
-
-    showMessage("Project does not exist.");
+  	noProject();
   }
 
   $("#pencil-button").removeClass('hide');
@@ -1206,6 +1201,13 @@ function deleteAttachment() {
 		console.log(error);
     }
 	});
+}
+
+function noProject(){
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+  showMessage("Project does not exist.");
 }
 
 $('#pdf').on("hidden.bs.modal", function() {
