@@ -166,20 +166,24 @@ class Quote(Base):
     project_id = Column('project_id', Integer, ForeignKey('project.project_id', ondelete="CASCADE"))
     amount = Column(Numeric(12, 2))
     amount_gst = Column(Numeric(12, 2))
+    amount_total = Column(Numeric(12, 2))
     material_expense = Column(Numeric(12, 2))
     material_expense_gst = Column(Numeric(12, 2))
+    material_expense_total = Column(Numeric(12, 2))
     gst_rate = Column(Numeric(12, 2))
     #layout_id = Column('layout_id', Integer, ForeignKey('layout.layout_id', ondelete="CASCADE"))
     #appearance_id = Column('appearance_id', Integer, ForeignKey('appearance.appearance_id', ondelete="CASCADE"))
 
-    def __init__ (self, project_id, amount, amount_gst, material_expense, material_expense_gst, gst_rate,  quote_id = None):
+    def __init__ (self, project_id, amount, amount_gst, amount_total, material_expense, material_expense_gst, material_expense_total, gst_rate,  quote_id = None):
         self.quote_id = quote_id
         self.project_id = project_id
         self.amount = amount
+        self.amount_total = amount_total
         self.amount_gst = amount_gst
         self.material_expense = material_expense
         self.material_expense_gst = material_expense_gst
-        self.gst_rate = gst_rate
+        self.material_expense_total = material_expense_total
+        self.gst_rate = gst_rate # Currently unused by jsonify
 
 class Appearance(Base):
     __tablename__ = 'appearance'

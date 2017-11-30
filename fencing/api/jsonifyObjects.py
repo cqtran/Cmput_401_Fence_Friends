@@ -116,8 +116,10 @@ class MyJSONEncoder(JSONEncoder):
                 'project_id'            : obj.project_id,
                 'amount'                : str(obj.amount),
                 'amount_gst'            : str(obj.amount_gst),
+                'amount_total'                : str(obj.amount_total),
                 'material_expense'      : str(obj.material_expense),
-                'material_expense_gst'  : str(obj.material_expense_gst)
+                'material_expense_gst'  : str(obj.material_expense_gst),
+                'material_expense_total': str(obj.material_expense_total)
             }
 
         return super(MyJSONEncoder, obj).default(obj)
