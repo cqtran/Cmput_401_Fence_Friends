@@ -13,10 +13,14 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../static/favicon/favicon-16x16.png">
   <link rel="manifest" href="../static/favicon/manifest.json">
   <link rel="mask-icon" href="../static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+
   <meta name="theme-color" content="#329664">
   <title>Cavalry Fence Builder</title>
   <!-- Bootstrap core CSS-->
   <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
   <!-- Custom fonts for this template-->
   <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
@@ -58,7 +62,7 @@
           </a>
         </li>
         <li class="nav-item delete-admin" data-toggle="tooltip" data-placement="right" title="Accounting">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{{ url_for('accounting')}}">
             <i class="fa fa-briefcase" aria-hidden="true"></i>
             <span class="nav-link-text">Accounting</span>
           </a>
