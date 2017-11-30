@@ -999,7 +999,7 @@ function moreDetails(){
 		loadAppearanceValues(result[10], result[11], result[12]);
 		var layouts = result[2];
 		var appearances = result[3];
-		$('#companyNameNav').html(result[4]);
+		$('#companyNameNav').text(result[4]);
 		var selectedLayout = result[5];
 		var selectedAppearance = result[6];
 		var displayStrings = result[7];
