@@ -760,13 +760,23 @@ function loadLayouts(layouts, displayStrings){
 	setLayoutCloseButton();
 }
 
+function setDropdownValue(dropdown, value) {
+	if (value == null) {
+		dropdown.val(dropdown.find("option:first").val());
+	}
+
+	else {
+		dropdown.val(value);
+	}
+}
+
 function loadAppearance(appearance, number) {
 	var form = $("#appearance" + number + " > div");
-	form.find("#basePrice").val(appearance.base_price);
-	form.find("#height").val(appearance.height);
-	form.find("#style").val(appearance.style);
-	form.find("#borderColor").val(appearance.border_colour);
-	form.find("#panelColor").val(appearance.panel_colour);
+	setDropdownValue(form.find("#basePrice"), appearance.base_price);
+	setDropdownValue(form.find("#height"), appearance.height);
+	setDropdownValue(form.find("#style"), appearance.style);
+	setDropdownValue(form.find("#borderColor"), appearance.border_colour);
+	setDropdownValue(form.find("#panelColor"), appearance.panel_colour);
 	setAppearanceName(number, true, appearance.appearance_name);
 	document.getElementById("appearance-tab" + number).dbId =
 		appearance.appearance_id;
