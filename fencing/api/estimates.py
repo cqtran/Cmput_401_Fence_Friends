@@ -72,20 +72,6 @@ def getGateEstimates():
             return bad_request('No gate estimate values were found')
         return jsonify(gates)
 
-@estimateBlueprint.route('/calculateEstimate/', methods=['POST'])
-@login_required
-@roles_required('primary')
-def calculateEstimate():
-    """ Calculates a cost estimate for the customer depending on what they
-        have chosen for their fence. Calculation formula is as follows:
-
-        For Fences;
-            cost = length (base price + style + height + ((border colour + panel colour)/2))
-        For Gates;
-            cost = gate value
-    """
-    pass
-
 @estimateBlueprint.route('/uploadEstimates/', methods=['POST'])
 @login_required
 @roles_required('primary')
