@@ -166,7 +166,7 @@ class DiagramData:
 				posts.append(Post("endPost", p[0], p[1], isRemoval=False))
 		
 		for p in pointRemoveCounts:
-			if pointAddCounts[p] > 2:
+			if pointRemoveCounts[p] > 2:
 				posts.append(Post("tPost", p[0], p[1], isRemoval=True))
 
 			elif pointRemoveCounts[p] > 1:
