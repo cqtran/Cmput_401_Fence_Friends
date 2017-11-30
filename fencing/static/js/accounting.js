@@ -75,46 +75,122 @@ function download(filename, text) {
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
   $('#dataTable').DataTable({
-      "ajax" :{
-        "type": 'POST',
-        "url": '/getAccountingSummary/',
-      },
-      "columns": [
-        {"data": "quote_id"},
-        {"data": "project_id",
-          "render": function(data, type, row, meta){
-            if(type === 'display'){
-                data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
-            }
-
-            return data;
+    "ajax" :{
+      "type": 'POST',
+      "url": '/getAccountingSummary/',
+    },
+    "columns": [
+      {"data": "quote_id"},
+      {"data": "project_id",
+        "render": function(data, type, row, meta){
+          if(type === 'display'){
+              data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
           }
-        },
-        {"data": "amount"},
-        {"data": "amount_gst"},
-        {"data": "amount_total"}
-      ]
+
+          return data;
+        }
+      },
+      {"data": "amount"},
+      {"data": "amount_gst"},
+      {"data": "amount_total"}
+    ],
+    "footerCallback": function ( row, data, start, end, display ) {
+      var api = this.api(), data;
+
+      // Remove the formatting to get integer data for summation
+      var intVal = function ( i ) {
+          return typeof i === 'string' ?
+              i.replace(/[\$,]/g, '')*1 :
+              typeof i === 'number' ?
+                  i : 0;
+      };
+
+      // Total over all pages
+      revenueTotal = api
+          .column(2)
+          .data()
+          .reduce( function (a, b) {
+              return intVal(a) + intVal(b);
+          }, 0 );
+      // Total over all pages
+      gstTotal = api
+          .column(3)
+          .data()
+          .reduce( function (a, b) {
+              return intVal(a) + intVal(b);
+          }, 0 );
+      // Total over all pages
+      customerTotal = api
+          .column(4)
+          .data()
+          .reduce( function (a, b) {
+              return intVal(a) + intVal(b);
+          }, 0 );
+      // Update footer
+      $( api.column(2).footer() ).html('$'+ revenueTotal.toFixed('2'));
+      $( api.column(3).footer() ).html('$'+ gstTotal.toFixed('2'));
+      $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
+    }
   });
-    $('#costTable').DataTable({
-      "ajax" :{
-        "type": 'POST',
-        "url": '/getAccountingSummary/',
-      },
-      "columns": [
-        {"data": "quote_id"},
-        {"data": "project_id",
-          "render": function(data, type, row, meta){
-            if(type === 'display'){
-                data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
-            }
 
-            return data;
+
+  $('#costTable').DataTable({
+    "ajax" :{
+      "type": 'POST',
+      "url": '/getAccountingSummary/',
+    },
+    "columns": [
+      {"data": "quote_id"},
+      {"data": "project_id",
+        "render": function(data, type, row, meta){
+          if(type === 'display'){
+              data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
           }
-        },
-        {"data": "material_expense"},
-        {"data": "material_expense_gst"},
-        {"data": "material_expense_total"}
-      ]
+
+          return data;
+        }
+      },
+      {"data": "material_expense"},
+      {"data": "material_expense_gst"},
+      {"data": "material_expense_total"}
+    ],
+    "footerCallback": function ( row, data, start, end, display ) {
+      var api = this.api(), data;
+
+      // Remove the formatting to get integer data for summation
+      var intVal = function ( i ) {
+          return typeof i === 'string' ?
+              i.replace(/[\$,]/g, '')*1 :
+              typeof i === 'number' ?
+                  i : 0;
+      };
+
+      // Total over all pages
+      revenueTotal = api
+          .column(2)
+          .data()
+          .reduce( function (a, b) {
+              return intVal(a) + intVal(b);
+          }, 0 );
+      // Total over all pages
+      gstTotal = api
+          .column(3)
+          .data()
+          .reduce( function (a, b) {
+              return intVal(a) + intVal(b);
+          }, 0 );
+      // Total over all pages
+      customerTotal = api
+          .column(4)
+          .data()
+          .reduce( function (a, b) {
+              return intVal(a) + intVal(b);
+          }, 0 );
+      // Update footer
+      $( api.column(2).footer() ).html('$'+ revenueTotal.toFixed('2'));
+      $( api.column(3).footer() ).html('$'+ gstTotal.toFixed('2'));
+      $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
+    }
   });
 
   // Remove "Search:" and add search icon

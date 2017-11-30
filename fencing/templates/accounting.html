@@ -23,16 +23,19 @@
                 <thead>
                   <tr>
                     <th>Job Number</th>
-                    <th>Description</th>
+                    <th>Project</th>
                     <th>Revenue</th>
                     <th>GST</th>
                     <th>Customer Paid</th>
                   </tr>
                 </thead>
                 <tfoot>
-                  <tr>
-                    <th colspan="5">Total</th>
-                  </tr>
+                <tr>
+                  <th colspan="2">Total</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
                 </tfoot>
                 <tbody>
       
@@ -46,32 +49,34 @@
   </div>
   
   <div id="cost-container" class="tab-pane fade in mt-3">
-      <div class=" mb-lg-3">
-          <div class="table-responsive">
-              <table class="table table-bordered" id="costTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th>Job Number</th>
-                    <th>Description</th>
-                    <th>Revenue</th>
-                    <th>GST</th>
-                    <th>Customer Paid</th>
-                  </tr>
-                </thead>
-                <tfoot>
-                  <tr>
-                    <th colspan="5">Total</th>
-                  </tr>
-                </tfoot>
-                <tbody>
+    <div class=" mb-lg-3">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="costTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Job Number</th>
+                  <th>Project</th>
+                  <th>Expenses</th>
+                  <th>GST</th>
+                  <th>Paid</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th colspan="2">Total</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </tfoot>
+              <tbody>
 
-                </tbody>
-              </table>
-          </div>
-      </div>
-      <div class="container-fluid">
-        <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable', 'expenses')">Export Table</button>
-      </div>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container-fluid">
+      <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable', 'expenses')">Export Table</button>
     </div>
 </div>
 
