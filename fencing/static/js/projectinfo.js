@@ -923,7 +923,7 @@ function getProjects(){
       },
       error: function(xhr, textStatus, error) {
 		if (proj_id != null) {
-			showMessage("Error");
+			noProject();
 		}
 
 		console.log(xhr.statusText);

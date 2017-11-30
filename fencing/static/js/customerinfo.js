@@ -111,7 +111,7 @@ function getCustInfo(){
           $('#companyNameNav').html(result[0].company_name);
       },
       error: function(result) {
-          showError();
+          noCustomer();
       }
   });
 }
@@ -134,11 +134,7 @@ $(document).ready(function(){
   var url = window.location.querystring;
   cust_id = getParameterByName('cust_id');
   if(cust_id == null) {
-    $('#message').on('hidden.bs.modal', function() {
-      window.location.href = '/';
-    });
-  
-    showMessage("Customer does not exist.");
+    noCustomer();
   }
   $("#pencil-button").removeClass('hide');
   $('#edit').click(function(){
@@ -158,6 +154,13 @@ function projectClicked(id) {
 	window.location.href = '/projectinfo?proj_id=' + id;
 }
 
+function noCustomer(){
+  $('#message').on('hidden.bs.modal', function() {
+    window.location.href = '/';
+  });
+
+  showMessage("Customer does not exist.");
+}
 function projectMenu(event, id) {
   event.preventDefault();
 
