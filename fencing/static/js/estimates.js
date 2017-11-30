@@ -67,14 +67,30 @@ function makeHeader(string) {
   header.setAttribute('class', 'text-green');
   header.setAttribute(
     'style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
-  header.innerHTML = string;
+  header.innerHTML = '<i class="fa fa-caret-down" aria-hidden="true"></i> ' + string;
 
   // Add accordion functionality to header classes
   header.onclick = function(){
     /* toggle if is shows */
     $(this).next().slideToggle();
+    swapCaret(this);
   }
+
   return header;
+}
+
+function swapCaret(header) {
+  var i = $(header).find('i:first');
+
+  if (i.hasClass('fa-caret-down')) {
+    i.removeClass('fa-caret-down');
+    i.addClass('fa-caret-right');
+  }
+
+  else {
+    i.removeClass('fa-caret-right');
+    i.addClass('fa-caret-down');
+  }
 }
 
 function makeRow(rowData) {
