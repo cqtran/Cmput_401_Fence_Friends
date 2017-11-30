@@ -41,12 +41,37 @@
           </div>
       </div> 
       <div class="container-fluid">
-        <button class="btn btn-primary" id="exportSummary" onclick="extractData()">Export Table</button>
+        <button class="btn btn-primary" id="exportSummary" onclick="extractData('#dataTable')">Export Table</button>
       </div>
   </div>
   
   <div id="cost-container" class="tab-pane fade in">
-    BABABOOEY
+          <div class=" mb-lg-3">
+          <div class="table-responsive">
+              <table class="table table-bordered" id="costTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Job Number</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>GST</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th colspan="5">Total</th>
+                  </tr>
+                </tfoot>
+                <tbody id="tableBody">
+
+                </tbody>
+              </table>
+          </div>
+      </div>
+            <div class="container-fluid">
+        <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable')">Export Table</button>
+      </div>
   </div>
 </div>
 

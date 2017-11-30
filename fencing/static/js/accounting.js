@@ -39,8 +39,8 @@ function showError() {
 }
 
 
-function extractData(){
-  var rows = $('#dataTable').DataTable().rows().data();
+function extractData(tablename){
+  var rows = $(tablename).DataTable().rows().data();
   var export_file = [];
   var row;
   export_file.push("Job Number,Description,Amount,GST,Total");
@@ -93,6 +93,27 @@ $(document).ready(function(){
         {"data": "amount"},
         {"data": "amount_gst"},
         {"data": "amount_total"}
+      ]
+  });
+    $('#costTable').DataTable({
+      "ajax" :{
+        "type": 'POST',
+        "url": '/getAccountingSummary/',
+      },
+      "columns": [
+        {"data": "quote_id"},
+        {"data": "project_id",
+          "render": function(data, type, row, meta){
+            if(type === 'display'){
+                data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
+            }
+
+            return data;
+          }
+        },
+        {"data": "material_expense"},
+        {"data": "material_expense_gst"},
+        {"data": "material_expense_total"}
       ]
   });
 
