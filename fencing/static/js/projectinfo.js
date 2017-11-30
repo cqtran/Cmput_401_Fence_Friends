@@ -1026,6 +1026,7 @@ function moreDetails(){
 }
 
 function makeOption(value) {
+	value = escapeAngleBrackets(value);
 	return '<option value="' + value + '">' + value + '</option>';
 }
 
