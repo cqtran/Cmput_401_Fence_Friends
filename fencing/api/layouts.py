@@ -136,7 +136,7 @@ def getMaterialAmount(layout):
     num_rails = num_sections * 2
     num_panels = panels(parsed)
 
-    num_hinges, num_latches = gates(parsed)
+    num_hinges, num_latches, num_Lsteel = gates(parsed)
 
     print('\nSteel')
     print('Metal Post: ',num_steel_post)
@@ -225,11 +225,13 @@ def panels(parsed):
 def gates(parsed):
     num_hinges = 0
     num_latches = 0
+    num_Lsteel = 0
     for gate in parsed.gates:
         if not gate.isRemoval:
+            num_Lsteel += 1
             num_latches += 1
             if gate.isDouble:
                 num_hinges += 2
             else:
                 num_hinges += 1
-    return num_hinges, num_latches
+    return num_hinges, num_latches, num_Lsteel

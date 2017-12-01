@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Company, Material
+from database.models import Company, Material, Appearance
 from flask.json import jsonify
 
 from flask import Blueprint, request
@@ -112,25 +112,25 @@ def getMaterialList(appearance):
         panel_height = '62.25'
         u_channel_height = '5'
 
-    metal_materials = materials.filter(Material.category('Metal'))
+    metal_materials = materials.filter(Material.category.contains('Metal'))
     metal_post = metal_materials.filter(Material.material_name.contains('Steel Post')).all()
     metal_u_channel = metal_materials.filter(Material.material_name.contains('Rail Insert Rail')).all()
     metal_lsteel = metal_materials.filter(Material.material_name.contains('Metal Gate Insert')).all()
 
-    plastic_post_materials = materials.filter(Material.category('Post Profiles'))
+    plastic_post_materials = materials.filter(Material.category.contains('Post Profiles'))
     plastic_t_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
     plastic_corner_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
     plastic_line_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
     plastic_end_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
     plastic_gate_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
 
-    plastic_rail = materials.filter(Material.category('Privacy Fence Rails')).filter(Material.material_name.comtains(appearance.border_colour)).filter(Material.material_name.contains('93.75')).all()
-    plastic_u_channel = materials.filter(Material.category('U-Channel (Plastic)')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(u_channel_height)).all()
-    plastic_panel = materials.filter(Material.category('T&G')).filter(Material.material_name.contains(appearance.panel_colour)).filter(Material.material_name.contains(panel_height)).all()
-    plastic_collar = materials.filter(Material.category('Collars')).all()
-    plastic_cap = materials.filter(Material.category('Caps')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('Cap')).all()
+    plastic_rail = materials.filter(Material.category.contains('Privacy Fence Rails')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('93.75')).all()
+    plastic_u_channel = materials.filter(Material.category.contains('U-Channel (Plastic)')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(u_channel_height)).all()
+    plastic_panel = materials.filter(Material.category.contains('T&G')).filter(Material.material_name.contains(appearance.panel_colour)).filter(Material.material_name.contains(panel_height)).all()
+    plastic_collar = materials.filter(Material.category.contains('Collars')).all()
+    plastic_cap = materials.filter(Material.category.contains('Caps')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('Cap')).all()
 
-    gate_hardware = materials.filter(Material.category('Gate Hardware'))
+    gate_hardware = materials.filter(Material.category.contains('Gate Hardware'))
     gate_hinge = gate_hardware.filter(Material.material_name.contains('Hinge')).all()
     gate_latch = gate_hardware.filter(Material.material_name.contains('Latch')).all()
 
