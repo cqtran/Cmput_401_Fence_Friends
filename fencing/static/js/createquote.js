@@ -53,6 +53,13 @@ $(document).ready(function(){
 
 });
 
+function dealLists(types, name){
+  types.forEach(function(type) {
+    $('select[name=' + name + ']').append('<option value="' + type.material_name + '">' + type.material_name + '</option>');
+  });
+  $('.selectpicker').selectpicker('refresh');
+}
+
 function noProject(){
   $('#message').on('hidden.bs.modal', function() {
     window.location.href = '/projects/';
