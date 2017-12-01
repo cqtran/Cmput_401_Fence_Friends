@@ -431,12 +431,18 @@ def viewPrices():
 def viewEstimates():
     return render_template("estimates.html", company = current_user.company_name)
 
-@app.route('/deleteAttachment/', methods = ['POST'])
+@app.route('/deleteAttachments/', methods = ['POST'])
 @login_required
 @roles_required('primary')
-def deleteAttachment():
-    path = request.args.get("attachment")
+def deleteAttachments():
+    attachments = request.json["attachments"]
+    
+    for attachment in attachments:
+        deleteAttachment(attachment)
+    
+    return "{}"
 
+def deleteAttachment(path):
     if ".." in path or path.startswith("/") or path.startswith("\\") or \
         path.count("/") > 1 or path.count("\\") > 1:
 
@@ -447,12 +453,10 @@ def deleteAttachment():
 
     try:
         os.remove(Email.staticFolder + "attachments/" + path)
-        return "{}"
 
     except:
         traceback.print_exc()
         print("Error: could not delete attachment " + path)
-        return "{}"
 
 @app.errorhandler(404)
 def page_not_found(e):

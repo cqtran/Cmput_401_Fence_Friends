@@ -1,5 +1,5 @@
 var attachmentPathLength = 20;
-var pdf = null;
+var pdfs = [];
 
 var confirmed = false;
 
@@ -1195,6 +1195,10 @@ function selectAppearance(appearanceId) {
 		.children[0].classList.add("active");
 }
 
+function addPdf(url) {
+	pdfs.push(url.slice(attachmentPathLength));
+}
+
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
   pictureList = document.getElementById('projectPictures');
@@ -1240,6 +1244,7 @@ $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
+
 $('#view-quote').submit(function(e) {
 	e.preventDefault();
 
@@ -1253,10 +1258,8 @@ $('#view-quote').submit(function(e) {
 			reloadPage();
 		}
 		else {
-			pdf = result['url'];
-			$('pdfFallback').attr('href', pdf);
-			$('#pdfContent').attr('src', pdf);
-			$('#pdf').modal("show");
+			addPdf(result['url']);
+			window.open(result['url']);
 		}
     },
     error: function(xhr, textStatus, error) {
@@ -1279,10 +1282,8 @@ $('#view-material-list').submit(function(e) {
 			reloadPage();
 		}
 		else {
-			pdf = result['url'];
-			$('pdfFallback').attr('href', pdf);
-			$('#pdfContent').attr('src', pdf);
-			$('#pdf').modal("show");
+			addPdf(result['url']);
+			window.open(result['url']);
 		}
     },
     error: function(xhr, textStatus, error) {
@@ -1293,10 +1294,11 @@ $('#view-material-list').submit(function(e) {
 	});
 });
 
-function deleteAttachment() {
+function deleteAttachments() {
 	$.ajax({
     type: 'POST',
-    url: "/deleteAttachment/?attachment=" + pdf.slice(attachmentPathLength),
+	url: "/deleteAttachments/",
+	data: JSON.stringify({attachments: pdfs}),
 	contentType: "application/json;charset=UTF-8",
 	dataType: "json",
     error: function(xhr, textStatus, error) {
@@ -1348,14 +1350,9 @@ function noProject(){
   showMessage("Project does not exist.");
 }
 
-$('#pdf').on("hidden.bs.modal", function() {
-	deleteAttachment();
-	pdf = null;
-});
-
 window.onbeforeunload = function() {
-	if (pdf != null) {
-		deleteAttachment();
+	if (pdfs.length > 0) {
+		deleteAttachments();
 	}
 
 	return;
