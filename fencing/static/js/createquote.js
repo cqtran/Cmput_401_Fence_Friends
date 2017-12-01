@@ -23,7 +23,7 @@ function getMaterialAmounts(layout){
       console.log(result["metal_post"]);
     },
     error: function(result) {
-        alert("shits fucked");
+        showMessage("Error getting material amounts.");
     }
   });
 }
@@ -49,7 +49,7 @@ function getMaterials(appearance){
       dealLists(result["gate_latch"], "gate_latch");
     },
     error: function(result) {
-        alert("material appearnce fucked");
+        showMessage("Error getting material lists");
     }
   });
 }
@@ -82,9 +82,27 @@ $(document).ready(function(){
 
 });
 
+function saveQuote(e) {
+  var formdata = new FormData(document.getElementById("create-form"));
+  $.ajax({
+      type: 'POST',
+      url: '/savegeneratedquote/',
+      data : formdata,
+      processData: false,
+      contentType: false,
+      success: function(response){
+        console.log('good')
+        window.location.href = '/projectinfo/?proj_id=' + proj_id;
+      },
+      error: function(result){
+        showMessage("Error saving data.");
+      }
+  });
+}
+
 function dealLists(types, name){
   types.forEach(function(type) {
-    $('select[name=' + name + '-type]').append('<option value="' + type.material_name + '">' + type.material_name + '</option>');
+    $('select[name=' + name + '-type]').append('<option value="' + type.material_id + '">' + type.material_name + '</option>');
   });
   $('.selectpicker').selectpicker('refresh');
 }
@@ -103,3 +121,8 @@ function showMessage(message) {
   $('#message-text').html(message);
   $('#message').modal('show');
 }
+
+$('form').submit(function(e) {
+  e.preventDefault();
+  saveQuote(e);
+});
