@@ -7,6 +7,7 @@ import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
 from database.models import Appearance
 import api.quotes as Quotes
+import api.layouts as Layouts
 import api.appearances as Appearances
 
 class Messages:
@@ -147,52 +148,43 @@ class Messages:
 	
 	def materialListAttachment(project, parsed):
 		"""Generate the content of a material list attachment and return it"""
-		appearance = dbSession.query(Appearance).filter(
-			Appearance.appearance_id == project.appearance_selected)
-		prices = MaterialListCalculation.prices(parsed, appearance)
-		subtotal = PriceCalculation.subtotal(prices)
-		gstPercent = PriceCalculation.gstPercent
-		gst = subtotal * gstPercent
-		total = subtotal + gst
+		layout = dbSession.query(Layout).filter(
+			Layout.layout_id == project.layout_selected).one()
+		materials = Layouts.getMaterialAmount(layout)
 		categories = {}
 		categoryStrings = []
 
-		for price in prices:
-			category = price[2]
+		for material in materials:
+			raw = material
 
+			if str(materials[material]) == '0':
+				continue
+
+			material = Layouts.materialString(material)
+
+			if material.startswith("Metal "):
+				category = "Metal"
+			
+			elif material.startswith("Plastic "):
+				category = "Plastic"
+			
+			else:
+				category = "Other"
+			
 			if category not in categories:
 				categories[category] = []
 			
-			categories[category].append(price)
-		
+			categories[category].append("<b>{amount}</b> {material}".format(
+				amount=materials[raw], material=material))
+
 		for category in categories:
-			priceStrings = []
-			categoryString = "<b>{0}</b><br>".format(category)
+			materialStrings = []
+			categoryString = "<h2>{0}</h2>".format(category)
 			
-			for price in categories[category]:
-				priceStrings.append(price[0] + " | $" + str(price[1]))
+			for material in categories[category]:
+				materialStrings.append(material)
 			
-			categoryString += "<br>".join(priceStrings)
+			categoryString += "<br>".join(materialStrings)
 			categoryStrings.append(categoryString)
 		
 		return "<br><br>".join(categoryStrings)
-
-		#return """
-		"""<b>Steel</b><br>
-			7 steel posts<br>
-			5 steel uchannel<br>
-			1 L steel<br>
-			<br>
-			<b>Plastic Posts</b><br>
-			1 corner<br>
-			4 line<br>
-			2 end<br>
-			1 blank<br>
-			<br>
-			<b>Plastic</b><br>
-			12 rails<br>
-			12 u channels<br>
-			46 T&G<br>
-			14 collars<br>
-			8 caps
-			"""
