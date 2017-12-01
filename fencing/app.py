@@ -338,7 +338,8 @@ def viewMaterialList():
 @login_required
 @roles_required('primary')
 def createquote():
-    return render_template("createquote.html", company = current_user.company_name);
+    return render_template("createquote.html",
+        company = current_user.company_name)
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
