@@ -1,7 +1,6 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Project, Quote, Layout, Appearance
-from database.models import Style, Colour, Height, Gate
+from database.models import Project, Quote, Layout, Appearance, Material
 from flask.json import jsonify
 
 from flask import Blueprint, request
@@ -36,7 +35,9 @@ def finalizeQuote():
         """
 
         project_id = request.args.get('proj_id')
+        # A dictionary with keywords and values of material_ids
         material_types = request.json['material_types']
+        # A dictionary with keywords and values of the amount of material needed
         material_amounts = request.json['material_amounts']
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
@@ -52,6 +53,8 @@ def finalizeQuote():
 
         try:
             amount, amount_gst, amount_total = calculateQuote(project)
+            materials = dbSession.query(Material).filter(Material.company_name == current_user.company_name)
+
             material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts)
             newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, )
         except:
@@ -65,27 +68,24 @@ def finalizeQuote():
     return bad_request('Request is not a POST request')
 
 def calculateExpense(material_types, material_amounts):
+    categories = ['metalpost', 'metal_u_channel', 'metal_lsteel', 'plastic_t_post', 'plastic_corner_post', 'plastic_line_post', 'plastic_end_post',
+        'plastic_gate_post', 'plastic_rail', 'plastic_u_channel', 'plastic_panel', 'plastic_collar', 'plastic_cap', 'gate_hinge', 'gate_latch']
     subtotal = 0
-    subtotal += math.ceil(material_amounts['metalpost'] / material_types['metal_post']['pieces_in_bundle']) * material_types['metal_post']['my_price']
-    subtotal += math.ceil(material_amounts['metal_u_channel'] / material_types['metal_u_channel']['pieces_in_bundle']) * material_types['metal_u_channel']['my_price']
-    subtotal += math.ceil(material_amounts['metal_lsteel'] / material_types['metal_lsteel']['pieces_in_bundle']) * material_types['metal_lsteel']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_t_post'] / material_types['plastic_t_post']['pieces_in_bundle']) * material_types['plastic_t_post']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_corner_post'] / material_types['plastic_corner_post']['pieces_in_bundle']) * material_types['plastic_corner_post']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_line_post'] / material_types['plastic_line_post']['pieces_in_bundle']) * material_types['plastic_line_post']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_end_post'] / material_types['plastic_end_post']['pieces_in_bundle']) * material_types['plastic_end_post']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_gate_post'] / material_types['plastic_gate_post']['pieces_in_bundle']) * material_types['plastic_gate_post']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_rail'] / material_types['plastic_rail']['pieces_in_bundle']) * material_types['plastic_rail']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_u_channel'] / material_types['plastic_u_channel']['pieces_in_bundle']) * material_types['plastic_u_channel']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_panel'] / material_types['plastic_panel']['pieces_in_bundle']) * material_types['plastic_panel']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_collar'] / material_types['plastic_collar']['pieces_in_bundle']) * material_types['plastic_collar']['my_price']
-    subtotal += math.ceil(material_amounts['plastic_cap'] / material_types['plastic_cap']['pieces_in_bundle']) * material_types['plastic_cap']['my_price']
-    subtotal += math.ceil(material_amounts['gate_hinge'] / material_types['gate_hinge']['pieces_in_bundle']) * material_types['gate_hinge']['my_price']
-    subtotal += math.ceil(material_amounts['gate_latch'] / material_types['gate_latch']['pieces_in_bundle']) * material_types['gate_latch']['my_price']
 
+    materials = dbSession.query(Materials).filter(Material.company_name == current_user.company_name)
+
+    # For each category in the dictionary, use the material_id and query for data
+    # number of materials needed / number of materials per bundle * price of material
+    for category in categories:
+        material = materials.filter(Material.material_id = material_types[category]).one()
+        subtotal += math.ceil(material_amounts[category] / material.pieces_in_bundle) * material.my_price
+
+    # Calculate gst
     gstPercent = PriceCalculation.gstPercent
     gst = subtotal * gstPercent
     total = subtotal + gst
 
+    # PDF Should be generated too
     return subtotal, gst, total
 
 def calculateQuote(project):
@@ -109,4 +109,5 @@ def calculateQuote(project):
     gst = subtotal * gstPercent
     total = subtotal + gst
 
+    # PDF Should be generated too
     return subtotal, gst, total

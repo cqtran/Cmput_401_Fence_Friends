@@ -86,7 +86,7 @@ function saveQuote(e) {
   var formdata = new FormData(document.getElementById("create-form"));
   $.ajax({
       type: 'POST',
-      url: '/savegeneratedquote/',
+      url: '/finalizeQuote/',
       data : formdata,
       processData: false,
       contentType: false,
