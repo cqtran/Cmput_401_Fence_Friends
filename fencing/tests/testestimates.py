@@ -41,6 +41,6 @@ class TestEstimate(unittest.TestCase):
         heights3 = Height.query.filter_by(height_id = 3).first()
         heights4 = Height.query.filter_by(height_id = 4).first()
 
-        assert(heights3.value <= value)
-        assert(heights4.value <= value)
+        assert(heights3.value < value)
+        assert(heights4.value < value)
 
