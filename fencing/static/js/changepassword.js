@@ -17,6 +17,7 @@ function changeAdmin(){
 	console.log("yes");
 	$('.delete-admin').remove();
 	$('#admin-users').text("Users");
+  $('#admin-users-link').attr("href", "/");
 	$('#admin-request').text("Account Requests");
 	$('#admin-request-link').attr("href", "/accountrequests/");
 	$('#admin-request-icon').attr("class", "fa fa-user-plus");
