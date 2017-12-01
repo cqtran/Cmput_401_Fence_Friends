@@ -63,18 +63,43 @@ function makeTable() {
 
 function makeHeader(string) {
   // Returns a new header
+  var container = document.createElement('container');
+  var row = document.createElement('div');
   var header = document.createElement('h4');
-  header.setAttribute('class', 'text-green');
-  header.setAttribute(
-    'style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
+  var header2 = document.createElement('h4');
+  row.setAttribute('class', 'row');
+  header.setAttribute('class', 'text-green col-6');
+  header2.setAttribute('class', 'text-green text-right col-6')
+  header.setAttribute('style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
+  header2.setAttribute('style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
   header.innerHTML = string;
+  header2.innerHTML = '<i class="fa fa-caret-down" aria-hidden="true"></i>';
 
+  row.appendChild(header);
+  row.appendChild(header2);
+  container.appendChild(row);
   // Add accordion functionality to header classes
-  header.onclick = function(){
+  container.onclick = function(){
     /* toggle if is shows */
     $(this).next().slideToggle();
+    swapCaret(this);
   }
-  return header;
+
+  return container;
+}
+
+function swapCaret(header) {
+  var i = $(header).find('i:first');
+
+  if (i.hasClass('fa-caret-down')) {
+    i.removeClass('fa-caret-down');
+    i.addClass('fa-caret-left');
+  }
+
+  else {
+    i.removeClass('fa-caret-left');
+    i.addClass('fa-caret-down');
+  }
 }
 
 function makeRow(rowData) {

@@ -4,7 +4,7 @@ function getCompany(){
       type: 'GET',
       url: '/getcompany/',
       success: function(result) {
-        $('#companyNameNav').html(result);
+        $('#companyNameNav').text(result);
         if(result == "Admin"){
         	changeAdmin();
         }

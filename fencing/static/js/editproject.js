@@ -13,7 +13,7 @@ function projectData(project){
   document.getElementById('address').value = project[0].address;
   $('.selectpicker').selectpicker('val', project[0].status_name);
   document.getElementById('note').value = project[0].note;
-  $('#companyNameNav').html(project[0].company_name);
+  $('#companyNameNav').text(project[0].company_name);
   //add for loop for every customer once implemented
   getCustomer(project[0].customer_id);
 }
