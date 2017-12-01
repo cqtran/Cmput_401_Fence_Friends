@@ -121,11 +121,6 @@ function dealStatuses(statuses){
   $('.selectpicker').selectpicker('refresh'); 
 }
 
-var preventDefault = function(e) {
-    e.preventDefault();
-    return;
-};
-
 function focusSearch() {
   if($(window).width() < 768){
     $('#companyNameNav').addClass('small-hide');
