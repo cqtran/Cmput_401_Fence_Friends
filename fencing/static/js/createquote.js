@@ -5,7 +5,7 @@ function getMaterialAmounts(layout){
     type: 'GET',
     url: '/getMaterialAmounts/?layout_id=' + layout,
     success: function(result) {
-      /*dealNumber(result["metal_post"], "metal_post");
+      dealNumber(result["metal_post"], "metal_post");
       dealNumber(result["metal_u_channel"], "metal_u_channel");
       dealNumber(result["metal_lsteel"], "metal_lsteel");
       dealNumber(result["plastic_t_post"], "plastic_t_post");
@@ -19,8 +19,8 @@ function getMaterialAmounts(layout){
       dealNumber(result["plastic_collar"], "plastic_collar");
       dealNumber(result["plastic_cap"], "plastic_cap");
       dealNumber(result["gate_hinge"], "gate_hinge");
-      dealNumber(result["gate_latch"], "gate_latch");*/
-      console.log(JSON.stringify(result));
+      dealNumber(result["gate_latch"], "gate_latch");
+      console.log(result["metal_post"]);
     },
     error: function(result) {
         alert("shits fucked");
@@ -89,11 +89,8 @@ function dealLists(types, name){
   $('.selectpicker').selectpicker('refresh');
 }
 
-function dealNumber(types, name){
-  types.forEach(function(type) {
-    $('select[name=' + name + '-type]').append('<option value="' + type.material_name + '">' + type.material_name + '</option>');
-  });
-  $('.selectpicker').selectpicker('refresh');
+function dealNumber(type, name){
+  $('#' + name).val(type);
 }
 
 function noProject(){
