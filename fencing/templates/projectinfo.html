@@ -63,6 +63,29 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
+<div class="modal fade" id="material-list-modal" tabindex="-1" role="dialog" aria-labelledby="materialListTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="materialListTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<form id="material-list-modal-form" class="form-group">
+					<label for="modal-list-email">To:</label>
+					<input placeholder="Supplier Email" type="text" class="form-control" id="modal-list-email">
+				</form>
+			</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+        <button id="material-list-send" type="button" class="btn btn-primary" data-dismiss="modal" onclick="setConfirmed()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="input" tabindex="-1" role="dialog" aria-labelledby="inputTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -240,12 +263,12 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	</div>
 	<div class="row">
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
+			<form id="quote-form" method="post">
 				<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote"/>
 			</form>
 		</div>
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
+			<form id="send-material-list" method="post">
 				<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List"/>
 			</form>
 		</div>

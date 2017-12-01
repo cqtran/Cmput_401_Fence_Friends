@@ -368,7 +368,10 @@ def sendQuote():
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.quoteMessage(customer, company)
-    attachmentString = Messages.quoteAttachment(project, customer)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.quoteAttachment(project, customer, parsed)
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
@@ -388,7 +391,10 @@ def sendMaterialList():
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.materialListMessage(company)
-    attachmentString = Messages.materialListAttachment(project)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.materialListAttachment(project, parsed)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 

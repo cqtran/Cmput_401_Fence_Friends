@@ -1217,6 +1217,10 @@ $(document).ready(function(){
   moreDetails();
   getProjects();
 
+  $('#material-list-send').click(function(e) {
+	sendMaterialList();
+  });
+
   $('#input').on('shown.bs.modal', function() {
 	var inputText = $('#inputText');
 	inputText.focus();
@@ -1270,6 +1274,59 @@ $('#view-quote').submit(function(e) {
     }
 	});
 });
+$('#send-material-list').submit(function(e) {
+	e.preventDefault();
+	$('#material-list-modal').modal('show');
+	var email = $('#modal-list-email');
+	email.focus();
+	email.select();
+});
+
+$('#material-list-modal-form').submit(function(e) {
+	sendMaterialList();
+});
+
+$('#quote-form').submit(function(e) {
+	sendQuote();
+});
+
+function sendQuote() {
+	showSendingQuote();
+	$('#progress').modal('show');
+
+	$.ajax({
+		type: 'POST',
+		url: "/sendQuote/?proj_id=" + proj_id,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+			showMessage("Error sending quote");
+		}
+	});
+}
+
+function sendMaterialList() {
+	$('#material-list-modal').modal('hide');
+	showSendingMaterialList();
+	$('#progress').modal('show');
+
+	$.ajax({
+		type: 'POST',
+		url: "/sendMaterialList/?proj_id=" + proj_id,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+			showMessage("Error sending material list");
+		}
+	});
+}
+
 $('#view-material-list').submit(function(e) {
 	e.preventDefault();
 
