@@ -1,6 +1,5 @@
 from datetime import datetime
-from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material, Layout, Appearance,
-    Style, Colour, Height, Gate
+from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate
 from database.db import dbSession
 
 
