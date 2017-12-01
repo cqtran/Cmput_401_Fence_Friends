@@ -92,6 +92,9 @@ def getMaterialLists():
 def getMaterialList(appearance):
     materials = dbSession.query(Material).filter(Material.company_name == current_user.company_name)
 
+    # Filtering for specific materials from the database depending
+    # on what appearance values the user has selected
+    # Specific rules and formulas provided by the client
     if appearance.height == '6':
         post_height = '6.5'
         panel_height = '62.25'
