@@ -1,3 +1,5 @@
+var saveLoadedAppearance = false;
+
 var supplierEmail;
 
 var attachmentPathLength = 20;
@@ -753,6 +755,7 @@ function loadLayouts(layouts, displayStrings){
 function setDropdownValue(dropdown, value) {
 	if (value == null) {
 		dropdown.val(dropdown.find("option:first").val());
+		saveLoadedAppearance = true;
 	}
 
 	else {
@@ -770,6 +773,11 @@ function loadAppearance(appearance, number) {
 	setAppearanceName(number, true, appearance.appearance_name);
 	document.getElementById("appearance-tab" + number).dbId =
 		appearance.appearance_id;
+	
+	if (saveLoadedAppearance) {
+		saveActiveAppearance();
+		saveLoadedAppearance = false;
+	}
 }
 
 function loadAppearances(appearances){
