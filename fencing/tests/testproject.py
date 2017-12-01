@@ -71,7 +71,7 @@ class TestProject(unittest.TestCase):
         assert result['project_name'] == "Kat's house fence"
         print("Json response is expected")
 
-    '''
+
     def test_getInvalidProject(self):
         """ Test for getting a project of a non-exsitng project id """
         print("\n\n Testing getProject API for non-existing project\n")
@@ -85,7 +85,7 @@ class TestProject(unittest.TestCase):
         print(json_obj)
         assert json_obj['message'] == "The project was not found"
         print("Json response is expected")
-
+    '''
     def test_getProjectList(self):
         """ Test for getting all projects of a company """
         print("\n\n Testing getProjectList API\n")
@@ -111,7 +111,7 @@ class TestProject(unittest.TestCase):
         assert result2['project_name'] == "Kat's second house fence"
 
         print("Json response is expected")
-
+    
     def test_getInvalidProjectList(self):
         """ Test for getting all project of a non-existing customer """
         print("\n\n Testing getCustomerList API for non-existing customer \n")
