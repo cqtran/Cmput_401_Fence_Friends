@@ -484,6 +484,8 @@ def accounting():
 @roles_required('primary')
 def editquote():
     proj_id = request.args.get("proj_id")
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
     return render_template("editquote.html", company = current_user.company_name, proj_id = proj_id)
 
 
