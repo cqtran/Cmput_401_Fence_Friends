@@ -271,7 +271,7 @@ def newcustomer():
         name = request.form['name']
         email = request.form['email']
         pn = request.form['pn']
-        address = request.form['address']
+        address = ""
         # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
 
