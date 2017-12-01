@@ -156,8 +156,7 @@ def getMaterialAmount(layout_id):
     print('Hinges',num_hinges)
     print('Latches',num_latches)
 
-    return
-        {
+    return {
             'Metal Posts'            : num_steel_post,
             'Metal U-Channels'       : num_metal_uchannel,
             'Metal L-Steels'         : num_Lsteel,

@@ -132,8 +132,7 @@ def getMaterialList(appearance):
     gate_hinge = gate_hardware.filter(Material.material_name.contains('Hinge')).all()
     gate_latch = gate_hardware.filter(Material.material_name.contains('Latch')).all()
 
-    return
-        {
+    return {
         'metal_post'            : metal_post,
         'metal_u_channel'       : metal_u_channel,
         'metal_lsteel'          : metal_lsteel,

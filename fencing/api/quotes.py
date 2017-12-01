@@ -15,8 +15,8 @@ from priceCalculation.QuoteCalculation import QuoteCalculation
 from priceCalculation.MaterialListCalculation import MaterialListCalculation
 import priceCalculation.priceCalculation as PriceCalculation
 
-from api.appearances as Appearances
-from api.layouts as Layouts
+import api.appearances as Appearances
+import api.layouts as Layouts
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
 
