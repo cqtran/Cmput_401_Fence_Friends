@@ -70,11 +70,12 @@ def finalizeQuote():
             profit = amount - material_expense_total
 
             newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
+            dbSession.add(newQuote)
+            dbSession.commit()
         except:
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
 
-        dbSession.commit()
         print('Quote has been generated and finalized')
         return created_request('Quote has been generated')
     print('Request is not a POST request')
