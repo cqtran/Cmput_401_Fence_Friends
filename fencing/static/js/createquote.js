@@ -1,4 +1,6 @@
 var proj_id;
+var listDict;
+var amountDict;
 
 function getMaterialAmounts(layout){
   $.ajax({
@@ -82,14 +84,18 @@ $(document).ready(function(){
 
 });
 
-function saveQuote(e) {
-  var formdata = new FormData(document.getElementById("create-form"));
+function saveQuote() {
+  console.log("types " + JSON.stringify(amountDict));
+
   $.ajax({
       type: 'POST',
       url: '/finalizeQuote/',
-      data : formdata,
-      processData: false,
-      contentType: false,
+      data: { 
+          material_types: JSON.stringify(listDict),
+          material_amounts: JSON.stringify(amountDict),
+          project_id: proj_id,
+      },
+      dataType: "json",
       success: function(response){
         console.log('good')
         window.location.href = '/projectinfo/?proj_id=' + proj_id;
@@ -110,7 +116,6 @@ function dealLists(types, name){
 function dealNumber(type, name){
   $('#' + name).val(type);
 }
-
 function noProject(){
   $('#message').on('hidden.bs.modal', function() {
     window.location.href = '/projects/';
@@ -122,7 +127,47 @@ function showMessage(message) {
   $('#message').modal('show');
 }
 
+function makeDictionary(){
+  amountDict = {};
+  listDict = {};
+  amountDict["metal_post"] = $('#metal_post').val();
+  amountDict["metal_u_channel"] = $('#metal_u_channel').val();
+  amountDict["metal_lsteel"] = $('#metal_lsteel').val();
+  amountDict["plastic_t_post"] = $('#plastic_t_post').val();
+  amountDict["plastic_corner_post"] = $('#plastic_corner_post').val();
+  amountDict["plastic_line_post"] = $('#plastic_line_post').val();
+  amountDict["plastic_end_post"] = $('#plastic_end_post').val();
+  amountDict["plastic_gate_post"] = $('#plastic_gate_post').val();
+  amountDict["plastic_rail"] = $('#plastic_rail').val();
+  amountDict["plastic_u_channel"] = $('#plastic_u_channel').val();
+  amountDict["plastic_panel"] = $('#plastic_panel').val();
+  amountDict["plastic_collar"] = $('#plastic_collar').val();
+  amountDict["plastic_cap"] = $('#plastic_cap').val();
+  amountDict["gate_hinge"] = $('#gate_hinge').val();
+  amountDict["gate_latch"] = $('#gate_latch').val();
+
+  listDict["metal_post"] = $('#metal_post-type').val();
+  listDict["metal_u_channel"] = $('#metal_u_channel-type').val();
+  listDict["metal_lsteel"] = $('#metal_lsteel-type').val();
+  listDict["plastic_t_post"] = $('#plastic_t_post-type').val();
+  listDict["plastic_corner_post"] = $('#plastic_corner_post-type').val();
+  listDict["plastic_line_post"] = $('#plastic_line_post-type').val();
+  listDict["plastic_end_post"] = $('#plastic_end_post-type').val();
+  listDict["plastic_gate_post"] = $('#plastic_gate_post-type').val();
+  listDict["plastic_rail"] = $('#plastic_rail-type').val();
+  listDict["plastic_u_channel"] = $('#plastic_u_channel-type').val();
+  listDict["plastic_panel"] = $('#plastic_panel-type').val();
+  listDict["plastic_collar"] = $('#plastic_collar-type').val();
+  listDict["plastic_cap"] = $('#plastic_cap-type').val();
+  listDict["gate_hinge"] = $('#gate_hinge-type').val();
+  listDict["gate_latch"] = $('#gate_latch-type').val();
+}
 $('form').submit(function(e) {
   e.preventDefault();
   saveQuote(e);
+});
+
+$('#submit').click(function(){
+  makeDictionary();
+  saveQuote();
 });

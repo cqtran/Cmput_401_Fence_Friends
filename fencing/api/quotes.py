@@ -17,6 +17,7 @@ import priceCalculation.priceCalculation as PriceCalculation
 import api.appearances as Appearances
 import api.layouts as Layouts
 import math
+import json
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
 
@@ -34,11 +35,15 @@ def finalizeQuote():
         quote = length * (style + height + base price + (border colour + panel colour) / 2)
         """
 
-        project_id = request.args.get('proj_id')
+        project_id = request.values.get('proj_id')
         # A dictionary with keywords and values of material_ids
-        material_types = request.json['material_types']
+        material_types = json.loads(request.values.get('material_types'))
         # A dictionary with keywords and values of the amount of material needed
-        material_amounts = request.json['material_amounts']
+        material_amounts = json.loads(request.values.get('material_amounts'))
+
+        print(project_id)
+        print("type ", material_types["metal_post"])
+        print("amount", material_amounts)
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
@@ -77,7 +82,7 @@ def calculateExpense(material_types, material_amounts):
     # For each category in the dictionary, use the material_id and query for data
     # number of materials needed / number of materials per bundle * price of material
     for category in categories:
-        material = materials.filter(Material.material_id = material_types[category]).one()
+        material = materials.filter(Material.material_id == material_types[category]).one()
         subtotal += math.ceil(material_amounts[category] / material.pieces_in_bundle) * material.my_price
 
     # Calculate gst
