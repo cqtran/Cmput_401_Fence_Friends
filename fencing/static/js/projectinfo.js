@@ -982,7 +982,7 @@ function getProjects(){
       url: '/getProject/' + proj_id,
       success: function(result) {
 		finalized = result[0].finalize;
-		updateFinalized(true);
+		updateFinalized();
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
@@ -1369,6 +1369,7 @@ function deleteAttachments() {
 function toggleFinalized() {
 	if (finalized) {
 		finalized = !finalized;
+		unfinalize();
 		updateFinalized();
 	}
 
@@ -1377,7 +1378,21 @@ function toggleFinalized() {
 	}
 }
 
-function updateFinalized(loading) {
+function unfinalize() {
+	$.ajax({
+	type: 'POST',
+	url: "/unfinalizeQuote/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+	error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+		}
+	});
+}
+
+function updateFinalized() {
 	if (finalized) {
 		$("#finalize").removeClass("finalize-off");
 		$("#finalize-check").removeClass("finalize-check-off");
@@ -1390,21 +1405,6 @@ function updateFinalized(loading) {
 		$("#finalize-check").addClass("finalize-check-off");
 		$("#finalize-text").html("Finalize");
 		$("#edit").css("display", "block");
-	}
-
-	if (!loading) {
-		$.ajax({
-		type: 'POST',
-		url: "/finalizeQuote/?proj_id=" + proj_id,
-		data: JSON.stringify({finalize: finalized}),
-		contentType: "application/json;charset=UTF-8",
-		dataType: "json",
-		error: function(xhr, textStatus, error) {
-			console.log(xhr.statusText);
-			console.log(textStatus);
-			console.log(error);
-		}
-		});
 	}
 }
 

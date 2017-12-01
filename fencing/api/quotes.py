@@ -21,6 +21,17 @@ import json
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
 
+@quoteBlueprint.route('/unfinalizeQuote/', methods=['POST'])
+@login_required
+@roles_required('primary')
+def unfinalizeQuote():
+    project_id = request.values.get('proj_id')
+    project = dbSession.query(Project).filter(
+        Project.project_id == project_id).one()
+    project.finalize = False
+    dbSession.commit()
+    return "{}"
+
 @quoteBlueprint.route('/finalizeQuote/', methods=['POST'])
 @login_required
 @roles_required('primary')
