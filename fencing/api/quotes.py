@@ -32,6 +32,18 @@ def unfinalizeQuote():
     dbSession.commit()
     return "{}"
 
+def generateQuote(project, material_types, material_amounts,
+    misc_modifier):
+
+    project_id = project.project_id
+
+    gst_rate = PriceCalculation.gstPercent
+    amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
+    material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
+    profit = amount - material_expense_total
+
+    return Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
+
 @quoteBlueprint.route('/finalizeQuote/', methods=['POST'])
 @login_required
 @roles_required('primary')
@@ -75,15 +87,12 @@ def finalizeQuote():
         project.finalize = True
 
         try:
-            gst_rate = PriceCalculation.gstPercent
-            amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
-            material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
-            profit = amount - material_expense_total
-
-            newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
+            newQuote = generateQuote(project, material_types, material_amounts,
+                misc_modifier)
             dbSession.add(newQuote)
             dbSession.commit()
-        except:
+        except BaseException as e:
+            print(str(e))
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
 
