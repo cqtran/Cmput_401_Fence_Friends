@@ -77,38 +77,76 @@ def uploadPrice():
         return created_request('Prices were changed')
     return bad_request('Request is not a POST request')
 
-@materialBlueprint.route('/getMaterials/', methods=['POST'])
+@materialBlueprint.route('/getMaterialsLists/', methods=['POST'])
 @login_required
 @roles_required('primary')
-def getMaterials():
+def getMaterialsLists():
     if request.method == 'POST':
         appearance_id = request.args.get('appearance_id')
         appearance = dbSession.query(Appearance).filter(Appearance.appearance_id == appearance_id).one()
+        return jsonify(getMaterialList(appearance))
+    return bad_request('Request is not a POST request')
 
-def getAppearanceLists(appearance):
-    materials = dbSession.quert(Material).filter(Material.company_name == current_user.company_name)
+def getMaterialList(appearance):
+    materials = dbSession.query(Material).filter(Material.company_name == current_user.company_name)
+
+    if appearance.height == '6':
+        post_height = '6.5'
+        panel_height = '62.25'
+        u_channel_height = '5'
+
+    if appearance.height == '5':
+        post_height = '5.5'
+        panel_height = '50.25'
+        u_channel_height = '4'
+
+    if appearance.height == '4':
+        post_height = '5.5'
+        panel_height = '50.25'
+        u_channel_height = '3'
+
+    if appearance.height =='3':
+        post_height = '6.5'
+        panel_height = '62.25'
+        u_channel_height = '5'
 
     metal_materials = materials.filter(Material.category('Metal'))
     metal_post = metal_materials.filter(Material.material_name.contains('Steel Post')).all()
-    metal_u_channel = metal_materials.filter(Material.material_name.contains('Rail Insert')).all()
+    metal_u_channel = metal_materials.filter(Material.material_name.contains('Rail Insert Rail')).all()
     metal_lsteel = metal_materials.filter(Material.material_name.contains('Metal Gate Insert')).all()
 
     plastic_post_materials = materials.filter(Material.category('Post Profiles'))
-    plastic_t_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).all()
-    plastic_corner_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).all()
-    plastic_line_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).all()
-    plastic_end_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).all()
-    plastic_gate_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).all()
+    plastic_t_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_corner_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_line_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_end_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_gate_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
 
-    plastic_rail = materials.filter(Material.category('Privacy Fence Rails')).filter(Material.material_name.comtains(appearance.border_colour)).all()
-    plastic_u_channel = materials.filter(Material.category('U-Channel (Plastic)')).filter(Material.material_name.contains(appearance.border_colour)).all()
-    plastic_panels = materials.filter(Material.category('T&G')).filter(Material.material_name.contains(appearance.panel_colour)).all()
-    plastic_collars = materials.filter(Material.category('Collars')).all()
-    plastic_caps = materials.filter(Material.category('Caps')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('Cap')).all()
+    plastic_rail = materials.filter(Material.category('Privacy Fence Rails')).filter(Material.material_name.comtains(appearance.border_colour)).filter(Material.material_name.contains('93.75')).all()
+    plastic_u_channel = materials.filter(Material.category('U-Channel (Plastic)')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(u_channel_height)).all()
+    plastic_panel = materials.filter(Material.category('T&G')).filter(Material.material_name.contains(appearance.panel_colour)).filter(Material.material_name.contains(panel_height)).all()
+    plastic_collar = materials.filter(Material.category('Collars')).all()
+    plastic_cap = materials.filter(Material.category('Caps')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('Cap')).all()
 
     gate_hardware = materials.filter(Material.category('Gate Hardware'))
     gate_hinge = gate_hardware.filter(Material.material_name.contains('Hinge')).all()
     gate_latch = gate_hardware.filter(Material.material_name.contains('Latch')).all()
-    gate_drop_pin = gate_hardware.filter(Material.material_name.contains('Drop')).all()
-    metal_gate_rail = materials.filter(Material.category('Privacy Fence Rails')).filter(Material.material_name.contains(appearance.border_colour)).all()
-    
+
+    return
+        {
+        'metal_post'            : metal_post,
+        'metal_u_channel'       : metal_u_channel,
+        'metal_lsteel'          : metal_lsteel,
+        'plastic_t_post'        : plastic_t_post,
+        'plastic_corner_post'   : plastic_corner_post,
+        'plastic_line_post'     : plastic_line_post,
+        'plastic_end_post'      : plastic_end_post,
+        'plastic_gate_post'     : plastic_gate_post,
+        'plastic_rail'          : plastic_rail,
+        'plastic_u_channel'     : plastic_u_channel,
+        'plastic_panel'         : plastic_panel,
+        'plastic_collar'        : plastic_collar,
+        'plastic_cap'           : plastic_cap,
+        'gate_hinge'            : gate_hinge,
+        'gate_latch'            : gate_latch
+        }
