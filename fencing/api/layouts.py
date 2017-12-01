@@ -9,6 +9,7 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
 from diagram.DiagramParser import DiagramParser
+import math
 
 layoutBlueprint = Blueprint('layoutBlueprint', __name__, template_folder='templates')
 
@@ -219,7 +220,7 @@ def sections(parsed):
 def panels(parsed):
     num_panels = 0
     for fence in parsed.fences:
-        num_panels += fence.length/12
+        num_panels += math.ceil(fence.length/12)
     return num_panels
 
 def gates(parsed):
