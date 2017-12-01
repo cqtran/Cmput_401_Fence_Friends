@@ -45,3 +45,35 @@ class TestLayout(unittest.TestCase):
         response = Layout.query.filter_by(layout_id=1).first()
         # Response should be none
         assert(response == None)
+
+    def test_updateLayoutName(self):
+        self.tearDown()
+        self.setUp()
+        testLayoutData()
+        response = Layout.query.filter_by(layout_id=1).first()
+        Layouts.updateLayoutName(response.layout_id, "This is a test")
+        response = None
+        response = Layout.query.filter_by(layout_id=1).first()
+        assert(response.layout_name == "This is a test")
+
+    def test_createLayout(self):
+        self.tearDown()
+        self.setUp()
+        testLayoutData()
+        proj_id = 2
+        response = Layouts.createLayout(proj_id)
+        checks = Layout.query.filter_by(layout_id=response.layout_id).first()
+        assert(checks.layout_id == response.layout_id)
+
+    def test_updateLayoutInfo(self):
+        self.tearDown()
+        self.setUp()
+        testLayoutData()
+        response = Layout.query.filter_by(layout_id=1).first()
+        r_id = Layouts.updateLayoutInfo(response.project_id, "New Layout", "New Info", response.layout_id)
+        check = Layout.query.filter_by(layout_id=1).first()
+        assert(check.layout_name == "New Layout")
+        assert(check.layout_info == "New Info")
+
+
+
