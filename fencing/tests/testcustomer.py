@@ -78,7 +78,7 @@ class TestCustomer(unittest.TestCase):
         print(json_obj)
         assert json_obj['message'] == "The customer was not found"
         print("Json response is expected")
-
+    '''
     def test_getCustomerList(self):
         """ Test for getting all customers of company """
         print("\n\n Testing getCustomerList API\n")
@@ -117,7 +117,7 @@ class TestCustomer(unittest.TestCase):
         print(json_obj)
         assert json_obj['message'] == "No customers were found"
         print("Json response is expected")
-
+    '''
     def test_updateCustomerInfo(self):
         """ Test for updating customer information """
         pass
