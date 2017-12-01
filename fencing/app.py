@@ -483,7 +483,8 @@ def accounting():
 @login_required
 @roles_required('primary')
 def editquote():
-    return render_template("editquote.html", company = current_user.company_name)
+    proj_id = request.args.get("proj_id")
+    return render_template("editquote.html", company = current_user.company_name, proj_id = proj_id)
 
 
 

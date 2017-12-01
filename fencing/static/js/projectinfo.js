@@ -1343,7 +1343,7 @@ function toggleFinalized() {
 	}
 
 	else {
-		window.location.replace("/editquote");
+		window.location.replace("/editquote?proj_id=" + proj_id);
 	}
 }
 
