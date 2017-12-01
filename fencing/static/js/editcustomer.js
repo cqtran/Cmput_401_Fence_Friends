@@ -37,7 +37,7 @@ function deleteCustomer(){
       },
       datatype: 'json',
       success: function(result) {
-          window.location.href = '/';
+          window.location.href = '/customers';
       },
       error: function(result) {
           showMessage('error');
@@ -95,7 +95,7 @@ $(document).ready(function() {
   console.log(cust_id);
   if(cust_id == null) {
     alert('Customer  NULL');
-    window.location.href = '/';
+    window.location.href = '/customers';
   }
   getCustomerData();
 
