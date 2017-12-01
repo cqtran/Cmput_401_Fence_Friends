@@ -32,19 +32,19 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="All Users">
+        <li class="nav-item" data-placement="right" title="All Users">
           <a class="nav-link" href="{{ url_for('users') }}">
             <i class="fa fa-users" aria-hidden="true"></i>
             <span class="nav-link-text">Users</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Account Requests">
+        <li class="nav-item" data-placement="right" title="Account Requests">
           <a class="nav-link" href="{{ url_for('accountrequests') }}">
             <i class="fa fa-user-plus" aria-hidden="true"></i>
             <span class="nav-link-text">Account Requests</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
+        <li class="nav-item" data-placement="right" title="Settings">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <span class="nav-link-text">Settings</span>
@@ -118,7 +118,7 @@
     <!-- Core plugin JavaScript-->
     <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="../static/js/sb-admin.min.js"></script>
+    <script src="../static/js/sb-admin.js"></script>
       <!-- custom file -->
     <script type="text/javascript" {{ url_for('static', filename='app.js')}}></script>
     {% block content3 %}{% endblock %}
