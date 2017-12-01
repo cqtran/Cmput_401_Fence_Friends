@@ -158,6 +158,14 @@ function projectClicked(id) {
 	window.location.href = '/projectinfo?proj_id=' + id;
 }
 
+function noCustomer(){
+  $('#message').on('hidden.bs.modal', function() {
+    window.location.href = '/customers';
+  });
+
+  showMessage("Customer does not exist.");
+}
+
 function projectMenu(event, id) {
   event.preventDefault();
 

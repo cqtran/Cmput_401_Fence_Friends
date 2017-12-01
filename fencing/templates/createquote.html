@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Generating Quote</h1>
+<hr class="mt-2">
+
+<div class="container-fluid mb-3">   
+  <h4>Metal Post</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="metal_post" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="metal_post-type" name="metal_post-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Metal U-Channel</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="metal_u_channel" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="metal_u_channel-type" name="metal_u_channel-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Metal L-Steel</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="metal_lsteel" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="metal_lsteel-type" name="metal_lsteel-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic T Post</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_t_post" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_t_post-type" name="plastic_t_post-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic Corner Post</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_corner_post" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_corner_post-type" name="plastic_corner_post-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic Line Post</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_line_post" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_line_post-type" name="plastic_line_post-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic End Post</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_end_post" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_end_post-type" name="plastic_end_post-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic Gate Post</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_gate_post" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_gate_post-type" name="plastic_gate_post-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic Rail</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_rail" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_rail-type" name="plastic_rail-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic U-Channel</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_u_channel" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_u_channel-type" name="plastic_u_channel-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic T&G (Panels)</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_panel" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_panel-type" name="plastic_panel-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic Collar</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_collar" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_collar-type" name="plastic_collar-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Plastic Caps</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="plastic_cap" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="plastic_cap-type" name="plastic_cap-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Hinges</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="gate_hinge" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="gate_hinge-type" name="gate_hinge-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Latches</h4>
+  <div class="row">
+    <div class="col-sm-4">
+      <input id="gate_latch" type="number" class="form-control mb-2" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-8">
+      <select class="selectpicker mb-2" id="gate_latch-type" name="gate_latch-type" data-style="btn-primary" data-width="100%"></select>
+    </div>
+  </div>
+  <h4>Adjustments</h4>
+  <div class="row">
+    <div class="col-12">
+      <input id="adjustment" type="number" class="form-control mb-2">
+    </div>
+  </div>
+</div>
+<button id="submit" class="btn btn-primary btn-block mb-2">Save Quote</button>
+<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="message-text" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block content2 %}
+<script type="text/javascript" src='../static/js/createquote.js'></script>
+{% endblock %}

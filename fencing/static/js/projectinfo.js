@@ -1,5 +1,5 @@
 var attachmentPathLength = 20;
-var pdf = null;
+var pdfs = [];
 
 var confirmed = false;
 
@@ -132,29 +132,6 @@ function escapeAngleBrackets(string) {
 	});
 }
 
-function setProgressTitle(title) {
-	var progressTitle = document.getElementById("progressTitle");
-	progressTitle.innerHTML = title;
-}
-
-function showSendingQuote() {
-	setProgressTitle("Sending quote");
-	var quoteButton = document.getElementById("sendQuoteButton");
-	var materialListButton = document.getElementById("sendMaterialListButton");
-	quoteButton.disabled = true;
-	materialListButton.disabled = true;
-	quoteButton.value = "Sending Quote...";
-}
-
-function showSendingMaterialList() {
-	setProgressTitle("Sending material list");
-	var quoteButton = document.getElementById("sendQuoteButton");
-	var materialListButton = document.getElementById("sendMaterialListButton");
-	quoteButton.disabled = true;
-	materialListButton.disabled = true;
-	materialListButton.value = "Sending Material List...";
-}
-
 function setActiveLayout(number) {
 	if (number == deletedLayout) {
 		deletedLayout = null;
@@ -173,6 +150,14 @@ function setActiveAppearance(number) {
 
 	activeAppearance = number;
 	saveAppearanceSelection();
+}
+
+function editLayoutName(number) {
+	setLayoutName(number, false, null, layoutCount == 1);
+}
+
+function editAppearanceName(number) {
+	setLayoutName(number, false, null, appearanceCount == 1);
 }
 
 function setLayoutName(number, loading, newName, noClose) {
@@ -208,8 +193,6 @@ function setLayoutName_(number, loading, newName, noClose) {
 		else {
 			tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' + newName;
 		}
-
-		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveLayoutName();
@@ -250,8 +233,6 @@ function setAppearanceName_(number, loading, newName, noClose) {
 		else {
 			tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' + newName;
 		}
-
-		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveAppearance();
@@ -305,8 +286,7 @@ function addLayout(loading) {
 	var clone = active.cloneNode(true);
 	clone.id = "layout" + lastLayout;
 	clone.children[0].setAttribute("onclick",
-		"setLayoutName('" + lastLayout + "')");
-	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		"editLayoutName('" + lastLayout + "')");
 	clone.children[1].children[0].id = "image" + lastLayout;
 	document.getElementById("layouts").appendChild(clone);
 
@@ -354,8 +334,7 @@ function addAppearance(loading) {
 	var clone = active.cloneNode(true);
 	clone.id = "appearance" + lastAppearance;
 	clone.children[0].setAttribute("onclick",
-		"setAppearanceName('" + lastAppearance + "')");
-	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		"editAppearanceName('" + lastAppearance + "')");
 
 	var formGroup = clone.children[1];
 	formGroup.children[0].setAttribute("for", "panelGap" + lastAppearance);
@@ -748,34 +727,34 @@ function setProjectInfo(project){
 	document.getElementById('start-date').innerHTML =
 		escapeHtml(project[0].start_date);
 	if(project[0].status_name == "Paid"){
-	  document.getElementById("status").setAttribute('class', 'float-right paid-text');
+	  document.getElementById("status").setAttribute('class', 'float-right paid-text text-grey');
 	}
 	else if(project[0].status_name == "Not Reached"){
-	  document.getElementById("status").setAttribute('class', 'float-right not-reached-text');
+	  document.getElementById("status").setAttribute('class', 'float-right not-reached-text text-grey');
 	}
 	else if(project[0].status_name == "Appraisal Booked"){
-	  document.getElementById("status").setAttribute('class', 'float-right appraisal-booked-text');
+	  document.getElementById("status").setAttribute('class', 'float-right appraisal-booked-text text-grey');
 	}
 	else if(project[0].status_name == "Waiting for Appraisal"){
-	  document.getElementById("status").setAttribute('class', 'float-right waiting-appraisal-text');
+	  document.getElementById("status").setAttribute('class', 'float-right waiting-appraisal-text text-grey');
 	}
 	else if(project[0].status_name == "Appraised"){
-	  document.getElementById("status").setAttribute('class', 'float-right appraised-text');
+	  document.getElementById("status").setAttribute('class', 'float-right appraised-text text-grey');
 	}
 	else if(project[0].status_name == "Quote Sent"){
-	  document.getElementById("status").setAttribute('class', 'float-right quote-sent-text');
+	  document.getElementById("status").setAttribute('class', 'float-right quote-sent-text text-grey');
 	}
 	else if(project[0].status_name == "Waiting for Alberta1Call"){
-	  document.getElementById("status").setAttribute('class', 'float-right waiting-alberta-text');
+	  document.getElementById("status").setAttribute('class', 'float-right waiting-alberta-text text-grey');
 	}
 	else if(project[0].status_name == "Installation Pending"){
-	  document.getElementById("status").setAttribute('class', 'float-right install-pending-text');
+	  document.getElementById("status").setAttribute('class', 'float-right install-pending-text text-grey');
 	}
 	else if(project[0].status_name == "Installing"){
-	  document.getElementById("status").setAttribute('class', 'float-right installing-text');
+	  document.getElementById("status").setAttribute('class', 'float-right installing-text text-grey');
 	}
 	else if(project[0].status_name == "No Longer Interested"){
-	  document.getElementById("status").setAttribute('class', 'float-right not-interested-text');
+	  document.getElementById("status").setAttribute('class', 'float-right not-interested-text text-grey');
 	}
 
 	// Sets the project_id into the uploadpicture form
@@ -807,8 +786,9 @@ function makeNewPictureButton() {
 	final.setAttribute('href', '#');
 	final.setAttribute('class', 'PictureThumbnail newPicture zero-padding');
 
-	final.addEventListener('click', function(){
+	final.addEventListener('click', function(event){
 		$("#file-upload").click();
+		event.preventDefault();
 	});
 
 	final.appendChild(img);
@@ -1092,6 +1072,10 @@ function selectAppearance(appearanceId) {
 		.children[0].classList.add("active");
 }
 
+function addPdf(url) {
+	pdfs.push(url.slice(attachmentPathLength));
+}
+
 //this runs after the html has loaded, all function calls should be in here
 $(document).ready(function(){
   pictureList = document.getElementById('projectPictures');
@@ -1112,6 +1096,10 @@ $(document).ready(function(){
 
   moreDetails();
   getProjects();
+
+  $('#material-list-send').click(function(e) {
+	sendMaterialList();
+  });
 
   $('#input').on('shown.bs.modal', function() {
 	var inputText = $('#inputText');
@@ -1141,6 +1129,7 @@ $('#upload-form').submit(function(e) {
   e.preventDefault();
   uploadPicture(e);
 });
+
 $('#view-quote').submit(function(e) {
 	e.preventDefault();
 
@@ -1154,10 +1143,8 @@ $('#view-quote').submit(function(e) {
 			reloadPage();
 		}
 		else {
-			pdf = result['url'];
-			$('pdfFallback').attr('href', pdf);
-			$('#pdfContent').attr('src', pdf);
-			$('#pdf').modal("show");
+			addPdf(result['url']);
+			window.open(result['url']);
 		}
     },
     error: function(xhr, textStatus, error) {
@@ -1167,6 +1154,55 @@ $('#view-quote').submit(function(e) {
     }
 	});
 });
+$('#send-material-list').submit(function(e) {
+	e.preventDefault();
+	$('#material-list-modal').modal('show');
+	var email = $('#modal-list-email');
+	email.focus();
+	email.select();
+});
+
+$('#quote-form').submit(function(e) {
+	sendQuote();
+});
+
+function sendQuote() {
+	$.ajax({
+		type: 'POST',
+		url: "/sendQuote/?proj_id=" + proj_id,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+			showMessage("Error sending quote");
+		}
+	});
+
+	showMessage("Quote sent");
+}
+
+function sendMaterialList() {
+	$('#material-list-modal').modal('hide');
+
+	$.ajax({
+		type: 'POST',
+		url: "/sendMaterialList/?proj_id=" + proj_id,
+		data: JSON.stringify({email: $("#material-list-email").val()}),
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+			showMessage("Error sending material list");
+		}
+	});
+
+	showMessage("Material list sent");
+}
+
 $('#view-material-list').submit(function(e) {
 	e.preventDefault();
 
@@ -1180,10 +1216,8 @@ $('#view-material-list').submit(function(e) {
 			reloadPage();
 		}
 		else {
-			pdf = result['url'];
-			$('pdfFallback').attr('href', pdf);
-			$('#pdfContent').attr('src', pdf);
-			$('#pdf').modal("show");
+			addPdf(result['url']);
+			window.open(result['url']);
 		}
     },
     error: function(xhr, textStatus, error) {
@@ -1194,10 +1228,11 @@ $('#view-material-list').submit(function(e) {
 	});
 });
 
-function deleteAttachment() {
+function deleteAttachments() {
 	$.ajax({
     type: 'POST',
-    url: "/deleteAttachment/?attachment=" + pdf.slice(attachmentPathLength),
+	url: "/deleteAttachments/",
+	data: JSON.stringify({attachments: pdfs}),
 	contentType: "application/json;charset=UTF-8",
 	dataType: "json",
     error: function(xhr, textStatus, error) {
@@ -1208,14 +1243,64 @@ function deleteAttachment() {
 	});
 }
 
-$('#pdf').on("hidden.bs.modal", function() {
+//this was a merge conflict i wasnt sure about
+/*$('#pdf').on("hidden.bs.modal", function() {
 	deleteAttachment();
 	pdf = null;
-});
+});*/
+
+function toggleFinalized() {
+	if (finalized) {
+		finalized = !finalized;
+		updateFinalized();
+	}
+
+	else {
+		window.location.replace("/createquote?proj_id=" + proj_id);
+	}
+}
+
+function updateFinalized(loading) {
+	if (finalized) {
+		$("#finalize").removeClass("finalize-off");
+		$("#finalize-check").removeClass("finalize-check-off");
+		$("#finalize-text").html("Finalized");
+		$("#edit").css("display", "none");
+	}
+
+	else {
+		$("#finalize").addClass("finalize-off");
+		$("#finalize-check").addClass("finalize-check-off");
+		$("#finalize-text").html("Finalize");
+		$("#edit").css("display", "block");
+	}
+
+	if (!loading) {
+		$.ajax({
+		type: 'POST',
+		url: "/finalizeQuote/?proj_id=" + proj_id,
+		data: JSON.stringify({finalize: finalized}),
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+		}
+		});
+	}
+}
+
+function noProject(){
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+  showMessage("Project does not exist.");
+}
 
 window.onbeforeunload = function() {
-	if (pdf != null) {
-		deleteAttachment();
+	if (pdfs.length > 0) {
+		deleteAttachments();
 	}
 
 	return;

@@ -111,15 +111,32 @@ class DiagramData:
 	
 	def posts(self):
 		posts = self._posts()
+		endPosts = []
+
+		for post in posts:
+			if post.postType == "endPost":
+				endPosts.append(post)
 
 		# Determine which posts are t posts
-		for post in posts:
-			if post.postType != "endPost":
-				continue
-			
+		for post in endPosts:
 			if self._postOnFence(post):
 				post.postType = "tPost"
 		
+		endPosts2 = []
+
+		for post in endPosts:
+			if post.postType == "endPost":
+				endPosts2.append(post)
+		
+		gatePosts = len(self._gates) * 2
+		
+		# For each gate, make an end post a gate post
+		for i in range(gatePosts):
+			if i >= len(endPosts2):
+				break
+			
+			endPosts2[i].postType = "gatePost"
+
 		return posts
 	
 	def _posts(self):

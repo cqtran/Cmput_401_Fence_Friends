@@ -64,9 +64,13 @@ function makeTable() {
 function makeHeader(string) {
   // Returns a new header
   var header = document.createElement('h4');
-  header.setAttribute('class', 'text-green');
-  header.setAttribute(
-    'style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
+  var header2 = document.createElement('h4');
+  row.setAttribute('class', 'row');
+  header.setAttribute('class', 'text-grey col-6');
+  header2.setAttribute('class', 'text-grey text-right col-6')
+  header.setAttribute('style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
+  header2.setAttribute('style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
+
   header.innerHTML = string;
 
   // Add accordion functionality to header classes

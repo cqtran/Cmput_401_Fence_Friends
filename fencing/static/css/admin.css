@@ -1,6 +1,6 @@
 h1 {
 	font-weight: bold;
-  color: #329664;
+  color: #343a40;
 }
 body{
   hyphens: auto;
@@ -14,7 +14,7 @@ input[type="file"] {
 }
 .btn-primary {
   color: #ffffff;
-  background-color: #329664;
+  background-color: #343a40;
   border: 0;
   font-weight: bold;
 }
@@ -24,7 +24,7 @@ input[type="file"] {
   background-color: #2b724f;
 }
 .btn-secondary {
-  color: #329664;
+  color: #343a40;
   background-color: #ffffff;
   border: 0;
   font-weight: bold;
@@ -62,11 +62,11 @@ input[type="file"] {
 }
 
 .bg-green {
-	background-color: #329664;
+	background-color: #343a40;
 }
 
-.text-green {
-  color: #329664;
+.text-grey {
+  color: #343a40;
 }
 
 .text-bold {
@@ -195,7 +195,7 @@ input[type="file"] {
  text-align: center;
 }
 .search-icon {
-  color: #329664;
+  color: #343a40;
   background-color: #ffffff;
   border: 0;
   font-weight: bold;

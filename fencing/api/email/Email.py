@@ -66,25 +66,6 @@ class Email:
 					print("Warning: could not delete attachment")
 
 			mail.send(m)
-			
-			flash(kind + " sent", "success")
-		
-		except SMTPAuthenticationError as e:
-			flash(errorMessage + " (SMTPAuthenticationError)", "danger")
-			traceback.print_exc()
-		
-		except SMTPServerDisconnected as e:
-			flash(errorMessage + " (SMTPServerDisconnected)", "danger")
-			traceback.print_exc()
-		
-		except SMTPException as e:
-			flash(errorMessage + " (SMTPException)", "danger")
-			traceback.print_exc()
-		
-		except OSError as e:
-			flash(errorMessage + " (OSError)", "danger")
-			traceback.print_exc()
 		
 		except:
-			flash(errorMessage + " (unknown exception)", "danger")
 			traceback.print_exc()

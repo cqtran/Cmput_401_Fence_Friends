@@ -74,6 +74,10 @@ function download(filename, text) {
 
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
+
+  // Suppress warnings so no warning on empty table
+  $.fn.dataTable.ext.errMode = 'none';
+
   $('#dataTable').DataTable({
       "ajax" :{
         "type": 'POST',
@@ -101,12 +105,11 @@ $(document).ready(function(){
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
+  // Remove "Search:" and add search icon
+  var dataTableLabel = $('#costTable_filter > label');
+  dataTableLabel.html(dataTableLabel.children());            // Remove text
+  dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
-
-
-
-
-  //getSummary();
 });
 
 function changePage(proj_id){
