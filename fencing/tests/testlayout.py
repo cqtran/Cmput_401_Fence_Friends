@@ -27,3 +27,6 @@ class TestLayout(unittest.TestCase):
         for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
         dbSession.remove()
+
+    def test_removelayout(self):
+
