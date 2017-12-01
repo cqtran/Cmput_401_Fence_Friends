@@ -85,15 +85,6 @@ def testLayoutData():
     dbSession.add(newLayout1)
     dbSession.add(newLayout2)
     dbSession.add(newLayout3)
-
-# Helper function for inserting quotes
-def quoteTestData():
-    newQuote = Quote(quote_id = 2, project_id = 1, amount = 99439.12 , amount_gst = 100.00, amount_total = 99539.12, material_expense = 123, material_expense_gst = 52, material_expense_total = 172, gst_rate = 0.5)
-    newQuote1 = Quote(quote_id = 1, project_id = 1, amount = 105.12 , amount_gst = 10.00, amount_total = 115.12, material_expense = 52.52, material_expense_gst = 5.08, material_expense_total = 57.60, gst_rate = 0.5)
-    newQuote2 = Quote(quote_id = 3, project_id = 1, amount = 73.00 , amount_gst = 7.00, amount_total = 80, material_expense = 52.52, material_expense_gst = 5.08, material_expense_total = 57.60, gst_rate = 0.5)
-    dbSession.add(newQuote)
-    dbSession.add(newQuote1)
-    dbSession.add(newQuote2)
     dbSession.commit()
 
 

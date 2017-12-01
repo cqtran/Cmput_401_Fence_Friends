@@ -15,24 +15,13 @@ import csv
 
 estimateBlueprint = Blueprint('estimateBlueprint', __name__, template_folder='templates')
 
-def getStyles():
-    return dbSession.query(Style).filter(
-        Style.company_name == current_user.company_name).all()
-
-def getColours():
-    return dbSession.query(Colour).filter(
-        Colour.company_name == current_user.company_name).all()
-
-def getHeights():
-    return dbSession.query(Height).filter(
-        Height.company_name == current_user.company_name).all()
-
 @estimateBlueprint.route('/getStyleEstimates/', methods=['GET'])
 
 def getStyleEstimates():
     """ Returns a list of Styles for the current_user's company """
     if request.method == 'GET':
-        styles = getStyles()
+        styles = dbSession.query(Style)
+        styles = styles.filter(Style.company_name == current_user.company_name).all()
         if len(styles) == 0:
             return bad_request('No style estimate values were found')
         return jsonify(styles)
@@ -42,7 +31,8 @@ def getStyleEstimates():
 def getColourEstimates():
     """ Returns a list of colours for the current_user's company """
     if request.method == 'GET':
-        colours = getColours()
+        colours = dbSession.query(Colour)
+        colours = colours.filter(Colour.company_name == current_user.company_name).all()
         if len(colours) == 0:
             return bad_request('No colour estimate values were found')
         return jsonify(colours)
@@ -52,7 +42,8 @@ def getColourEstimates():
 def getHeightEstimates():
     """ Returns a list of fence heights for the current_user's company """
     if request.method == 'GET':
-        heights = getHeights()
+        heights = dbSession.query(Height)
+        heights = heights.filter(Height.company_name == current_user.company_name).all()
         if len(heights) == 0:
             return bad_request('No height estimate values were found')
         return jsonify(heights)
@@ -67,7 +58,6 @@ def getGateEstimates():
         if len(gates) == 0:
             return bad_request('No gate estimate values were found')
         return jsonify(gates)
-
 
 @estimateBlueprint.route('/calculateEstimate/', methods=['POST'])
 

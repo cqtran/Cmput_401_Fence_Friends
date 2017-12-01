@@ -39,8 +39,8 @@ function showError() {
 }
 
 
-function extractData(tablename, filename){
-  var rows = $(tablename).DataTable().rows().data();
+function extractData(){
+  var rows = $('#dataTable').DataTable().rows().data();
   var export_file = [];
   var row;
   export_file.push("Job Number,Description,Amount,GST,Total");
@@ -56,7 +56,7 @@ function extractData(tablename, filename){
 
 
 }
-  download(filename + ".csv", export_file.join('\n'))}
+  download("download.csv", export_file.join('\n'))}
 
 function download(filename, text) {
   var element = document.createElement('a');
@@ -75,131 +75,29 @@ function download(filename, text) {
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
   $('#dataTable').DataTable({
-    "ajax" :{
-      "type": 'POST',
-      "url": '/getAccountingSummary/',
-    },
-    "columns": [
-      {"data": "quote_id"},
-      {"data": "project_id",
-        "render": function(data, type, row, meta){
-          if(type === 'display'){
-              data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
-          }
-
-          return data;
-        }
+      "ajax" :{
+        "type": 'POST',
+        "url": '/getAccountingSummary/',
       },
-      {"data": "amount"},
-      {"data": "amount_gst"},
-      {"data": "amount_total"}
-    ],
-    "footerCallback": function ( row, data, start, end, display ) {
-      var api = this.api(), data;
+      "columns": [
+        {"data": "quote_id"},
+        {"data": "project_id",
+          "render": function(data, type, row, meta){
+            if(type === 'display'){
+                data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
+            }
 
-      // Remove the formatting to get integer data for summation
-      var intVal = function ( i ) {
-          return typeof i === 'string' ?
-              i.replace(/[\$,]/g, '')*1 :
-              typeof i === 'number' ?
-                  i : 0;
-      };
-
-      // Total over all pages
-      revenueTotal = api
-          .column(2)
-          .data()
-          .reduce( function (a, b) {
-              return intVal(a) + intVal(b);
-          }, 0 );
-      // Total over all pages
-      gstTotal = api
-          .column(3)
-          .data()
-          .reduce( function (a, b) {
-              return intVal(a) + intVal(b);
-          }, 0 );
-      // Total over all pages
-      customerTotal = api
-          .column(4)
-          .data()
-          .reduce( function (a, b) {
-              return intVal(a) + intVal(b);
-          }, 0 );
-      // Update footer
-      $( api.column(2).footer() ).html('$'+ revenueTotal.toFixed('2'));
-      $( api.column(3).footer() ).html('$'+ gstTotal.toFixed('2'));
-      $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
-    }
-  });
-
-
-  $('#costTable').DataTable({
-    "ajax" :{
-      "type": 'POST',
-      "url": '/getAccountingSummary/',
-    },
-    "columns": [
-      {"data": "quote_id"},
-      {"data": "project_id",
-        "render": function(data, type, row, meta){
-          if(type === 'display'){
-              data = '<a onclick="changePage(' + data + ')" class="link-to-project">' + data + '</a>';
+            return data;
           }
-
-          return data;
-        }
-      },
-      {"data": "material_expense"},
-      {"data": "material_expense_gst"},
-      {"data": "material_expense_total"}
-    ],
-    "footerCallback": function ( row, data, start, end, display ) {
-      var api = this.api(), data;
-
-      // Remove the formatting to get integer data for summation
-      var intVal = function ( i ) {
-          return typeof i === 'string' ?
-              i.replace(/[\$,]/g, '')*1 :
-              typeof i === 'number' ?
-                  i : 0;
-      };
-
-      // Total over all pages
-      revenueTotal = api
-          .column(2)
-          .data()
-          .reduce( function (a, b) {
-              return intVal(a) + intVal(b);
-          }, 0 );
-      // Total over all pages
-      gstTotal = api
-          .column(3)
-          .data()
-          .reduce( function (a, b) {
-              return intVal(a) + intVal(b);
-          }, 0 );
-      // Total over all pages
-      customerTotal = api
-          .column(4)
-          .data()
-          .reduce( function (a, b) {
-              return intVal(a) + intVal(b);
-          }, 0 );
-      // Update footer
-      $( api.column(2).footer() ).html('$'+ revenueTotal.toFixed('2'));
-      $( api.column(3).footer() ).html('$'+ gstTotal.toFixed('2'));
-      $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
-    }
+        },
+        {"data": "amount"},
+        {"data": "amount_gst"},
+        {"data": "amount_total"}
+      ]
   });
 
   // Remove "Search:" and add search icon
   var dataTableLabel = $('#dataTable_filter > label');
-  dataTableLabel.html(dataTableLabel.children());            // Remove text
-  dataTableLabel.prepend('<i class="fa fa-search"></i>');
-
-  // Remove "Search:" and add search icon
-  var dataTableLabel = $('#costTable_filter > label');
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
@@ -213,24 +111,4 @@ $(document).ready(function(){
 
 function changePage(proj_id){
   window.location.href = '/projectinfo?proj_id=' + proj_id;
-}
-
-function slider(){
-  /* toggle if is shows */
-  console.log("tetsing");
-  $(this).next().slideToggle();
-  swapCaret(this);
-}
-function swapCaret(header) {
-  var i = $(header).find('i:first');
-
-  if (i.hasClass('fa-caret-down')) {
-    i.removeClass('fa-caret-down');
-    i.addClass('fa-caret-left');
-  }
-
-  else {
-    i.removeClass('fa-caret-left');
-    i.addClass('fa-caret-down');
-  }
 }

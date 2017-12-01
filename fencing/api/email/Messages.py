@@ -1,12 +1,6 @@
 from weasyprint import CSS
 from database.db import dbSession
 from database.models import Layout
-from priceCalculation.QuoteCalculation import QuoteCalculation
-from priceCalculation.MaterialListCalculation import MaterialListCalculation
-import priceCalculation.priceCalculation as PriceCalculation
-from database.db import dbSession
-from database.models import Appearance
-import api.quotes as Quotes
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -78,27 +72,8 @@ class Messages:
 			""".format(supplier=supplier,
 				company_email=company.email)
 
-	def quoteAttachment(project, customer, parsed):
+	def quoteAttachment(project, customer):
 		"""Generate the content of a quote attachment and return it"""
-		appearance = dbSession.query(Appearance).filter(
-			Appearance.appearance_id == project.appearance_selected).one()
-		appearanceValues = Quotes.getAppearanceValues(appearance)
-		prices = QuoteCalculation.prices(parsed, appearanceValues[0],
-			appearanceValues[1], appearanceValues[2], appearanceValues[3])
-		subtotal = PriceCalculation.subtotal(prices)
-		gstPercent = PriceCalculation.gstPercent
-		gst = subtotal * gstPercent
-		total = subtotal + gst
-		priceStrings = []
-
-		for price in prices:
-			priceStrings.append(
-				'''<tr class="bordered">
-					<td class="bordered">{name}</td>
-					<td class="right bordered">$ {price}</td>
-				</tr>'''.format(name=price[0], price=price[1])
-			)
-
 		diagram = dbSession.query(Layout).filter(
 			Layout.layout_id == project.layout_selected).one().layout_info
 
@@ -118,18 +93,29 @@ class Messages:
 						<th>DESCRIPTION</th>
 						<th>PRICE</th> 
 					</tr>
-					{prices}
 					<tr class="bordered">
-						<td class="right bordered">Subtotal</td>
-						<td class="right bordered"><b>$ {subtotal}</b></td>
+						<td class="bordered">4'6" North Line (West of garage)</td>
+						<td class="right bordered">$ 207.00</td>
 					</tr>
 					<tr class="tableBreak bordered">
-						<td class="right bordered">GST {gstPercent}%</td>
-						<td class="right bordered"><b>$ {gst}</b></td>
+						<td class="bordered">38' North Line (East of garage 7'+(5x6')+1')</td>
+						<td class="right bordered">$ 1,748.00</td>
+					</tr>
+					<tr class="bordered">
+						<td class="right bordered">Subtotal</td>
+						<td class="right bordered"><b>$ 12,003.00</b></td>
+					</tr>
+					<tr class="tableBreak bordered">
+						<td class="right bordered">GST 5.00%</td>
+						<td class="right bordered"><b>$ 600.15</b></td>
 					</tr>
 					<tr class="greyCell">
-						<td><b>Total</b></td>
-						<td class="right"><b>$ {total}</b></td>
+						<td><b>Total (Plain Rails, Picket only on Front Gate)</b></td>
+						<td class="right"><b>$ 12,603.15</b></td>
+					</tr>
+					<tr class="greyCell">
+						<td><b>Total (Deco Rails, Picket only on Front Gate)</b></td>
+						<td class="right"><b>$ 13,001.10</b></td>
 					</tr>
 				</table>
 				<b><span class="bottom">
@@ -144,44 +130,12 @@ class Messages:
 					Signature:_____________________________________________
 				</span></b>
 			</div>
-			""".format(pageBreak=pageBreak, diagram=diagram,
-				prices="".join(priceStrings), subtotal=subtotal,
-				gstPercent=gstPercent, gst=gst, total=total)
+			""".format(pageBreak=pageBreak, diagram=diagram)
 	
-	def materialListAttachment(project, parsed):
+	def materialListAttachment(project):
 		"""Generate the content of a material list attachment and return it"""
-		appearance = dbSession.query(Appearance).filter(
-			Appearance.appearance_id == project.appearance_selected)
-		prices = MaterialListCalculation.prices(parsed, appearance)
-		subtotal = PriceCalculation.subtotal(prices)
-		gstPercent = PriceCalculation.gstPercent
-		gst = subtotal * gstPercent
-		total = subtotal + gst
-		categories = {}
-		categoryStrings = []
-
-		for price in prices:
-			category = price[2]
-
-			if category not in categories:
-				categories[category] = []
-			
-			categories[category].append(price)
-		
-		for category in categories:
-			priceStrings = []
-			categoryString = "<b>{0}</b><br>".format(category)
-			
-			for price in categories[category]:
-				priceStrings.append(price[0] + " | $" + str(price[1]))
-			
-			categoryString += "<br>".join(priceStrings)
-			categoryStrings.append(categoryString)
-		
-		return "<br><br>".join(categoryStrings)
-
-		#return """
-		"""<b>Steel</b><br>
+		return """
+			<b>Steel</b><br>
 			7 steel posts<br>
 			5 steel uchannel<br>
 			1 L steel<br>

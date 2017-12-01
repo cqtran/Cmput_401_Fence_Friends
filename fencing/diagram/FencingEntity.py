@@ -9,7 +9,6 @@ class Post:
 	"""A post"""
 
 	def __init__(self, postType, x, y, isRemoval=False):
-		self.entityType = "post"
 		self.postType = postType
 		self._point = (x, y)
 		self.isRemoval = isRemoval

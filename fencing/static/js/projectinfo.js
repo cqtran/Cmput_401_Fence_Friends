@@ -25,8 +25,6 @@ var tbnPath;
 var pictureList;
 var proj_id;
 
-var finalized = false;
-
 var punctuation = "\\.,\\)\\?\"':\\!;\\]\\}";
 
 var urlRegex =
@@ -178,11 +176,6 @@ function setActiveAppearance(number) {
 }
 
 function setLayoutName(number, loading, newName, noClose) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	if (newName == null) {
 		var f = function(input) {
 			setLayoutName_(number, loading, input, noClose);
@@ -204,7 +197,7 @@ function setLayoutName_(number, loading, newName, noClose) {
 
 	if (newName != null) {
 
-		newName = escapeAngleBrackets(newName);
+		newName = escapeHtml(newName);
 
 		tab.layoutName = newName;
 
@@ -225,11 +218,6 @@ function setLayoutName_(number, loading, newName, noClose) {
 }
 
 function setAppearanceName(number, loading, newName, noClose) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	if (newName == null) {
 		var f = function(input) {
 			setAppearanceName_(number, loading, input, noClose);
@@ -251,7 +239,7 @@ function setAppearanceName_(number, loading, newName, noClose) {
 
 	if (newName != null) {
 
-		newName = escapeAngleBrackets(newName);
+		newName = escapeHtml(newName);
 
 		tab.appearanceName = newName;
 
@@ -302,11 +290,6 @@ function setActiveAppearanceId(dbId) {
 }
 
 function addLayout(loading) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	if (layoutCount >= tabLimit) {
 		showMessage(
 			"Cannot have more than " + tabLimit.toString() + " layouts");
@@ -356,11 +339,6 @@ function addLayout(loading) {
 }
 
 function addAppearance(loading) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	if (appearanceCount >= tabLimit) {
 		showMessage(
 			"Cannot have more than " + tabLimit.toString() + " appearances");
@@ -378,6 +356,12 @@ function addAppearance(loading) {
 	clone.children[0].setAttribute("onclick",
 		"setAppearanceName('" + lastAppearance + "')");
 	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+
+	var formGroup = clone.children[1];
+	formGroup.children[0].setAttribute("for", "panelGap" + lastAppearance);
+	formGroup.children[1].id = "panelGap" + lastAppearance;
+	formGroup.children[2].setAttribute("for", "fenceHeight" + lastAppearance);
+	formGroup.children[3].id = "fenceHeight" + lastAppearance;
 
 	document.getElementById("appearances").appendChild(clone);
 
@@ -410,11 +394,6 @@ function addAppearance(loading) {
 }
 
 function removeLayout(number) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	var f = function() {
 		removeLayout_(number);
 	}
@@ -464,11 +443,6 @@ function removeLayout_(number) {
 }
 
 function removeAppearance(number) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	var f = function() {
 		removeAppearance_(number);
 	}
@@ -508,7 +482,7 @@ function removeAppearance_(number) {
 }
 
 function reloadPage() {
-	location.reload();
+	window.location.replace("/projectinfo/?proj_id=" + proj_id);
 }
 
 function deleteOtherLayouts(number) {
@@ -610,11 +584,6 @@ function saveActiveLayoutName() {
 }
 
 function saveActiveLayout(includeSelection) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	var img = document.getElementById("image" + activeLayout).getAttribute('src');
 	var tab = document.getElementById("layout-tab" + activeLayout);
 	var layout_id = tab.dbId;
@@ -651,31 +620,17 @@ function saveActiveLayout(includeSelection) {
 }
 
 function saveActiveAppearance(includeSelection) {
-	if (finalized) {
-		$("#message").on("hidden.bs.modal", function() {
-			reloadPage();
-		});
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	var tab = document.getElementById("appearance-tab" + activeAppearance);
 	var appearance_id = tab.dbId;
 	var appearance_name = tab.appearanceName;
-	var form = $("#appearance" + activeAppearance + " > div");
-	var basePrice = form.find("#basePrice").val();
-	var height = form.find("#height").val();
-	var style = form.find("#style").val();
-	var borderColor = form.find("#borderColor").val();
-	var panelColor = form.find("#panelColor").val();
+	var panelGap = document.getElementById("panelGap" + activeAppearance).value;
+	var fenceHeight =
+	document.getElementById("fenceHeight" + activeAppearance).value;
 	var dat = {
 		appearanceId: appearance_id,
 		name: appearance_name,
-		basePrice: basePrice,
-		height: height,
-		style: style,
-		borderColor: borderColor,
-		panelColor: panelColor
+		panelGap: panelGap,
+		fenceHeight: fenceHeight
 	};
 
 	if (includeSelection) {
@@ -760,23 +715,10 @@ function loadLayouts(layouts, displayStrings){
 	setLayoutCloseButton();
 }
 
-function setDropdownValue(dropdown, value) {
-	if (value == null) {
-		dropdown.val(dropdown.find("option:first").val());
-	}
-
-	else {
-		dropdown.val(value);
-	}
-}
-
 function loadAppearance(appearance, number) {
-	var form = $("#appearance" + number + " > div");
-	setDropdownValue(form.find("#basePrice"), appearance.base_price);
-	setDropdownValue(form.find("#height"), appearance.height);
-	setDropdownValue(form.find("#style"), appearance.style);
-	setDropdownValue(form.find("#borderColor"), appearance.border_colour);
-	setDropdownValue(form.find("#panelColor"), appearance.panel_colour);
+	document.getElementById("panelGap" + number).value = appearance.panel_gap;
+	document.getElementById("fenceHeight" + number).value =
+		appearance.height;
 	setAppearanceName(number, true, appearance.appearance_name);
 	document.getElementById("appearance-tab" + number).dbId =
 		appearance.appearance_id;
@@ -905,11 +847,6 @@ function imagesError(){
 }
 
 function editDiagram(image) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	var initial = image.getAttribute('src');
 	image.setAttribute('src', 'https://fencythat.cavalryfence.ca/images/ajax-loader.gif');
 	var iframe = document.createElement('iframe');
@@ -982,13 +919,11 @@ function getProjects(){
       type: 'GET',
       url: '/getProject/' + proj_id,
       success: function(result) {
-		finalized = result[0].finalize;
-		updateFinalized(true);
         setProjectInfo(result);
       },
       error: function(xhr, textStatus, error) {
 		if (proj_id != null) {
-			noProject();
+			showMessage("Error");
 		}
 
 		console.log(xhr.statusText);
@@ -1004,24 +939,23 @@ function moreDetails(){
       type: 'GET',
       url: '/projectdetails/' + proj_id,
       success: function(result) {
-    	imgPath = result[0].replace(/^'(.*)'$/, '$1');
-		tbnPath = result[1].replace(/^'(.*)'$/, '$1');
-		loadAppearanceValues(result[10], result[11], result[12]);
-		var layouts = result[2];
-		var appearances = result[3];
-		$('#companyNameNav').text(result[4]);
-		var selectedLayout = result[5];
-		var selectedAppearance = result[6];
-		var displayStrings = result[7];
-		var customerName = $('#customer-name');
-		customerName.text(result[8]);
-		var oldHref = customerName.attr('href');
-		customerName.attr('href', oldHref + result[9] + '&status=All');
-		getPics();
-		loadLayouts(layouts, displayStrings);
-		loadAppearances(appearances);
-		selectLayout(selectedLayout, layouts);
-		selectAppearance(selectedAppearance, appearances);
+    	  imgPath = result[0].replace(/^'(.*)'$/, '$1');
+        tbnPath = result[1].replace(/^'(.*)'$/, '$1');
+			  var layouts = result[2];
+			  var appearances = result[3];
+			  $('#companyNameNav').html(result[4]);
+			  var selectedLayout = result[5];
+			  var selectedAppearance = result[6];
+			  var displayStrings = result[7];
+			  var customerName = $('#customer-name');
+			  customerName.text(result[8]);
+			  var oldHref = customerName.attr('href');
+			  customerName.attr('href', oldHref + result[9] + '&status=All');
+			  getPics();
+			  loadLayouts(layouts, displayStrings);
+			  loadAppearances(appearances);
+			  selectLayout(selectedLayout, layouts);
+			  selectAppearance(selectedAppearance, appearances);
       },
       error: function(xhr, textStatus, error) {
 		if (proj_id != null) {
@@ -1033,44 +967,6 @@ function moreDetails(){
 		console.log(error);
       }
   });
-}
-
-function makeOption(value, addFeet) {
-	var feet = "'";
-
-	if (!addFeet) {
-		feet = '';
-	}
-
-	value = escapeAngleBrackets(value);
-	return '<option value="' + value + '">' + value + feet + '</option>';
-}
-
-function loadAppearanceValues(heights, styles, colours) {
-	var form = $("#appearance1 > div");
-	var height = form.find("#height");
-	var style = form.find("#style");
-	var borderColor = form.find("#borderColor");
-	var panelColor = form.find("#panelColor");
-	var i;
-
-	height.empty();
-	style.empty();
-	borderColor.empty();
-	panelColor.empty();
-
-	for (i = 0; i < heights.length; i++) {
-		height.append(makeOption(heights[i], true));
-	}
-
-	for (i = 0; i < styles.length; i++) {
-		style.append(makeOption(styles[i]));
-	}
-
-	for (i = 0; i < colours.length; i++) {
-		borderColor.append(makeOption(colours[i]));
-		panelColor.append(makeOption(colours[i]));
-	}
 }
 
 //get details
@@ -1172,6 +1068,7 @@ function selectLayout(layoutId) {
 function selectAppearance(appearanceId) {
 	var tabs = document.getElementById("appearance-tabs");
 	var tab;
+
 	for (var i = 0; i < tabs.children.length; i++) {
 		if (tabs.children[i].dbId == appearanceId) {
 			tab = tabs.children[i];
@@ -1201,7 +1098,11 @@ $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
 
   if(proj_id == null) {
-  	noProject();
+	$('#message').on('hidden.bs.modal', function() {
+		window.location.href = '/projects/';
+	});
+
+    showMessage("Project does not exist.");
   }
 
   $("#pencil-button").removeClass('hide');
@@ -1305,47 +1206,6 @@ function deleteAttachment() {
 		console.log(error);
     }
 	});
-}
-
-function toggleFinalized() {
-	finalized = !finalized;
-	updateFinalized();
-}
-
-function updateFinalized(loading) {
-	if (finalized) {
-		$("#finalize").removeClass("finalize-off");
-		$("#finalize-check").removeClass("finalize-check-off");
-		$("#finalize-text").html("Finalized");
-	}
-
-	else {
-		$("#finalize").addClass("finalize-off");
-		$("#finalize-check").addClass("finalize-check-off");
-		$("#finalize-text").html("Finalize");
-	}
-
-	if (!loading) {
-		$.ajax({
-		type: 'POST',
-		url: "/finalizeQuote/?proj_id=" + proj_id,
-		data: JSON.stringify({finalize: finalized}),
-		contentType: "application/json;charset=UTF-8",
-		dataType: "json",
-		error: function(xhr, textStatus, error) {
-			console.log(xhr.statusText);
-			console.log(textStatus);
-			console.log(error);
-		}
-		});
-	}
-}
-
-function noProject(){
-	$('#message').on('hidden.bs.modal', function() {
-		window.location.href = '/projects/';
-	});
-  showMessage("Project does not exist.");
 }
 
 $('#pdf').on("hidden.bs.modal", function() {

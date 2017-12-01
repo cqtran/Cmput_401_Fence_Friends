@@ -72,7 +72,7 @@ $(document).ready(function(){
     url: '/getCustomerList/',
     success: function(result) {
       createCustomers(result);
-      $('#companyNameNav').text(result[0].company_name);
+      $('#companyNameNav').html(result[0].company_name);
     },
     error: function(result) {
         showError();
