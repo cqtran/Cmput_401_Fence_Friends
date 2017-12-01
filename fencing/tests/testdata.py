@@ -1,5 +1,6 @@
 from datetime import datetime
-from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material, Layout, Appearance
+from database.models import Customer, Project, Company, Status, User, Quote, Picture, Material, Layout, Appearance,
+    Style, Colour, Height, Gate
 from database.db import dbSession
 
 
@@ -87,6 +88,28 @@ def testLayoutData():
     dbSession.add(newLayout2)
     dbSession.add(newLayout3)
     dbSession.commit()
+
+
+def testMaterialData():
+
+    newMaterial1 = Material(material_name = 'WPR6C* Pocket Rail 1.5"x 71.5" Clay' , my_price = 5, pieces_in_bundle = 50, category = "Privacy Fence Rails",
+                           note = "Clay", company_name = "Fence", material_id = 1)
+    newMaterial2 = Material(material_name = "875U.16A .875x16' U Channel Almond" , my_price = 6, pieces_in_bundle = 52, category = "U-Channel (Plastic)",
+                           note = "Almond", company_name = "Fence", material_id = 2)
+    newMaterial3 = Material(material_name = 'APSB4 4 x 1-7/8" Post Collar Adapter" 2pc', my_price = 10, pieces_in_bundle = 50, category = "Collars",
+                           note = "Adapter", company_name = "Fence", material_id = 3)
+    dbSession.add(newMaterial1)
+    dbSession.add(newMaterial2)
+    dbSession.add(newMaterial3)
+    dbSession.commit()
+
+def testEstimateData():
+
+    # STYLE, COLOUR, HEIGHT, GATE
+    def __init__(self, style, value, company_name, style_id = None):
+
+    newStyle = Style(style = "Full Privacy", value = "" )
+
 
 '''
 
