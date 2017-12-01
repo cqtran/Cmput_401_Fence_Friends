@@ -27,6 +27,7 @@ import api.appearances as Appearances
 import api.materials as Materials
 import api.estimates as Estimates
 import api.accounting as Accounting
+import api.quotes as Quotes
 #import api.errors as Errors
 from api.forms.extendedRegisterForm import *
 
@@ -48,6 +49,7 @@ app.register_blueprint(Appearances.appearanceBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
 app.register_blueprint(Estimates.estimateBlueprint)
 app.register_blueprint(Accounting.accountingBlueprint)
+app.register_blueprint(Quotes.quoteBlueprint)
 app.json_encoder = MyJSONEncoder
 #app.secret_key = os.urandom(24) # used for sessions
 
