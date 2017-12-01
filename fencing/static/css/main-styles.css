@@ -4,6 +4,14 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+*:focus {
+  border-color: #329664 !important;
+}
+
+.tt-suggestion:hover {
+  background-color: #329664 !important;
+}
+
 .finalize-check-off {
   display: none;
 }
