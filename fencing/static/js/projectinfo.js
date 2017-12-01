@@ -168,7 +168,7 @@ function editAppearanceName(number) {
 		showMessage("Cannot edit finalized projects");
 		return;
 	}
-	
+
 	setLayoutName(number, false, null, appearanceCount == 1);
 }
 
@@ -1214,6 +1214,12 @@ $(document).ready(function(){
 	inputText.focus();
 	inputText.select();
   });
+
+  $('#material-list-modal').on('shown.bs.modal', function() {
+	var email = $('#material-list-email');
+	email.focus();
+	email.select();
+  });
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {
@@ -1264,10 +1270,8 @@ $('#view-quote').submit(function(e) {
 });
 $('#send-material-list').submit(function(e) {
 	e.preventDefault();
+	$('#material-list-email').val('blah');
 	$('#material-list-modal').modal('show');
-	var email = $('#modal-list-email');
-	email.focus();
-	email.select();
 });
 
 $('#quote-form').submit(function(e) {
