@@ -31,7 +31,6 @@ function makeChart(){
     data: {
       labels: projectNames,
       datasets: [{
-        label: "Sessions",
         yAxisID: 'y-axis-0',
         lineTension: 0.3,
         backgroundColor: "rgba(25,200,25,0.2)",
