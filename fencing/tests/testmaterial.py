@@ -25,6 +25,7 @@ class TestMaterials(unittest.TestCase):
         self.setUp()
         testMaterialData()
         response = Material.query.all()
+
         for resp in response:
             assert(resp.my_price > 0)
 
