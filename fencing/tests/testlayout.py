@@ -35,3 +35,13 @@ class TestLayout(unittest.TestCase):
         assert(len(checks) > 1)
         
 
+    def test_removeLayouts(self):
+        self.tearDown()
+        self.setUp()
+        testLayoutData()
+        response = Layout.query.filter_by(layout_id=1).first()
+        Layouts.removeLayout(response.layout_id)
+        response = None
+        response = Layout.query.filter_by(layout_id=1).first()
+        # Response should be none
+        assert(response == None)
