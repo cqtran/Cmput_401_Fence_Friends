@@ -1345,7 +1345,7 @@ function toggleFinalized() {
 	}
 
 	else {
-		window.location.replace("/editquote?proj_id=" + proj_id);
+		window.location.replace("/createquote?proj_id=" + proj_id);
 	}
 }
 
