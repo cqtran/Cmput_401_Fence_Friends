@@ -551,7 +551,11 @@ function deleteOtherAppearances(number) {
 function layoutMenu(event, number) {
 	event.preventDefault();
 
-	$('#delete-others').click(function() {
+	$('#rename').one("click", function() {
+		editLayoutName(number);
+	});
+
+	$('#delete-others').one("click", function() {
 		deleteOtherLayouts(number);
 	});
 
@@ -561,7 +565,12 @@ function layoutMenu(event, number) {
 function appearanceMenu(event, number) {
 	event.preventDefault();
 
-	$('#delete-others').click(function() {
+	$('#rename').one("click", function() {
+		editAppearanceName(number);
+	});
+
+
+	$('#delete-others').one("click", function() {
 		deleteOtherAppearances(number);
 	});
 
