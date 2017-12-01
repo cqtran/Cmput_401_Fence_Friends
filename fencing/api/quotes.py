@@ -80,6 +80,22 @@ def finalizeQuote():
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
 
+@quoteBlueprint.route('/getProfit/', methods=['GET'])
+@login_required
+@roles_required('primary')
+def getProfit():
+    quotes = dbSession.query(Quote).all()
+    profits = []
+    projects = []
+    for quote in quotes:
+        project = dbSession.query(Project).filter(Project.project_id == quote.project_id).one()
+        projects.append(project.project_name)
+        profits.append(quote.profit)
+
+    dictionary = {"projects" : projects, "profits" : profit}
+
+    return jsonify(dictionary)
+
 def calculateExpense(material_types, material_amounts, gst_rate):
     categories = ['metal_post', 'metal_u_channel', 'metal_lsteel', 'plastic_t_post', 'plastic_corner_post', 'plastic_line_post', 'plastic_end_post',
         'plastic_gate_post', 'plastic_rail', 'plastic_u_channel', 'plastic_panel', 'plastic_collar', 'plastic_cap', 'gate_hinge', 'gate_latch']
