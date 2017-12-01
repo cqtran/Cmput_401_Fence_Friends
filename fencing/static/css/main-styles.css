@@ -9,7 +9,7 @@ Accessed November 25, 2017
   outline-color: #329664 !important;
 }
 
-.tt-suggestion:hover {
+.tt-suggestion:hover, .tt-suggestion.tt-cursor {
   background-color: #329664 !important;
 }
 
