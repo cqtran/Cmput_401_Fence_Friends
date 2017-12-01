@@ -35,5 +35,6 @@ class TestAccount(unittest.TestCase):
         dbSession.remove()
 
     def test_createAccounting(self):
-        print("yeeezzzz")
-        pass
+        self.setUp()
+        response = requests.get('http://localhost:5000/getAccountingSummary')
+        assert(response.status_code == 404)
