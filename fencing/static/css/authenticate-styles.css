@@ -4,6 +4,10 @@
   border-bottom: none !important;
 }
 
+#remember {
+  display: none;
+}
+
 h1 {
   font-weight: bold;
 }
