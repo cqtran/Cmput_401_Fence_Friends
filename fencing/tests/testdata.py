@@ -32,7 +32,6 @@ def customerTestData():
 # Helper function for inserting project test data
 def projectTestData():
 
-    #appearance = Appearance(appearance_name = 'yes', project_id = 1, panel_gap = 0.5, height = 0.5, appearance_id = 1 )
     newProject1 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Bear St', end_date = None , note = 'A fun fencing project', project_name = "Kat's house fence", company_name = 'Fence', layout_selected = None, appearance_selected = None, project_id = 1 )
     newProject2 = Project(customer_id = 1, status_name = 'Not Reached', address = 'Grand Ave', end_date = None, note = 'Dog lives here', project_name = "Kat's second house fence", company_name = 'Fence',layout_selected = None, appearance_selected = None, project_id = 2 )
     #newProject3 = Project(customer_id = 3, status_name = 'Complete',  address = 'Park St', end_date = None, note = 'Concrete fence', project_name = "Jason's fence for company building", company_name = 'Fence', project_id = 3, layout_selected = 3, appearance_selected = 1)
@@ -129,6 +128,24 @@ def testEstimateData():
     dbSession.add(newGate1)
 
     dbSession.commit()
+
+def testAppearanceData():
+
+    appearance = Appearance(appearance_name = 'Appearance', project_id = 1, panel_gap = 0.5, height = 0.5, appearance_id = 1 )
+    appearance1 = Appearance(appearance_name='Appearance1', project_id=1, panel_gap=0.6, height=6, appearance_id=2)
+    appearance2 = Appearance(appearance_name='Appearance2', project_id=1, panel_gap=0.7, height=9, appearance_id=3)
+    appearance3 = Appearance(appearance_name = 'Appearance3', project_id = 2, panel_gap = 0.8, height = 12, appearance_id = 4 )
+    appearance4 = Appearance(appearance_name = 'Appearance4', project_id = 2, panel_gap = 0.9, height = 13, appearance_id = 5 )
+
+    dbSession.add(appearance)
+    dbSession.add(appearance1)
+    dbSession.add(appearance2)
+    dbSession.add(appearance3)
+    dbSession.add(appearance4)
+
+    dbSession.commit()
+
+
 
 '''
 
