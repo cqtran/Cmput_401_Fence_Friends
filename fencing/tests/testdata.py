@@ -116,6 +116,14 @@ def testEstimateData():
     newHeight1 = Height(height = "5", value = -3, company_name = "Fence", height_id = 2)
     newGate1 = Gate(gate = "RV gate 12'", value = 1300, company_name = "Fence", gate_id = 2)
 
+    newStyle2 = Style(style = "Lattice Top", value = 44, company_name = "Fence", style_id = 3 )
+    newColor2 = Colour(colour = "Clay", value = 8, company_name = "Fence", colour_id = 3)
+    newHeight2 = Height(height = "4", value = -3, company_name = "Fence", height_id = 3)
+
+    newStyle3 = Style(style = "Picket Fence", value = 40, company_name = "Fence", style_id = 4 )
+    newColor3 = Colour(colour = "Pebblestone", value = 4, company_name = "Fence", colour_id = 4)
+    newHeight3 = Height(height = "3", value = -6, company_name = "Fence", height_id = 4)
+
     dbSession.add(newStyle)
     dbSession.add(newColor)
     dbSession.add(newHeight)
@@ -125,6 +133,14 @@ def testEstimateData():
     dbSession.add(newColor1)
     dbSession.add(newHeight1)
     dbSession.add(newGate1)
+
+    dbSession.add(newStyle2)
+    dbSession.add(newColor2)
+    dbSession.add(newHeight2)
+
+    dbSession.add(newStyle3)
+    dbSession.add(newColor3)
+    dbSession.add(newHeight3)
 
     dbSession.commit()
 
