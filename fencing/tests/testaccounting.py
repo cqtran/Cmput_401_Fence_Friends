@@ -7,7 +7,7 @@ from tests.testdata import *
 
 import requests
 
-import api.projects as Projects
+import api.accounting as Accounts
 
 
 
@@ -38,3 +38,12 @@ class TestAccount(unittest.TestCase):
         self.setUp()
         response = requests.get('http://localhost:5000/getAccountingSummary')
         assert(response.status_code == 404)
+        self.tearDown()
+
+
+    def test_exportAccountingSummary(self):
+        self.tearDown()
+        self.setUp()
+        response = Accounts.exportAccountingSummary()
+
+        
