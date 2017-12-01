@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from database.db import dbSession
-from database.models import Project, Appearance
+from database.models import Project, Appearance, Style, Height, Colour, Gate
 from flask.json import jsonify
 import json
 from flask import Blueprint, request

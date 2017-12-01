@@ -167,7 +167,7 @@ def getMaterialAmount(layout):
             'plastic_corner_post'   : num_corner_post,
             'plastic_line_post'     : num_line_post,
             'plastic_end_post'      : num_end_post,
-            'plastic_gate_posts'    : num_gate_posts,
+            'plastic_gate_post'    : num_gate_posts,
             'plastic_rail'          : num_rails,
             'plastic_u_channel'     : num_uchannel,
             'plastic_panel'         : num_panels,

@@ -41,12 +41,12 @@ def finalizeQuote():
         # A dictionary with keywords and values of the amount of material needed
         material_amounts = json.loads(request.values.get('material_amounts'))
 
-        print(project_id)
-        print("type ", material_types["metal_post"])
-        print("amount", material_amounts)
-
         # A flat rate which allows the user to alter the subtotal of the quote
         misc_modifier = request.values.get('misc_modifier')
+        if misc_modifier == "":
+            misc_modifier = 0
+        else:
+            misc_modifier = int(misc_modifier)
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
@@ -69,7 +69,7 @@ def finalizeQuote():
             material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
             profit = amount - material_expense_total
 
-            newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, gst_rate = gst_rate)
+            newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
         except:
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
@@ -85,13 +85,20 @@ def calculateExpense(material_types, material_amounts, gst_rate):
         'plastic_gate_post', 'plastic_rail', 'plastic_u_channel', 'plastic_panel', 'plastic_collar', 'plastic_cap', 'gate_hinge', 'gate_latch']
     subtotal = 0
 
-    materials = dbSession.query(Materials).filter(Material.company_name == current_user.company_name)
+    materials = dbSession.query(Material).filter(Material.company_name == current_user.company_name)
 
     # For each category in the dictionary, use the material_id and query for data
     # number of materials needed / number of materials per bundle * price of material
     for category in categories:
-        material = materials.filter(Material.material_id == material_types[category]).one()
-        subtotal += math.ceil(material_amounts[category] / material.pieces_in_bundle) * material.my_price
+        amount = material_amounts[category]
+
+        if amount == "":
+            amount = 0
+        else:
+            amount = int(amount)
+
+        material = materials.filter(Material.material_id == int(material_types[category])).one()
+        subtotal += math.ceil(amount / material.pieces_in_bundle) * material.my_price
 
     # Calculate gst
     gst = subtotal * gst_rate
