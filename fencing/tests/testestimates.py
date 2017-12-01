@@ -20,8 +20,13 @@ class TestEstimate(unittest.TestCase):
         for tbl in reversed (Base.metadata.sorted_tables):
             engine.execute(tbl.delete())
 
+    def test_calculateEstimate(self):
+        self.tearDown()
+        self.setUp()
+        Estimate.calculateEstimate()
 
-    def test_positiveValues(self):
+
+    def test_positiveEstimate(self):
         self.tearDown()
         self.setUp()
         value = 0
@@ -34,7 +39,7 @@ class TestEstimate(unittest.TestCase):
         assert(heights.value >= value)
         assert(gates.value >= value)
 
-    def test_negativeValues(self):
+    def test_negativeEstimate(self):
         self.tearDown()
         self.setUp()
         value = 0
