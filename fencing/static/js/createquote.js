@@ -76,7 +76,7 @@ function getProjectInfo() {
 
 $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
-
+  console.log(proj_id)
   if(proj_id == null) {
     noProject();
   }
@@ -93,7 +93,7 @@ function saveQuote() {
       data: { 
           material_types: JSON.stringify(listDict),
           material_amounts: JSON.stringify(amountDict),
-          project_id: proj_id,
+          proj_id: proj_id,
           misc_modifier: $('#adjustment').val()
       },
       dataType: "json",
