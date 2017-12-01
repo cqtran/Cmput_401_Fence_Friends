@@ -30,21 +30,6 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
   </div>
 </div>
 
-<div id="progress" class="modal fade">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 id="progressTitle" class="modal-title">Processing</h5>
-      </div>
-      <div class="modal-body">
-        <div class="progress">
-		  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirmTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -58,6 +43,28 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="setConfirmed()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="material-list-modal" tabindex="-1" role="dialog" aria-labelledby="materialListTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="materialListTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<div class="form-group">
+					<label for="material-list-email">To:</label>
+					<input placeholder="Supplier Email" type="text" class="form-control" id="material-list-email">
+				</div>
+			</div>
+      <div class="modal-footer">
+        <button id="material-list-send" type="button" class="btn btn-primary" data-dismiss="modal" onclick="setConfirmed()">Send</button>
       </div>
     </div>
   </div>
@@ -240,12 +247,12 @@ https://coderwall.com/p/ijrrpa/flask-flash-messages-as-bootstrap-alert
 	</div>
 	<div class="row">
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form onSubmit="showSendingQuote();" method="post" action="{{url_for('sendQuote', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
+			<form id="quote-form" method="post">
 				<input id="sendQuoteButton" class="btn btn-primary btn-block" type="submit" value="Send Quote"/>
 			</form>
 		</div>
 		<div class="col-sm-6 less-padding" style="padding-bottom: 8px;">
-			<form onSubmit="showSendingMaterialList();" method="post" action="{{url_for('sendMaterialList', proj_id=request.args.get('proj_id'))}}" data-toggle="modal" data-target="#progress">
+			<form id="send-material-list" method="post">
 				<input id="sendMaterialListButton" class="btn btn-primary btn-block" type="submit" value="Send Material List"/>
 			</form>
 		</div>

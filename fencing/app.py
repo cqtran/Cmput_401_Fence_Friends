@@ -3,7 +3,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, \
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
-from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout
+from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout, Appearance
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
@@ -12,6 +12,9 @@ from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
 from api.decorators import async
+
+from priceCalculation.QuoteCalculation import QuoteCalculation
+import priceCalculation.priceCalculation as PriceCalculation
 
 import os, traceback
 # Import python files with functionality
@@ -368,14 +371,17 @@ def sendQuote():
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.quoteMessage(customer, company)
-    attachmentString = Messages.quoteAttachment(project, customer)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.quoteAttachment(project, customer, parsed)
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, customer.email,
             "Your quote", message, "Quote", attachment)
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return "{}"
 
 @app.route('/sendMaterialList/', methods = ['POST'])
 @login_required
@@ -388,17 +394,20 @@ def sendMaterialList():
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.materialListMessage(company)
-    attachmentString = Messages.materialListAttachment(project)
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    attachmentString = Messages.materialListAttachment(project, parsed)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
-    supplierEmail = "hey@hey.hey"
+    supplierEmail = request.json["email"]
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, supplierEmail,
             "Material list", message, "Material list", attachment)
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return "{}"
 
 # delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
@@ -471,8 +480,29 @@ def internal_server_error(e):
 @roles_required('primary')
 def accounting():
     info = Accounting.getQuoteInfo()
-    print("\n\n", info, "\n\n")
     return render_template("accounting.html", company = current_user.company_name)
+
+@app.route('/editquote/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def editquote():
+    proj_id = request.args.get("proj_id")
+    project = dbSession.query(Project).filter(
+        Project.project_id == proj_id).one()
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    appearance = dbSession.query(Appearance).filter(
+        Appearance.appearance_id == project.appearance_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    appearanceValues = Quotes.getAppearanceValues(appearance)
+    prices = QuoteCalculation.prices(parsed, appearanceValues[0],
+        appearanceValues[1], appearanceValues[2], appearanceValues[3])
+    subtotal = PriceCalculation.subtotal(prices)
+    gstPercent = PriceCalculation.gstPercent
+    gst = subtotal * gstPercent
+    total = subtotal + gst
+    return render_template("editquote.html", company = current_user.company_name, proj_id = proj_id)
+
 
 
 if __name__ == "__main__":

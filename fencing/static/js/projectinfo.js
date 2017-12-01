@@ -134,29 +134,6 @@ function escapeAngleBrackets(string) {
 	});
 }
 
-function setProgressTitle(title) {
-	var progressTitle = document.getElementById("progressTitle");
-	progressTitle.innerHTML = title;
-}
-
-function showSendingQuote() {
-	setProgressTitle("Sending quote");
-	var quoteButton = document.getElementById("sendQuoteButton");
-	var materialListButton = document.getElementById("sendMaterialListButton");
-	quoteButton.disabled = true;
-	materialListButton.disabled = true;
-	quoteButton.value = "Sending Quote...";
-}
-
-function showSendingMaterialList() {
-	setProgressTitle("Sending material list");
-	var quoteButton = document.getElementById("sendQuoteButton");
-	var materialListButton = document.getElementById("sendMaterialListButton");
-	quoteButton.disabled = true;
-	materialListButton.disabled = true;
-	materialListButton.value = "Sending Material List...";
-}
-
 function setActiveLayout(number) {
 	if (number == deletedLayout) {
 		deletedLayout = null;
@@ -1217,6 +1194,10 @@ $(document).ready(function(){
   moreDetails();
   getProjects();
 
+  $('#material-list-send').click(function(e) {
+	sendMaterialList();
+  });
+
   $('#input').on('shown.bs.modal', function() {
 	var inputText = $('#inputText');
 	inputText.focus();
@@ -1270,6 +1251,51 @@ $('#view-quote').submit(function(e) {
     }
 	});
 });
+$('#send-material-list').submit(function(e) {
+	e.preventDefault();
+	$('#material-list-modal').modal('show');
+	var email = $('#modal-list-email');
+	email.focus();
+	email.select();
+});
+
+$('#quote-form').submit(function(e) {
+	sendQuote();
+});
+
+function sendQuote() {
+	$.ajax({
+		type: 'POST',
+		url: "/sendQuote/?proj_id=" + proj_id,
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+			showMessage("Error sending quote");
+		}
+	});
+}
+
+function sendMaterialList() {
+	$('#material-list-modal').modal('hide');
+
+	$.ajax({
+		type: 'POST',
+		url: "/sendMaterialList/?proj_id=" + proj_id,
+		data: JSON.stringify({email: $("#material-list-email").val()}),
+		contentType: "application/json;charset=UTF-8",
+		dataType: "json",
+		error: function(xhr, textStatus, error) {
+			console.log(xhr.statusText);
+			console.log(textStatus);
+			console.log(error);
+			showMessage("Error sending material list");
+		}
+	});
+}
+
 $('#view-material-list').submit(function(e) {
 	e.preventDefault();
 
@@ -1311,8 +1337,14 @@ function deleteAttachments() {
 }
 
 function toggleFinalized() {
-	finalized = !finalized;
-	updateFinalized();
+	if (finalized) {
+		finalized = !finalized;
+		updateFinalized();
+	}
+
+	else {
+		window.location.replace("/editquote?proj_id=" + proj_id);
+	}
 }
 
 function updateFinalized(loading) {
@@ -1320,12 +1352,14 @@ function updateFinalized(loading) {
 		$("#finalize").removeClass("finalize-off");
 		$("#finalize-check").removeClass("finalize-check-off");
 		$("#finalize-text").html("Finalized");
+		$("#edit").css("display", "none");
 	}
 
 	else {
 		$("#finalize").addClass("finalize-off");
 		$("#finalize-check").addClass("finalize-check-off");
 		$("#finalize-text").html("Finalize");
+		$("#edit").css("display", "block");
 	}
 
 	if (!loading) {

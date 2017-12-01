@@ -74,6 +74,10 @@ function download(filename, text) {
 
 $(document).ready(function(){
   //pictureList = document.getElementById('projectPictures');
+
+  // Suppress warnings so no warning on empty table
+  $.fn.dataTable.ext.errMode = 'none';
+
   $('#dataTable').DataTable({
     "ajax" :{
       "type": 'POST',

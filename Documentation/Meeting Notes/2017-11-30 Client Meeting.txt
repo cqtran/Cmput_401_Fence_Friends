@@ -1,0 +1,9 @@
+2017-11-30 Meeting with Jon
+------------------------------------------------------
+Demoed the app from the server
+Jon was able to do a trial run through the app
+
+A few changes to do:
+- PDF formatting
+- Compatibility with an iPad (pdf and photos)
+- Material listing needs to be done

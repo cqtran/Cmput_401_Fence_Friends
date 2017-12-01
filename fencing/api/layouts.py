@@ -72,6 +72,16 @@ def saveDiagram():
 
     return jsonify({"layoutId": layout_id,
         "displayStrings": parsed.displayStrings()})
+
+@layoutBlueprint.route('/materialAmounts/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def materialAmounts():
+    if request.method == 'POST':
+        layout_id = request.args.get('layout_id')
+        return jsonify(getMaterialAmount(layout_id))
+    return bad_request('Request is not a POST request')
+
 def getLayouts(project_id):
 #TODO: function should be renamed in the future for clarity purposes
     layouts = dbSession.query(Layout).filter(Layout.project_id == project_id).all()
@@ -107,3 +117,118 @@ def createLayout(project_id):
     dbSession.add(newLayout)
     dbSession.commit()
     return newLayout
+
+def getMaterialAmount(layout_id):
+    layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    print(parsed)
+
+    num_t_post, num_corner_post, num_line_post, num_end_post, num_gate_posts, num_steel_post = posts(parsed)
+    print('\n')
+    num_caps = num_steel_post
+    num_collars = num_steel_post * 2
+
+    num_small_sections, num_medium_sections, num_big_sections, num_sections = sections(parsed)
+    num_uchannel = num_sections * 2
+    num_metal_uchannel = num_medium_sections + num_big_sections
+    num_rails = num_sections * 2
+    num_panels = panels(parsed)
+
+    num_hinges, num_latches = gates(parsed)
+
+    print('\nSteel')
+    print('Metal Post: ',num_steel_post)
+    print('Metal U-Channel: ', num_metal_uchannel)
+    print('Metal L-Steel', num_Lsteel)
+    print('\nPlastic Posts')
+    print('Plastic T-Post', num_t_post)
+    print('Plastic Corner-Post', num_corner_post)
+    print('Plastic Line-Post', num_line_post)
+    print('Plastic End-Post', num_end_post)
+    print('Plastic Gate-Post', num_gate_posts)
+    print('\nPlastic')
+    print('Plastic Rails', num_rails)
+    print('Plastic U-Channel',num_uchannel)
+    print('Plastic T&G (Panels)',num_panels)
+    print('Plastic Collars', num_collars)
+    print('Plastic Caps',num_caps)
+    print('\nGate')
+    print('Hinges',num_hinges)
+    print('Latches',num_latches)
+
+    return
+        {
+            'Metal Posts'            : num_steel_post,
+            'Metal U-Channels'       : num_metal_uchannel,
+            'Metal L-Steels'         : num_Lsteel,
+            'Plastic T-Posts'        : num_t_post,
+            'Plastic Corner-Posts'   : num_corner_post,
+            'Plastic Line-Posts'     : num_line_post,
+            'Plastic End-Posts'      : num_end_post,
+            'Plastic Gate-Posts'     : num_gate_posts,
+            'Plastic Rails'         : num_rails,
+            'Plastic U-Channels'     : num_uchannel,
+            'Plastic T&G (Panels)'  : num_panels,
+            'Plastic Collars'       : num_collars,
+            'Plastic Caps'          : num_caps,
+            'Hinges'                : num_hinges,
+            'Latches'               : num_latches
+        }
+
+def posts(parsed):
+    num_t_post = 0
+    num_corner_post = 0
+    num_line_post = 0
+    num_end_post = 0
+    num_gate_posts = 0
+    for post in parsed.posts():
+        if not post.isRemoval:
+            if post.postType == 'tPost':
+                num_t_post += 1
+            if post.postType == 'cornerPost':
+                num_corner_post += 1
+            if post.postType == 'endPost':
+                num_end_post += 1
+            if post.postType == 'gatePost':
+                num_gate_posts += 1
+
+    for fence in parsed.fences:
+        if not fence.isRemoval:
+            if (fence.length/12) % 8 == 0:
+                num_line_post += (fence.length/12) // 8 - 1
+            else:
+                num_line_post += (fence.length/12) // 8
+    num_steel_post = num_t_post + num_corner_post + num_line_post + num_end_post + num_gate_posts
+    return num_t_post, num_corner_post, num_line_post, num_end_post, num_gate_posts, num_steel_post
+
+def sections(parsed):
+    num_small_sections = 0
+    num_medium_sections = 0
+    num_big_sections = 0
+    for fence in parsed.fences:
+        if not fence.isRemoval:
+            num_big_sections += (fence.length/12) // 8
+            if (fence.length/12) % 8 < 6 and (fence.length/12) % 8 > 0:
+                num_small_sections += 1
+            if (fence.length/12) % 8 > 6:
+                num_medium_sections += 1
+    num_sections = num_small_sections + num_medium_sections + num_big_sections
+    return num_small_sections, num_medium_sections, num_big_sections, num_sections
+
+def panels(parsed):
+    num_panels = 0
+    for fence in parsed.fences:
+        num_panels += fence.length/12
+    return num_panels
+
+def gates(parsed):
+    num_hinges = 0
+    num_latches = 0
+    for gate in parsed.gates:
+        if not gate.isRemoval:
+            num_latches += 1
+            if gate.isDouble:
+                num_hinges += 2
+            else:
+                num_hinges += 1
+    return num_hinges, num_latches
