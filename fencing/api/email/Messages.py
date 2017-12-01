@@ -67,16 +67,12 @@ class Messages:
 	
 	def materialListMessage(company):
 		"""Generate a material list email message"""
-		supplier = "Your face"
 		return """
-			Dear {supplier},<br>
-			<br>
 			Please find our required materials attached.<br>
 			<br>
 			Please do not respond to this email. You can contact us at
 			{company_email}
-			""".format(supplier=supplier,
-				company_email=company.email)
+			""".format(company_email=company.email)
 
 	def quoteAttachment(project, customer, parsed):
 		"""Generate the content of a quote attachment and return it"""

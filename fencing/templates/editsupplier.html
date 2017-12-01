@@ -3,7 +3,8 @@
 <h1>Supplier</h1>
 
 <form id="supplier-form" action="javascript:void(0);">
-  <input onchange="markDirty()" value="{{ email }}" type="text" class="form-control" id="email">
+  <label for="email">Supplier Email</label>
+  <input placeholder="Supplier Email" onchange="markDirty()" value="{{ email }}" type="text" class="form-control" id="email">
   <input id="save" onclick="markClean()" class="btn btn-primary btn-block bottom-margin mt-1" type="submit" value = "Save Information">
 </form>
 
