@@ -203,12 +203,6 @@ $(document).ready(function(){
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
-
-
-
-
-
-  //getSummary();
 });
 
 function changePage(proj_id){
