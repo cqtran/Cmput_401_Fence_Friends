@@ -82,7 +82,7 @@ def userTestData():
 def testLayoutData():
     newLayout1 = Layout(layout_id = 1, project_id = 1, layout_name = "Layout 1", layout_info = "test")
     newLayout2 = Layout(layout_id = 2, project_id = 2, layout_name = "Layout 2", layout_info = "test")
-    newLayout3 = Layout(layout_id = 3, project_id = 3, layout_name = "Layout 3", layout_info = "test")
+    newLayout3 = Layout(layout_id = 3, project_id = 1, layout_name = "Layout 3", layout_info = "test")
     dbSession.add(newLayout1)
     dbSession.add(newLayout2)
     dbSession.add(newLayout3)

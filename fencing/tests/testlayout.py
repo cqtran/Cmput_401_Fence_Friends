@@ -20,7 +20,7 @@ class TestLayout(unittest.TestCase):
         companyTestData()
         statusTestData()
         customerTestData()
-        projecTestData()
+        projectTestData()
 
     def tearDown(self):
         """Clear all tables"""
@@ -28,5 +28,10 @@ class TestLayout(unittest.TestCase):
             engine.execute(tbl.delete())
         dbSession.remove()
 
-    def test_removelayout(self):
+    def test_getLayouts(self):
+        testLayoutData()
+        response = Layout.query.filter_by(project_id=1).first()
+        checks = Layouts.getLayouts(response.project_id)
+        assert(len(checks) > 1)
+        
 
