@@ -45,31 +45,22 @@ class TestQuote(unittest.TestCase):
         print(response.amount_total)
         assert float(response.amount_total)==float(115.12)
 
-    # # Test getting a user 
-    # def test_getQuote(self):
-    #     quoteTestData()
-    #     response = Quote.query.filter_by(project_id=1).all()
+    # Test getting a user 
+    def test_getQuote(self):
+        response = Quote.query.filter_by(project_id=1).all()
 
-    #     # user name isnt unique
-    #     print(len(response))
-    #     assert len(response) > 1
-    #     assert response[0].quote != response[1].quote
+        # user name isnt unique
+        print(len(response))
+        assert len(response) > 1
+        assert float(response[0].amount_total) != float(response[1].amount_total)
 
-    # # Test note
-    # def test_quoteNote(self):
-    #     quoteTestData()
-    #     response = dbSession.query(Quote).all()
-    #     assert len(response) > 1
-    #     assert response[0].note != response[1].note
-    #     assert response[0].note == response[2].note
 
-    # # Test project_id
-    # def test_quotePID(self):
-    #     quoteTestData()
-    #     response = dbSession.query(Quote).all()
-    #     assert len(response) > 1
-    #     assert response[0].project_id == response[1].project_id
-    #     assert response[1].project_id != response[2].project_id
+    # Test project_id
+    def test_quotePID(self):
+        response = dbSession.query(Quote).all()
+        assert len(response) > 1
+        assert response[0].project_id == response[1].project_id
+        assert response[1].project_id != response[2].project_id
 
 if __name__ == '__main__':
     unittest.main()
