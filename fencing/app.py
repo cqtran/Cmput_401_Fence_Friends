@@ -206,7 +206,7 @@ def user_registered_sighandler(app, user, confirm_token):
 
 @app.route('/')
 @login_required
-def customers():
+def home():
     if current_user.has_role('admin'):
         users = dbSession.query(User).filter(User.active == True) # need to add filter role
         return render_template("users.html", company = "Admin", users = users)
