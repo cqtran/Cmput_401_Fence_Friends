@@ -75,6 +75,46 @@ def finalizeQuote():
 
         # TODO: Calculate needed materials and material expenses
 
+        num_t_post, num_corner_post, num_line_post, num_end_post, num_gate_posts, num_steel_post = posts(parsed)
+        print('\n')
+        num_caps = num_steel_post
+        num_collars = num_steel_post * 2
+
+        num_small_sections, num_medium_sections, num_big_sections, num_sections = sections(parsed)
+        num_uchannel = num_sections * 2
+        num_metal_uchannel = num_medium_sections + num_big_sections
+        num_rails = num_sections * 2
+        num_panels = panels(parsed)
+
+        num_hinges, num_latches, num_drop_pins, num_gate_rails, num_gate_uchannel, num_gate_panels, num_cement = gates(parsed)
+        num_Lsteel = num_cement
+
+        print('\nSteel')
+        print('Metal Post: ',num_steel_post)
+        print('Metal U-Channel: ', num_metal_uchannel)
+        print('Metal L-Steel', num_Lsteel)
+        print('\nPlastic Posts')
+        print('Plastic T-Post', num_t_post)
+        print('Plastic Corner-Post', num_corner_post)
+        print('Plastic Line-Post', num_line_post)
+        print('Plastic End-Post', num_end_post)
+        print('Plastic Gate-Post', num_gate_posts)
+        print('\nPlastic')
+        print('Plastic Rails', num_rails)
+        print('Plastic U-Channel',num_uchannel)
+        print('Plastic T&G (Panels)',num_panels)
+        print('Plastic Collars', num_collars)
+        print('Plastic Caps',num_caps)
+        print('\nGate')
+        print('Hinges',num_hinges)
+        print('Latches',num_latches)
+        print('Drop Pins',num_drop_pins)
+        print('Gate Rails',num_gate_rails)
+        print('Gate U-Channel', num_gate_uchannel)
+        print('Gate Panels',num_gate_panels)
+        print('Cement', num_cement)
+
+        
         # Save the quote information
         newQuote = Quote(project_id = project_id, amount = subtotal, amount_gst = gst, amount_total = total, material_expense = None, material_expense_gst = None, material_expense_total = None, gst_rate = gstPercent)
         dbSession.add(newQuote)
@@ -101,3 +141,76 @@ def getAppearanceValues(appearance):
     gate_double_value = dbSession.query(Gate).filter(Gate.gate.contains('RV')).filter(Gate.company_name == current_user.company_name).one().value
 
     return appearance_value, removal_value, gate_single_value, gate_double_value
+
+def posts(parsed):
+    num_t_post = 0
+    num_corner_post = 0
+    num_line_post = 0
+    num_end_post = 0
+    num_gate_posts = 0
+    for post in parsed.posts():
+        if not post.isRemoval:
+            if post.postType == 'tPost':
+                num_t_post += 1
+            if post.postType == 'cornerPost':
+                num_corner_post += 1
+            if post.postType == 'endPost':
+                num_end_post += 1
+            if post.postType == 'gatePost':
+                num_gate_posts += 1
+
+    for fence in parsed.fences:
+        if not fence.isRemoval:
+            if (fence.length/12) % 8 == 0:
+                num_line_post += (fence.length/12) // 8 - 1
+            else:
+                num_line_post += (fence.length/12) // 8
+    num_steel_post = num_t_post + num_corner_post + num_line_post + num_end_post + num_gate_posts
+    return num_t_post, num_corner_post, num_line_post, num_end_post, num_gate_posts, num_steel_post
+
+def sections(parsed):
+    num_small_sections = 0
+    num_medium_sections = 0
+    num_big_sections = 0
+    for fence in parsed.fences:
+        if not fence.isRemoval:
+            num_big_sections += (fence.length/12) // 8
+            if (fence.length/12) % 8 < 6 and (fence.length/12) % 8 > 0:
+                num_small_sections += 1
+            if (fence.length/12) % 8 > 6:
+                num_medium_sections += 1
+    num_sections = num_small_sections + num_medium_sections + num_big_sections
+    return num_small_sections, num_medium_sections, num_big_sections, num_sections
+
+def panels(parsed):
+    num_panels = 0
+    for fence in parsed.fences:
+        num_panels += fence.length/12
+    return num_panels
+
+def gates(parsed):
+    num_hinges = 0
+    num_latches = 0
+    num_drop_pins = 0
+    num_gate_rails = 0
+    num_gate_uchannel = 0
+    num_gate_panels = 0
+    num_cement = 0
+    for gate in parsed.gates:
+        if not gate.isRemoval:
+            num_latches += 1
+            num_gate_uchannel += 2
+            num_gate_panels += (gate.length//12)
+            if gate.length%12 > 0:
+                num_gate_panels += 1
+            num_cement += 1
+            if gate.isDouble:
+                num_hinges += 2
+                num_drop_pins += 1
+            else:
+                num_hinges += 1
+            if (gate.length/12) > 4:
+                num_gate_rails += 2
+            else:
+                num_gate_rails += 1
+    return num_hinges, num_latches, num_drop_pins, num_gate_rails, num_gate_uchannel, num_gate_panels, num_cement
