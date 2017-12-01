@@ -3,7 +3,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, \
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
-from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout
+from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout, Appearance
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
@@ -12,6 +12,9 @@ from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
 from api.decorators import async
+
+from priceCalculation.QuoteCalculation import QuoteCalculation
+import priceCalculation.priceCalculation as PriceCalculation
 
 import os, traceback
 # Import python files with functionality
@@ -486,6 +489,18 @@ def editquote():
     proj_id = request.args.get("proj_id")
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
+    layout = dbSession.query(Layout).filter(
+        Layout.layout_id == project.layout_selected).one()
+    appearance = dbSession.query(Appearance).filter(
+        Appearance.appearance_id == project.appearance_selected).one()
+    parsed = DiagramParser.parse(layout.layout_info)
+    appearanceValues = Quotes.getAppearanceValues(appearance)
+    prices = QuoteCalculation.prices(parsed, appearanceValues[0],
+        appearanceValues[1], appearanceValues[2], appearanceValues[3])
+    subtotal = PriceCalculation.subtotal(prices)
+    gstPercent = PriceCalculation.gstPercent
+    gst = subtotal * gstPercent
+    total = subtotal + gst
     return render_template("editquote.html", company = current_user.company_name, proj_id = proj_id)
 
 
