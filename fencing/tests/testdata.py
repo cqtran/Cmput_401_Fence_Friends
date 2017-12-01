@@ -105,7 +105,6 @@ def testMaterialData():
 def testEstimateData():
 
     # STYLE, COLOUR, HEIGHT, GATE
-    def __init__(self, gate, value, company_name, gate_id = None):
 
     newStyle = Style(style = "Full Privacy", value = 40, company_name = "Fence", style_id = 1 )
     newColor = Colour(colour = "White", value = 0, company_name = "Fence", colour_id = 1)
