@@ -77,13 +77,15 @@ def uploadPrice():
         return created_request('Prices were changed')
     return bad_request('Request is not a POST request')
 
-@materialBlueprint.route('/getMaterialsLists/', methods=['POST'])
+@materialBlueprint.route('/getMaterialLists/', methods=['GET'])
 @login_required
 @roles_required('primary')
-def getMaterialsLists():
-    if request.method == 'POST':
+def getMaterialLists():
+    if request.method == 'GET':
         appearance_id = request.args.get('appearance_id')
         appearance = dbSession.query(Appearance).filter(Appearance.appearance_id == appearance_id).one()
+        if appearance is None:
+            return bad_request('Appearance does not exist')
         return jsonify(getMaterialList(appearance))
     return bad_request('Request is not a POST request')
 

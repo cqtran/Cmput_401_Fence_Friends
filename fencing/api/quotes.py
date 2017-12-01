@@ -35,26 +35,21 @@ def finalizeQuote():
         """
 
         project_id = request.args.get('proj_id')
-        finalize = request.json['finalize']
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
-
         if project is None:
             print('Project does not exist')
             return bad_request('Project does not exist')
 
-        if not finalize:
-            dbSession.query(Quote).filter(Quote.project_id == project_id).delete()
-            project.quote_id = None
-            project.finalize = False
-            dbSession.commit()
+        if project.finalize:
             print('Finalize set to false')
-            return created_request('Finalize set to false')
+            return bad_request('Project has already been finalized')
 
         project.finalize = True
 
         try:
-            calculateQuote(project)
+            subtotal, gst, total = calculateQuote(project)
+            calculateExpense()
         except:
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
@@ -64,6 +59,9 @@ def finalizeQuote():
         return created_request('Quote has been generated')
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
+
+def calculateExpense():
+    pass
 
 def calculateQuote(project):
     layout_id = project.layout_selected
@@ -86,7 +84,4 @@ def calculateQuote(project):
     gst = subtotal * gstPercent
     total = subtotal + gst
 
-    # Save the quote information
-    newQuote = Quote(project_id = project_id, amount = subtotal, amount_gst = gst, amount_total = total, material_expense = None, material_expense_gst = None, material_expense_total = None, gst_rate = gstPercent)
-    dbSession.add(newQuote)
-    dbSession.commit()
+    return subtotal, gst, total

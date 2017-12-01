@@ -73,14 +73,17 @@ def saveDiagram():
     return jsonify({"layoutId": layout_id,
         "displayStrings": parsed.displayStrings()})
 
-@layoutBlueprint.route('/materialAmounts/', methods = ['POST'])
+@layoutBlueprint.route('/getMaterialAmounts/', methods = ['GET'])
 @login_required
 @roles_required('primary')
-def materialAmounts():
-    if request.method == 'POST':
+def getMaterialAmounts():
+    if request.method == 'GET':
         layout_id = request.args.get('layout_id')
-        return jsonify(getMaterialAmount(layout_id))
-    return bad_request('Request is not a POST request')
+        layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
+        if layout is None:
+            return bad_request('Layout does not exist')
+        return jsonify(getMaterialAmount(layout))
+    return bad_request('Request is not a GET request')
 
 def getLayouts(project_id):
 #TODO: function should be renamed in the future for clarity purposes
@@ -118,8 +121,7 @@ def createLayout(project_id):
     dbSession.commit()
     return newLayout
 
-def getMaterialAmount(layout_id):
-    layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
+def getMaterialAmount(layout):
     parsed = DiagramParser.parse(layout.layout_info)
     print(parsed)
 

@@ -154,6 +154,14 @@ function setActiveAppearance(number) {
 	saveAppearanceSelection();
 }
 
+function editLayoutName(number) {
+	setLayoutName(number, false, null, layoutCount == 1);
+}
+
+function editAppearanceName(number) {
+	setLayoutName(number, false, null, appearanceCount == 1);
+}
+
 function setLayoutName(number, loading, newName, noClose) {
 	if (finalized) {
 		showMessage("Cannot edit finalized projects");
@@ -192,8 +200,6 @@ function setLayoutName_(number, loading, newName, noClose) {
 		else {
 			tabText.innerHTML = '<button class="close closeTab" onclick="removeLayout(\'' + number + '\')" type="button">×</button>' + newName;
 		}
-
-		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveLayoutName();
@@ -239,8 +245,6 @@ function setAppearanceName_(number, loading, newName, noClose) {
 		else {
 			tabText.innerHTML = '<button class="close closeTab" onclick="removeAppearance(\'' + number + '\')" type="button">×</button>' + newName;
 		}
-
-		bodyText.innerHTML = newName + '&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
 
 		if (!loading) {
 			saveActiveAppearance();
@@ -299,8 +303,7 @@ function addLayout(loading) {
 	var clone = active.cloneNode(true);
 	clone.id = "layout" + lastLayout;
 	clone.children[0].setAttribute("onclick",
-		"setLayoutName('" + lastLayout + "')");
-	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		"editLayoutName('" + lastLayout + "')");
 	clone.children[1].children[0].id = "image" + lastLayout;
 	document.getElementById("layouts").appendChild(clone);
 
@@ -353,8 +356,7 @@ function addAppearance(loading) {
 	var clone = active.cloneNode(true);
 	clone.id = "appearance" + lastAppearance;
 	clone.children[0].setAttribute("onclick",
-		"setAppearanceName('" + lastAppearance + "')");
-	clone.children[0].innerHTML = '<b>Untitled</b>&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i>';
+		"editAppearanceName('" + lastAppearance + "')");
 
 	document.getElementById("appearances").appendChild(clone);
 

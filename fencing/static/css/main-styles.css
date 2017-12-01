@@ -207,8 +207,7 @@ input[type="search"]::-webkit-search-cancel-button {
   color: #505050;
   font-weight: bolder;
   display: block;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  float: right;
 }
 
 .name-edit:hover {
