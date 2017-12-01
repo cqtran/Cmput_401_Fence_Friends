@@ -4,6 +4,11 @@ https://bootsnipp.com/snippets/featured/material-design-tab-style
 Accessed November 25, 2017
 */
 
+.page-item.active .page-link {
+  background-color: #329664 !important;
+  border-color: #329664 !important;
+}
+
 .navbar-brand {
   margin: 0 !important;
   padding: 0 !important;
