@@ -17,6 +17,7 @@ import priceCalculation.priceCalculation as PriceCalculation
 
 import api.appearances as Appearances
 import api.layouts as Layouts
+import math
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
 
@@ -35,6 +36,8 @@ def finalizeQuote():
         """
 
         project_id = request.args.get('proj_id')
+        material_types = request.json['material_types']
+        material_amounts = request.json['material_amounts']
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
@@ -49,7 +52,7 @@ def finalizeQuote():
 
         try:
             subtotal, gst, total = calculateQuote(project)
-            calculateExpense()
+            calculateExpense(material_types, material_amounts)
         except:
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
@@ -60,8 +63,29 @@ def finalizeQuote():
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
 
-def calculateExpense():
-    pass
+def calculateExpense(material_types, material_amounts):
+    subtotal = 0
+    subtotal += math.ceil(material_amounts['metalpost'] / material_types['metal_post']['pieces_in_bundle']) * material_types['metal_post']['my_price']
+    subtotal += math.ceil(material_amounts['metal_u_channel'] / material_types['metal_u_channel']['pieces_in_bundle']) * material_types['metal_u_channel']['my_price']
+    subtotal += math.ceil(material_amounts['metal_lsteel'] / material_types['metal_lsteel']['pieces_in_bundle']) * material_types['metal_lsteel']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_t_post'] / material_types['plastic_t_post']['pieces_in_bundle']) * material_types['plastic_t_post']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_corner_post'] / material_types['plastic_corner_post']['pieces_in_bundle']) * material_types['plastic_corner_post']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_line_post'] / material_types['plastic_line_post']['pieces_in_bundle']) * material_types['plastic_line_post']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_end_post'] / material_types['plastic_end_post']['pieces_in_bundle']) * material_types['plastic_end_post']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_gate_post'] / material_types['plastic_gate_post']['pieces_in_bundle']) * material_types['plastic_gate_post']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_rail'] / material_types['plastic_rail']['pieces_in_bundle']) * material_types['plastic_rail']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_u_channel'] / material_types['plastic_u_channel']['pieces_in_bundle']) * material_types['plastic_u_channel']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_panel'] / material_types['plastic_panel']['pieces_in_bundle']) * material_types['plastic_panel']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_collar'] / material_types['plastic_collar']['pieces_in_bundle']) * material_types['plastic_collar']['my_price']
+    subtotal += math.ceil(material_amounts['plastic_cap'] / material_types['plastic_cap']['pieces_in_bundle']) * material_types['plastic_cap']['my_price']
+    subtotal += math.ceil(material_amounts['gate_hinge'] / material_types['gate_hinge']['pieces_in_bundle']) * material_types['gate_hinge']['my_price']
+    subtotal += math.ceil(material_amounts['gate_latch'] / material_types['gate_latch']['pieces_in_bundle']) * material_types['gate_latch']['my_price']
+
+    gstPercent = PriceCalculation.gstPercent
+    gst = subtotal * gstPercent
+    total = subtotal + gst
+
+    return subtotal, gst, total
 
 def calculateQuote(project):
     layout_id = project.layout_selected
