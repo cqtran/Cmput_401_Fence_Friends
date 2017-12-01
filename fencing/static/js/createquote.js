@@ -5,7 +5,22 @@ function getMaterialAmounts(layout){
     type: 'GET',
     url: '/getMaterialAmounts/?layout_id=' + layout,
     success: function(result) {
-      console.log("amounts: " + result)
+      /*dealNumber(result["metal_post"], "metal_post");
+      dealNumber(result["metal_u_channel"], "metal_u_channel");
+      dealNumber(result["metal_lsteel"], "metal_lsteel");
+      dealNumber(result["plastic_t_post"], "plastic_t_post");
+      dealNumber(result["plastic_corner_post"], "plastic_corner_post");
+      dealNumber(result["plastic_line_post"], "plastic_line_post");
+      dealNumber(result["plastic_end_post"], "plastic_end_post");
+      dealNumber(result["plastic_gate_post"], "plastic_gate_post");
+      dealNumber(result["plastic_rail"], "plastic_rail");
+      dealNumber(result["plastic_u_channel"], "plastic_u_channel");
+      dealNumber(result["plastic_panel"], "plastic_panel");
+      dealNumber(result["plastic_collar"], "plastic_collar");
+      dealNumber(result["plastic_cap"], "plastic_cap");
+      dealNumber(result["gate_hinge"], "gate_hinge");
+      dealNumber(result["gate_latch"], "gate_latch");*/
+      console.log(JSON.stringify(result));
     },
     error: function(result) {
         alert("shits fucked");
@@ -17,7 +32,21 @@ function getMaterials(appearance){
     type: 'GET',
     url: '/getMaterialLists/?appearance_id=' + appearance,
     success: function(result) {
-      console.log("items: " + result);
+      dealLists(result["metal_post"], "metal_post");
+      dealLists(result["metal_u_channel"], "metal_u_channel");
+      dealLists(result["metal_lsteel"], "metal_lsteel");
+      dealLists(result["plastic_t_post"], "plastic_t_post");
+      dealLists(result["plastic_corner_post"], "plastic_corner_post");
+      dealLists(result["plastic_line_post"], "plastic_line_post");
+      dealLists(result["plastic_end_post"], "plastic_end_post");
+      dealLists(result["plastic_gate_post"], "plastic_gate_post");
+      dealLists(result["plastic_rail"], "plastic_rail");
+      dealLists(result["plastic_u_channel"], "plastic_u_channel");
+      dealLists(result["plastic_panel"], "plastic_panel");
+      dealLists(result["plastic_collar"], "plastic_collar");
+      dealLists(result["plastic_cap"], "plastic_cap");
+      dealLists(result["gate_hinge"], "gate_hinge");
+      dealLists(result["gate_latch"], "gate_latch");
     },
     error: function(result) {
         alert("material appearnce fucked");
@@ -55,7 +84,14 @@ $(document).ready(function(){
 
 function dealLists(types, name){
   types.forEach(function(type) {
-    $('select[name=' + name + ']').append('<option value="' + type.material_name + '">' + type.material_name + '</option>');
+    $('select[name=' + name + '-type]').append('<option value="' + type.material_name + '">' + type.material_name + '</option>');
+  });
+  $('.selectpicker').selectpicker('refresh');
+}
+
+function dealNumber(types, name){
+  types.forEach(function(type) {
+    $('select[name=' + name + '-type]').append('<option value="' + type.material_name + '">' + type.material_name + '</option>');
   });
   $('.selectpicker').selectpicker('refresh');
 }
