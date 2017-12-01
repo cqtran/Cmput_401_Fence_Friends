@@ -126,7 +126,8 @@ python3 app.py -debug
 
 1. Start MySQL
 
-2. In the "fencing" folder, run:
+2. In the "fencing" folder, run:  
+must be in the testBranch.  
 ```bash
 python3 testingapp.py
 ```
@@ -140,6 +141,7 @@ The app is hosted using apache2 with the app.conf file in Documentation/Server.
 The server uses mod_wsgi-express to help interact between apache2 and Flask.  
 The server uses certbot to generate and maintain ssl certificates.  
 The server files are stored at /var/www/CMPUT401-FenceFriends on the server.  
+The server config file is store at /etc/apache2/sites-available  
   
 The server required these to be installed:  
 sudo mod_wsgi-express install-module  
