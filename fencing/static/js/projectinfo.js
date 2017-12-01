@@ -1337,8 +1337,14 @@ function deleteAttachments() {
 }
 
 function toggleFinalized() {
-	finalized = !finalized;
-	updateFinalized();
+	if (finalized) {
+		finalized = !finalized;
+		updateFinalized();
+	}
+
+	else {
+		window.location.replace("/editquote");
+	}
 }
 
 function updateFinalized(loading) {
