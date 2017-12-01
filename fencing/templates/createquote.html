@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Generating Quote</h1>
+<hr class="mt-2">
+
+<form id="create-form">
+  <div class="row">
+    <div class="col-sm-6">
+      <h4>Metal Posts</h4>
+      <input onchange="saveActiveAppearance()" id="m-posts" type="number" class="form-control" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+    <div class="col-sm-6">
+      <input onchange="saveActiveAppearance()" id="m-posts" type="number" class="form-control" min="0" step="1" oninput="validity.valid||(value='');">
+    </div>
+  </div>
+
+</form>
+{% endblock %}
+{% block content2 %}
+<script type="text/javascript" src='../static/js/createquote.js'></script>
+{% endblock %}

@@ -21,8 +21,8 @@ import api.layouts as Layouts
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
 
 @quoteBlueprint.route('/finalizeQuote/', methods=['POST'])
-#@login_required
-#@roles_required('primary')
+@login_required
+@roles_required('primary')
 def finalizeQuote():
     if request.method == 'POST':
         """

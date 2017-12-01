@@ -334,6 +334,12 @@ def viewMaterialList():
 
     return jsonify({"reload": 1})
 
+@app.route('/createquote/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def createquote():
+    return render_template("createquote.html", company = current_user.company_name);
+
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
 @roles_required('primary')
