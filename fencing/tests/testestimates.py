@@ -24,5 +24,23 @@ class TestEstimate(unittest.TestCase):
     def test_positiveValues(self):
         self.tearDown()
         self.setUp()
-        response = Style.query.filter_by(style_id = 1).first()
-        assert(response.value > 20)
+        value = 0
+        styles = Style.query.filter_by(style_id = 1).first()
+        colors = Colour.query.filter_by(colour_id = 1).first()
+        heights = Height.query.filter_by(height_id = 1).first()
+        gates = Gate.query.filter_by(gate_id = 1).first()
+        assert(styles.value >= value)
+        assert(colors.value >= value)
+        assert(heights.value >= value)
+        assert(gates.value >= value)
+
+    def test_negativeValues(self):
+        self.tearDown()
+        self.setUp()
+        value = 0
+        heights3 = Height.query.filter_by(height_id = 3).first()
+        heights4 = Height.query.filter_by(height_id = 4).first()
+
+        assert(heights3.value <= value)
+        assert(heights4.value <= value)
+
