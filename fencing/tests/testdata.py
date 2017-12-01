@@ -122,23 +122,23 @@ def testEstimateData():
 
     # STYLE, COLOUR, HEIGHT, GATE
 
-    newStyle = Style(style = "Full Privacy", value = 40, company_name = "Fence", style_id = 1 )
-    newColor = Colour(colour = "White", value = 0, company_name = "Fence", colour_id = 1)
-    newHeight = Height(height = "6", value = 0, company_name = "Fence", height_id = 1)
-    newGate = Gate(gate = "Man gate 4'", value = 550, company_name = "Fence", gate_id = 1)
+    newStyle = Style(style = "Full Privacy", value = 40, company_name = None, style_id = 1 )
+    newColor = Colour(colour = "White", value = 0, company_name = None, colour_id = 1)
+    newHeight = Height(height = "6", value = 0, company_name = None, height_id = 1)
+    newGate = Gate(gate = "Man gate 4'", value = 550, company_name = None, gate_id = 1)
 
-    newStyle1 = Style(style = "Picket Top", value = 44, company_name = "Fence", style_id = 2 )
-    newColor1 = Colour(colour = "Almond (Tan)", value = 4, company_name = "Fence", colour_id = 2)
-    newHeight1 = Height(height = "5", value = -3, company_name = "Fence", height_id = 2)
-    newGate1 = Gate(gate = "RV gate 12'", value = 1300, company_name = "Fence", gate_id = 2)
+    newStyle1 = Style(style = "Picket Top", value = 44, company_name = None, style_id = 2 )
+    newColor1 = Colour(colour = "Almond (Tan)", value = 4, company_name = None, colour_id = 2)
+    newHeight1 = Height(height = "5", value = -3, company_name = None, height_id = 2)
+    newGate1 = Gate(gate = "RV gate 12'", value = 1300, company_name = None, gate_id = 2)
 
-    newStyle2 = Style(style = "Lattice Top", value = 44, company_name = "Fence", style_id = 3 )
-    newColor2 = Colour(colour = "Clay", value = 8, company_name = "Fence", colour_id = 3)
-    newHeight2 = Height(height = "4", value = -3, company_name = "Fence", height_id = 3)
+    newStyle2 = Style(style = "Lattice Top", value = 44, company_name = None, style_id = 3 )
+    newColor2 = Colour(colour = "Clay", value = 8, company_name = None, colour_id = 3)
+    newHeight2 = Height(height = "4", value = -3, company_name = None, height_id = 3)
 
-    newStyle3 = Style(style = "Picket Fence", value = 40, company_name = "Fence", style_id = 4 )
-    newColor3 = Colour(colour = "Pebblestone", value = 4, company_name = "Fence", colour_id = 4)
-    newHeight3 = Height(height = "3", value = -6, company_name = "Fence", height_id = 4)
+    newStyle3 = Style(style = "Picket Fence", value = 40, company_name = None, style_id = 4 )
+    newColor3 = Colour(colour = "Pebblestone", value = 4, company_name = None, colour_id = 4)
+    newHeight3 = Height(height = "3", value = -6, company_name = None, height_id = 4)
 
     dbSession.add(newStyle)
     dbSession.add(newColor)
