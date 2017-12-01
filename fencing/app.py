@@ -378,7 +378,7 @@ def sendQuote():
         Email.send(app, mail, project.company_name, customer.email,
             "Your quote", message, "Quote", attachment)
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return "{}"
 
 @app.route('/sendMaterialList/', methods = ['POST'])
 @login_required
@@ -398,13 +398,13 @@ def sendMaterialList():
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
-    supplierEmail = "hey@hey.hey"
+    supplierEmail = request.json["email"]
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, supplierEmail,
             "Material list", message, "Material list", attachment)
 
-    return redirect(url_for("projectinfo", proj_id=proj_id))
+    return "{}"
 
 # delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])

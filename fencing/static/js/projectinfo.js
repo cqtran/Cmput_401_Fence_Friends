@@ -139,24 +139,6 @@ function setProgressTitle(title) {
 	progressTitle.innerHTML = title;
 }
 
-function showSendingQuote() {
-	setProgressTitle("Sending quote");
-	var quoteButton = document.getElementById("sendQuoteButton");
-	var materialListButton = document.getElementById("sendMaterialListButton");
-	quoteButton.disabled = true;
-	materialListButton.disabled = true;
-	quoteButton.value = "Sending Quote...";
-}
-
-function showSendingMaterialList() {
-	setProgressTitle("Sending material list");
-	var quoteButton = document.getElementById("sendQuoteButton");
-	var materialListButton = document.getElementById("sendMaterialListButton");
-	quoteButton.disabled = true;
-	materialListButton.disabled = true;
-	materialListButton.value = "Sending Material List...";
-}
-
 function setActiveLayout(number) {
 	if (number == deletedLayout) {
 		deletedLayout = null;
@@ -1282,16 +1264,11 @@ $('#send-material-list').submit(function(e) {
 	email.select();
 });
 
-$('#material-list-modal-form').submit(function(e) {
-	sendMaterialList();
-});
-
 $('#quote-form').submit(function(e) {
 	sendQuote();
 });
 
 function sendQuote() {
-	showSendingQuote();
 	$('#progress').modal('show');
 
 	$.ajax({
@@ -1299,10 +1276,14 @@ function sendQuote() {
 		url: "/sendQuote/?proj_id=" + proj_id,
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
+		success: function(result) {
+			$("#progress").modal("hide");
+		},
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
+			$("#progress").modal("hide");
 			showMessage("Error sending quote");
 		}
 	});
@@ -1310,18 +1291,22 @@ function sendQuote() {
 
 function sendMaterialList() {
 	$('#material-list-modal').modal('hide');
-	showSendingMaterialList();
 	$('#progress').modal('show');
 
 	$.ajax({
 		type: 'POST',
 		url: "/sendMaterialList/?proj_id=" + proj_id,
+		data: JSON.stringify({email: $("#material-list-email").val()}),
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
+		success: function(result) {
+			$("#progress").modal("hide");
+		},
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
+			$("#progress").modal("hide");
 			showMessage("Error sending material list");
 		}
 	});
