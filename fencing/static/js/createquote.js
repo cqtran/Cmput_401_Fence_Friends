@@ -28,10 +28,10 @@ function getMaterials(appearance){
 function getProjectInfo() {
   $.ajax({
     type: 'GET',
-    url: '/getproject/' + proj_id,
+    url: '/getProject/' + proj_id,
     success: function(result) {
       var layout = result[0].layout_selected;
-      var appearance = result[].appearance_selected;
+      var appearance = result[0].appearance_selected;
       console.log("layout: " + layout);
       console.log("appearance: " + appearance)
       getMaterials(layout);
@@ -58,4 +58,8 @@ function noProject(){
     window.location.href = '/projects/';
   });
   showMessage("Project does not exist.");
+}
+function showMessage(message) {
+  $('#message-text').html(message);
+  $('#message').modal('show');
 }
