@@ -477,8 +477,14 @@ def internal_server_error(e):
 @roles_required('primary')
 def accounting():
     info = Accounting.getQuoteInfo()
-    print("\n\n", info, "\n\n")
     return render_template("accounting.html", company = current_user.company_name)
+
+@app.route('/editquote/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def editquote():
+    return render_template("editquote.html", company = current_user.company_name)
+
 
 
 if __name__ == "__main__":
