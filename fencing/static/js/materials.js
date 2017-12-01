@@ -89,8 +89,8 @@ function makeHeader(string) {
   var header = document.createElement('h4');
   var header2 = document.createElement('h4');
   row.setAttribute('class', 'row');
-  header.setAttribute('class', 'text-green col-6');
-  header2.setAttribute('class', 'text-green text-right col-6')
+  header.setAttribute('class', 'text-grey col-6');
+  header2.setAttribute('class', 'text-grey text-right col-6')
   header.setAttribute('style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
   header2.setAttribute('style', 'font-weight: bold; padding-top: 10px; cursor: pointer;');
   header.innerHTML = string;
