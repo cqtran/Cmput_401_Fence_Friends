@@ -1346,12 +1346,14 @@ function updateFinalized(loading) {
 		$("#finalize").removeClass("finalize-off");
 		$("#finalize-check").removeClass("finalize-check-off");
 		$("#finalize-text").html("Finalized");
+		$("#edit").css("display", "none");
 	}
 
 	else {
 		$("#finalize").addClass("finalize-off");
 		$("#finalize-check").addClass("finalize-check-off");
 		$("#finalize-text").html("Finalize");
+		$("#edit").css("display", "block");
 	}
 
 	if (!loading) {
