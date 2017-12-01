@@ -865,8 +865,9 @@ function makeNewPictureButton() {
 	final.setAttribute('href', '#');
 	final.setAttribute('class', 'PictureThumbnail newPicture zero-padding');
 
-	final.addEventListener('click', function(){
+	final.addEventListener('click', function(event){
 		$("#file-upload").click();
+		event.preventDefault();
 	});
 
 	final.appendChild(img);
