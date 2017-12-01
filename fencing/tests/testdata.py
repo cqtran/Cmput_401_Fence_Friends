@@ -106,10 +106,29 @@ def testMaterialData():
 def testEstimateData():
 
     # STYLE, COLOUR, HEIGHT, GATE
-    def __init__(self, style, value, company_name, style_id = None):
+    def __init__(self, gate, value, company_name, gate_id = None):
 
-    newStyle = Style(style = "Full Privacy", value = "" )
+    newStyle = Style(style = "Full Privacy", value = 40, company_name = "Fence", style_id = 1 )
+    newColor = Colour(colour = "White", value = 0, company_name = "Fence", colour_id = 1)
+    newHeight = Height(height = "6", value = 0, company_name = "Fence", height_id = 1)
+    newGate = Gate(gate = "Man gate 4'", value = 550, company_name = "Fence", gate_id = 1)
 
+    newStyle1 = Style(style = "Picket Top", value = 44, company_name = "Fence", style_id = 2 )
+    newColor1 = Colour(colour = "Almond (Tan)", value = 4, company_name = "Fence", colour_id = 2)
+    newHeight1 = Height(height = "5", value = -3, company_name = "Fence", height_id = 2)
+    newGate1 = Gate(gate = "RV gate 12'", value = 1300, company_name = "Fence", gate_id = 2)
+
+    dbSession.add(newStyle)
+    dbSession.add(newColor)
+    dbSession.add(newHeight)
+    dbSession.add(newGate)
+
+    dbSession.add(newStyle1)
+    dbSession.add(newColor1)
+    dbSession.add(newHeight1)
+    dbSession.add(newGate1)
+
+    dbSession.commit()
 
 '''
 
