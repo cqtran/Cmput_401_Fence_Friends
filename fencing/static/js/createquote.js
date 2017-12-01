@@ -94,6 +94,7 @@ function saveQuote() {
           material_types: JSON.stringify(listDict),
           material_amounts: JSON.stringify(amountDict),
           project_id: proj_id,
+          misc_modifier: $('#adjustment').val()
       },
       dataType: "json",
       success: function(response){

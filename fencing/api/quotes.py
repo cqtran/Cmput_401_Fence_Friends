@@ -46,7 +46,7 @@ def finalizeQuote():
         print("amount", material_amounts)
 
         # A flat rate which allows the user to alter the subtotal of the quote
-        misc_modifier = request.args.get('misc_modifier')
+        misc_modifier = request.values.get('misc_modifier')
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
