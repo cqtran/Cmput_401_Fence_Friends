@@ -159,21 +159,21 @@ def getMaterialAmount(layout):
     print('Latches',num_latches)
 
     return {
-            'Metal Posts'            : num_steel_post,
-            'Metal U-Channels'       : num_metal_uchannel,
-            'Metal L-Steels'         : num_Lsteel,
-            'Plastic T-Posts'        : num_t_post,
-            'Plastic Corner-Posts'   : num_corner_post,
-            'Plastic Line-Posts'     : num_line_post,
-            'Plastic End-Posts'      : num_end_post,
-            'Plastic Gate-Posts'     : num_gate_posts,
-            'Plastic Rails'         : num_rails,
-            'Plastic U-Channels'     : num_uchannel,
-            'Plastic T&G (Panels)'  : num_panels,
-            'Plastic Collars'       : num_collars,
-            'Plastic Caps'          : num_caps,
-            'Hinges'                : num_hinges,
-            'Latches'               : num_latches
+            'metal_post'            : num_steel_post,
+            'metal_u_channel'       : num_metal_uchannel,
+            'metal_lsteel'          : num_Lsteel,
+            'plastic_t_post'        : num_t_post,
+            'plastic_corner_post'   : num_corner_post,
+            'plastic_line_post'     : num_line_post,
+            'plastic_end_post'      : num_end_post,
+            'plastic_gate_posts'    : num_gate_posts,
+            'plastic_rail'          : num_rails,
+            'plastic_u_channel'     : num_uchannel,
+            'plastic_panel'         : num_panels,
+            'plastic_collar'        : num_collars,
+            'plastic_cap'           : num_caps,
+            'gate_hinge'            : num_hinges,
+            'gate_latch'            : num_latches
         }
 
 def posts(parsed):

@@ -1278,6 +1278,8 @@ function sendQuote() {
 			showMessage("Error sending quote");
 		}
 	});
+
+	showMessage("Quote sent");
 }
 
 function sendMaterialList() {
@@ -1296,6 +1298,8 @@ function sendMaterialList() {
 			showMessage("Error sending material list");
 		}
 	});
+
+	showMessage("Material list sent");
 }
 
 $('#view-material-list').submit(function(e) {
