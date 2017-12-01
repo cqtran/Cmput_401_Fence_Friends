@@ -6,6 +6,7 @@ Accessed November 25, 2017
 
 *:focus {
   border-color: #329664 !important;
+  outline-color: #329664 !important;
 }
 
 .tt-suggestion:hover {
