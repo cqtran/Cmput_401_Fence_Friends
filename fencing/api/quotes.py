@@ -39,24 +39,31 @@ def finalizeQuote():
         material_types = request.json['material_types']
         # A dictionary with keywords and values of the amount of material needed
         material_amounts = request.json['material_amounts']
+        # A flat rate which allows the user to alter the subtotal of the quote
+        misc_modifier = request.args.get('misc_modifier')
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
             print('Project does not exist')
             return bad_request('Project does not exist')
 
+        if material_types is None or material_amounts is None:
+            print('Material Parameters not given')
+            return bad_request('Material Parameters not given')
+
         if project.finalize:
-            print('Finalize set to false')
+            print('Project has already been finalized')
             return bad_request('Project has already been finalized')
 
         project.finalize = True
 
         try:
-            amount, amount_gst, amount_total = calculateQuote(project)
-            materials = dbSession.query(Material).filter(Material.company_name == current_user.company_name)
+            gst_rate = PriceCalculation.gstPercent
+            amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
+            material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
+            profit = amount - material_expense_total
 
-            material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts)
-            newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, )
+            newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, gst_rate = gst_rate)
         except:
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
@@ -67,8 +74,8 @@ def finalizeQuote():
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
 
-def calculateExpense(material_types, material_amounts):
-    categories = ['metalpost', 'metal_u_channel', 'metal_lsteel', 'plastic_t_post', 'plastic_corner_post', 'plastic_line_post', 'plastic_end_post',
+def calculateExpense(material_types, material_amounts, gst_rate):
+    categories = ['metal_post', 'metal_u_channel', 'metal_lsteel', 'plastic_t_post', 'plastic_corner_post', 'plastic_line_post', 'plastic_end_post',
         'plastic_gate_post', 'plastic_rail', 'plastic_u_channel', 'plastic_panel', 'plastic_collar', 'plastic_cap', 'gate_hinge', 'gate_latch']
     subtotal = 0
 
@@ -81,14 +88,13 @@ def calculateExpense(material_types, material_amounts):
         subtotal += math.ceil(material_amounts[category] / material.pieces_in_bundle) * material.my_price
 
     # Calculate gst
-    gstPercent = PriceCalculation.gstPercent
-    gst = subtotal * gstPercent
+    gst = subtotal * gst_rate
     total = subtotal + gst
 
     # PDF Should be generated too
     return subtotal, gst, total
 
-def calculateQuote(project):
+def calculateQuote(project, misc_modifier, gst_rate):
     layout_id = project.layout_selected
     appearance_id = project.appearance_selected
 
@@ -105,8 +111,12 @@ def calculateQuote(project):
     print(prices)
     # Calculate subtotal, gst, and total
     subtotal = PriceCalculation.subtotal(prices)
-    gstPercent = PriceCalculation.gstPercent
-    gst = subtotal * gstPercent
+
+    if misc_modifier is not None:
+        subtotal += misc_modifier
+
+
+    gst = subtotal * gst_rate
     total = subtotal + gst
 
     # PDF Should be generated too
