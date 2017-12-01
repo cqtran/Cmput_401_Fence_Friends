@@ -134,11 +134,6 @@ function escapeAngleBrackets(string) {
 	});
 }
 
-function setProgressTitle(title) {
-	var progressTitle = document.getElementById("progressTitle");
-	progressTitle.innerHTML = title;
-}
-
 function setActiveLayout(number) {
 	if (number == deletedLayout) {
 		deletedLayout = null;
@@ -1269,21 +1264,15 @@ $('#quote-form').submit(function(e) {
 });
 
 function sendQuote() {
-	$('#progress').modal('show');
-
 	$.ajax({
 		type: 'POST',
 		url: "/sendQuote/?proj_id=" + proj_id,
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
-		success: function(result) {
-			$("#progress").modal("hide");
-		},
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
-			$("#progress").modal("hide");
 			showMessage("Error sending quote");
 		}
 	});
@@ -1291,7 +1280,6 @@ function sendQuote() {
 
 function sendMaterialList() {
 	$('#material-list-modal').modal('hide');
-	$('#progress').modal('show');
 
 	$.ajax({
 		type: 'POST',
@@ -1299,14 +1287,10 @@ function sendMaterialList() {
 		data: JSON.stringify({email: $("#material-list-email").val()}),
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
-		success: function(result) {
-			$("#progress").modal("hide");
-		},
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
 			console.log(textStatus);
 			console.log(error);
-			$("#progress").modal("hide");
 			showMessage("Error sending material list");
 		}
 	});
