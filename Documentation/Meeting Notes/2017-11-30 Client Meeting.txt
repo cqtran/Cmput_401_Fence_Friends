@@ -1,7 +1,10 @@
 2017-11-30 Meeting with Jon
 ------------------------------------------------------
 Demoed the app from the server
-Jon was able to do a trial run through the app
+Jon was able to do a trial run through the app. We showed
+him many of the major features from the user side
+and admin side. He tried it from both a computer and 
+iPad.
 
 A few changes to do:
 - PDF formatting

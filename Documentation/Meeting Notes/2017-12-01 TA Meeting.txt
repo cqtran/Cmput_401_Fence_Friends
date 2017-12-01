@@ -1,0 +1,15 @@
+2017-12-01 Meeting with Diego
+------------------------------------------------------
+Demoed sprint 4 changes to Diego:
+	- UI upgrade, dark grey and green theme
+	- Materials and Estimates tables/csv uploading
+	- Layouts and Appearances tabs for different options
+	- Quote creation, material selection
+	- Accounting tables to show revenue and expenses with option to export
+	- Dashboard homepage with profits graph and buttons to other main pages
+	- Pictures expandable and deletable by clicking
+	- Google Maps opens up when clicking the project address
+	
+Feedback:
+	- New UI and Dashboard looks very different and great
+	- Need to fix certain errors in quote creation (or iPad compatibility?)
