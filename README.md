@@ -136,14 +136,14 @@ python3 testingapp.py
 python3 -m unittest discover
 ```
 ## Server Hosting
-The app is hosted using apache2 with the app.conf file in Documentation/Server.
-The server uses mod_wsgi-express to help interact between apache2 and Flask.
-The server uses certbot to generate and maintain ssl certificates.
-The server files are stored at /var/www/CMPUT401-FenceFriends on the server.
-
-The server required these to be installed:
-sudo mod_wsgi-express install-module
-sudo apt-get install python-certbot-apache
+The app is hosted using apache2 with the app.conf file in Documentation/Server.  
+The server uses mod_wsgi-express to help interact between apache2 and Flask.  
+The server uses certbot to generate and maintain ssl certificates.  
+The server files are stored at /var/www/CMPUT401-FenceFriends on the server.  
+  
+The server required these to be installed:  
+sudo mod_wsgi-express install-module  
+sudo apt-get install python-certbot-apache  
 
 ## Help
 
