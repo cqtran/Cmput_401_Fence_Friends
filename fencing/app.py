@@ -59,7 +59,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_FLASH_MESSAGES'] = False
 
@@ -267,7 +267,8 @@ def newcustomer():
         name = request.form['name']
         email = request.form['email']
         pn = request.form['pn']
-        address = request.form['address']
+        #address = request.form['address']
+        address = None
         # add customer to database
         success = Customers.addCustomer(name,email,pn,address,current_user.company_name)
 

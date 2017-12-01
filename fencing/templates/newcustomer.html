@@ -14,10 +14,6 @@
         <label for="phone_number">Phone Number</label>
         <input onchange="markDirty()" class="form-control" type="tel" pattern="^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$" placeholder="Enter Phone Number"id="phone_number" name="pn" size="20" maxlength="20">
     </div>
-    <div class="form-group">
-        <label for="address">Address</label>
-        <input onchange="markDirty()" class="form-control" type="text" placeholder="Enter Address" id="address" name="address" size="20" maxlength="50">
-    </div>
     <p></p>
     <input id="save" onclick="markClean()" class="btn btn-primary btn-block" type="submit" value="Create">
 </form>
