@@ -17,7 +17,7 @@ function getMaterials(appearance){
     type: 'GET',
     url: '/getMaterialLists/?appearance_id=' + appearance,
     success: function(result) {
-      console.log(result)
+      console.log("items: " + result);
     },
     error: function(result) {
         alert("material appearnce fucked");
@@ -34,7 +34,7 @@ function getProjectInfo() {
       var appearance = result[0].appearance_selected;
       console.log("layout: " + layout);
       console.log("appearance: " + appearance)
-      getMaterials(layout);
+      getMaterialAmounts(layout);
       getMaterials(appearance);
     },
     error: function(result) {

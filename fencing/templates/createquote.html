@@ -5,16 +5,19 @@
 <hr class="mt-2">
 
 <form id="create-form">
+<div class="container-fluid">   
+  <h4>Metal Posts</h4>
   <div class="row">
-    <div class="col-sm-6">
-      <h4>Metal Posts</h4>
+    <div class="col-sm-4">
       <input onchange="saveActiveAppearance()" id="m-posts" type="number" class="form-control" min="0" step="1" oninput="validity.valid||(value='');">
     </div>
-    <div class="col-sm-6">
-      <input onchange="saveActiveAppearance()" id="m-posts" type="number" class="form-control" min="0" step="1" oninput="validity.valid||(value='');">
+    <div class="col-sm-8">
+      <select class="selectpicker" id="status" name="status" data-style="btn-primary" data-width="auto">
+        <option value="All">All</option>
+      </select>
     </div>
   </div>
-
+</div>
 </form>
 {% endblock %}
 {% block content2 %}
