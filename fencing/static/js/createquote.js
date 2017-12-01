@@ -3,7 +3,7 @@ var proj_id;
 function getMaterialAmounts(layout){
   $.ajax({
     type: 'GET',
-    url: '/materialAmounts/?layout_id=' + layout,
+    url: '/getMaterialAmounts/?layout_id=' + layout,
     success: function(result) {
       console.log("amounts: " + result)
     },
