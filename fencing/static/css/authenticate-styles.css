@@ -1,3 +1,7 @@
+#remember {
+  display: none;
+}
+
 /* No lines in modal */
 .modal-header, .modal-footer {
   border-top: none !important;
