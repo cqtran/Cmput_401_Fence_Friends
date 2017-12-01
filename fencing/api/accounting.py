@@ -12,8 +12,7 @@ from api.errors import bad_request
 accountingBlueprint = Blueprint('accountingBlueprint', __name__, template_folder='templates')
 
 @accountingBlueprint.route('/getAccountingSummary/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def getAccountingSummary():
     """ Returns a list of accounting related calculations """
     if request.method == 'POST':
@@ -26,8 +25,7 @@ def getAccountingSummary():
     pass
 
 @accountingBlueprint.route('/exportAccountingSummary/', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def exportAccountingSummary():
     """ Returns a downloadable file of the accounting summary """
     #return send_from_directory(directory=uploads, filename=filename)

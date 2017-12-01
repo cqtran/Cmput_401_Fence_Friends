@@ -261,8 +261,7 @@ def deactivateUser():
         return jsonify(users)
 
 @app.route('/newcustomer/', methods=['GET', 'POST'])
-@login_required
-@roles_required('primary')
+
 def newcustomer():
     if request.method == 'POST':
         name = request.form['name']
@@ -278,14 +277,12 @@ def newcustomer():
         return render_template("newcustomer.html", company = current_user.company_name)
 
 @app.route('/editcustomer/', methods=['GET', 'POST'])
-@login_required
-@roles_required('primary')
+
 def editcustomer():
     return render_template("editcustomer.html")
 
 @app.route('/projects/')
-@login_required
-@roles_required('primary')
+
 def projects():
     status = request.args.get('status')
 
@@ -298,21 +295,18 @@ def projects():
     return render_template("projects.html", company = current_user.company_name)
 
 @app.route('/customerinfo/')
-@login_required
-@roles_required('primary')
+
 def customerinfo():
     status = request.args.get('status')
     return render_template("customerinfo.html", company = current_user.company_name)
 
 @app.route('/newproject/')
-@login_required
-@roles_required('primary')
+
 def newproject():
     return render_template("newproject.html", company = current_user.company_name)
 
 @app.route('/viewMaterialList/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def viewMaterialList():
     """Generate and view a material list in a new tab"""
     proj_id = request.args.get('proj_id')
@@ -332,8 +326,7 @@ def viewMaterialList():
     return jsonify({"reload": 1})
 
 @app.route('/viewQuote/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def viewQuote():
     """Generate and view a quote in a new tab"""
     proj_id = request.args.get('proj_id')
@@ -356,8 +349,7 @@ def viewQuote():
     return jsonify({"reload": 1})
 
 @app.route('/sendQuote/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def sendQuote():
     """Email a quote to a customer"""
     proj_id = request.args.get('proj_id')
@@ -378,8 +370,7 @@ def sendQuote():
     return redirect(url_for("projectinfo", proj_id=proj_id))
 
 @app.route('/sendMaterialList/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def sendMaterialList():
     """Email a material list to a supplier"""
     proj_id = request.args.get('proj_id')
@@ -402,8 +393,7 @@ def sendMaterialList():
 
 # delete later, just for testing note ---- i think we need this
 @app.route('/projectinfo/', methods = ['GET', 'POST', 'PUT'])
-@login_required
-@roles_required('primary')
+
 def projectinfo():
     if request.method == "GET":
         return render_template("projectinfo.html")
@@ -412,28 +402,24 @@ def projectinfo():
         return render_template("projectinfo.html")
 
 @app.route('/editprojectinfo/', methods = ['GET'])
-@login_required
-@roles_required('primary')
+
 def editprojectinfo():
     if request.method == "GET":
         project_id = request.args.get('proj_id')
         return render_template("editproject.html", company = current_user.company_name)
 
 @app.route('/viewPrices/', methods = ['GET'])
-@login_required
-@roles_required('primary')
+
 def viewPrices():
     return render_template("prices.html", company = current_user.company_name)
 
 @app.route('/viewEstimates/', methods = ['GET'])
-@login_required
-@roles_required('primary')
+
 def viewEstimates():
     return render_template("estimates.html", company = current_user.company_name)
 
 @app.route('/deleteAttachment/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def deleteAttachment():
     path = request.args.get("attachment")
 
@@ -463,8 +449,7 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 @app.route('/accounting/', methods = ['GET'])
-@login_required
-@roles_required('primary')
+
 def accounting():
     info = Accounting.getQuoteInfo()
     print("\n\n", info, "\n\n")

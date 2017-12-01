@@ -12,8 +12,7 @@ from api.errors import bad_request
 appearanceBlueprint = Blueprint('appearanceBlueprint', __name__, template_folder='templates')
 
 @appearanceBlueprint.route('/saveAppearance/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def saveAppearance():
     project_id = request.args.get('proj_id')
 
@@ -43,8 +42,7 @@ def saveAppearance():
 
 
 @appearanceBlueprint.route('/removeAppearance/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def removeAppearance():
     project_id = request.args.get('proj_id')
     appearance_id = request.json['appearanceId']

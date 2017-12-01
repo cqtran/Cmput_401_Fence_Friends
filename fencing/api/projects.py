@@ -19,8 +19,7 @@ import datetime
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
 @projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def saveAppearanceSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -31,8 +30,7 @@ def saveAppearanceSelection():
     return "{}"
 
 @projectBlueprint.route('/saveLayoutSelection/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def saveLayoutSelection():
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
@@ -44,8 +42,7 @@ def saveLayoutSelection():
 
 @projectBlueprint.route('/getProjectList/', defaults={'customer_id': None}, methods=['GET'])
 @projectBlueprint.route('/getProjectList/<int:customer_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getProjectList(customer_id):
     """ Returns a list of projects. If a customer id is provided, the list will contain
     only contain projects to the given customer id """
@@ -77,8 +74,7 @@ def getProjectList(customer_id):
         return jsonify(projectList)
 
 @projectBlueprint.route('/getProject/<int:project_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def getProject(project_id):
     """ Returns a single project of a given project id """
     if request.method == "GET":
@@ -89,8 +85,7 @@ def getProject(project_id):
         return jsonify(project)
 
 @projectBlueprint.route('/addproject/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def addproject():
     if request.method == 'POST':
         customer = request.values.get("customer")
@@ -105,8 +100,7 @@ def addproject():
 
 @projectBlueprint.route('/projectdetails/', defaults={'project_id': None}, methods=['GET'])
 @projectBlueprint.route('/projectdetails/<int:project_id>', methods=['GET'])
-@login_required
-@roles_required('primary')
+
 def projectdetails(project_id):
     if request.method == "GET":
         project = dbSession.query(Project).filter(
@@ -148,8 +142,7 @@ def projectdetails(project_id):
 
 
 @projectBlueprint.route('/updateproject/', methods=['POST'])
-@login_required
-@roles_required('primary')
+
 def updateProject():
     if request.method == "POST":
         customer = request.values.get("customer")
@@ -172,8 +165,7 @@ def updateProject():
         return jsonify(project_id)
 
 @projectBlueprint.route('/deleteproject/', methods = ['POST'])
-@login_required
-@roles_required('primary')
+
 def deleteproject():
     proj_id = request.values.get("proj_id")
     print(proj_id)

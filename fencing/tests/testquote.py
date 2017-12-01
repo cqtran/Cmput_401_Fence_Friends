@@ -19,6 +19,7 @@ class TestQuote(unittest.TestCase):
         statusTestData()
         customerTestData()
         projectTestData()
+        quoteTestData()
 
     def tearDown(self):
         """ Clear all tables"""
@@ -30,38 +31,32 @@ class TestQuote(unittest.TestCase):
         """ Tests for adding a user """
 
         # Test if there are no user
+        self.tearDown()
         noQuote = dbSession.query(Quote).all()
         assert len(noQuote) == 0
 
     def test_addQuote(self):
         # Add test data
-        quoteTestData()
+        self.setUp()
 
         print("Testing Quote")
         response = Quote.query.filter_by(quote_id=1).first()
-        assert response.quote == 1500
+
+        print(response.amount_total)
+        assert float(response.amount_total)==float(115.12)
 
     # Test getting a user 
     def test_getQuote(self):
-        quoteTestData()
         response = Quote.query.filter_by(project_id=1).all()
 
         # user name isnt unique
         print(len(response))
         assert len(response) > 1
-        assert response[0].quote != response[1].quote
+        assert float(response[0].amount_total) != float(response[1].amount_total)
 
-    # Test note
-    def test_quoteNote(self):
-        quoteTestData()
-        response = dbSession.query(Quote).all()
-        assert len(response) > 1
-        assert response[0].note != response[1].note
-        assert response[0].note == response[2].note
 
     # Test project_id
     def test_quotePID(self):
-        quoteTestData()
         response = dbSession.query(Quote).all()
         assert len(response) > 1
         assert response[0].project_id == response[1].project_id
