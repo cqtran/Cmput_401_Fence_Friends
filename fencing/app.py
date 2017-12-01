@@ -488,6 +488,30 @@ def accounting():
     info = Accounting.getQuoteInfo()
     return render_template("accounting.html", company = current_user.company_name)
 
+@app.route('/editsupplier/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def editsupplier():
+    company = dbSession.query(Company).filter(
+        Company.company_name == current_user.company_name).one()
+    email = company.supplier_email
+
+    if email is None:
+        email = ""
+
+    return render_template("editsupplier.html",
+        company = company.company_name, email = email)
+
+@app.route('/updatesupplier/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def updatesupplier():
+    company = dbSession.query(Company).filter(
+        Company.company_name == current_user.company_name).one()
+    company.supplier_email = request.json["email"]
+    dbSession.commit()
+    return "{}"
+
 @app.route('/editquote/', methods = ['GET'])
 @login_required
 @roles_required('primary')

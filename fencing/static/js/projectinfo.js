@@ -1,3 +1,5 @@
+var supplierEmail;
+
 var attachmentPathLength = 20;
 var pdfs = [];
 
@@ -1006,6 +1008,7 @@ function moreDetails(){
 		customerName.text(result[8]);
 		var oldHref = customerName.attr('href');
 		customerName.attr('href', oldHref + result[9] + '&status=All');
+		supplierEmail = result[13];
 		getPics();
 		loadLayouts(layouts, displayStrings);
 		loadAppearances(appearances);
@@ -1270,7 +1273,7 @@ $('#view-quote').submit(function(e) {
 });
 $('#send-material-list').submit(function(e) {
 	e.preventDefault();
-	$('#material-list-email').val('blah');
+	$('#material-list-email').val(supplierEmail);
 	$('#material-list-modal').modal('show');
 });
 

@@ -1,6 +1,6 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Project, Customer, Layout, Status, Picture
+from database.models import Project, Customer, Layout, Status, Picture, Company
 from diagram.DiagramParser import DiagramParser
 from flask.json import jsonify
 import json
@@ -139,10 +139,13 @@ def projectdetails(project_id):
         styles = [i.style for i in Estimates.getStyles()]
         colours = [i.colour for i in Estimates.getColours()]
 
-        company = current_user.company_name
-        lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
+        company = dbSession.query(Company).filter(
+            Company.company_name == current_user.company_name).one()
+        companyName = company.company_name
+        supplierEmail = company.supplier_email
+        lst = [imgPath, tbnPath, json_layouts, json_appearances, companyName,
             selectedLayout, selectedAppearance, displayStrings, customerName,
-            customerId, heights, styles, colours]
+            customerId, heights, styles, colours, supplierEmail]
 
         return jsonify(lst)
 
