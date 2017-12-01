@@ -7257,8 +7257,7 @@ if (typeof mxVertexHandler != 'undefined')
 		// Invokes turn on single click on rotation handle
 		mxVertexHandler.prototype.rotateClick = function()
 		{
-			// Commented out because this feature breaks the parser
-			//this.state.view.graph.turnShapes([this.state.cell]);
+			this.state.view.graph.turnShapes([this.state.cell]);
 		};
 		
 		var vertexHandlerMouseMove = mxVertexHandler.prototype.mouseMove;

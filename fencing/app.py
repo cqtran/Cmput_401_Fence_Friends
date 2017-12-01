@@ -3,11 +3,10 @@ from flask import Flask, Blueprint, render_template, request, redirect, \
 from flask_security import Security, login_required, \
      SQLAlchemySessionUserDatastore
 from database.db import dbSession, init_db, fieldExists
-from database.models import User, Role, Company, Customer, Project, Status, Picture, Layout
+from database.models import User, Role, Company, Customer, Project, Status, Picture
 from flask_mail import Mail
 from api.email.Email import SENDER_EMAIL, Email
 from api.email.Messages import Messages
-from diagram.DiagramParser import DiagramParser
 from flask_security.core import current_user
 from flask_security.signals import user_registered
 from flask_security.decorators import roles_required
@@ -22,7 +21,6 @@ import api.pictures as Pictures
 import api.statuses as Statuses
 import api.layouts as Layouts
 import api.appearances as Appearances
-import api.quotes as Quotes
 import api.materials as Materials
 import api.estimates as Estimates
 import api.accounting as Accounting
@@ -43,7 +41,6 @@ app.register_blueprint(Statuses.statusBlueprint)
 app.register_blueprint(Users.userBlueprint)
 app.register_blueprint(Layouts.layoutBlueprint)
 app.register_blueprint(Appearances.appearanceBlueprint)
-app.register_blueprint(Quotes.quoteBlueprint)
 #app.register_blueprint(Errors.errorBlueprint)
 app.register_blueprint(Materials.materialBlueprint)
 app.register_blueprint(Estimates.estimateBlueprint)
@@ -59,7 +56,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_FLASH_MESSAGES'] = False
 
@@ -213,12 +210,6 @@ def customers():
     else:
         return render_template("customer.html", company = current_user.company_name)
 
-'''@app.route('/customers/')
-@login_required
-@roles_required('primary')
-def customers():
-    return render_template("customer.html", company = current_user.company_name)'''
-
 @app.route('/users/')
 @login_required
 @roles_required('admin')
@@ -312,10 +303,7 @@ def viewMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
-    layout = dbSession.query(Layout).filter(
-        Layout.layout_id == project.layout_selected).one()
-    parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.materialListAttachment(project, parsed)
+    attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
@@ -336,10 +324,7 @@ def viewQuote():
         Customer.customer_id == project.customer_id).one()
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
-    layout = dbSession.query(Layout).filter(
-        Layout.layout_id == project.layout_selected).one()
-    parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.quoteAttachment(project, customer, parsed)
+    attachmentString = Messages.quoteAttachment(project, customer)
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
@@ -442,7 +427,7 @@ def deleteAttachment():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html', company=current_user.company_name), 404
+    return render_template('404.html'), 404
 
 @app.errorhandler(500)
 def internal_server_error(e):

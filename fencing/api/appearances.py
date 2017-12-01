@@ -20,17 +20,14 @@ def saveAppearance():
 
     if 'appearanceId' in request.json:
         appearance_id = request.json['appearanceId']
-
+    
     appearance_name = request.json['name']
-    style = request.json['style']
-    height = request.json['height']
-    border_colour = request.json['borderColor']
-    panel_colour = request.json['panelColor']
-    base_price = request.json['basePrice']
+    panelGap = request.json['panelGap']
+    fenceHeight = request.json['fenceHeight']
 
     appearance_id = updateAppearanceInfo(project_id, appearance_id,
-        appearance_name, style, height, border_colour, panel_colour, base_price)
-
+        appearance_name, panelGap, fenceHeight)
+    
     if "saveSelection" in request.json:
         project = dbSession.query(Project).filter(
             Project.project_id == project_id).one()
@@ -51,12 +48,13 @@ def removeAppearance():
 
 def createAppearance(project_id):
     newAppearance = Appearance(project_id = project_id,
-        appearance_name = "Appearance 1", style = None, height = None, border_colour = None, panel_colour = None, base_price = 0)
+        appearance_name = "Appearance 1", panel_gap = "0.01", height = "0.01")
     dbSession.add(newAppearance)
     dbSession.commit()
     return newAppearance
 
-def updateAppearanceInfo(project_id, appearance_id, appearance_name, style, height, border_colour, panel_colour, base_price):
+def updateAppearanceInfo(project_id, appearance_id, appearance_name, panelGap,
+    fenceHeight):
 
     if appearance_id is None:
         appearance = createAppearance(project_id)
@@ -66,12 +64,8 @@ def updateAppearanceInfo(project_id, appearance_id, appearance_name, style, heig
             Appearance.appearance_id == appearance_id).one()
 
     appearance.appearance_name = appearance_name
-    appearance.style = style
-    appearance.height = height
-    appearance.border_colour = border_colour
-    appearance.panel_colour = panel_colour
-    appearance.base_price = base_price
-
+    appearance.panel_gap = panelGap
+    appearance.height = fenceHeight
     dbSession.commit()
     appearance_id = appearance.appearance_id
     return appearance_id
