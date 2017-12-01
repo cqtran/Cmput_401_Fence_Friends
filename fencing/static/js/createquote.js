@@ -163,11 +163,6 @@ function makeDictionary(){
   listDict["gate_hinge"] = $('#gate_hinge-type').val();
   listDict["gate_latch"] = $('#gate_latch-type').val();
 }
-$('form').submit(function(e) {
-  e.preventDefault();
-  saveQuote(e);
-});
-
 $('#submit').click(function(){
   makeDictionary();
   saveQuote();

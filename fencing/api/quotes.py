@@ -92,7 +92,7 @@ def getProfit():
         projects.append(project.project_name)
         profits.append(quote.profit)
 
-    dictionary = {"projects" : projects, "profits" : profit}
+    dictionary = {"projects" : projects, "profits" : profits}
 
     return jsonify(dictionary)
 
