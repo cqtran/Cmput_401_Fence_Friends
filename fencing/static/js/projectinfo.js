@@ -155,19 +155,24 @@ function setActiveAppearance(number) {
 }
 
 function editLayoutName(number) {
-	setLayoutName(number, false, null, layoutCount == 1);
-}
-
-function editAppearanceName(number) {
-	setLayoutName(number, false, null, appearanceCount == 1);
-}
-
-function setLayoutName(number, loading, newName, noClose) {
 	if (finalized) {
 		showMessage("Cannot edit finalized projects");
 		return;
 	}
 
+	setLayoutName(number, false, null, layoutCount == 1);
+}
+
+function editAppearanceName(number) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+	
+	setLayoutName(number, false, null, appearanceCount == 1);
+}
+
+function setLayoutName(number, loading, newName, noClose) {
 	if (newName == null) {
 		var f = function(input) {
 			setLayoutName_(number, loading, input, noClose);
@@ -208,11 +213,6 @@ function setLayoutName_(number, loading, newName, noClose) {
 }
 
 function setAppearanceName(number, loading, newName, noClose) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	if (newName == null) {
 		var f = function(input) {
 			setAppearanceName_(number, loading, input, noClose);
