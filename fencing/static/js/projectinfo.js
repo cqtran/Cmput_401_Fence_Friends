@@ -806,34 +806,34 @@ function setProjectInfo(project){
 	document.getElementById('start-date').innerHTML =
 		escapeHtml(project[0].start_date);
 	if(project[0].status_name == "Paid"){
-	  document.getElementById("status").setAttribute('class', 'float-right paid-text');
+	  document.getElementById("status").setAttribute('class', 'float-right paid-text text-grey');
 	}
 	else if(project[0].status_name == "Not Reached"){
-	  document.getElementById("status").setAttribute('class', 'float-right not-reached-text');
+	  document.getElementById("status").setAttribute('class', 'float-right not-reached-text text-grey');
 	}
 	else if(project[0].status_name == "Appraisal Booked"){
-	  document.getElementById("status").setAttribute('class', 'float-right appraisal-booked-text');
+	  document.getElementById("status").setAttribute('class', 'float-right appraisal-booked-text text-grey');
 	}
 	else if(project[0].status_name == "Waiting for Appraisal"){
-	  document.getElementById("status").setAttribute('class', 'float-right waiting-appraisal-text');
+	  document.getElementById("status").setAttribute('class', 'float-right waiting-appraisal-text text-grey');
 	}
 	else if(project[0].status_name == "Appraised"){
-	  document.getElementById("status").setAttribute('class', 'float-right appraised-text');
+	  document.getElementById("status").setAttribute('class', 'float-right appraised-text text-grey');
 	}
 	else if(project[0].status_name == "Quote Sent"){
-	  document.getElementById("status").setAttribute('class', 'float-right quote-sent-text');
+	  document.getElementById("status").setAttribute('class', 'float-right quote-sent-text text-grey');
 	}
 	else if(project[0].status_name == "Waiting for Alberta1Call"){
-	  document.getElementById("status").setAttribute('class', 'float-right waiting-alberta-text');
+	  document.getElementById("status").setAttribute('class', 'float-right waiting-alberta-text text-grey');
 	}
 	else if(project[0].status_name == "Installation Pending"){
-	  document.getElementById("status").setAttribute('class', 'float-right install-pending-text');
+	  document.getElementById("status").setAttribute('class', 'float-right install-pending-text text-grey');
 	}
 	else if(project[0].status_name == "Installing"){
-	  document.getElementById("status").setAttribute('class', 'float-right installing-text');
+	  document.getElementById("status").setAttribute('class', 'float-right installing-text text-grey');
 	}
 	else if(project[0].status_name == "No Longer Interested"){
-	  document.getElementById("status").setAttribute('class', 'float-right not-interested-text');
+	  document.getElementById("status").setAttribute('class', 'float-right not-interested-text text-grey');
 	}
 
 	// Sets the project_id into the uploadpicture form

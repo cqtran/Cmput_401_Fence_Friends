@@ -16,8 +16,8 @@ Accessed November 25, 2017
 
 .finalize-off:hover,
 .finalize-off:active {
-  color: #329664 !important;
-  border: 0.2em solid #329664 !important;
+  color: #343a40 !important;
+  border: 0.2em solid #343a40 !important;
 }
 
 /*
@@ -215,9 +215,13 @@ input[type="search"]::-webkit-search-cancel-button {
   color: black;
 }
 
+.text-grey {
+  color: #777777;
+}
+
 h1 {
 	font-weight: bold;
-  color: #329664;
+  color: #343a40;
 }
 body{
   hyphens: auto;
@@ -231,7 +235,7 @@ input[type="file"] {
 }
 .btn-primary {
   color: #ffffff;
-  background-color: #329664;
+  background-color: #343a40;
   border: 0;
   font-weight: bold;
 }
@@ -241,7 +245,7 @@ input[type="file"] {
   background-color: #2b724f;
 }
 .btn-secondary {
-  color: #329664;
+  color: #343a40;
   background-color: #ffffff;
   border: 0;
   font-weight: bold;
