@@ -107,7 +107,8 @@ class Messages:
 				'''<tr class="bordered">
 					<td class="bordered">{name}</td>
 					<td class="right bordered">$ {price}</td>
-				</tr>'''.format(name=price[0], price=price[1])
+				</tr>'''.format(name=price[0],
+				price=PriceCalculation.priceString(price[1]))
 			)
 		
 		if misc:
@@ -115,7 +116,7 @@ class Messages:
 				'''<tr class="bordered">
 					<td class="bordered">Misc.</td>
 					<td class="right bordered">$ {price}</td>
-				</tr>'''.format(price=misc)
+				</tr>'''.format(price=PriceCalculation.priceString(misc))
 			)
 
 		diagram = dbSession.query(Layout).filter(
@@ -164,8 +165,11 @@ class Messages:
 				</span></b>
 			</div>
 			""".format(pageBreak=pageBreak, diagram=diagram,
-				prices="".join(priceStrings), subtotal=subtotal,
-				gstPercent=gstPercent, gst=gst, total=total)
+				prices="".join(priceStrings),
+				subtotal=PriceCalculation.priceString(subtotal),
+				gstPercent=round(gstPercent, 0),
+				gst=PriceCalculation.priceString(gst),
+				total=PriceCalculation.priceString(total))
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}

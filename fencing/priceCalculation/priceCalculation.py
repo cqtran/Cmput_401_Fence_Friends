@@ -2,6 +2,9 @@ from decimal import Decimal
 
 gstPercent = Decimal("5.00") / 100
 
+def priceString(price):
+	return str(round(price, 2))
+
 def subtotal(prices):
 	"""Return the subtotal of the given prices"""
 	total = Decimal("0.00")
