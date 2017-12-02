@@ -17,7 +17,7 @@ function getProfits(){
           projectProfit.push(profits[i]);
         }
         else{
-          var added = profits[i] + projectProfit[i-1];
+          var added = parseInt(profits[i]) + parseInt(projectProfit[i-1]);
           console.log(added);
           projectProfit.push(added);
         }
