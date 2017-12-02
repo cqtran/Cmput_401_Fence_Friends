@@ -81,7 +81,7 @@ function updateProjects(projects){
 function showError(){
   $('#projectlist').empty();
   var item = document.createElement('a');
-  item.appendChild(document.createTextNode('No projects were found for this customer'));
+  item.appendChild(document.createTextNode('No projects were found'));
   projectList.appendChild(item);
 
   var createNew = document.createElement('a');
