@@ -1,3 +1,6 @@
+var tableCost;
+var tableData;
+
 function getSummary() {
   $.ajax({
     type: 'GET',
@@ -6,38 +9,13 @@ function getSummary() {
       updateTable(result);
     },
     error: function(result) {
-      showError();
+      showMessage("Data not available.")
     }
-  });
-}
-function projectDeatils(){
-  $.ajax({
-      type: 'GET',
-      url: '/projectdetails/' + proj_id,
-      success: function(result) {
-
-      },
-      error: function(xhr, textStatus, error) {
-    if (proj_id != null) {
-      showMessage("Error");
-    }
-    
-    console.log(xhr.statusText);
-    console.log(textStatus);
-    console.log(error);
-      }
   });
 }
 function updateTable(row) {
   // Update the Accounting table with data
 }
-
-function showError() {
-  var item = document.createElement('a');
-  item.appendChild(document.createTextNode('Accounting summary not available'));
-  // Append item to document
-}
-
 
 function extractData(tablename, filename){
   var rows = $(tablename).DataTable().rows().data();
@@ -71,17 +49,25 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
+//populate years in dropdown
+function yearSelect(){
+  for (i = new Date().getFullYear(); i > 2015; i--) {
+    $('select[name=dataYear]').append('<option value="' + i + '">' + i + '</option>');
+    $('select[name=costYear]').append('<option value="' + i + '">' + i + '</option>');
+  }
+  $('.selectpicker').selectpicker('refresh');
+}
 
-$(document).ready(function(){
-  //pictureList = document.getElementById('projectPictures');
-
-  // Suppress warnings so no warning on empty table
-  $.fn.dataTable.ext.errMode = 'none';
-
-  $('#dataTable').DataTable({
+function populateData(){
+  //populate data for data table
+  tableData = $('#dataTable').DataTable({
+    searching: false,
     "ajax" :{
       "type": 'POST',
       "url": '/getAccountingSummary/',
+      "data": function ( d ) {
+        d.year = $('#dataYear').val();
+    },
     },
     "columns": [
       {"data": "quote_id"},
@@ -136,12 +122,18 @@ $(document).ready(function(){
       $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
     }
   });
+}
 
-
-  $('#costTable').DataTable({
+function populateCost(){
+  //populate data for cost table
+  tableCost = $('#costTable').DataTable({
+    searching: false,
     "ajax" :{
       "type": 'POST',
       "url": '/getAccountingSummary/',
+      "data": function ( d ) {
+        d.year = $('#costYear').val();
+    },
     },
     "columns": [
       {"data": "quote_id"},
@@ -196,6 +188,15 @@ $(document).ready(function(){
       $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
     }
   });
+}
+$(document).ready(function(){
+  yearSelect();
+
+  // Suppress warnings so no warning on empty table
+  $.fn.dataTable.ext.errMode = 'none';
+
+  populateData();
+  populateCost();
 
   // Remove "Search:" and add search icon
   var dataTableLabel = $('#dataTable_filter > label');
@@ -207,17 +208,33 @@ $(document).ready(function(){
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
+  //onclick listener for sliding
+  $('.slidey').click(function(){
+    slider(this);
+  })
+  $('#dataYear').on('change', function() {
+    console.log($('#dataYear').val());
+    tableData.clear().draw();
+    tableData.ajax.reload();
+  });
+  $('#costYear').on('change', function() {
+    console.log($('#costYear').val());
+    tableCost.clear().draw();
+    tableCost.ajax.reload();
+  });
 });
 
+//change to projectinfo
 function changePage(proj_id){
   window.location.href = '/projectinfo?proj_id=' + proj_id;
 }
 
-function slider(){
+//these deal with hiding the charts
+function slider(item){
   /* toggle if is shows */
-  console.log("tetsing");
-  $(this).next().slideToggle();
-  swapCaret(this);
+  console.log($(item).attr('class'));
+  $(item).next().next().slideToggle();
+  swapCaret(item);
 }
 function swapCaret(header) {
   var i = $(header).find('i:first');
@@ -231,4 +248,8 @@ function swapCaret(header) {
     i.removeClass('fa-caret-left');
     i.addClass('fa-caret-down');
   }
+}
+function showMessage(message) {
+  $('#message-text').html(message);
+  $('#message').modal('show');
 }

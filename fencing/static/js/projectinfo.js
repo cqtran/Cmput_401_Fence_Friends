@@ -1,3 +1,11 @@
+var finalizedQuote = "";
+var finalizedSupply = "";
+
+var saveLoadedAppearance = false;
+
+var supplierEmail;
+var customerEmail;
+
 var attachmentPathLength = 20;
 var pdfs = [];
 
@@ -24,6 +32,7 @@ var imgPath;
 var tbnPath;
 var pictureList;
 var proj_id;
+var cust_id;
 
 var finalized = false;
 
@@ -155,19 +164,24 @@ function setActiveAppearance(number) {
 }
 
 function editLayoutName(number) {
-	setLayoutName(number, false, null, layoutCount == 1);
-}
-
-function editAppearanceName(number) {
-	setLayoutName(number, false, null, appearanceCount == 1);
-}
-
-function setLayoutName(number, loading, newName, noClose) {
 	if (finalized) {
 		showMessage("Cannot edit finalized projects");
 		return;
 	}
 
+	setLayoutName(number, false, null, layoutCount == 1);
+}
+
+function editAppearanceName(number) {
+	if (finalized) {
+		showMessage("Cannot edit finalized projects");
+		return;
+	}
+
+	setLayoutName(number, false, null, appearanceCount == 1);
+}
+
+function setLayoutName(number, loading, newName, noClose) {
 	if (newName == null) {
 		var f = function(input) {
 			setLayoutName_(number, loading, input, noClose);
@@ -208,11 +222,6 @@ function setLayoutName_(number, loading, newName, noClose) {
 }
 
 function setAppearanceName(number, loading, newName, noClose) {
-	if (finalized) {
-		showMessage("Cannot edit finalized projects");
-		return;
-	}
-
 	if (newName == null) {
 		var f = function(input) {
 			setAppearanceName_(number, loading, input, noClose);
@@ -751,6 +760,7 @@ function loadLayouts(layouts, displayStrings){
 function setDropdownValue(dropdown, value) {
 	if (value == null) {
 		dropdown.val(dropdown.find("option:first").val());
+		saveLoadedAppearance = true;
 	}
 
 	else {
@@ -768,6 +778,11 @@ function loadAppearance(appearance, number) {
 	setAppearanceName(number, true, appearance.appearance_name);
 	document.getElementById("appearance-tab" + number).dbId =
 		appearance.appearance_id;
+	
+	if (saveLoadedAppearance) {
+		saveActiveAppearance();
+		saveLoadedAppearance = false;
+	}
 }
 
 function loadAppearances(appearances){
@@ -879,7 +894,7 @@ function makePictures(pictures) {
 		$('#imagepreview').attr('src', imgPath + picture.file_name);
 				$('#imagepopup').modal('show');
 		});
-		//link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
+
 		final.appendChild(img);
 
 		//img.className += 'img-thumbnail'
@@ -968,22 +983,20 @@ function save(url) {
 //get project info
 function getProjects(){
   $.ajax({
-      type: 'GET',
-      url: '/getProject/' + proj_id,
-      success: function(result) {
-		finalized = result[0].finalize;
-		updateFinalized(true);
-        setProjectInfo(result);
-      },
-      error: function(xhr, textStatus, error) {
-		if (proj_id != null) {
-			noProject();
-		}
-
-		console.log(xhr.statusText);
-		console.log(textStatus);
-		console.log(error);
-      }
+    type: 'GET',
+    url: '/getProject/' + proj_id,
+    success: function(result) {
+			finalized = result[0].finalize;
+			updateFinalized();
+			cust_id = result[0].customer_id;
+			getCustomerData();
+      setProjectInfo(result);
+    },
+    error: function(xhr, textStatus, error) {
+			if (proj_id != null) {
+				noProject();
+			}
+    }
   });
 }
 
@@ -1006,6 +1019,9 @@ function moreDetails(){
 		customerName.text(result[8]);
 		var oldHref = customerName.attr('href');
 		customerName.attr('href', oldHref + result[9] + '&status=All');
+		supplierEmail = result[13];
+		finalizedQuote = result[14];
+		finalizedSupply = result[15];
 		getPics();
 		loadLayouts(layouts, displayStrings);
 		loadAppearances(appearances);
@@ -1206,13 +1222,22 @@ $(document).ready(function(){
   getProjects();
 
   $('#material-list-send').click(function(e) {
-	sendMaterialList();
+		sendMaterialList();
+  });
+   $('#customer-email-send').click(function(e) {
+		sendQuote();
   });
 
   $('#input').on('shown.bs.modal', function() {
 	var inputText = $('#inputText');
 	inputText.focus();
 	inputText.select();
+  });
+
+  $('#material-list-modal').on('shown.bs.modal', function() {
+	var email = $('#material-list-email');
+	email.focus();
+	email.select();
   });
 });
 
@@ -1241,6 +1266,11 @@ $('#upload-form').submit(function(e) {
 $('#view-quote').submit(function(e) {
 	e.preventDefault();
 
+	if (finalizedQuote != "" && finalizedQuote != null) {
+		window.open("/static/" + finalizedQuote);
+		return;
+	}
+
 	$.ajax({
     type: 'POST',
     url: "/viewQuote/?proj_id=" + proj_id,
@@ -1264,21 +1294,23 @@ $('#view-quote').submit(function(e) {
 });
 $('#send-material-list').submit(function(e) {
 	e.preventDefault();
+	$('#material-list-email').val(supplierEmail);
 	$('#material-list-modal').modal('show');
-	var email = $('#modal-list-email');
-	email.focus();
-	email.select();
 });
 
 $('#quote-form').submit(function(e) {
-	sendQuote();
+	e.preventDefault();
+	$('#customer-email').val(customerEmail);
+	$('#customer-email-modal').modal('show');
 });
 
 function sendQuote() {
+	$('#customer-email-modal').modal('hide');
 	$.ajax({
 		type: 'POST',
 		url: "/sendQuote/?proj_id=" + proj_id,
 		contentType: "application/json;charset=UTF-8",
+		data: JSON.stringify({email: $("#customer-email").val()}),
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
@@ -1314,6 +1346,11 @@ function sendMaterialList() {
 $('#view-material-list').submit(function(e) {
 	e.preventDefault();
 
+	if (finalizedSupply != "" && finalizedSupply != null) {
+		window.open("/static/" + finalizedSupply);
+		return;
+	}
+
 	$.ajax({
     type: 'POST',
     url: "/viewMaterialList/?proj_id=" + proj_id,
@@ -1336,6 +1373,19 @@ $('#view-material-list').submit(function(e) {
 	});
 });
 
+//retrieves customer email
+function getCustomerData() {
+  $.ajax({
+    type: 'GET',
+    url: '/getCustomer/' + cust_id,
+    success: function(result) {
+      console.log(result[0].email);
+      customerEmail = result[0].email;
+    }
+  });
+}
+
+//delets attachments
 function deleteAttachments() {
 	$.ajax({
     type: 'POST',
@@ -1354,6 +1404,7 @@ function deleteAttachments() {
 function toggleFinalized() {
 	if (finalized) {
 		finalized = !finalized;
+		unfinalize();
 		updateFinalized();
 	}
 
@@ -1362,34 +1413,31 @@ function toggleFinalized() {
 	}
 }
 
-function updateFinalized(loading) {
+function unfinalize() {
+	$.ajax({
+	type: 'POST',
+	url: "/unfinalizeQuote/?proj_id=" + proj_id,
+	contentType: "application/json;charset=UTF-8",
+	dataType: "json",
+	error: function(xhr, textStatus, error) {
+		console.log(xhr.statusText);
+		console.log(textStatus);
+		console.log(error);
+		}
+	});
+}
+
+function updateFinalized() {
 	if (finalized) {
 		$("#finalize").removeClass("finalize-off");
 		$("#finalize-check").removeClass("finalize-check-off");
 		$("#finalize-text").html("Finalized");
-		$("#edit").css("display", "none");
 	}
 
 	else {
 		$("#finalize").addClass("finalize-off");
 		$("#finalize-check").addClass("finalize-check-off");
 		$("#finalize-text").html("Finalize");
-		$("#edit").css("display", "block");
-	}
-
-	if (!loading) {
-		$.ajax({
-		type: 'POST',
-		url: "/finalizeQuote/?proj_id=" + proj_id,
-		data: JSON.stringify({finalize: finalized}),
-		contentType: "application/json;charset=UTF-8",
-		dataType: "json",
-		error: function(xhr, textStatus, error) {
-			console.log(xhr.statusText);
-			console.log(textStatus);
-			console.log(error);
-		}
-		});
 	}
 }
 

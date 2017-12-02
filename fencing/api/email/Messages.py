@@ -5,8 +5,10 @@ from priceCalculation.QuoteCalculation import QuoteCalculation
 from priceCalculation.MaterialListCalculation import MaterialListCalculation
 import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
-from database.models import Appearance
-import api.quotes as Quotes
+from database.models import Appearance, Customer, Layout
+from diagram.DiagramParser import DiagramParser
+import api.layouts as Layouts
+import api.appearances as Appearances
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -67,25 +69,34 @@ class Messages:
 	
 	def materialListMessage(company):
 		"""Generate a material list email message"""
-		supplier = "Your face"
 		return """
-			Dear {supplier},<br>
-			<br>
 			Please find our required materials attached.<br>
 			<br>
 			Please do not respond to this email. You can contact us at
 			{company_email}
-			""".format(supplier=supplier,
-				company_email=company.email)
+			""".format(company_email=company.email)
 
-	def quoteAttachment(project, customer, parsed):
+	def quoteAttachment(project, customer=None, parsed=None, misc=None):
 		"""Generate the content of a quote attachment and return it"""
+		if customer is None:
+			customer = dbSession.query(Customer).filter(
+				Customer.customer_id == project.customer_id).one()
+		
+		if parsed is None:
+			layout = dbSession.query(Layout).filter(
+				Layout.layout_id == project.layout_selected).one().layout_info
+			parsed = DiagramParser.parse(layout)
+		
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected).one()
-		appearanceValues = Quotes.getAppearanceValues(appearance)
+		appearanceValues = Appearances.getAppearanceValues(appearance)
 		prices = QuoteCalculation.prices(parsed, appearanceValues[0],
 			appearanceValues[1], appearanceValues[2], appearanceValues[3])
 		subtotal = PriceCalculation.subtotal(prices)
+
+		if misc:
+			subtotal += misc
+
 		gstPercent = PriceCalculation.gstPercent
 		gst = subtotal * gstPercent
 		total = subtotal + gst
@@ -96,7 +107,16 @@ class Messages:
 				'''<tr class="bordered">
 					<td class="bordered">{name}</td>
 					<td class="right bordered">$ {price}</td>
-				</tr>'''.format(name=price[0], price=price[1])
+				</tr>'''.format(name=price[0],
+				price=PriceCalculation.priceString(price[1]))
+			)
+		
+		if misc:
+			priceStrings.append(
+				'''<tr class="bordered">
+					<td class="bordered">Adjustments</td>
+					<td class="right bordered">$ {price}</td>
+				</tr>'''.format(price=PriceCalculation.priceString(misc))
 			)
 
 		diagram = dbSession.query(Layout).filter(
@@ -145,57 +165,67 @@ class Messages:
 				</span></b>
 			</div>
 			""".format(pageBreak=pageBreak, diagram=diagram,
-				prices="".join(priceStrings), subtotal=subtotal,
-				gstPercent=gstPercent, gst=gst, total=total)
+				prices="".join(priceStrings),
+				subtotal=PriceCalculation.priceString(subtotal),
+				gstPercent=round(gstPercent, 0),
+				gst=PriceCalculation.priceString(gst),
+				total=PriceCalculation.priceString(total))
 	
-	def materialListAttachment(project, parsed):
+	def makeMaterialDictionary(material_types, material_amounts):
+		amounts = {}
+
+		for material in material_types:
+			amounts[material] = material_amounts[material]
+		
+		return amounts
+	
+	def materialListAttachment(project, material_types=None,
+		material_amounts=None):
 		"""Generate the content of a material list attachment and return it"""
-		appearance = dbSession.query(Appearance).filter(
-			Appearance.appearance_id == project.appearance_selected)
-		prices = MaterialListCalculation.prices(parsed, appearance)
-		subtotal = PriceCalculation.subtotal(prices)
-		gstPercent = PriceCalculation.gstPercent
-		gst = subtotal * gstPercent
-		total = subtotal + gst
+		layout = dbSession.query(Layout).filter(
+			Layout.layout_id == project.layout_selected).one()
+		
+		if material_types is None or material_amounts is None:
+			materials = Layouts.getMaterialAmount(layout)
+		
+		else:
+			materials = Messages.makeMaterialDictionary(material_types,
+				material_amounts)
+
 		categories = {}
 		categoryStrings = []
 
-		for price in prices:
-			category = price[2]
+		for material in materials:
+			raw = material
 
+			if str(materials[material]) == '0':
+				continue
+
+			material = Layouts.materialString(material)
+
+			if material.startswith("Metal "):
+				category = "Metal"
+			
+			elif material.startswith("Plastic "):
+				category = "Plastic"
+			
+			else:
+				category = "Other"
+			
 			if category not in categories:
 				categories[category] = []
 			
-			categories[category].append(price)
-		
+			categories[category].append("<b>{amount}</b> {material}".format(
+				amount=materials[raw], material=material))
+
 		for category in categories:
-			priceStrings = []
-			categoryString = "<b>{0}</b><br>".format(category)
+			materialStrings = []
+			categoryString = "<h2>{0}</h2>".format(category)
 			
-			for price in categories[category]:
-				priceStrings.append(price[0] + " | $" + str(price[1]))
+			for material in categories[category]:
+				materialStrings.append(material)
 			
-			categoryString += "<br>".join(priceStrings)
+			categoryString += "<br>".join(materialStrings)
 			categoryStrings.append(categoryString)
 		
 		return "<br><br>".join(categoryStrings)
-
-		#return """
-		"""<b>Steel</b><br>
-			7 steel posts<br>
-			5 steel uchannel<br>
-			1 L steel<br>
-			<br>
-			<b>Plastic Posts</b><br>
-			1 corner<br>
-			4 line<br>
-			2 end<br>
-			1 blank<br>
-			<br>
-			<b>Plastic</b><br>
-			12 rails<br>
-			12 u channels<br>
-			46 T&G<br>
-			14 collars<br>
-			8 caps
-			"""

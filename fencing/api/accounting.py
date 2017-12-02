@@ -17,10 +17,19 @@ accountingBlueprint = Blueprint('accountingBlueprint', __name__, template_folder
 def getAccountingSummary():
     """ Returns a list of accounting related calculations """
     if request.method == 'POST':
-        quote = dbSession.query(Quote).all()
-        send = {"data" : quote}
+        year_filter = request.values.get('year')
+        
+        quotes = dbSession.query(Quote).filter(Project.company_name == current_user.company_name).filter(Project.status_name == 'Paid').filter(Project.finalize == True).filter(Quote.project_id == Project.project_id)
+
+        # Filter Quotes by year if 0 is not given
+        if year_filter != '0' and year_filter is not None:
+            year_filter = int(year_filter)
+            quotes = quotes.filter(extract('year', Project.end_date) == year_filter)
+
+        quotes = quotes.order_by(Project.end_date).all()
+        send = {"data" : quotes}
         print("here")
-        if len(quote) == 0:
+        if len(quotes) == 0:
             return bad_request('no quotes were found')
         return jsonify(send)
     pass

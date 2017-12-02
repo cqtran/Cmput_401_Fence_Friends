@@ -8,8 +8,14 @@ from database.models import Company, Customer, Project
 from database.db import dbSession
 from api.email.Messages import Messages
 import os, traceback, uuid
+from api.decorators import async
 
-SENDER_EMAIL = 'cmput401fence@gmail.com'
+SENDER_EMAIL = 'cavalryfencebuilder@gmail.com'
+
+@async
+def async_email(msg, app, mail):
+    with app.app_context():
+       mail.send(msg)
 
 class Email:
 	"""Send emails"""
@@ -48,7 +54,7 @@ class Email:
 
 			m = Message(subject, sender=(senderName, SENDER_EMAIL),
 				recipients=[recipientEmail],
-				bcc=[company.email])
+				bcc=[current_user.email])
 			m.html = message
 
 			if attachmentPath is not None:
@@ -65,7 +71,7 @@ class Email:
 				except:
 					print("Warning: could not delete attachment")
 
-			mail.send(m)
+			async_email(m, app, mail)
 		
 		except:
 			traceback.print_exc()

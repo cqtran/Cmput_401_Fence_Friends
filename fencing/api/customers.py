@@ -10,6 +10,8 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
 
+"""Api relating to get, update, or delete Customer info"""
+
 customerBlueprint = Blueprint('customerBlueprint', __name__, template_folder='templates')
 
 @customerBlueprint.route('/getCustomerList/', defaults={'company_name': None}, methods=['GET'])
@@ -57,6 +59,7 @@ def addCustomer(name, email, ph, addr, cname):
 @login_required
 @roles_required('primary')
 def deleteproject():
+    """Gets the customer id and removes their projects"""
     cust_id = request.values.get("cust_id")
     print(cust_id)
     removeCustomer(cust_id)
@@ -64,6 +67,7 @@ def deleteproject():
     return created_request("Good")
 
 def removeCustomer(cust_id):
+    """Helper function for deleteproject()"""
     #Get all projects
     projects = dbSession.query(Project).filter(Project.customer_id == cust_id)
 
@@ -79,6 +83,7 @@ def removeCustomer(cust_id):
 @login_required
 @roles_required('primary')
 def updateCustomer():
+    """Updates customer information in the database"""
     if request.method == "POST":
         customer_id = request.values.get("cust_id")
         f_name = request.values.get("fname")

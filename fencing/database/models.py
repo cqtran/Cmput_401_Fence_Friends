@@ -10,6 +10,8 @@ from sqlalchemy.sql import func
 from flask.json import JSONEncoder
 import datetime
 
+"""Entire Model of database"""
+
 def dump_datetime(value):
     """Deserialize datetime object into string form for JSON processing"""
     if value is None:
@@ -49,6 +51,7 @@ class Company(Base):
     __tablename__ = 'company'
     company_name = Column(String(255), primary_key=True)
     email = Column(String(255), unique=True)
+    supplier_email = Column(String(255))
 
 class Customer(Base):
     __tablename__ = 'customer'
@@ -175,8 +178,10 @@ class Quote(Base):
     material_expense_total = Column(Numeric(12, 2))
     profit = Column(Numeric(12, 2))
     gst_rate = Column(Numeric(12, 2))
+    quote_pdf = Column(String(100))
+    supply_pdf = Column(String(100))
 
-    def __init__ (self, project_id, amount, amount_gst, amount_total, material_expense, material_expense_gst, material_expense_total, profit, gst_rate,  quote_id = None):
+    def __init__ (self, project_id, amount, amount_gst, amount_total, material_expense, material_expense_gst, material_expense_total, profit, gst_rate, quote_pdf, supply_pdf, quote_id = None):
         self.quote_id = quote_id
         self.project_id = project_id
         self.amount = amount
@@ -187,6 +192,8 @@ class Quote(Base):
         self.material_expense_total = material_expense_total
         self.profit = profit
         self.gst_rate = gst_rate
+        self.quote_pdf = quote_pdf
+        self.supply_pdf = supply_pdf
 
 class Appearance(Base):
     __tablename__ = 'appearance'

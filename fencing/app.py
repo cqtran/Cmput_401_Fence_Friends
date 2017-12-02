@@ -38,6 +38,22 @@ from flask.json import jsonify
 
 import argparse
 
+"""
+    app.py is used for running the fence friends + cavalry fence application
+    to run the website locally
+    run: 'app.py' in the terminal with 'python3 app.py'
+    database will initialize on entering the website
+    If at anytime there is an error go into mysql and use the following commands
+
+    drop database testData;
+    create database testData;
+    use testData;
+    run python3 app.py
+    enter website
+"""
+
+
+
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
@@ -73,7 +89,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = SENDER_EMAIL
-app.config['MAIL_PASSWORD'] = 'fencing401'
+app.config['MAIL_PASSWORD'] = 'cFb401Id'
 app.config['SECURITY_EMAIL_SENDER'] = SENDER_EMAIL
 app.config['MAIL_SUPPRESS_SEND'] = False
 
@@ -108,12 +124,12 @@ def setup_db():
     userDatastore.find_or_create_role(name = 'secondary')
 
     if not fieldExists(dbSession, Company.company_name, "Fence"):
-        newCompany = Company(company_name = "Fence", email = "e@e.c")
+        newCompany = Company(company_name = "Fence", email = "test@test.null")
         dbSession.add(newCompany)
 
     dbSession.commit()
     if not fieldExists(dbSession, Company.company_name, "Admin"):
-        newCompany = Company(company_name = "Admin", email = "a@a.c")
+        newCompany = Company(company_name = "Admin", email = "admin@cavalryfence.ca")
         dbSession.add(newCompany)
 
     dbSession.commit()
@@ -131,7 +147,7 @@ def setup_db():
 
     if not fieldExists(dbSession, User.id, 2):
         #primary
-        newUser = User(id = 2, email = 'admin@admin.null', username = 'Admin',
+        newUser = User(id = 2, email = 'admin@cavalryfence.ca', username = 'Admin',
             password = 'password', company_name = 'Admin', active = 1)
         dbSession.add(newUser)
         userDatastore.add_role_to_user(newUser, 'admin')
@@ -188,6 +204,7 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
     Pictures.app_root = app.root_path
+    Quotes.app_root = app.root_path
     Email.staticFolder = app.root_path + "/static/"
 
 @app.teardown_appcontext
@@ -324,7 +341,7 @@ def viewMaterialList():
     layout = dbSession.query(Layout).filter(
         Layout.layout_id == project.layout_selected).one()
     parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.materialListAttachment(project, parsed)
+    attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
@@ -338,7 +355,8 @@ def viewMaterialList():
 @login_required
 @roles_required('primary')
 def createquote():
-    return render_template("createquote.html", company = current_user.company_name);
+    return render_template("createquote.html",
+        company = current_user.company_name)
 
 @app.route('/viewQuote/', methods = ['POST'])
 @login_required
@@ -370,6 +388,8 @@ def viewQuote():
 def sendQuote():
     """Email a quote to a customer"""
     proj_id = request.args.get('proj_id')
+    custEmail = request.json['email']
+    print(custEmail)
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
     customer = dbSession.query(Customer).filter(
@@ -384,7 +404,7 @@ def sendQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        Email.send(app, mail, project.company_name, customer.email,
+        Email.send(app, mail, project.company_name, custEmail,
             "Your quote", message, "Quote", attachment)
 
     return "{}"
@@ -403,7 +423,7 @@ def sendMaterialList():
     layout = dbSession.query(Layout).filter(
         Layout.layout_id == project.layout_selected).one()
     parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.materialListAttachment(project, parsed)
+    attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
@@ -451,10 +471,10 @@ def viewEstimates():
 @roles_required('primary')
 def deleteAttachments():
     attachments = request.json["attachments"]
-    
+
     for attachment in attachments:
         deleteAttachment(attachment)
-    
+
     return "{}"
 
 def deleteAttachment(path):
@@ -487,6 +507,30 @@ def internal_server_error(e):
 def accounting():
     info = Accounting.getQuoteInfo()
     return render_template("accounting.html", company = current_user.company_name)
+
+@app.route('/editsupplier/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def editsupplier():
+    company = dbSession.query(Company).filter(
+        Company.company_name == current_user.company_name).one()
+    email = company.supplier_email
+
+    if email is None:
+        email = ""
+
+    return render_template("editsupplier.html",
+        company = company.company_name, email = email)
+
+@app.route('/updatesupplier/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def updatesupplier():
+    company = dbSession.query(Company).filter(
+        Company.company_name == current_user.company_name).one()
+    company.supplier_email = request.json["email"]
+    dbSession.commit()
+    return "{}"
 
 @app.route('/editquote/', methods = ['GET'])
 @login_required

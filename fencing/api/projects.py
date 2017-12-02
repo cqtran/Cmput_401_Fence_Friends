@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Project, Customer, Layout, Status, Picture
+from database.models import Project, Customer, Layout, Status, Picture, \
+    Company, Quote
 from diagram.DiagramParser import DiagramParser
 from flask.json import jsonify
 import json
@@ -16,12 +17,16 @@ import api.estimates as Estimates
 import os
 import datetime
 
+
+"""Api relating to handling of project information"""
+
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
 @projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
 @login_required
 @roles_required('primary')
 def saveAppearanceSelection():
+    """Saving appearance on projectinfo page"""
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
     project = dbSession.query(Project).filter(
@@ -34,6 +39,7 @@ def saveAppearanceSelection():
 @login_required
 @roles_required('primary')
 def saveLayoutSelection():
+    """Saving layout on projectinfo page"""
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
     project = dbSession.query(Project).filter(
@@ -92,6 +98,7 @@ def getProject(project_id):
 @login_required
 @roles_required('primary')
 def addproject():
+    """Adds a project """
     if request.method == 'POST':
         customer = request.values.get("customer")
         customer = json.loads(customer)
@@ -108,6 +115,7 @@ def addproject():
 @login_required
 @roles_required('primary')
 def projectdetails(project_id):
+    """Retrieve project details"""
     if request.method == "GET":
         project = dbSession.query(Project).filter(
             Project.project_id == project_id).one()
@@ -139,10 +147,26 @@ def projectdetails(project_id):
         styles = [i.style for i in Estimates.getStyles()]
         colours = [i.colour for i in Estimates.getColours()]
 
-        company = current_user.company_name
-        lst = [imgPath, tbnPath, json_layouts, json_appearances, company,
+        company = dbSession.query(Company).filter(
+            Company.company_name == current_user.company_name).one()
+        companyName = company.company_name
+        supplierEmail = company.supplier_email
+
+        quote = dbSession.query(Quote).filter(
+            Quote.project_id == project_id).first()
+        
+        if quote is None:
+            quotePdf = ""
+            supplyPdf = ""
+        
+        else:
+            quotePdf = quote.quote_pdf
+            supplyPdf = quote.supply_pdf
+
+        lst = [imgPath, tbnPath, json_layouts, json_appearances, companyName,
             selectedLayout, selectedAppearance, displayStrings, customerName,
-            customerId, heights, styles, colours]
+            customerId, heights, styles, colours, supplierEmail, quotePdf,
+            supplyPdf]
 
         return jsonify(lst)
 
@@ -151,6 +175,7 @@ def projectdetails(project_id):
 @login_required
 @roles_required('primary')
 def updateProject():
+    """Updates project"""
     if request.method == "POST":
         customer = request.values.get("customer")
         customer = json.loads(customer);
@@ -175,6 +200,7 @@ def updateProject():
 @login_required
 @roles_required('primary')
 def deleteproject():
+    """Deletes project from database"""
     proj_id = request.values.get("proj_id")
     print(proj_id)
     removeProject(proj_id)
@@ -182,13 +208,13 @@ def deleteproject():
     return created_request("Good")
 
 def removeProject(proj_id):
-    # Delete image files
+    """Delete image files"""
     pictures = dbSession.query(Picture).filter(Picture.project_id == proj_id).all()
     for image in pictures:
         Pictures.deleteImageHelper(image.file_name)
         Pictures.deleteImageHelper(image.thumbnail_name)
 
-    # Cascade delete all information related to project
+    """Cascade delete all information related to project"""
     project = dbSession.query(Project).filter(Project.project_id == proj_id).one()
     dbSession.delete(project)
     dbSession.commit()
@@ -206,8 +232,7 @@ def updateProjectInfo(project_id, project_name, address, status, note, customer,
     return True
 
 def createProject(customerId, statusName, address, companyName, project_name):
-    # TODO: Turn this into a route
-    #Access MySQL and add in account
+    """Access mysql and add in project"""
     newProject = Project(customer_id = customerId, address = address,
             status_name = statusName, end_date = None, note = '',
             project_name = project_name, company_name = companyName, finalize = False, layout_selected=None, appearance_selected=None)

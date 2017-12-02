@@ -16,10 +16,61 @@ import priceCalculation.priceCalculation as PriceCalculation
 
 import api.appearances as Appearances
 import api.layouts as Layouts
+from api.email.Messages import Messages
+from api.email.Email import Email
 import math
 import json
+import os
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
+app_root = ''
+
+@quoteBlueprint.route('/unfinalizeQuote/', methods=['POST'])
+@login_required
+@roles_required('primary')
+def unfinalizeQuote():
+    if request.method == 'POST':
+        project_id = request.values.get('proj_id')
+        project = dbSession.query(Project).filter(Project.project_id == project_id).one()
+
+        quoteToDelete = dbSession.query(Quote).filter(Quote.project_id == project_id)
+        quoteFiles = quoteToDelete.one()
+
+        deletePDFHelper(quoteFiles.quote_pdf)
+        deletePDFHelper(quoteFiles.supply_pdf)
+        quoteToDelete.delete()
+
+        project.finalize = False
+        dbSession.commit()
+        return "{}"
+    return bad_request('Request is not a POST request')
+
+def deletePDFHelper(filename):
+    try:
+        filePath = os.path.join(app_root, 'static', filename)
+        os.remove(filePath)
+    except:
+        print('Could not delete PDF at: ' + filePath)
+    return
+
+def generateQuote(project, material_types, material_amounts,
+    misc_modifier):
+
+    project_id = project.project_id
+
+    gst_rate = PriceCalculation.gstPercent
+    amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
+    material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
+    profit = amount - material_expense_total
+
+    quoteRecord = Messages.quoteAttachment(project, misc=misc_modifier)
+    materialRecord = Messages.materialListAttachment(project, material_types,
+        material_amounts)
+    quotePath = Email.makeAttachment("finalized/quotes", quoteRecord)
+    materialListPath = Email.makeAttachment("finalized/materials",
+        materialRecord)
+
+    return Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate, quote_pdf = quotePath, supply_pdf = materialListPath)
 
 @quoteBlueprint.route('/finalizeQuote/', methods=['POST'])
 @login_required
@@ -64,15 +115,12 @@ def finalizeQuote():
         project.finalize = True
 
         try:
-            gst_rate = PriceCalculation.gstPercent
-            amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
-            material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
-            profit = amount - material_expense_total
-
-            newQuote = Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
+            newQuote = generateQuote(project, material_types, material_amounts,
+                misc_modifier)
             dbSession.add(newQuote)
             dbSession.commit()
-        except:
+        except BaseException as e:
+            raise e
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
 
@@ -81,21 +129,32 @@ def finalizeQuote():
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
 
-@quoteBlueprint.route('/getProfit/', methods=['GET'])
+@quoteBlueprint.route('/getProfit/', methods=['POST'])
 @login_required
 @roles_required('primary')
 def getProfit():
-    quotes = dbSession.query(Quote).all()
-    profits = []
-    projects = []
-    for quote in quotes:
-        project = dbSession.query(Project).filter(Project.project_id == quote.project_id).one()
-        projects.append(project.project_name)
-        profits.append(quote.profit)
+    if request.method == 'POST':
+        year_filter = request.values.get('year')
 
-    dictionary = {"projects" : projects, "profits" : profits}
+        quotes = dbSession.query(Quote).filter(Project.company_name == current_user.company_name).filter(Project.status_name == 'Paid').filter(Project.finalize == True).filter(Quote.project_id == Project.project_id)
 
-    return jsonify(dictionary)
+        # Filter Quotes by year if 0 is not given
+        if year_filter != '0' and year_filter is not None:
+            year_filter = int(year_filter)
+            quotes = quotes.filter(extract('year', Project.end_date) == year_filter)
+
+        quotes = quotes.order_by(Project.end_date).all()
+        profits = []
+        projects = []
+        for quote in quotes:
+            project = dbSession.query(Project).filter(Project.project_id == quote.project_id).one()
+            projects.append(project.project_name)
+            profits.append(quote.profit)
+
+        dictionary = {"projects" : projects, "profits" : profits}
+
+        return jsonify(dictionary)
+    return bad_request('Request is not a POST request')
 
 def calculateExpense(material_types, material_amounts, gst_rate):
     categories = ['metal_post', 'metal_u_channel', 'metal_lsteel', 'plastic_t_post', 'plastic_corner_post', 'plastic_line_post', 'plastic_end_post',
