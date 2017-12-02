@@ -101,7 +101,7 @@ def finalizeQuote():
             dbSession.add(newQuote)
             dbSession.commit()
         except BaseException as e:
-            print(str(e))
+            raise e
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
 

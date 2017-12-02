@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from database.db import dbSession, init_db
-from database.models import Project, Customer, Layout, Status, Picture, Company
+from database.models import Project, Customer, Layout, Status, Picture, \
+    Company, Quote
 from diagram.DiagramParser import DiagramParser
 from flask.json import jsonify
 import json
@@ -143,9 +144,22 @@ def projectdetails(project_id):
             Company.company_name == current_user.company_name).one()
         companyName = company.company_name
         supplierEmail = company.supplier_email
+
+        quote = dbSession.query(Quote).filter(
+            Quote.project_id == project_id).first()
+        
+        if quote is None:
+            quotePdf = ""
+            supplyPdf = ""
+        
+        else:
+            quotePdf = quote.quote_pdf
+            supplyPdf = quote.supply_pdf
+
         lst = [imgPath, tbnPath, json_layouts, json_appearances, companyName,
             selectedLayout, selectedAppearance, displayStrings, customerName,
-            customerId, heights, styles, colours, supplierEmail]
+            customerId, heights, styles, colours, supplierEmail, quotePdf,
+            supplyPdf]
 
         return jsonify(lst)
 
