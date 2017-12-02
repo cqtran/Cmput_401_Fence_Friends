@@ -20,6 +20,11 @@ class Messages:
 	materialListPath = "attachments/materials"
 
 	stylesheets=[CSS(string="""
+		* {
+			font-family: Arial, Helvetica, "Times New Roman";
+			font-size: 10pt;
+		}
+
 		table {
 			width: 100%;
 		}
