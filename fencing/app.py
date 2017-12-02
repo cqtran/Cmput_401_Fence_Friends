@@ -38,6 +38,22 @@ from flask.json import jsonify
 
 import argparse
 
+""" 
+    app.py is used for running the fence friends + cavalry fence application
+    to run the website locally 
+    run: 'app.py' in the terminal with 'python3 app.py'
+    database will initialize on entering the website
+    If at anytime there is an error go into mysql and use the following commands
+    
+    drop database testData;
+    create database testData;
+    use testData;
+    run python3 app.py
+    enter website
+"""
+
+
+
 app = Flask(__name__) #, template_folder = "HTML", static_folder = "CSS")
 app.register_blueprint(Customers.customerBlueprint)
 app.register_blueprint(Projects.projectBlueprint)
