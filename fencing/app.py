@@ -38,13 +38,13 @@ from flask.json import jsonify
 
 import argparse
 
-""" 
+"""
     app.py is used for running the fence friends + cavalry fence application
-    to run the website locally 
+    to run the website locally
     run: 'app.py' in the terminal with 'python3 app.py'
     database will initialize on entering the website
     If at anytime there is an error go into mysql and use the following commands
-    
+
     drop database testData;
     create database testData;
     use testData;
@@ -204,6 +204,7 @@ def setup_db():
         dbSession.add(newStatus)
         dbSession.commit()
     Pictures.app_root = app.root_path
+    Quotes.app_root = app.root_path
     Email.staticFolder = app.root_path + "/static/"
 
 @app.teardown_appcontext
@@ -470,10 +471,10 @@ def viewEstimates():
 @roles_required('primary')
 def deleteAttachments():
     attachments = request.json["attachments"]
-    
+
     for attachment in attachments:
         deleteAttachment(attachment)
-    
+
     return "{}"
 
 def deleteAttachment(path):

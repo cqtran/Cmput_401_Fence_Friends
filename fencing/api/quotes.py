@@ -20,8 +20,10 @@ from api.email.Messages import Messages
 from api.email.Email import Email
 import math
 import json
+import os
 
 quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='templates')
+app_root = ''
 
 @quoteBlueprint.route('/unfinalizeQuote/', methods=['POST'])
 @login_required
@@ -30,11 +32,26 @@ def unfinalizeQuote():
     if request.method == 'POST':
         project_id = request.values.get('proj_id')
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
-        dbSession.query(Quote).filter(Quote.project_id == project_id).delete()
+
+        quoteToDelete = dbSession.query(Quote).filter(Quote.project_id == project_id)
+        quoteFiles = quoteToDelete.one()
+
+        deletePDFHelper(quoteFiles.quote_pdf)
+        deletePDFHelper(quoteFiles.supply_pdf)
+        quoteToDelete.delete()
+
         project.finalize = False
         dbSession.commit()
         return "{}"
     return bad_request('Request is not a POST request')
+
+def deletePDFHelper(filename):
+    try:
+        filePath = os.path.join(app_root, 'static', filename)
+        os.remove(filePath)
+    except:
+        print('Could not delete PDF at: ' + filePath)
+    return
 
 def generateQuote(project, material_types, material_amounts,
     misc_modifier):
