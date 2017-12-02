@@ -76,7 +76,7 @@ class Messages:
 			{company_email}
 			""".format(company_email=company.email)
 
-	def quoteAttachment(project, customer=None, parsed=None):
+	def quoteAttachment(project, customer=None, parsed=None, misc=None):
 		"""Generate the content of a quote attachment and return it"""
 		if customer is None:
 			customer = dbSession.query(Customer).filter(
@@ -93,6 +93,10 @@ class Messages:
 		prices = QuoteCalculation.prices(parsed, appearanceValues[0],
 			appearanceValues[1], appearanceValues[2], appearanceValues[3])
 		subtotal = PriceCalculation.subtotal(prices)
+
+		if misc:
+			misc += subtotal
+
 		gstPercent = PriceCalculation.gstPercent
 		gst = subtotal * gstPercent
 		total = subtotal + gst
@@ -104,6 +108,14 @@ class Messages:
 					<td class="bordered">{name}</td>
 					<td class="right bordered">$ {price}</td>
 				</tr>'''.format(name=price[0], price=price[1])
+			)
+		
+		if misc:
+			priceStrings.append(
+				'''<tr class="bordered">
+					<td class="bordered">Misc.</td>
+					<td class="right bordered">$ {price}</td>
+				</tr>'''.format(price=misc)
 			)
 
 		diagram = dbSession.query(Layout).filter(

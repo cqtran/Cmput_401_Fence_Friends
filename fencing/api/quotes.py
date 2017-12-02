@@ -44,7 +44,7 @@ def generateQuote(project, material_types, material_amounts,
     material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
     profit = amount - material_expense_total
 
-    quoteRecord = Messages.quoteAttachment(project)
+    quoteRecord = Messages.quoteAttachment(project, misc=misc_modifier)
     materialRecord = Messages.materialListAttachment(project, material_types,
         material_amounts)
     quotePath = Email.makeAttachment("finalized/quotes", quoteRecord)
