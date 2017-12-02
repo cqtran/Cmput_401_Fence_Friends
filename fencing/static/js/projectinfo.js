@@ -1,3 +1,6 @@
+var finalizedQuote = "";
+var finalizedSupply = "";
+
 var saveLoadedAppearance = false;
 
 var supplierEmail;
@@ -1017,6 +1020,8 @@ function moreDetails(){
 		var oldHref = customerName.attr('href');
 		customerName.attr('href', oldHref + result[9] + '&status=All');
 		supplierEmail = result[13];
+		finalizedQuote = result[14];
+		finalizedSupply = result[15];
 		getPics();
 		loadLayouts(layouts, displayStrings);
 		loadAppearances(appearances);
@@ -1261,6 +1266,11 @@ $('#upload-form').submit(function(e) {
 $('#view-quote').submit(function(e) {
 	e.preventDefault();
 
+	if (finalizedQuote != "" && finalizedQuote != null) {
+		window.open("/static/" + finalizedQuote);
+		return;
+	}
+
 	$.ajax({
     type: 'POST',
     url: "/viewQuote/?proj_id=" + proj_id,
@@ -1335,6 +1345,11 @@ function sendMaterialList() {
 
 $('#view-material-list').submit(function(e) {
 	e.preventDefault();
+
+	if (finalizedSupply != "" && finalizedSupply != null) {
+		window.open("/static/" + finalizedSupply);
+		return;
+	}
 
 	$.ajax({
     type: 'POST',
