@@ -1,7 +1,7 @@
 // -- Area Chart Example
 var ctx;
 var projectNames;
-var projectProfit;
+var projectProfit = [];
 
 //sends an http request to return profit values
 function getProfits(){
@@ -11,7 +11,17 @@ function getProfits(){
     data: {'year': $('#year').val()},
     success: function(result) {
       console.log(result);
-      projectProfit = result["profits"];
+      var profits = result["profits"];
+      for(i = 0; i < profits.length; i++){
+        if(i == 0){
+          projectProfit.push(profits[i]);
+        }
+        else{
+          var added = profits[i] + projectProfit[i-1];
+          console.log(added);
+          projectProfit.push(added);
+        }
+      }
       projectNames = result["projects"];
       makeChart();
     },
@@ -34,7 +44,7 @@ $(document).ready(function(){
   yearSelect();
   ctx = document.getElementById("myChart");
   getProfits();
-
+  $('#total-profit').html(projectProfit[projectProfit.length - 1]);
   $('#year').on('change', function() {
     getProfits();
   });
