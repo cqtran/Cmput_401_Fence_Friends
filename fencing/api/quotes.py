@@ -58,7 +58,7 @@ def generateQuote(project, material_types, material_amounts,
 
     project_id = project.project_id
 
-    gst_rate = PriceCalculation.gstPercent
+    gst_rate = PriceCalculation.gstPercent()
     amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
     material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
     profit = amount - material_expense_total

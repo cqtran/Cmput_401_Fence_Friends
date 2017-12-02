@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>GST</h1>
+
+<form id="gst-form" action="javascript:void(0);">
+  <label for="gst">GST Amount</label>
+  <input placeholder="GST Percent" onchange="markDirty()" value="{{ gst }}" type="number" class="form-control" id="gst" min="0" step="1" value="0" oninput="validity.valid||(value='');">
+  <input id="save" onclick="markClean()" class="btn btn-primary btn-block bottom-margin mt-1" type="submit" value = "Save Information">
+</form>
+
+<div class="modal fade" id="confirmDiscard" tabindex="-1" role="dialog" aria-labelledby="confirmDiscardTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDiscardTitle">Discard Changes?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Your changes have not been saved.</div>
+      <div class="modal-footer">
+        <button id="confirmDiscardSave" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+        <button id="confirmDiscardOkay" type="button" class="btn btn-danger" data-dismiss="modal">Discard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block content2 %}
+<script src="../static/js/editgst.js"></script>
+{% endblock %}

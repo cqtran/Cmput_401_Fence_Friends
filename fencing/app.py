@@ -36,6 +36,8 @@ import json
 from api.jsonifyObjects import MyJSONEncoder
 from flask.json import jsonify
 
+from decimal import Decimal
+
 import argparse
 
 """
@@ -559,6 +561,24 @@ def updatesupplier():
     dbSession.commit()
     return "{}"
 
+@app.route('/editgst/', methods = ['GET'])
+@login_required
+@roles_required('primary')
+def editgst():
+    company = dbSession.query(Company).filter(
+        Company.company_name == current_user.company_name).one()
+    gst = round(PriceCalculation.gstPercent() * Decimal("100"), 0)
+    return render_template("editgst.html",
+        company = company.company_name,
+        gst = str(gst))
+
+@app.route('/updategst/', methods = ['POST'])
+@login_required
+@roles_required('primary')
+def updategst():
+    PriceCalculation.updateGst(request.json["gst"])
+    return "{}"
+
 @app.route('/editquote/', methods = ['GET'])
 @login_required
 @roles_required('primary')
@@ -575,7 +595,7 @@ def editquote():
     prices = QuoteCalculation.prices(parsed, appearanceValues[0],
         appearanceValues[1], appearanceValues[2], appearanceValues[3])
     subtotal = PriceCalculation.subtotal(prices)
-    gstPercent = PriceCalculation.gstPercent
+    gstPercent = PriceCalculation.gstPercent()
     gst = subtotal * gstPercent
     total = subtotal + gst
     return render_template("editquote.html", company = current_user.company_name, proj_id = proj_id)
