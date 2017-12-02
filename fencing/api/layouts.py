@@ -122,6 +122,9 @@ def createLayout(project_id):
     dbSession.commit()
     return newLayout
 
+def materialString(material):
+    return material.replace('_', ' ').title().replace('U Channel', 'U-Channel')
+
 def getMaterialAmount(layout):
     parsed = DiagramParser.parse(layout.layout_info)
     print(parsed)
