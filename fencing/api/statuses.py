@@ -10,6 +10,8 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
 
+"""Api relating to the multiple statuses a project can hold"""
+
 statusBlueprint = Blueprint('statusBlueprint', __name__, template_folder='templates')
 
 @statusBlueprint.route('/getStatusList/', methods=['GET'])

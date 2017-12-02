@@ -10,6 +10,8 @@ from sqlalchemy.sql import func
 from flask.json import JSONEncoder
 import datetime
 
+"""Entire Model of database"""
+
 def dump_datetime(value):
     """Deserialize datetime object into string form for JSON processing"""
     if value is None:

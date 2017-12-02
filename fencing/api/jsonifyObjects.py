@@ -2,6 +2,9 @@ from flask.json import JSONEncoder
 from database.models import User, Customer, Status, Project, Quote, Picture, Material, Layout, Appearance, Style, Colour, Height, Gate
 import decimal
 
+
+""" For jsonifying objects"""
+
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, User):
