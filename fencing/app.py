@@ -324,7 +324,7 @@ def viewMaterialList():
     layout = dbSession.query(Layout).filter(
         Layout.layout_id == project.layout_selected).one()
     parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.materialListAttachment(project, parsed)
+    attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
@@ -406,7 +406,7 @@ def sendMaterialList():
     layout = dbSession.query(Layout).filter(
         Layout.layout_id == project.layout_selected).one()
     parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.materialListAttachment(project, parsed)
+    attachmentString = Messages.materialListAttachment(project)
     attachment = Email.makeAttachment(Messages.materialListPath,
         attachmentString)
 
