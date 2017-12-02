@@ -143,9 +143,23 @@ The server uses certbot to generate and maintain ssl certificates.
 The server files are stored at /var/www/CMPUT401-FenceFriends on the server.  
 The server config file is store at /etc/apache2/sites-available  
   
-The server required these to be installed:  
+The server required these to be installed: 
+```
+sudo apt-get install apache2  
 sudo mod_wsgi-express install-module  
 sudo apt-get install python-certbot-apache  
+```
+Every time the server is updated, 
+```
+sudo service apache2 restart
+```
+must be run.
+
+This line:
+```
+sudo chmod -R 757 /var/www/CMPUT401-FenceFriends/fencing/static/
+```
+must also be run in order to change the permission of the static folder to allow for file uploads.
 
 ## Help
 
