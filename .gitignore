@@ -4,6 +4,8 @@
 user.txt
 /fencing/static/attachments/quotes/*.pdf
 /fencing/static/attachments/materials/*.pdf
+/fencing/static/finalized/quotes/*.pdf
+/fencing/static/finalized/materials/*.pdf
 /fencing/static/images/thumbnails/tbn_*.png
 /fencing/static/images/pictures/*
 !/fencing/static/images/pictures/pictures
