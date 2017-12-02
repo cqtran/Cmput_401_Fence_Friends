@@ -2,6 +2,9 @@ from database.db import dbSession, init_db
 
 from flask.json import jsonify
 
+"""For dealing with errors"""
+
+
 # Source: https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha
 # A helper function for creating error responses
 def bad_request(message):

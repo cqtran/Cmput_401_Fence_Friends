@@ -9,12 +9,15 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import bad_request
 
-appearanceBlueprint = Blueprint('appearanceBlueprint', __name__, template_folder='templates')
+"""Api relating to calculations and selecting appearance items in fences includes style, height and colour"""
 
+
+appearanceBlueprint = Blueprint('appearanceBlueprint', __name__, template_folder='templates')
 @appearanceBlueprint.route('/saveAppearance/', methods = ['POST'])
 @login_required
 @roles_required('primary')
 def saveAppearance():
+    """For saving or updating apperance options"""
     project_id = request.args.get('proj_id')
 
     appearance_id = None
@@ -46,12 +49,14 @@ def saveAppearance():
 @login_required
 @roles_required('primary')
 def removeAppearance():
+    """For deleting appearance options"""
     project_id = request.args.get('proj_id')
     appearance_id = request.json['appearanceId']
     removeAppearance(appearance_id)
     return "{}"
 
 def createAppearance(project_id):
+    """Helper function for saveApperance"""
     newAppearance = Appearance(project_id = project_id,
         appearance_name = "Appearance 1", style = None, height = None, border_colour = None, panel_colour = None, base_price = 0)
     dbSession.add(newAppearance)
@@ -59,7 +64,7 @@ def createAppearance(project_id):
     return newAppearance
 
 def updateAppearanceInfo(project_id, appearance_id, appearance_name, style, height, border_colour, panel_colour, base_price):
-
+    """Helper function for saveApperance"""
     if appearance_id is None:
         appearance = createAppearance(project_id)
     else:
@@ -86,6 +91,7 @@ def getAppearanceList(project_id):
     return json_response
 
 def removeAppearance(appearance_id):
+    """Helper function for removeAppearance"""
     dbSession.query(Appearance).filter(
         Appearance.appearance_id == appearance_id).delete()
     dbSession.commit()

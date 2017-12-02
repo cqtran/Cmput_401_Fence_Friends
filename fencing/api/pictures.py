@@ -14,6 +14,10 @@ import uuid
 # https://stackoverflow.com/questions/8631076/what-is-the-fastest-way-to-generate-image-thumbnails-in-python
 from PIL import Image
 
+
+"""Api for picture handling and uploading"""
+
+
 # TODO: Clean code and refactor. Maybe there is a better way to handle different file extensions?
 thumbnailDir = os.path.join('static', 'images', 'thumbnails')
 thumbnailPrefix = 'tbn_'
@@ -103,6 +107,7 @@ def uploadPicture():
 @login_required
 @roles_required('primary')
 def deletePicture():
+    """Deletes picture when user presses button"""
     if request.method == 'DELETE':
         # Grab arguments
         filename = request.args.get('picName')

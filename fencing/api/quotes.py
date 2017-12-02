@@ -17,6 +17,7 @@ import priceCalculation.priceCalculation as PriceCalculation
 import api.appearances as Appearances
 import api.layouts as Layouts
 from api.email.Messages import Messages
+from api.email.Email import Email
 import math
 import json
 
@@ -46,8 +47,11 @@ def generateQuote(project, material_types, material_amounts,
     quoteRecord = Messages.quoteAttachment(project)
     materialRecord = Messages.materialListAttachment(project, material_types,
         material_amounts)
+    quotePath = Email.makeAttachment("finalized/quotes", quoteRecord)
+    materialListPath = Email.makeAttachment("finalized/materials",
+        materialRecord)
 
-    return Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
+    return Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate, quote_pdf = quotePath, supply_pdf = materialListPath)
 
 @quoteBlueprint.route('/finalizeQuote/', methods=['POST'])
 @login_required

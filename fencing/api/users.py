@@ -10,6 +10,9 @@ from flask_security import login_required
 from flask_security.decorators import roles_required
 from api.errors import *
 
+"""Api for dealing with Users including getting, approving, active, inactive"""
+
+
 userBlueprint = Blueprint('userBlueprint', __name__, template_folder='templates')
 
 @userBlueprint.route('/getInactiveUsers/', methods=['GET'])
