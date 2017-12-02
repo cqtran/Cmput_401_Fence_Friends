@@ -113,7 +113,7 @@ def setup_db():
 
     dbSession.commit()
     if not fieldExists(dbSession, Company.company_name, "Admin"):
-        newCompany = Company(company_name = "Admin", email = "a@a.c")
+        newCompany = Company(company_name = "Admin", email = "admin@cavalryfence.ca")
         dbSession.add(newCompany)
 
     dbSession.commit()
@@ -131,7 +131,7 @@ def setup_db():
 
     if not fieldExists(dbSession, User.id, 2):
         #primary
-        newUser = User(id = 2, email = 'admin@admin.null', username = 'Admin',
+        newUser = User(id = 2, email = 'admin@cavalryfence.ca', username = 'Admin',
             password = 'password', company_name = 'Admin', active = 1)
         dbSession.add(newUser)
         userDatastore.add_role_to_user(newUser, 'admin')
