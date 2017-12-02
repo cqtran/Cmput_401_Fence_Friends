@@ -5,8 +5,9 @@ var projectProfit;
 
 function getProfits(){
   $.ajax({
-    type: 'GET',
+    type: 'POST',
     url: '/getProfit/',
+    data: {'year': $('#year').val()},
     success: function(result) {
       console.log(result);
       projectProfit = result["profits"];
@@ -19,10 +20,19 @@ function getProfits(){
   });
 }
 
+// generate list of years
+function yearSelect(){
+  for (i = new Date().getFullYear(); i > 2015; i--) {
+    $('select[name=year]').append('<option value="' + i + '">' + i + '</option>');
+  }
+  $('.selectpicker').selectpicker('refresh');
+}
 
 $(document).ready(function(){
+  yearSelect();
   ctx = document.getElementById("myChart");
   getProfits();
+
 })
 
 function makeChart(){

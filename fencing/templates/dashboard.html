@@ -51,7 +51,12 @@
   </div>
 </div>
 <div class="card mb-3">
-  <div class="card-header">Profits</div>
+  <div class="card-header">
+    Profits
+    <select class="selectpicker float-right" id="year" name="year" data-style="btn-primary" data-width="auto">
+      <option value="0">All Time</option>
+    </select>
+  </div>
   <div class="card-body">
     <canvas id="myChart" width="100%" height="30"></canvas>
   </div>
