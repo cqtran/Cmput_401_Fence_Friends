@@ -117,9 +117,9 @@ def getProfit():
         # Filter Quotes by year if 0 is not given
         if year_filter != '0' and year_filter is not None:
             year_filter = int(year_filter)
-            quotes = quotes.filter(extract('year', Project.end_date) == int(year))
+            quotes = quotes.filter(extract('year', Project.end_date) == year_filter)
 
-        quotes = quotes.all()
+        quotes = quotes.order_by(Project.end_date).all()
         profits = []
         projects = []
         for quote in quotes:
