@@ -65,7 +65,9 @@ function populateData(){
     "ajax" :{
       "type": 'POST',
       "url": '/getAccountingSummary/',
-      "data": {'year': $('#dataYear').val()},
+      "data": function ( d ) {
+        d.year = $('#dataYear').val();
+    },
     },
     "columns": [
       {"data": "quote_id"},
@@ -129,7 +131,9 @@ function populateCost(){
     "ajax" :{
       "type": 'POST',
       "url": '/getAccountingSummary/',
-      "data": {'year': $('#costYear').val()},
+      "data": function ( d ) {
+        d.year = $('#costYear').val();
+    },
     },
     "columns": [
       {"data": "quote_id"},
@@ -209,9 +213,13 @@ $(document).ready(function(){
     slider(this);
   })
   $('#dataYear').on('change', function() {
+    console.log($('#dataYear').val());
+    tableData.clear().draw();
     tableData.ajax.reload();
   });
   $('#costYear').on('change', function() {
+    console.log($('#costYear').val());
+    tableCost.clear().draw();
     tableCost.ajax.reload();
   });
 });

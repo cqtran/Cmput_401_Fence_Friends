@@ -27,12 +27,14 @@ quoteBlueprint = Blueprint('quoteBlueprint', __name__, template_folder='template
 @login_required
 @roles_required('primary')
 def unfinalizeQuote():
-    project_id = request.values.get('proj_id')
-    project = dbSession.query(Project).filter(
-        Project.project_id == project_id).one()
-    project.finalize = False
-    dbSession.commit()
-    return "{}"
+    if request.method == 'POST':
+        project_id = request.values.get('proj_id')
+        project = dbSession.query(Project).filter(Project.project_id == project_id).one()
+        dbSession.query(Quote).filter(Quote.project_id == project_id).delete()
+        project.finalize = False
+        dbSession.commit()
+        return "{}"
+    return bad_request('Request is not a POST request')
 
 def generateQuote(project, material_types, material_amounts,
     misc_modifier):

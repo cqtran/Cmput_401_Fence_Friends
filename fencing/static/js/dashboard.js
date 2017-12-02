@@ -1,7 +1,8 @@
 // -- Area Chart Example
 var ctx;
 var projectNames;
-var projectProfit = [];
+var projectProfit;
+var myLineChart;
 
 //sends an http request to return profit values
 function getProfits(){
@@ -10,6 +11,8 @@ function getProfits(){
     url: '/getProfit/',
     data: {'year': $('#year').val()},
     success: function(result) {
+      projectProfit = [];
+      projectNames = [];
       console.log(result);
       var profits = result["profits"];
       for(i = 0; i < profits.length; i++){
@@ -22,7 +25,12 @@ function getProfits(){
           projectProfit.push(added);
         }
       }
-      $('#total-profit').html('$' + projectProfit[projectProfit.length - 1]);
+      if(projectProfit.length >= 1){
+        $('#total-profit').html('$' + projectProfit[projectProfit.length - 1]);
+      }
+      else{
+        $('#total-profit').html('$0');
+      }
       projectNames = result["projects"];
       makeChart();
     },
@@ -46,13 +54,14 @@ $(document).ready(function(){
   ctx = document.getElementById("myChart");
   getProfits();
   $('#year').on('change', function() {
+    myLineChart.destroy();
     getProfits();
   });
 });
 
 //creates the line graph
 function makeChart(){
-  var myLineChart = new Chart(ctx, {
+  myLineChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: projectNames,
