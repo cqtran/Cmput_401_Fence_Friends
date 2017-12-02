@@ -25,7 +25,7 @@ function getMaterialAmounts(layout){
       console.log(result["metal_post"]);
     },
     error: function(result) {
-        showMessage("Error getting material amounts.");
+        showMessage("Error getting material amounts. Are you sure you have a CSV uploaded? Check settings.");
     }
   });
 }
@@ -51,7 +51,7 @@ function getMaterials(appearance){
       dealLists(result["gate_latch"], "gate_latch");
     },
     error: function(result) {
-        showMessage("Error getting material lists");
+        showMessage("Error getting material lists. Are you sure you have a CSV uploaded? Check settings.");
     }
   });
 }
