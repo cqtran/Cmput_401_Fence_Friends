@@ -1239,6 +1239,11 @@ $(document).ready(function(){
 	email.focus();
 	email.select();
   });
+  $('#customer-email-modal').on('shown.bs.modal', function() {
+	var email = $('#customer-email');
+	email.focus();
+	email.select();
+  });
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {
