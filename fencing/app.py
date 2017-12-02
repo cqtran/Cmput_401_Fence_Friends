@@ -62,7 +62,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_FLASH_MESSAGES'] = False
 
@@ -73,7 +73,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = SENDER_EMAIL
-app.config['MAIL_PASSWORD'] = 'fencing401'
+app.config['MAIL_PASSWORD'] = 'cFb401Id'
 app.config['SECURITY_EMAIL_SENDER'] = SENDER_EMAIL
 app.config['MAIL_SUPPRESS_SEND'] = False
 

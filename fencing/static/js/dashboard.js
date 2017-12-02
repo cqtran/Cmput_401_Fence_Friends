@@ -16,7 +16,7 @@ function getProfits(){
       makeChart();
     },
     error: function(result) {
-        showMessage("Error getting material lists");
+        showMessage("Error getting profits");
     }
   });
 }
@@ -89,4 +89,8 @@ function makeChart(){
       }
     }
   });
+}
+function showMessage(message) {
+  $('#message-text').html(message);
+  $('#message').modal('show');
 }

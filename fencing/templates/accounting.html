@@ -17,6 +17,9 @@
   <div class=" mb-lg-3">
     <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <select class="selectpicker float-right mr-3" id="dataYear" name="dataYear" data-style="btn-primary" data-width="auto">
+          <option value="0">All Time</option>
+        </select>    
           <thead>
             <tr>
               <th>Job Number</th>
@@ -56,6 +59,9 @@
   <div class="mb-lg-3">
     <div class="table-responsive">
         <table class="table table-bordered" id="costTable" width="100%" cellspacing="0">
+        <select class="selectpicker float-right mr-3" id="costYear" name="costYear" data-style="btn-primary" data-width="auto">
+          <option value="0">All Time</option>
+        </select>          
           <thead>
             <tr>
               <th>Job Number</th>
@@ -82,11 +88,20 @@
     <button class="btn btn-primary" id="exportSummary" onclick="extractData('#costTable', 'expenses')">Export Table</button>
   </div>
 </div>
+<div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="message-text" class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block content2 %}
 <script type="text/javascript" src="../static/vendor/datatables/jquery.dataTables.js"></script>
 <script type="text/javascript" src="../static/vendor/datatables/dataTables.bootstrap4.js"></script>
-<script type="text/javascript" src="../static/js/Chart.min.js"></script>
 <script type="text/javascript" src='../static/js/accounting.js'></script>
 {% endblock %}
 

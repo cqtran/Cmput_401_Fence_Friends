@@ -126,7 +126,9 @@ class MyJSONEncoder(JSONEncoder):
                 'material_expense_gst'  : str(obj.material_expense_gst),
                 'material_expense_total': str(obj.material_expense_total),
                 'profit'                : str(obj.profit),
-                'gst_rate'              : str(obj.gst_rate)
+                'gst_rate'              : str(obj.gst_rate),
+                'quote_pdf'             : obj.quote_pdf,
+                'supply_pdf'            : obj.supply_pdf
             }
 
         if type(obj) == decimal.Decimal:

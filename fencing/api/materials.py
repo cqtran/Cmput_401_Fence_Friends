@@ -115,23 +115,38 @@ def getMaterialList(appearance):
         panel_height = '62.25'
         u_channel_height = '5'
 
+    # Due to inconsistencies in the data given, special cases for these
+    # Colours must be done
+    border_colour = appearance.border_colour
+    if border_colour == 'Almond (Tan)':
+        border_colour = 'Almond'
+    if border_colour == 'Pebblestone':
+        border_colour = 'Pebble'
+
+    panel_colour = appearance.panel_colour
+    if panel_colour == 'Almond (Tan)':
+        panel_colour = 'Almond'
+    if panel_colour == 'Pebblestone':
+        panel_colour = 'Pebble'
+
+
     metal_materials = materials.filter(Material.category.contains('Metal'))
     metal_post = metal_materials.filter(Material.material_name.contains('Steel Post')).all()
     metal_u_channel = metal_materials.filter(Material.material_name.contains('Rail Insert Rail')).all()
     metal_lsteel = metal_materials.filter(Material.material_name.contains('Metal Gate Insert')).all()
 
     plastic_post_materials = materials.filter(Material.category.contains('Post Profiles'))
-    plastic_t_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
-    plastic_corner_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
-    plastic_line_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
-    plastic_end_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
-    plastic_gate_post = plastic_post_materials.filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_t_post = plastic_post_materials.filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_corner_post = plastic_post_materials.filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_line_post = plastic_post_materials.filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_end_post = plastic_post_materials.filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains(post_height)).all()
+    plastic_gate_post = plastic_post_materials.filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains(post_height)).all()
 
-    plastic_rail = materials.filter(Material.category.contains('Privacy Fence Rails')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('93.75')).all()
-    plastic_u_channel = materials.filter(Material.category.contains('U-Channel (Plastic)')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains(u_channel_height)).all()
-    plastic_panel = materials.filter(Material.category.contains('T&G')).filter(Material.material_name.contains(appearance.panel_colour)).filter(Material.material_name.contains(panel_height)).all()
+    plastic_rail = materials.filter(Material.category.contains('Privacy Fence Rails')).filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains('93.75')).all()
+    plastic_u_channel = materials.filter(Material.category.contains('U-Channel (Plastic)')).filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains(u_channel_height)).all()
+    plastic_panel = materials.filter(Material.category.contains('T&G')).filter(Material.material_name.contains(panel_colour)).filter(Material.material_name.contains(panel_height)).all()
     plastic_collar = materials.filter(Material.category.contains('Collars')).all()
-    plastic_cap = materials.filter(Material.category.contains('Caps')).filter(Material.material_name.contains(appearance.border_colour)).filter(Material.material_name.contains('Cap')).all()
+    plastic_cap = materials.filter(Material.category.contains('Caps')).filter(Material.material_name.contains(border_colour)).filter(Material.material_name.contains('Cap')).all()
 
     gate_hardware = materials.filter(Material.category.contains('Gate Hardware'))
     gate_hinge = gate_hardware.filter(Material.material_name.contains('Hinge')).all()
