@@ -207,17 +207,22 @@ $(document).ready(function(){
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
+  $('.slidey').click(function(){
+    slider(this);
+  })
 });
 
+//change to projectinfo
 function changePage(proj_id){
   window.location.href = '/projectinfo?proj_id=' + proj_id;
 }
 
-function slider(){
+//these deal with hiding the charts
+function slider(item){
   /* toggle if is shows */
-  console.log("tetsing");
-  $(this).next().slideToggle();
-  swapCaret(this);
+  console.log($(item).attr('class'));
+  $(item).next().next().slideToggle();
+  swapCaret(item);
 }
 function swapCaret(header) {
   var i = $(header).find('i:first');
