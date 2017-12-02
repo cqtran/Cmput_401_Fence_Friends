@@ -35,6 +35,9 @@ class Messages:
 
 		table, th, .bordered {
 			border-collapse: collapse;
+		}
+
+		.bordered {
 			border-top: 1px solid black;
 			border-bottom: 1px solid black;
 		}
