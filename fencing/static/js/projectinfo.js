@@ -1444,12 +1444,16 @@ function updateFinalized() {
 		$("#finalize").removeClass("finalize-off");
 		$("#finalize-check").removeClass("finalize-check-off");
 		$("#finalize-text").html("Finalized");
+		$("#sendQuoteButton").css("display", "block");
+		$("#sendMaterialListButton").css("display", "block");
 	}
 
 	else {
 		$("#finalize").addClass("finalize-off");
 		$("#finalize-check").addClass("finalize-check-off");
 		$("#finalize-text").html("Finalize");
+		$("#sendQuoteButton").css("display", "none");
+		$("#sendMaterialListButton").css("display", "none");
 	}
 }
 
