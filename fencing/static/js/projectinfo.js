@@ -1428,6 +1428,9 @@ function toggleFinalized() {
 }
 
 function unfinalize() {
+	finalizedQuote = "";
+	finalizedSupply = "";
+
 	$.ajax({
 	type: 'POST',
 	url: "/unfinalizeQuote/?proj_id=" + proj_id,
