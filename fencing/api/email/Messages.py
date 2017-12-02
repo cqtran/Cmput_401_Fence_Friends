@@ -146,11 +146,26 @@ class Messages:
 				prices="".join(priceStrings), subtotal=subtotal,
 				gstPercent=gstPercent, gst=gst, total=total)
 	
-	def materialListAttachment(project, parsed):
+	def makeMaterialDictionary(material_types, material_amounts):
+		amounts = {}
+
+		for material in material_types:
+			amounts[material] = material_amounts
+		
+		return amounts
+	
+	def materialListAttachment(project, material_types=None,
+		material_amounts=None):
 		"""Generate the content of a material list attachment and return it"""
 		layout = dbSession.query(Layout).filter(
 			Layout.layout_id == project.layout_selected).one()
-		materials = Layouts.getMaterialAmount(layout)
+		
+		if material_types is None or material_amounts is None:
+			materials = Layouts.getMaterialAmount(layout)
+		
+		else:
+			materials = makeMaterialDictionary(material_types, material_amounts)
+
 		categories = {}
 		categoryStrings = []
 
