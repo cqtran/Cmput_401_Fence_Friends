@@ -108,7 +108,7 @@ def setup_db():
     userDatastore.find_or_create_role(name = 'secondary')
 
     if not fieldExists(dbSession, Company.company_name, "Fence"):
-        newCompany = Company(company_name = "Fence", email = "e@e.c")
+        newCompany = Company(company_name = "Fence", email = "test@test.null")
         dbSession.add(newCompany)
 
     dbSession.commit()
@@ -371,6 +371,8 @@ def viewQuote():
 def sendQuote():
     """Email a quote to a customer"""
     proj_id = request.args.get('proj_id')
+    custEmail = request.json['email']
+    print(custEmail)
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
     customer = dbSession.query(Customer).filter(
@@ -385,7 +387,7 @@ def sendQuote():
     attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
-        Email.send(app, mail, project.company_name, customer.email,
+        Email.send(app, mail, project.company_name, custEmail,
             "Your quote", message, "Quote", attachment)
 
     return "{}"

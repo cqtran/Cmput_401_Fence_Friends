@@ -1,6 +1,7 @@
 var saveLoadedAppearance = false;
 
 var supplierEmail;
+var customerEmail;
 
 var attachmentPathLength = 20;
 var pdfs = [];
@@ -28,6 +29,7 @@ var imgPath;
 var tbnPath;
 var pictureList;
 var proj_id;
+var cust_id;
 
 var finalized = false;
 
@@ -889,7 +891,7 @@ function makePictures(pictures) {
 		$('#imagepreview').attr('src', imgPath + picture.file_name);
 				$('#imagepopup').modal('show');
 		});
-		//link.setAttribute('onclick', 'customerClicked('+customer.customer_id+')')
+
 		final.appendChild(img);
 
 		//img.className += 'img-thumbnail'
@@ -978,22 +980,20 @@ function save(url) {
 //get project info
 function getProjects(){
   $.ajax({
-      type: 'GET',
-      url: '/getProject/' + proj_id,
-      success: function(result) {
-		finalized = result[0].finalize;
-		updateFinalized();
-        setProjectInfo(result);
-      },
-      error: function(xhr, textStatus, error) {
-		if (proj_id != null) {
-			noProject();
-		}
-
-		console.log(xhr.statusText);
-		console.log(textStatus);
-		console.log(error);
-      }
+    type: 'GET',
+    url: '/getProject/' + proj_id,
+    success: function(result) {
+			finalized = result[0].finalize;
+			updateFinalized();
+			cust_id = result[0].customer_id;
+			getCustomerData();
+      setProjectInfo(result);
+    },
+    error: function(xhr, textStatus, error) {
+			if (proj_id != null) {
+				noProject();
+			}
+    }
   });
 }
 
@@ -1217,7 +1217,10 @@ $(document).ready(function(){
   getProjects();
 
   $('#material-list-send').click(function(e) {
-	sendMaterialList();
+		sendMaterialList();
+  });
+   $('#customer-email-send').click(function(e) {
+		sendQuote();
   });
 
   $('#input').on('shown.bs.modal', function() {
@@ -1286,14 +1289,18 @@ $('#send-material-list').submit(function(e) {
 });
 
 $('#quote-form').submit(function(e) {
-	sendQuote();
+	e.preventDefault();
+	$('#customer-email').val(customerEmail);
+	$('#customer-email-modal').modal('show');
 });
 
 function sendQuote() {
+	$('#customer-email-modal').modal('hide');
 	$.ajax({
 		type: 'POST',
 		url: "/sendQuote/?proj_id=" + proj_id,
 		contentType: "application/json;charset=UTF-8",
+		data: JSON.stringify({email: $("#customer-email").val()}),
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
@@ -1351,6 +1358,19 @@ $('#view-material-list').submit(function(e) {
 	});
 });
 
+//retrieves customer email
+function getCustomerData() {
+  $.ajax({
+    type: 'GET',
+    url: '/getCustomer/' + cust_id,
+    success: function(result) {
+      console.log(result[0].email);
+      customerEmail = result[0].email;
+    }
+  });
+}
+
+//delets attachments
 function deleteAttachments() {
 	$.ajax({
     type: 'POST',
