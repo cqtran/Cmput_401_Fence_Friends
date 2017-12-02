@@ -17,11 +17,12 @@ function getProfits(){
           projectProfit.push(profits[i]);
         }
         else{
-          var added = parseInt(profits[i]) + parseInt(projectProfit[i-1]);
+          var added = (parseFloat(profits[i]) + parseFloat(projectProfit[i-1])).toFixed('2');
           console.log(added);
           projectProfit.push(added);
         }
       }
+      $('#total-profit').html('$' + projectProfit[projectProfit.length - 1]);
       projectNames = result["projects"];
       makeChart();
     },
@@ -44,7 +45,6 @@ $(document).ready(function(){
   yearSelect();
   ctx = document.getElementById("myChart");
   getProfits();
-  $('#total-profit').html(projectProfit[projectProfit.length - 1]);
   $('#year').on('change', function() {
     getProfits();
   });
