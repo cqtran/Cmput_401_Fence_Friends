@@ -5,7 +5,8 @@ from priceCalculation.QuoteCalculation import QuoteCalculation
 from priceCalculation.MaterialListCalculation import MaterialListCalculation
 import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
-from database.models import Appearance
+from database.models import Appearance, Customer, Layout
+from diagram.DiagramParser import DiagramParser
 import api.layouts as Layouts
 import api.appearances as Appearances
 
@@ -75,8 +76,17 @@ class Messages:
 			{company_email}
 			""".format(company_email=company.email)
 
-	def quoteAttachment(project, customer, parsed):
+	def quoteAttachment(project, customer=None, parsed=None):
 		"""Generate the content of a quote attachment and return it"""
+		if customer is None:
+			customer = dbSession.query(Customer).filter(
+				Customer.customer_id == project.customer_id).one()
+		
+		if parsed is None:
+			layout = dbSession.query(Layout).filter(
+				Layout.layout_id == project.layout_selected).one().layout_info
+			parsed = DiagramParser.parse(layout)
+		
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected).one()
 		appearanceValues = Appearances.getAppearanceValues(appearance)
@@ -202,5 +212,4 @@ class Messages:
 			categoryString += "<br>".join(materialStrings)
 			categoryStrings.append(categoryString)
 		
-		print("\n\n\n\n", "<br><br>".join(categoryStrings), "\n\n\n\n")
 		return "<br><br>".join(categoryStrings)
