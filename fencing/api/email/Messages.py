@@ -196,7 +196,14 @@ class Messages:
 				</span></b>
 			</div>
 			{pageBreak}
-			<div style="float:left; width:25%;"><p></p></div>
+			<div style="float:left; width:25%;">
+				<p class="greyText bold">{companyName}</p>
+				<br>
+				<p class="greyText">
+					<span class="bold">Email</span><br>
+					{companyEmail}
+				</p>
+			</div>
 			<div style="float:left; width:75%;">
 				<p class="bold">Site Map:</p>
 				<img src="{diagram}"><br>
