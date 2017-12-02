@@ -389,7 +389,14 @@ def sendQuote():
     """Email a quote to a customer"""
     proj_id = request.args.get('proj_id')
     custEmail = request.json['email']
-    print(custEmail)
+    
+    pdf = None
+
+    if "pdf" in request.json:
+        if request.json["pdf"] != "":
+            pdf = request.json["pdf"]
+    
+
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
     customer = dbSession.query(Customer).filter(
@@ -400,8 +407,13 @@ def sendQuote():
     layout = dbSession.query(Layout).filter(
         Layout.layout_id == project.layout_selected).one()
     parsed = DiagramParser.parse(layout.layout_info)
-    attachmentString = Messages.quoteAttachment(project, customer, parsed)
-    attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
+    
+    if pdf:
+        attachment = pdf
+    
+    else:
+        attachmentString = Messages.quoteAttachment(project, customer, parsed)
+        attachment = Email.makeAttachment(Messages.quotePath, attachmentString)
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, custEmail,
@@ -417,6 +429,13 @@ def sendMaterialList():
     proj_id = request.args.get('proj_id')
     project = dbSession.query(Project).filter(
         Project.project_id == proj_id).one()
+    
+    pdf = None
+
+    if "pdf" in request.json:
+        if request.json["pdf"] != "":
+            pdf = request.json["pdf"]
+    
     company = dbSession.query(Company).filter(
         Company.company_name == project.company_name).one()
     message = Messages.materialListMessage(company)
@@ -428,6 +447,14 @@ def sendMaterialList():
         attachmentString)
 
     supplierEmail = request.json["email"]
+
+    if pdf:
+        attachment = pdf
+    
+    else:
+        attachmentString = Messages.materialListAttachment(project)
+        attachment = Email.makeAttachment(Messages.materialListPath,
+            attachmentString)
 
     if attachment is not None:
         Email.send(app, mail, project.company_name, supplierEmail,

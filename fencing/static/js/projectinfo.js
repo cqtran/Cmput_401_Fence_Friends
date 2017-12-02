@@ -1306,11 +1306,18 @@ $('#quote-form').submit(function(e) {
 
 function sendQuote() {
 	$('#customer-email-modal').modal('hide');
+
+	dat = {email: $("#customer-email").val()};
+
+	if (finalizedQuote != "" && finalizedQuote != null) {
+		dat["pdf"] = finalizedQuote;
+	}
+
 	$.ajax({
 		type: 'POST',
 		url: "/sendQuote/?proj_id=" + proj_id,
 		contentType: "application/json;charset=UTF-8",
-		data: JSON.stringify({email: $("#customer-email").val()}),
+		data: JSON.stringify(dat),
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
 			console.log(xhr.statusText);
