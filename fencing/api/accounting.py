@@ -18,7 +18,7 @@ def getAccountingSummary():
     """ Returns a list of accounting related calculations """
     if request.method == 'POST':
         year_filter = request.values.get('year')
-
+        
         quotes = dbSession.query(Quote).filter(Project.company_name == current_user.company_name).filter(Project.status_name == 'Paid').filter(Project.finalize == True).filter(Quote.project_id == Project.project_id)
 
         # Filter Quotes by year if 0 is not given
