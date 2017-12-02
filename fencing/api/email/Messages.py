@@ -6,7 +6,6 @@ from priceCalculation.MaterialListCalculation import MaterialListCalculation
 import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
 from database.models import Appearance
-import api.quotes as Quotes
 import api.layouts as Layouts
 import api.appearances as Appearances
 
@@ -150,7 +149,7 @@ class Messages:
 		amounts = {}
 
 		for material in material_types:
-			amounts[material] = material_amounts
+			amounts[material] = material_amounts[material]
 		
 		return amounts
 	
@@ -164,7 +163,8 @@ class Messages:
 			materials = Layouts.getMaterialAmount(layout)
 		
 		else:
-			materials = makeMaterialDictionary(material_types, material_amounts)
+			materials = Messages.makeMaterialDictionary(material_types,
+				material_amounts)
 
 		categories = {}
 		categoryStrings = []
@@ -202,4 +202,5 @@ class Messages:
 			categoryString += "<br>".join(materialStrings)
 			categoryStrings.append(categoryString)
 		
+		print("\n\n\n\n", "<br><br>".join(categoryStrings), "\n\n\n\n")
 		return "<br><br>".join(categoryStrings)

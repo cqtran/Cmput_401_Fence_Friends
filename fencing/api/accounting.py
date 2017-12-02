@@ -17,7 +17,7 @@ accountingBlueprint = Blueprint('accountingBlueprint', __name__, template_folder
 def getAccountingSummary():
     """ Returns a list of accounting related calculations """
     if request.method == 'POST':
-        quote = dbSession.query(Quote).all()
+        quote = dbSession.query(Quote).filter(Project.company_name == current_user.company_name).filter(Project.status_name == 'Paid').filter(Project.finalize == True).filter(Quote.project_id == Project.project_id).all()
         send = {"data" : quote}
         print("here")
         if len(quote) == 0:
