@@ -105,21 +105,32 @@ def finalizeQuote():
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
 
-@quoteBlueprint.route('/getProfit/', methods=['GET'])
+@quoteBlueprint.route('/getProfit/', methods=['POST'])
 @login_required
 @roles_required('primary')
 def getProfit():
-    quotes = dbSession.query(Quote).all()
-    profits = []
-    projects = []
-    for quote in quotes:
-        project = dbSession.query(Project).filter(Project.project_id == quote.project_id).one()
-        projects.append(project.project_name)
-        profits.append(quote.profit)
+    if request.method == 'POST':
+        year_filter = request.values.get('year')
 
-    dictionary = {"projects" : projects, "profits" : profits}
+        quotes = dbSession.query(Quote).filter(Project.company_name == current_user.company_name).filter(Project.status_name == 'Paid').filter(Project.finalize == True).filter(Quote.project_id == Project.project_id)
 
-    return jsonify(dictionary)
+        # Filter Quotes by year if 0 is not given
+        if year_filter != '0' and year_filter is not None:
+            year_filter = int(year_filter)
+            quotes = quotes.filter(extract('year', Project.end_date) == int(year))
+
+        quotes = quotes.all()
+        profits = []
+        projects = []
+        for quote in quotes:
+            project = dbSession.query(Project).filter(Project.project_id == quote.project_id).one()
+            projects.append(project.project_name)
+            profits.append(quote.profit)
+
+        dictionary = {"projects" : projects, "profits" : profits}
+
+        return jsonify(dictionary)
+    return bad_request('Request is not a POST request')
 
 def calculateExpense(material_types, material_amounts, gst_rate):
     categories = ['metal_post', 'metal_u_channel', 'metal_lsteel', 'plastic_t_post', 'plastic_corner_post', 'plastic_line_post', 'plastic_end_post',
