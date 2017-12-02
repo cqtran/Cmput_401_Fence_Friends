@@ -1291,6 +1291,7 @@ $('#view-quote').submit(function(e) {
 		}
     },
     error: function(xhr, textStatus, error) {
+		showMessage("Error creating quote. Are you sure you have a CSV uploaded? Check settings.");
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
@@ -1378,6 +1379,7 @@ $('#view-material-list').submit(function(e) {
 		}
     },
     error: function(xhr, textStatus, error) {
+		showMessage("Error creating material list. Are you sure you have a CSV uploaded? Check settings.");
 		console.log(xhr.statusText);
 		console.log(textStatus);
 		console.log(error);
