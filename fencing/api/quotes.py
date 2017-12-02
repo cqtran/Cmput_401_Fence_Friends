@@ -16,6 +16,7 @@ import priceCalculation.priceCalculation as PriceCalculation
 
 import api.appearances as Appearances
 import api.layouts as Layouts
+from api.email.Messages import Messages
 import math
 import json
 
@@ -41,6 +42,9 @@ def generateQuote(project, material_types, material_amounts,
     amount, amount_gst, amount_total = calculateQuote(project, misc_modifier, gst_rate)
     material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
     profit = amount - material_expense_total
+
+    record = Messages.materialListAttachment(project, material_types,
+        material_amounts)
 
     return Quote(project_id = project_id, amount = amount, amount_gst = amount_gst, amount_total = amount_total, material_expense = material_expense, material_expense_gst = material_expense_gst, material_expense_total = material_expense_total, profit = profit, gst_rate = gst_rate)
 
