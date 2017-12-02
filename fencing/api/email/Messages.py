@@ -25,18 +25,38 @@ class Messages:
 			font-size: 10pt;
 		}
 
+		.companyName {
+			font-size: 12pt !important;
+		}
+
 		table {
 			width: 100%;
 		}
 
 		table, th, .bordered {
 			border-collapse: collapse;
-			border: 1px solid black;
+			border-top: 1px solid black;
+			border-bottom: 1px solid black;
+		}
+
+		.bordered-right {
+			border-right: 1px solid black;
+		}
+
+		.bordered-white {
+			border-right: 1px solid white;
 		}
 
 		th {
 			color: #FFF;
-			background-color: #999;
+			background-color: #919191;
+			text-align: center;
+			padding: 5pt;
+		}
+
+		td {
+			font-size: 12pt !important;
+			padding: 5pt;
 		}
 
 		img {
@@ -49,12 +69,12 @@ class Messages:
 		}
 
 		.tableBreak {
-			border-bottom: 5px solid #999;
+			border-bottom: 5px solid #919191;
 		}
 
 		.greyCell {
-			background-color: #BBB;
-			border: none;
+			background-color: #DDD;
+			border: none !important;
 		}
 
 		.greyText {
@@ -121,7 +141,7 @@ class Messages:
 		for price in prices:
 			priceStrings.append(
 				'''<tr class="bordered">
-					<td class="bordered">{name}</td>
+					<td class="bordered bordered-right">{name}</td>
 					<td class="right bordered">$ {price}</td>
 				</tr>'''.format(name=price[0],
 				price=PriceCalculation.priceString(price[1]))
@@ -150,15 +170,15 @@ class Messages:
 			"""
 
 		return """
-			<div style="float:left; width:25%;">
-				<p class="greyText bold">{companyName}</p>
+			<div style="float:left; width:30%;">
+				<p class="greyText bold companyName">{companyName}</p>
 				<br>
 				<p class="greyText">
 					<span class="bold">Email</span><br>
 					{companyEmail}
 				</p>
 			</div>
-			<div style="float:left; width:75%;">
+			<div style="float:left; width:70%;">
 				<p>
 					<span class="greyText bold">DATE</span><br>
 					{date}
@@ -178,20 +198,20 @@ class Messages:
 					Cash Cheque
 				</p><br>
 				<table>
-					<tr class="bordered">
-						<th>DESCRIPTION</th>
+					<tr>
+						<th class="bordered-white">DESCRIPTION</th>
 						<th>PRICE</th> 
 					</tr>
 					{prices}
 					<tr class="bordered">
-						<td class="right bordered">Subtotal</td>
+						<td class="right bordered bordered-right">Subtotal</td>
 						<td class="right bordered"><b>$ {subtotal}</b></td>
 					</tr>
 					<tr class="tableBreak bordered">
-						<td class="right bordered">GST {gstPercent}%</td>
+						<td class="right bordered bordered-right">GST {gstPercent}%</td>
 						<td class="right bordered"><b>$ {gst}</b></td>
 					</tr>
-					<tr class="greyCell">
+					<tr class="greyCell right">
 						<td><b>Total</b></td>
 						<td class="right"><b>$ {total}</b></td>
 					</tr>
@@ -201,18 +221,18 @@ class Messages:
 				</span></b>
 			</div>
 			{pageBreak}
-			<div style="float:left; width:25%;">
-				<p class="greyText bold">{companyName}</p>
+			<div style="float:left; width:30%;">
+				<p class="greyText bold companyName">{companyName}</p>
 				<br>
 				<p class="greyText">
 					<span class="bold">Email</span><br>
 					{companyEmail}
 				</p>
 			</div>
-			<div style="float:left; width:75%;">
+			<div style="float:left; width:70%;">
 				<p class="bold">Site Map:</p>
 				<img src="{diagram}"><br>
-				<p class="bold">Payment is due on day installation is completed. 2 Year Workmanship Warranty does not include: damage done to fence product by homeowner, pedestrians, or act of God, nor damage due to frost heave on posts and concrete; coverage of the Westech Product Lifetime Warranty. Cavalry Fence Inc. reserves the right to alter pricing for any requested changes or alterations to this quote above. In the event Cavalry Fence Inc. is required to hand expose: gas lines, electrical lines, water lines, etc. after government inspection, Cavalry Fence Inc. reserves the right to charge an additional $50 per hour until exposure is complete. In this event, Cavalry Fence Inc. will notify the homeowner and request permission to proceed with exposure of the line with the additional charge.<.p>
+				<p class="bold">Payment is due on day installation is completed. 2 Year Workmanship Warranty does not include: damage done to fence product by homeowner, pedestrians, or act of God, nor damage due to frost heave on posts and concrete; coverage of the Westech Product Lifetime Warranty. Cavalry Fence Inc. reserves the right to alter pricing for any requested changes or alterations to this quote above. In the event Cavalry Fence Inc. is required to hand expose: gas lines, electrical lines, water lines, etc. after government inspection, Cavalry Fence Inc. reserves the right to charge an additional $50 per hour until exposure is complete. In this event, Cavalry Fence Inc. will notify the homeowner and request permission to proceed with exposure of the line with the additional charge.</p>
 				<b><span class="bottom">
 					Signature:_____________________________________________
 				</span></b>
