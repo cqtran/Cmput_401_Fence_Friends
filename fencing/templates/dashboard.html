@@ -52,13 +52,17 @@
 </div>
 <div class="card mb-3">
   <div class="card-header">
-    Profits
+    <b>Profits</b>
     <select class="selectpicker float-right" id="year" name="year" data-style="btn-primary" data-width="auto">
       <option value="0">All Time</option>
     </select>
   </div>
   <div class="card-body">
     <canvas id="myChart" width="100%" height="30"></canvas>
+  </div>
+  <div class="card-footer">
+    <div class="float-left"><b>Total Profit</b></div>
+    <div class="float-right" id="total-profit"></div>
   </div>
 </div>
 <div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">

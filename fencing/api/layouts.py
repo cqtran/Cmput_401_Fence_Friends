@@ -11,6 +11,9 @@ from api.errors import bad_request
 from diagram.DiagramParser import DiagramParser
 import math
 
+
+"""Api for multiple draw io diagrams and calculations including parsing lengths"""
+
 layoutBlueprint = Blueprint('layoutBlueprint', __name__, template_folder='templates')
 
 @layoutBlueprint.route('/saveLayoutName/', methods=['POST'])
@@ -29,6 +32,7 @@ def saveLayoutName():
 @login_required
 @roles_required('primary')
 def removeLayout():
+    """Remove a layout"""
     project_id = request.args.get('proj_id')
     layout_id = request.json['layoutId']
     removeLayout(layout_id)
@@ -38,7 +42,7 @@ def removeLayout():
 @login_required
 @roles_required('primary')
 def saveDiagram():
-    # parse draw io image and get coordinates and measurements
+    """Parse draw io image to get coordinates and measurements"""
     project_id = request.args.get('proj_id')
 
     layout_id = None
@@ -78,6 +82,7 @@ def saveDiagram():
 @login_required
 @roles_required('primary')
 def getMaterialAmounts():
+    """ Retrieve material amounts for calculations """
     if request.method == 'GET':
         layout_id = request.args.get('layout_id')
         layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
@@ -87,18 +92,18 @@ def getMaterialAmounts():
     return bad_request('Request is not a GET request')
 
 def getLayouts(project_id):
-#TODO: function should be renamed in the future for clarity purposes
+    """Helper function to get layouts from database"""
     layouts = dbSession.query(Layout).filter(Layout.project_id == project_id).all()
     return layouts
 
 def updateLayoutName(layout_id, layout_name):
+    """Helper function to update layouts in database from the layout_id"""
     layout = dbSession.query(Layout).filter(Layout.layout_id == layout_id).one()
     layout.layout_name = layout_name
     dbSession.commit()
 
 def updateLayoutInfo(project_id, layout_name, layout_info, layout_id = None):
-    # ERIC PLEASE HELP
-    #TODO: function should be renamed in the future for clarity purposes
+    """Update layout information using layout_id """
     if layout_id is None:
         layout = createLayout(project_id)
     else:
@@ -112,20 +117,23 @@ def updateLayoutInfo(project_id, layout_name, layout_info, layout_id = None):
     return layout_id
 
 def removeLayout(layout_id):
+    """Removes layout"""
     dbSession.query(Layout).filter(Layout.layout_id == layout_id).delete()
     dbSession.commit()
 
 def createLayout(project_id):
-    # TODO: This should be in layouts API
+    """Creates the default draw io layout with green edit diagram button image"""
     newLayout = Layout(project_id = project_id, layout_name = "Layout 1", layout_info = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNzAxcHgiIGhlaWdodD0iMzIxcHgiIHZlcnNpb249IjEuMSIgY29udGVudD0iJmx0O214ZmlsZSB1c2VyQWdlbnQ9JnF1b3Q7TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTNfMSkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzYxLjAuMzE2My4xMDAgU2FmYXJpLzUzNy4zNiZxdW90OyB2ZXJzaW9uPSZxdW90OzcuNi43JnF1b3Q7IGVkaXRvcj0mcXVvdDt3d3cuZHJhdy5pbyZxdW90OyZndDsmbHQ7ZGlhZ3JhbSBpZD0mcXVvdDtiYTZlNmZlZS1hNTU4LTljODgtMjM1Ny1jMGUyZWYxZGM1OGEmcXVvdDsgbmFtZT0mcXVvdDtQYWdlLTEmcXVvdDsmZ3Q7ZFpIQkVvSWdFSWFmaGp0QkY4OW1kZW5rb1RNQkFoTzZEdUpvUFgwYWxKSEZoZDN2LzNlWFdSRE42L0hnV0t0UElLUkZCSXNSMFIwaVpKTmxtK21heVMyU0xhR0JLR2RFWUhnQnBibkxhQ1NSOWtiSUxqRjZBT3RORzJFY3dLRnBKUGVKa1RrSFExcGJnUlZKWGN1VVhJR1NNN3VtWnlPOERwUmdqQmZoS0kzUy9sdTVNSDVWRHZvbURrU0VWczhUNUpxOW1rVi9wNW1BNFFQUkF0SGNBZmdRMVdNdTdiemRkRy83UCtyNzRVNDIva2ZCRkN5OXB5VDVRbG84QUE9PSZsdDsvZGlhZ3JhbSZndDsmbHQ7L214ZmlsZSZndDsiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjU1LCAyNTUsIDI1NSk7Ij48ZGVmcy8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC41LDAuNSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI3MDAiIGhlaWdodD0iMzIwIiByeD0iNDgiIHJ5PSI0OCIgZmlsbC1vcGFjaXR5PSIwLjY2IiBmaWxsPSIjMzI5NjY0IiBzdHJva2U9Im5vbmUiIHBvaW50ZXItZXZlbnRzPSJub25lIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjAuNSwxMDAuNSkiPjxzd2l0Y2g+PGZvcmVpZ25PYmplY3Qgc3R5bGU9Im92ZXJmbG93OnZpc2libGU7IiBwb2ludGVyLWV2ZW50cz0iYWxsIiB3aWR0aD0iNTc4IiBoZWlnaHQ9IjExOCIgcmVxdWlyZWRGZWF0dXJlcz0iaHR0cDovL3d3dy53My5vcmcvVFIvU1ZHMTEvZmVhdHVyZSNFeHRlbnNpYmlsaXR5Ij48ZGl2IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIiBzdHlsZT0iZGlzcGxheTogaW5saW5lLWJsb2NrOyBmb250LXNpemU6IDEycHg7IGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IGNvbG9yOiByZ2IoMCwgMCwgMCk7IGxpbmUtaGVpZ2h0OiAxLjI7IHZlcnRpY2FsLWFsaWduOiB0b3A7IHdpZHRoOiA1NzhweDsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgd29yZC13cmFwOiBub3JtYWw7IHRleHQtYWxpZ246IGNlbnRlcjsiPjxkaXYgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiIHN0eWxlPSJkaXNwbGF5OmlubGluZS1ibG9jazt0ZXh0LWFsaWduOmluaGVyaXQ7dGV4dC1kZWNvcmF0aW9uOmluaGVyaXQ7Ij48Zm9udCBjb2xvcj0iI2ZmZmZmZiIgc3R5bGU9ImZvbnQtc2l6ZTogMTAwcHgiPkVkaXQgRGlhZ3JhbTwvZm9udD48L2Rpdj48L2Rpdj48L2ZvcmVpZ25PYmplY3Q+PHRleHQgeD0iMjg5IiB5PSI2NSIgZmlsbD0iIzAwMDAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4IiBmb250LWZhbWlseT0iSGVsdmV0aWNhIj4mbHQ7Zm9udCBjb2xvcj0iI2ZmZmZmZiIgc3R5bGU9ImZvbnQtc2l6ZTogMTAwcHgiJmd0O0VkaXQgRGlhZ3JhbSZsdDsvZm9udCZndDs8L3RleHQ+PC9zd2l0Y2g+PC9nPjwvZz48L3N2Zz4=")
     dbSession.add(newLayout)
     dbSession.commit()
     return newLayout
 
 def materialString(material):
+    """Replace with space and -"""
     return material.replace('_', ' ').title().replace('U Channel', 'U-Channel')
 
 def getMaterialAmount(layout):
+    """Gets material amounts for calculations"""
     parsed = DiagramParser.parse(layout.layout_info)
     print(parsed)
 
@@ -181,6 +189,7 @@ def getMaterialAmount(layout):
         }
 
 def posts(parsed):
+    """Calculates number of every type of post"""
     num_t_post = 0
     num_corner_post = 0
     num_line_post = 0
@@ -207,6 +216,7 @@ def posts(parsed):
     return num_t_post, num_corner_post, num_line_post, num_end_post, num_gate_posts, num_steel_post
 
 def sections(parsed):
+    """Calculates number of every type of section"""
     num_small_sections = 0
     num_medium_sections = 0
     num_big_sections = 0
@@ -221,12 +231,14 @@ def sections(parsed):
     return num_small_sections, num_medium_sections, num_big_sections, num_sections
 
 def panels(parsed):
+    """Calculates number of every type of panels"""
     num_panels = 0
     for fence in parsed.fences:
         num_panels += math.ceil(fence.length/12)
     return num_panels
 
 def gates(parsed):
+    """Calculates number of every type of gates, hinges, steel"""
     num_hinges = 0
     num_latches = 0
     num_Lsteel = 0

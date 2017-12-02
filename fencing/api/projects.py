@@ -17,12 +17,16 @@ import api.estimates as Estimates
 import os
 import datetime
 
+
+"""Api relating to handling of project information"""
+
 projectBlueprint = Blueprint('projectBlueprint', __name__, template_folder='templates')
 
 @projectBlueprint.route('/saveAppearanceSelection/', methods=['POST'])
 @login_required
 @roles_required('primary')
 def saveAppearanceSelection():
+    """Saving appearance on projectinfo page"""
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
     project = dbSession.query(Project).filter(
@@ -35,6 +39,7 @@ def saveAppearanceSelection():
 @login_required
 @roles_required('primary')
 def saveLayoutSelection():
+    """Saving layout on projectinfo page"""
     project_id = request.args.get("proj_id")
     selected = request.json["selected"]
     project = dbSession.query(Project).filter(
@@ -93,6 +98,7 @@ def getProject(project_id):
 @login_required
 @roles_required('primary')
 def addproject():
+    """Adds a project """
     if request.method == 'POST':
         customer = request.values.get("customer")
         customer = json.loads(customer)
@@ -109,6 +115,7 @@ def addproject():
 @login_required
 @roles_required('primary')
 def projectdetails(project_id):
+    """Retrieve project details"""
     if request.method == "GET":
         project = dbSession.query(Project).filter(
             Project.project_id == project_id).one()
@@ -168,6 +175,7 @@ def projectdetails(project_id):
 @login_required
 @roles_required('primary')
 def updateProject():
+    """Updates project"""
     if request.method == "POST":
         customer = request.values.get("customer")
         customer = json.loads(customer);
@@ -192,6 +200,7 @@ def updateProject():
 @login_required
 @roles_required('primary')
 def deleteproject():
+    """Deletes project from database"""
     proj_id = request.values.get("proj_id")
     print(proj_id)
     removeProject(proj_id)
@@ -199,13 +208,13 @@ def deleteproject():
     return created_request("Good")
 
 def removeProject(proj_id):
-    # Delete image files
+    """Delete image files"""
     pictures = dbSession.query(Picture).filter(Picture.project_id == proj_id).all()
     for image in pictures:
         Pictures.deleteImageHelper(image.file_name)
         Pictures.deleteImageHelper(image.thumbnail_name)
 
-    # Cascade delete all information related to project
+    """Cascade delete all information related to project"""
     project = dbSession.query(Project).filter(Project.project_id == proj_id).one()
     dbSession.delete(project)
     dbSession.commit()
@@ -223,8 +232,7 @@ def updateProjectInfo(project_id, project_name, address, status, note, customer,
     return True
 
 def createProject(customerId, statusName, address, companyName, project_name):
-    # TODO: Turn this into a route
-    #Access MySQL and add in account
+    """Access mysql and add in project"""
     newProject = Project(customer_id = customerId, address = address,
             status_name = statusName, end_date = None, note = '',
             project_name = project_name, company_name = companyName, finalize = False, layout_selected=None, appearance_selected=None)

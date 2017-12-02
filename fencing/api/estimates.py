@@ -13,8 +13,12 @@ import json
 import io
 import csv
 
+"""Api relating to estimation of quotes for fence. Deals with Styles, Colour, Height and Gate"""
+
+
 estimateBlueprint = Blueprint('estimateBlueprint', __name__, template_folder='templates')
 
+"""Helper functions"""
 def getStyles():
     return dbSession.query(Style).filter(
         Style.company_name == current_user.company_name).all()
@@ -118,6 +122,7 @@ def uploadEstimates():
     return bad_request('Request is not a POST request')
 
 def insertEstimateValue(category, name, value, company_name):
+    """Inserts estimate information based on category"""
     if category == 'Style':
         newStyle = Style(style = name, value = value, company_name = company_name)
         dbSession.add(newStyle)

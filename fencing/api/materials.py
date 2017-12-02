@@ -13,6 +13,9 @@ import json
 import io
 import csv
 
+
+"""Api for uploading and parsing material information from a csv file"""
+
 materialBlueprint = Blueprint('materialBlueprint', __name__, template_folder='templates')
 
 @materialBlueprint.route('/getPriceList/', methods=['GET'])
@@ -81,6 +84,7 @@ def uploadPrice():
 @login_required
 @roles_required('primary')
 def getMaterialLists():
+    """Retrieve the material list and return errors if wrong format"""
     if request.method == 'GET':
         appearance_id = request.args.get('appearance_id')
         appearance = dbSession.query(Appearance).filter(Appearance.appearance_id == appearance_id).one()
@@ -90,6 +94,7 @@ def getMaterialLists():
     return bad_request('Request is not a POST request')
 
 def getMaterialList(appearance):
+    """Helper Function for getMaterialLists() that code in many of the materials"""
     materials = dbSession.query(Material).filter(Material.company_name == current_user.company_name)
 
     # Filtering for specific materials from the database depending
