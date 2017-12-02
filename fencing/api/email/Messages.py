@@ -1,14 +1,16 @@
 from weasyprint import CSS
+from flask_security.core import current_user
 from database.db import dbSession
 from database.models import Layout
 from priceCalculation.QuoteCalculation import QuoteCalculation
 from priceCalculation.MaterialListCalculation import MaterialListCalculation
 import priceCalculation.priceCalculation as PriceCalculation
 from database.db import dbSession
-from database.models import Appearance, Customer, Layout
+from database.models import Appearance, Customer, Layout, Company
 from diagram.DiagramParser import DiagramParser
 import api.layouts as Layouts
 import api.appearances as Appearances
+import datetime
 
 class Messages:
 	"""Generate email messages formatted with HTML and PDF attachments"""
@@ -47,6 +49,14 @@ class Messages:
 		.greyCell {
 			background-color: #BBB;
 			border: none;
+		}
+
+		.greyText {
+			color: #999;
+		}
+
+		.bold {
+			font-weight: bold;
 		}
 
 		.bottom {
@@ -121,6 +131,12 @@ class Messages:
 
 		diagram = dbSession.query(Layout).filter(
 			Layout.layout_id == project.layout_selected).one().layout_info
+		
+		company = dbSession.query(Company).filter(
+			Company.company_name == current_user.company_name).one()
+		
+		now = datetime.datetime.now()
+		date = "{0} {1}, {2}".format(now.strftime("%b"), now.day, now.year)
 
 		pageBreak = """
 			<p style="page-break-after: always" ></p>
@@ -129,10 +145,32 @@ class Messages:
 
 		return """
 			<div style="float:left; width:25%;">
-				CAVALRY FENCE
+				<p class="greyText bold">{companyName}</p>
+				<br>
+				<p class="greyText">
+					<span class="bold">Email</span><br>
+					{companyEmail}
+				</p>
 			</div>
 			<div style="float:left; width:75%;">
-				GREGORY BAKER QUOTE
+				<p>
+					<span class="greyText bold">DATE</span><br>
+					{date}
+				</p><br>
+				<p>
+					<span class="greyText bold">TO</span><br>
+					{customerName}<br>
+					{customerAddress}<br>
+					{customerPhone}
+				</p><br>
+				<p class="bold">
+					<span class="greyText">PROJECT TITLE: </span>
+					{projectName}<br>
+					<span class="greyText">INVOICE NUMBER: </span>
+					{projectId}<br>
+					<span class="greyText">PAYMENT: </span>
+					Cash Cheque
+				</p><br>
 				<table>
 					<tr class="bordered">
 						<th>DESCRIPTION</th>
@@ -159,7 +197,9 @@ class Messages:
 			{pageBreak}
 			<div style="float:left; width:25%;"><p></p></div>
 			<div style="float:left; width:75%;">
+				<p class="bold">Site Map:</p>
 				<img src="{diagram}"><br>
+				<p class="bold">Payment is due on day installation is completed. 2 Year Workmanship Warranty does not include: damage done to fence product by homeowner, pedestrians, or act of God, nor damage due to frost heave on posts and concrete; coverage of the Westech Product Lifetime Warranty. Cavalry Fence Inc. reserves the right to alter pricing for any requested changes or alterations to this quote above. In the event Cavalry Fence Inc. is required to hand expose: gas lines, electrical lines, water lines, etc. after government inspection, Cavalry Fence Inc. reserves the right to charge an additional $50 per hour until exposure is complete. In this event, Cavalry Fence Inc. will notify the homeowner and request permission to proceed with exposure of the line with the additional charge.<.p>
 				<b><span class="bottom">
 					Signature:_____________________________________________
 				</span></b>
@@ -169,7 +209,14 @@ class Messages:
 				subtotal=PriceCalculation.priceString(subtotal),
 				gstPercent=round(gstPercent, 0),
 				gst=PriceCalculation.priceString(gst),
-				total=PriceCalculation.priceString(total))
+				total=PriceCalculation.priceString(total),
+				companyName=company.company_name.upper(),
+				companyEmail=company.email,
+				date=date, customerName=customer.first_name,
+				customerAddress=project.address,
+				customerPhone=customer.cellphone,
+				projectName=project.project_name,
+				projectId=project.project_id)
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}
