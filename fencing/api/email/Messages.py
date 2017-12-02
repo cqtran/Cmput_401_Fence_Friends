@@ -114,7 +114,7 @@ class Messages:
 		if misc:
 			priceStrings.append(
 				'''<tr class="bordered">
-					<td class="bordered">Misc.</td>
+					<td class="bordered">Adjustments</td>
 					<td class="right bordered">$ {price}</td>
 				</tr>'''.format(price=PriceCalculation.priceString(misc))
 			)
