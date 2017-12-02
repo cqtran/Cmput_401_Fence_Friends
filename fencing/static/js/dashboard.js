@@ -3,10 +3,12 @@ var ctx;
 var projectNames;
 var projectProfit;
 
+//sends an http request to return profit values
 function getProfits(){
   $.ajax({
-    type: 'GET',
+    type: 'POST',
     url: '/getProfit/',
+    data: {'year': $('#year').val()},
     success: function(result) {
       console.log(result);
       projectProfit = result["profits"];
@@ -19,12 +21,26 @@ function getProfits(){
   });
 }
 
+// generate list of years
+function yearSelect(){
+  for (i = new Date().getFullYear(); i > 2015; i--) {
+    $('select[name=year]').append('<option value="' + i + '">' + i + '</option>');
+  }
+  $('.selectpicker').selectpicker('refresh');
+}
 
+//runs after document loads
 $(document).ready(function(){
+  yearSelect();
   ctx = document.getElementById("myChart");
   getProfits();
-})
 
+  $('#year').on('change', function() {
+    getProfits();
+  });
+});
+
+//creates the line graph
 function makeChart(){
   var myLineChart = new Chart(ctx, {
     type: 'line',
