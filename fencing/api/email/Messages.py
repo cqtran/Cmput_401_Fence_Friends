@@ -10,6 +10,7 @@ from database.models import Appearance, Customer, Layout, Company
 from diagram.DiagramParser import DiagramParser
 import api.layouts as Layouts
 import api.appearances as Appearances
+from decimal import Decimal
 import datetime
 
 class Messages:
@@ -207,7 +208,7 @@ class Messages:
 			""".format(pageBreak=pageBreak, diagram=diagram,
 				prices="".join(priceStrings),
 				subtotal=PriceCalculation.priceString(subtotal),
-				gstPercent=round(gstPercent, 0),
+				gstPercent=round(gstPercent * Decimal("100"), 0),
 				gst=PriceCalculation.priceString(gst),
 				total=PriceCalculation.priceString(total),
 				companyName=company.company_name.upper(),
