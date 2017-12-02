@@ -56,8 +56,8 @@ app.json_encoder = MyJSONEncoder
 
 app.config['DEBUG'] = True
 app.config['TESTING'] = False
-app.config['SECRET_KEY'] = 'super-secret'
-app.config['SECURITY_PASSWORD_SALT'] = 'testing'
+app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECURITY_PASSWORD_SALT'] = os.urandom(24)
 
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
@@ -73,7 +73,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = SENDER_EMAIL
-app.config['MAIL_PASSWORD'] = 'fencing401'
+app.config['MAIL_PASSWORD'] = 'cFb401Id'
 app.config['SECURITY_EMAIL_SENDER'] = SENDER_EMAIL
 app.config['MAIL_SUPPRESS_SEND'] = False
 

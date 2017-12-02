@@ -10,7 +10,7 @@ from api.email.Messages import Messages
 import os, traceback, uuid
 from api.decorators import async
 
-SENDER_EMAIL = 'cmput401fence@gmail.com'
+SENDER_EMAIL = 'cavalryfencebuilder@gmail.com'
 
 @async
 def async_email(msg, app, mail):

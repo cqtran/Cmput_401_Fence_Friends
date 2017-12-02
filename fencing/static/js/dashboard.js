@@ -16,7 +16,7 @@ function getProfits(){
       makeChart();
     },
     error: function(result) {
-        showMessage("Error getting material lists");
+        showMessage("Error getting profits");
     }
   });
 }

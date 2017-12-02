@@ -9,38 +9,13 @@ function getSummary() {
       updateTable(result);
     },
     error: function(result) {
-      showError();
+      showMessage("Data not available.")
     }
-  });
-}
-function projectDeatils(){
-  $.ajax({
-      type: 'GET',
-      url: '/projectdetails/' + proj_id,
-      success: function(result) {
-
-      },
-      error: function(xhr, textStatus, error) {
-    if (proj_id != null) {
-      showMessage("Error");
-    }
-    
-    console.log(xhr.statusText);
-    console.log(textStatus);
-    console.log(error);
-      }
   });
 }
 function updateTable(row) {
   // Update the Accounting table with data
 }
-
-function showError() {
-  var item = document.createElement('a');
-  item.appendChild(document.createTextNode('Accounting summary not available'));
-  // Append item to document
-}
-
 
 function extractData(tablename, filename){
   var rows = $(tablename).DataTable().rows().data();
