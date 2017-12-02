@@ -90,3 +90,7 @@ function makeChart(){
     }
   });
 }
+function showMessage(message) {
+  $('#message-text').html(message);
+  $('#message').modal('show');
+}

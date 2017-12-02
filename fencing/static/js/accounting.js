@@ -1,3 +1,6 @@
+var tableCost;
+var tableData;
+
 function getSummary() {
   $.ajax({
     type: 'GET',
@@ -71,17 +74,23 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
+//populate years in dropdown
+function yearSelect(){
+  for (i = new Date().getFullYear(); i > 2015; i--) {
+    $('select[name=dataYear]').append('<option value="' + i + '">' + i + '</option>');
+    $('select[name=costYear]').append('<option value="' + i + '">' + i + '</option>');
+  }
+  $('.selectpicker').selectpicker('refresh');
+}
 
-$(document).ready(function(){
-  //pictureList = document.getElementById('projectPictures');
-
-  // Suppress warnings so no warning on empty table
-  $.fn.dataTable.ext.errMode = 'none';
-
-  $('#dataTable').DataTable({
+function populateData(){
+  //populate data for data table
+  tableData = $('#dataTable').DataTable({
+    searching: false,
     "ajax" :{
       "type": 'POST',
       "url": '/getAccountingSummary/',
+      "data": {'year': $('#dataYear').val()},
     },
     "columns": [
       {"data": "quote_id"},
@@ -136,12 +145,16 @@ $(document).ready(function(){
       $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
     }
   });
+}
 
-
-  $('#costTable').DataTable({
+function populateCost(){
+  //populate data for cost table
+  tableCost = $('#costTable').DataTable({
+    searching: false,
     "ajax" :{
       "type": 'POST',
       "url": '/getAccountingSummary/',
+      "data": {'year': $('#costYear').val()},
     },
     "columns": [
       {"data": "quote_id"},
@@ -196,6 +209,15 @@ $(document).ready(function(){
       $( api.column(4).footer() ).html('$'+ customerTotal.toFixed('2'));
     }
   });
+}
+$(document).ready(function(){
+  yearSelect();
+
+  // Suppress warnings so no warning on empty table
+  $.fn.dataTable.ext.errMode = 'none';
+
+  populateData();
+  populateCost();
 
   // Remove "Search:" and add search icon
   var dataTableLabel = $('#dataTable_filter > label');
@@ -207,9 +229,16 @@ $(document).ready(function(){
   dataTableLabel.html(dataTableLabel.children());            // Remove text
   dataTableLabel.prepend('<i class="fa fa-search"></i>');
 
+  //onclick listener for sliding
   $('.slidey').click(function(){
     slider(this);
   })
+  $('#dataYear').on('change', function() {
+    tableData.ajax.reload();
+  });
+  $('#costYear').on('change', function() {
+    tableCost.ajax.reload();
+  });
 });
 
 //change to projectinfo
@@ -236,4 +265,8 @@ function swapCaret(header) {
     i.removeClass('fa-caret-left');
     i.addClass('fa-caret-down');
   }
+}
+function showMessage(message) {
+  $('#message-text').html(message);
+  $('#message').modal('show');
 }
