@@ -108,7 +108,7 @@ class Messages:
 		if misc:
 			subtotal += misc
 
-		gstPercent = PriceCalculation.gstPercent
+		gstPercent = PriceCalculation.gstPercent()
 		gst = subtotal * gstPercent
 		total = subtotal + gst
 		priceStrings = []
