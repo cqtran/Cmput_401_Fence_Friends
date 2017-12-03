@@ -865,7 +865,7 @@ function makeNewPictureButton() {
 	img.width = '50';
 	img.src = tbnPath + "New_Picture.png";
 	img.alt = 'Thumbnail not found';
-	final.setAttribute('href', '#');
+	final.style.cursor = 'pointer';
 	final.setAttribute('class', 'PictureThumbnail newPicture zero-padding');
 
 	final.addEventListener('click', function(event){
@@ -887,7 +887,7 @@ function makePictures(pictures) {
 
 		img.src = tbnPath + picture.thumbnail_name;
 		img.alt = 'Thumbnail not found';
-		final.setAttribute('href', '#');
+		final.style.cursor = 'pointer';
 		final.setAttribute('class', 'PictureThumbnail card zero-padding');
 		// this is where you want to go when you click
 		final.addEventListener('click', function(){
