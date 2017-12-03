@@ -12,7 +12,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#url-1">URL</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#required-for-building">Required for Building</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#build">Build</a><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-1">Run</a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-1">Run</a><br>
 &bull; <a href="#tips">Tips</a><br>
 </details>
 
