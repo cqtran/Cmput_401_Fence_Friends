@@ -63,13 +63,7 @@ class Email:
 				attachmentName = kind.title() + ".pdf"
 
 				with app.open_resource(attachmentPath) as fp:
-					m.attach(attachmentName, "application/pdf", fp.read())
-				
-				try:
-					os.remove(attachmentPath)
-				
-				except:
-					print("Warning: could not delete attachment")
+					m.attach(attachmentName, "image/png", fp.read())
 
 			async_email(m, app, mail)
 		
