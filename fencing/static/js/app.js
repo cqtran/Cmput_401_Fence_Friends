@@ -9,7 +9,6 @@ var customers = new Bloodhound({
         url: '/getCustomerList?search=%QUERY',
 
         filter: function (customers) {
-            console.log(customers);
             // Map the remote source JSON array to a JavaScript object array
             return $.map(customers, function (customer) {
                 return {
@@ -34,7 +33,6 @@ var projects = new Bloodhound({
         url: '/getProjectList?search=%QUERY',
 
         filter: function (projects) {
-            console.log(projects);
             // Map the remote source JSON array to a JavaScript object array
             return $.map(projects, function (project) {
                 return {

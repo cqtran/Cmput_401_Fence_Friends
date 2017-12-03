@@ -54,7 +54,6 @@ function getCustomerData() {
     type: 'GET',
     url: '/getCustomer/' + cust_id,
     success: function(result) {
-      console.log(result[0].first_name);
       custData(result);
     }
   });
@@ -92,7 +91,6 @@ $('#edit-form').submit(function(e) {
 // Runs after html loaded, all calls done here
 $(document).ready(function() {
   cust_id = getParameterByName('cust_id');
-  console.log(cust_id);
   if(cust_id == null) {
     showMessage('Customer  NULL');
     window.location.href = '/customers';

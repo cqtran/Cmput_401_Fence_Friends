@@ -17,7 +17,6 @@ function addToList(customer){
   }
   //append to list of customers
   chosenCustomers.push(customer.cust_id);
-  console.log(chosenCustomers);
 
   //get customer list element
   var customerList = document.getElementById('customers-list');
@@ -37,9 +36,7 @@ function addToList(customer){
 //delete html customer item on click
 $(document).on('click', '.btn-grey', function(e) {
   var cid = this.id;
-  console.log(chosenCustomers);
   chosenCustomers = chosenCustomers.filter(removeCust.bind(this, cid));
-  console.log(JSON.stringify(chosenCustomers));
   $(e.target).parent().parent().parent().remove();
 });
 

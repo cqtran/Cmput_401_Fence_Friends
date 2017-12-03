@@ -1113,7 +1113,6 @@ function deletePicture(e) {
 	var image = document.getElementById("imagepreview");
 	var imageNameArr = image.src.split("/");
 	var imageName = imageNameArr[imageNameArr.length-1]
-	console.log(imageName)
 
 	$.ajax({
 			type: 'DELETE',
@@ -1247,17 +1246,12 @@ $(document).ready(function(){
 });
 
 $('#imagepopup').on('click', '.btn-ok', function(e) {
-		console.log("Delete Picture");
 		deletePicture(e);
 });
 
 $('#imagepopup').on('shown.bs.modal', function (event) {
   var vert = ($(window).height() - $(this).find('#image-modal').outerHeight())/2;
   var hor = ($(window).width() - $('.imagemodal').outerWidth())/2;
-  console.log("winh" + $(window).height());
-  console.log("winw" + $(window).width());
-  console.log("vert" + $(this).find('#image-modal').outerHeight());
-  console.log("hor" + $('.imagemodal').outerWidth());
   $('#image-dialog').css({"margin-left" : hor, "margin-right" : hor, "margin-top" : vert, "margin-bottom" : vert});
 });
 $('#file-upload').change(function(){
@@ -1393,7 +1387,6 @@ function getCustomerData() {
     type: 'GET',
     url: '/getCustomer/' + cust_id,
     success: function(result) {
-      console.log(result[0].email);
       customerEmail = result[0].email;
     }
   });

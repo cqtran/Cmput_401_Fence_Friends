@@ -2,7 +2,6 @@ var estimateTable = document.getElementById('estimateTable');
 
 function uploadValues(e) {
   var message = 'Upload Prices File'
-  console.log(message)
   var formdata = new FormData(document.getElementById("upload-form"));
   $.ajax({
       type: 'POST',
@@ -11,7 +10,6 @@ function uploadValues(e) {
       processData: false,
       contentType: false,
       success: function(response){
-        console.log('good')
         refreshTable();
       }
   });
