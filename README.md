@@ -13,6 +13,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#required-for-building">Required for Building</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#build">Build</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-1">Run</a>
+&bull; <a href="#tips">Tips</a><br>
 </details>
 
 # Cavalry Fence Builder
@@ -202,3 +203,7 @@ python3 -m http.server 8000
 2. While that is running, access drawio with:
 
 http://0.0.0.0:8000/index.html?offline=1&https=0
+
+## Tips
+
+[View tips](Documentation/tips.md)
