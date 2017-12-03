@@ -120,6 +120,7 @@ function saveQuote() {
           proj_id: proj_id,
           misc_modifier_label: $('#adjustmentLabel').val(),
           misc_modifier: $('#adjustment').val(),
+          payment: $('#payment').val(),
           notes: $('#notes').val()
       },
       dataType: "json",
