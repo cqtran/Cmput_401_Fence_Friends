@@ -118,6 +118,18 @@ class Messages:
 			Please do not respond to this email. You can contact us at
 			{company_email}
 			""".format(company_email=company.email)
+	
+	def _sideBar(company):
+		return """
+			<div style="float:left; width:30%;">
+				<p class="greyText bold companyName">{name}</p>
+				<br>
+				<p class="greyText">
+					<span class="bold">Email</span><br>
+					{email}
+				</p>
+			</div>
+		""".format(name=company.company_name.upper(), email=company.email)
 
 	def quoteAttachment(project, customer=None, parsed=None, misc=None,
 		notes=None, misc_modifier_label=None, payment=None, description=None,
@@ -192,20 +204,15 @@ class Messages:
 		now = datetime.datetime.now()
 		date = "{0} {1}, {2}".format(now.strftime("%b"), now.day, now.year)
 
+		sideBar = Messages._sideBar(company)
+
 		pageBreak = """
 			<p style="page-break-after: always" ></p>
 			<p style="page-break-before: always" ></p>
 			"""
 
 		return """
-			<div style="float:left; width:30%;">
-				<p class="greyText bold companyName">{companyName}</p>
-				<br>
-				<p class="greyText">
-					<span class="bold">Email</span><br>
-					{companyEmail}
-				</p>
-			</div>
+			{sideBar}
 			<div style="float:left; width:70%;">
 				<p>
 					<span class="greyText bold">DATE</span><br>
@@ -252,14 +259,7 @@ class Messages:
 				</span></b>
 			</div>
 			{pageBreak}
-			<div style="float:left; width:30%;">
-				<p class="greyText bold companyName">{companyName}</p>
-				<br>
-				<p class="greyText">
-					<span class="bold">Email</span><br>
-					{companyEmail}
-				</p>
-			</div>
+			{sideBar}
 			<div style="float:left; width:70%;">
 				<p class="bold">Site Map:</p>
 				<img src="{diagram}"><br>
@@ -275,8 +275,6 @@ class Messages:
 				gstPercent=round(gstPercent * Decimal("100"), 0),
 				gst=PriceCalculation.priceString(gst),
 				total=PriceCalculation.priceString(total),
-				companyName=company.company_name.upper(),
-				companyEmail=company.email,
 				date=date,
 				customerName=customer.first_name,
 				customerAddress=project.address,
@@ -285,7 +283,8 @@ class Messages:
 				invoice=invoice,
 				notes=notes,
 				payment=payment,
-				description=description)
+				description=description,
+				sideBar=sideBar)
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}
@@ -344,4 +343,16 @@ class Messages:
 			categoryString += "<br>".join(materialStrings)
 			categoryStrings.append(categoryString)
 		
-		return "<br><br>".join(categoryStrings)
+		content = "<br><br>".join(categoryStrings)
+
+		company = dbSession.query(Company).filter(
+			Company.company_name == current_user.company_name).one()
+		
+		sideBar = Messages._sideBar(company)
+
+		return """
+			{sideBar}
+			<div style="float:left; width:70%;">
+				{content}
+			</div>
+		""".format(sideBar=sideBar, content=content)
