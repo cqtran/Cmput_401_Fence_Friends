@@ -66,3 +66,7 @@ OR
 * Ensure (correct) CSV files have been uploaded for both prices and estimations
 * Use the settings menu to correct information
 * Ensure you are signed in
+
+## Disabled draw.io Features
+
+* Our modified version of draw.io has the tap to rotate feature disabled because it changes the length of the rotated shape. Instead, drag to rotate.
