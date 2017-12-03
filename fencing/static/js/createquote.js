@@ -1,6 +1,16 @@
 var proj_id;
 var listDict;
 var amountDict;
+var isDirty = true;
+
+function markClean() {
+  isDirty = false;
+  window.onbeforeunload = null;
+}
+
+window.onbeforeunload = function() {
+  return "Discard changes?";
+};
 
 function getMaterialAmounts(layout){
   $.ajax({
@@ -78,6 +88,26 @@ $(document).ready(function(){
   }
   getProjectInfo();
 
+  $("#confirmDiscardSave").click(function() {
+    $("#submit").trigger("click");
+  });
+
+  $("a").click(function(event) {
+    var href = $(this).attr("href");
+
+    if (!isDirty || href.startsWith("#") || href == "" || href == null) {
+      return;
+    }
+
+    event.preventDefault();
+
+    $("#confirmDiscardOkay").click(function() {
+      window.onbeforeunload = null;
+      window.location.replace(href);
+    });
+
+    $("#confirmDiscard").modal("show");
+  });
 });
 
 function saveQuote() {
