@@ -120,7 +120,8 @@ class Messages:
 			""".format(company_email=company.email)
 
 	def quoteAttachment(project, customer=None, parsed=None, misc=None,
-		notes=None, misc_modifier_label=None, payment=None):
+		notes=None, misc_modifier_label=None, payment=None, description=None,
+		invoice=None):
 		"""Generate the content of a quote attachment and return it"""
 		if customer is None:
 			customer = dbSession.query(Customer).filter(
@@ -136,6 +137,12 @@ class Messages:
 		
 		if payment is None:
 			payment = ""
+		
+		if description is None:
+			description = ""
+		
+		if invoice is None:
+			invoice = project.project_id
 		
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected).one()
@@ -213,8 +220,10 @@ class Messages:
 				<p class="bold">
 					<span class="greyText">PROJECT TITLE: </span>
 					{projectName}<br>
+					<span class="greyText">DESCRIPTION: </span>
+					{description}<br>
 					<span class="greyText">INVOICE NUMBER: </span>
-					{projectId}<br>
+					{invoice}<br>
 					<span class="greyText">PAYMENT: </span>
 					{payment}
 				</p><br>
@@ -259,7 +268,8 @@ class Messages:
 					Signature:_____________________________________________
 				</span></b>
 			</div>
-			""".format(pageBreak=pageBreak, diagram=diagram,
+			""".format(pageBreak=pageBreak,
+				diagram=diagram,
 				prices="".join(priceStrings),
 				subtotal=PriceCalculation.priceString(subtotal),
 				gstPercent=round(gstPercent * Decimal("100"), 0),
@@ -267,13 +277,15 @@ class Messages:
 				total=PriceCalculation.priceString(total),
 				companyName=company.company_name.upper(),
 				companyEmail=company.email,
-				date=date, customerName=customer.first_name,
+				date=date,
+				customerName=customer.first_name,
 				customerAddress=project.address,
 				customerPhone=customer.cellphone,
 				projectName=project.project_name,
-				projectId=project.project_id,
+				invoice=invoice,
 				notes=notes,
-				payment=payment)
+				payment=payment,
+				description=description)
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}
