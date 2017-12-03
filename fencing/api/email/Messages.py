@@ -120,7 +120,7 @@ class Messages:
 			""".format(company_email=company.email)
 
 	def quoteAttachment(project, customer=None, parsed=None, misc=None,
-		notes = None):
+		notes=None, misc_modifier_label=None):
 		"""Generate the content of a quote attachment and return it"""
 		if customer is None:
 			customer = dbSession.query(Customer).filter(
@@ -159,11 +159,18 @@ class Messages:
 			)
 		
 		if misc:
+			if misc_modifier_label is None:
+				misc_modifier_label = ""
+
+			if misc_modifier_label.strip() == "":
+				misc_modifier_label = "Adjustments"
+
 			priceStrings.append(
 				'''<tr class="bordered">
-					<td class="bordered">Adjustments</td>
+					<td class="bordered bordered-right">{label}</td>
 					<td class="right bordered">$ {price}</td>
-				</tr>'''.format(price=PriceCalculation.priceString(misc))
+				</tr>'''.format(price=PriceCalculation.priceString(misc),
+					label=misc_modifier_label)
 			)
 
 		diagram = dbSession.query(Layout).filter(
