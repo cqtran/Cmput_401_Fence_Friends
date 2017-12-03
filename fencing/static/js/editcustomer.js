@@ -80,12 +80,12 @@ $('#edit-form').submit(function(e) {
       },
 
       error: function(result) {
-        alert('error');
+        showMessage('error');
       }
     });
   }
   else {
-    alert('A customer must be selected');
+    showMessage('A customer must be selected');
   }
 });
 
@@ -94,7 +94,7 @@ $(document).ready(function() {
   cust_id = getParameterByName('cust_id');
   console.log(cust_id);
   if(cust_id == null) {
-    alert('Customer  NULL');
+    showMessage('Customer  NULL');
     window.location.href = '/customers';
   }
   getCustomerData();
