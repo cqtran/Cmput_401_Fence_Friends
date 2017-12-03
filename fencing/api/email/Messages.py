@@ -25,6 +25,11 @@ class Messages:
 			font-size: 10pt;
 		}
 
+		h2 {
+			font-size: 12pt !important;
+			color: #989898;
+		}
+
 		.companyName {
 			font-size: 12pt !important;
 		}
@@ -85,7 +90,7 @@ class Messages:
 		}
 
 		.greyText {
-			color: #999;
+			color: #989898;
 		}
 
 		.bold {
@@ -95,6 +100,14 @@ class Messages:
 		.bottom {
 			position: absolute;
 			bottom: 0px;
+		}
+
+		.pageNumber {
+			position: absolute;
+			bottom: -0.5in;
+			right: -0.5in;
+			color: #989898;
+			font-size: 8pt !important;
 		}
 		""")]
 
@@ -273,6 +286,7 @@ class Messages:
 					Signature:_____________________________________________
 				</span></b>
 			</div>
+			<p class="pageNumber">Page 1</p>
 			{pageBreak}
 			{sideBar}
 			<div style="float:left; width:70%;">
@@ -283,6 +297,7 @@ class Messages:
 					Signature:_____________________________________________
 				</span></b>
 			</div>
+			<p class="pageNumber">Page 2</p>
 			""".format(pageBreak=pageBreak,
 				diagram=diagram,
 				prices="".join(priceStrings),
