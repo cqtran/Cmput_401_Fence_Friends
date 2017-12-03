@@ -238,7 +238,7 @@ class Messages:
 						<td class="right bordered"><b>$ {subtotal}</b></td>
 					</tr>
 					<tr class="tableBreak bordered">
-						<td class="right bordered bordered-right">GST {gstPercent}%</td>
+						<td class="right bordered bordered-right">GST &emsp;{gstPercent}%</td>
 						<td class="right bordered"><b>$ {gst}</b></td>
 					</tr>
 					<tr class="greyCell right">
