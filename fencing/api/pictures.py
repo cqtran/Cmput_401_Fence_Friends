@@ -45,7 +45,6 @@ def getPictureList(project_id):
 @roles_required('primary')
 def uploadPicture():
     """ Saves the image and adds the picture name to a related project """
-    print(request.method)
     if request.method == 'POST':
         project_id = request.form['proj_id']
         picture = request.files['picture']
@@ -64,7 +63,6 @@ def uploadPicture():
 
                 # Save picture in the picture directory
                 picturePath = os.path.join(app_root, pictureDir, filename + file_extension)
-                print('Picture stored at: ' + picturePath + '\n')
                 picture.save(picturePath)
 
                 # Create thumbnail of picture
@@ -92,7 +90,6 @@ def uploadPicture():
                 # Save thumbnail in the thumbnail directory
                 thumbnailPath = os.path.join(app_root, thumbnailDir,
                     thumbnailPrefix + filename + thumbnailExt)
-                print('Thumbnail stored at: ' + thumbnailPath + '\n')
                 thumb.save(thumbnailPath)
                 thumb.close()
 
@@ -112,8 +109,6 @@ def deletePicture():
         # Grab arguments
         filename = request.args.get('picName')
         project_id = request.args.get('proj_id')
-        print(filename)
-        print(project_id)
         if filename != '':
             # Query and find the picture in the database
             picToDelete = dbSession.query(Picture).filter(Picture.project_id == project_id)

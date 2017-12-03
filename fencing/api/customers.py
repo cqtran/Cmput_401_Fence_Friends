@@ -61,7 +61,6 @@ def addCustomer(name, email, ph, addr, cname):
 def deleteproject():
     """Gets the customer id and removes their projects"""
     cust_id = request.values.get("cust_id")
-    print(cust_id)
     removeCustomer(cust_id)
 
     return created_request("Good")
@@ -93,7 +92,6 @@ def updateCustomer():
         updateCustomerInfo(customer_id = customer_id, email = email, first_name = f_name,
                             cellphone = cell)
 
-        print("done")
         return jsonify(customer_id)
 
 def updateCustomerInfo(customer_id, email, first_name, cellphone):
