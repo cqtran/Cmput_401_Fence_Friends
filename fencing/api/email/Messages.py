@@ -64,7 +64,7 @@ class Messages:
 
 		img {
 			max-width: 100%;
-			max-height: 7.5in;
+			max-height: 5in;
 		}
 
 		.right {
