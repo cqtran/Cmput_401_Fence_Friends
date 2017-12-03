@@ -96,7 +96,6 @@ function addToList(customer){
   }
   //append to list of customers
   chosenCustomers.push(customer.cust_id);
-  console.log(chosenCustomers);
 
   //get customer list element
   var customerList = document.getElementById('customers-list');
@@ -124,7 +123,6 @@ $(document).on('click', '.btn-grey', function(e) {
 $('#edit-form').submit(function(e) {
   e.preventDefault();
   markClean();
-  console.log(chosenCustomers);
   if(typeof chosenCustomers != "undefined" && chosenCustomers != null && chosenCustomers.length > 0){
     $.ajax({
         type: 'POST',

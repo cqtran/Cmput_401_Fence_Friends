@@ -579,29 +579,6 @@ def updategst():
     PriceCalculation.updateGst(request.json["gst"])
     return "{}"
 
-@app.route('/editquote/', methods = ['GET'])
-@login_required
-@roles_required('primary')
-def editquote():
-    proj_id = request.args.get("proj_id")
-    project = dbSession.query(Project).filter(
-        Project.project_id == proj_id).one()
-    layout = dbSession.query(Layout).filter(
-        Layout.layout_id == project.layout_selected).one()
-    appearance = dbSession.query(Appearance).filter(
-        Appearance.appearance_id == project.appearance_selected).one()
-    parsed = DiagramParser.parse(layout.layout_info)
-    appearanceValues = Quotes.getAppearanceValues(appearance)
-    prices = QuoteCalculation.prices(parsed, appearanceValues[0],
-        appearanceValues[1], appearanceValues[2], appearanceValues[3])
-    subtotal = PriceCalculation.subtotal(prices)
-    gstPercent = PriceCalculation.gstPercent()
-    gst = subtotal * gstPercent
-    total = subtotal + gst
-    return render_template("editquote.html", company = current_user.company_name, proj_id = proj_id)
-
-
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description = 'Run Cavalry Fence Builder')

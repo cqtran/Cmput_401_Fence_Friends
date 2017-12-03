@@ -213,12 +213,10 @@ $(document).ready(function(){
     slider(this);
   })
   $('#dataYear').on('change', function() {
-    console.log($('#dataYear').val());
     tableData.clear().draw();
     tableData.ajax.reload();
   });
   $('#costYear').on('change', function() {
-    console.log($('#costYear').val());
     tableCost.clear().draw();
     tableCost.ajax.reload();
   });
@@ -232,7 +230,6 @@ function changePage(proj_id){
 //these deal with hiding the charts
 function slider(item){
   /* toggle if is shows */
-  console.log($(item).attr('class'));
   $(item).next().next().slideToggle();
   swapCaret(item);
 }

@@ -28,7 +28,6 @@ def getAccountingSummary():
 
         quotes = quotes.order_by(Project.end_date).all()
         send = {"data" : quotes}
-        print("here")
         if len(quotes) == 0:
             return bad_request('no quotes were found')
         return jsonify(send)

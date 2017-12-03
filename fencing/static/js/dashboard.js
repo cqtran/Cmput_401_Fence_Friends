@@ -13,7 +13,6 @@ function getProfits(){
     success: function(result) {
       projectProfit = [];
       projectNames = [];
-      console.log(result);
       var profits = result["profits"];
       for(i = 0; i < profits.length; i++){
         if(i == 0){
@@ -21,7 +20,6 @@ function getProfits(){
         }
         else{
           var added = (parseFloat(profits[i]) + parseFloat(projectProfit[i-1])).toFixed('2');
-          console.log(added);
           projectProfit.push(added);
         }
       }

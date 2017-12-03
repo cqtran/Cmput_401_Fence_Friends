@@ -42,7 +42,6 @@ def uploadPrice():
             return bad_request('Invalid price file uploaded')
         stream = io.StringIO(priceFile.stream.read().decode("UTF8"), newline=None)
         csv_input = csv.reader(stream)
-        print(csv_input)
         # Clear materials list? This will cause issues for appearances due to ForeignKeys
         dbSession.query(Material).filter(Material.company_name == current_user.company_name).delete()
 
@@ -50,11 +49,9 @@ def uploadPrice():
         for row in csv_input:
             if row[2] == 'My Price' and row[4] == 'Pieces in Bundle':
                 # Category
-                print(row)
                 category = row[0]
             if row[0] != '' and row[2] == '' and row[4] == '':
                 # Category
-                print(row)
                 category = row[0]
             if row[1].startswith('$') and row[2].startswith('$'):
                 # Material

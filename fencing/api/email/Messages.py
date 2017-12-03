@@ -64,7 +64,7 @@ class Messages:
 
 		img {
 			max-width: 100%;
-			max-height: 7.5in;
+			max-height: 5in;
 		}
 
 		.right {
@@ -73,6 +73,10 @@ class Messages:
 
 		.tableBreak {
 			border-bottom: 5px solid #919191;
+		}
+
+		.tableBreakTop {
+			border-top: 5px solid #919191;
 		}
 
 		.greyCell {
@@ -206,7 +210,7 @@ class Messages:
 						<th>PRICE</th> 
 					</tr>
 					{prices}
-					<tr class="bordered">
+					<tr class="tableBreakTop bordered">
 						<td class="right bordered bordered-right">Subtotal</td>
 						<td class="right bordered"><b>$ {subtotal}</b></td>
 					</tr>

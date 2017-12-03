@@ -14,7 +14,6 @@ function getCompany(){
 }
 function changeAdmin(){
 	//remove non admin buttons
-	console.log("yes");
 	$('.delete-admin').remove();
 	$('#admin-users').text("Users");
   $('#admin-users-link').attr("href", "/");

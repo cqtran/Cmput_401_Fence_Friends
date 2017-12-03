@@ -54,7 +54,6 @@ function getCustomerData() {
     type: 'GET',
     url: '/getCustomer/' + cust_id,
     success: function(result) {
-      console.log(result[0].first_name);
       custData(result);
     }
   });
@@ -80,21 +79,20 @@ $('#edit-form').submit(function(e) {
       },
 
       error: function(result) {
-        alert('error');
+        showMessage('error');
       }
     });
   }
   else {
-    alert('A customer must be selected');
+    showMessage('A customer must be selected');
   }
 });
 
 // Runs after html loaded, all calls done here
 $(document).ready(function() {
   cust_id = getParameterByName('cust_id');
-  console.log(cust_id);
   if(cust_id == null) {
-    alert('Customer  NULL');
+    showMessage('Customer  NULL');
     window.location.href = '/customers';
   }
   getCustomerData();

@@ -124,7 +124,6 @@ def finalizeQuote():
             print('Error in saving the quote')
             return bad_request('Error in saving the quote')
 
-        print('Quote has been generated and finalized')
         return created_request('Quote has been generated')
     print('Request is not a POST request')
     return bad_request('Request is not a POST request')
@@ -194,10 +193,8 @@ def calculateQuote(project, misc_modifier, gst_rate):
 
     # Get layout info and pass to parser
     parsed = DiagramParser.parse(layout.layout_info)
-    print(parsed)
     # Pass parsed layout to calculate prices for each object
     prices = QuoteCalculation.prices(parsed, appearance_value, removal_value, gate_single_value, gate_double_value)
-    print(prices)
     # Calculate subtotal, gst, and total
     subtotal = PriceCalculation.subtotal(prices)
 

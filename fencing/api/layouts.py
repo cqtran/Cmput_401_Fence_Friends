@@ -135,10 +135,8 @@ def materialString(material):
 def getMaterialAmount(layout):
     """Gets material amounts for calculations"""
     parsed = DiagramParser.parse(layout.layout_info)
-    print(parsed)
 
     num_t_post, num_corner_post, num_line_post, num_end_post, num_gate_posts, num_steel_post = posts(parsed)
-    print('\n')
     num_caps = num_steel_post
     num_collars = num_steel_post * 2
 
@@ -149,26 +147,6 @@ def getMaterialAmount(layout):
     num_panels = panels(parsed)
 
     num_hinges, num_latches, num_Lsteel = gates(parsed)
-
-    print('\nSteel')
-    print('Metal Post: ',num_steel_post)
-    print('Metal U-Channel: ', num_metal_uchannel)
-    print('Metal L-Steel', num_Lsteel)
-    print('\nPlastic Posts')
-    print('Plastic T-Post', num_t_post)
-    print('Plastic Corner-Post', num_corner_post)
-    print('Plastic Line-Post', num_line_post)
-    print('Plastic End-Post', num_end_post)
-    print('Plastic Gate-Post', num_gate_posts)
-    print('\nPlastic')
-    print('Plastic Rails', num_rails)
-    print('Plastic U-Channel',num_uchannel)
-    print('Plastic T&G (Panels)',num_panels)
-    print('Plastic Collars', num_collars)
-    print('Plastic Caps',num_caps)
-    print('\nGate')
-    print('Hinges',num_hinges)
-    print('Latches',num_latches)
 
     return {
             'metal_post'            : num_steel_post,

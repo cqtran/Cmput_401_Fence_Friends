@@ -22,7 +22,6 @@ function getMaterialAmounts(layout){
       dealNumber(result["plastic_cap"], "plastic_cap");
       dealNumber(result["gate_hinge"], "gate_hinge");
       dealNumber(result["gate_latch"], "gate_latch");
-      console.log(result["metal_post"]);
     },
     error: function(result) {
         showMessage("Error getting material amounts. Are you sure you have a CSV uploaded? Check settings.");
@@ -63,8 +62,6 @@ function getProjectInfo() {
     success: function(result) {
       var layout = result[0].layout_selected;
       var appearance = result[0].appearance_selected;
-      console.log("layout: " + layout);
-      console.log("appearance: " + appearance)
       getMaterialAmounts(layout);
       getMaterials(appearance);
     },
@@ -76,7 +73,6 @@ function getProjectInfo() {
 
 $(document).ready(function(){
   proj_id = getParameterByName('proj_id');
-  console.log(proj_id)
   if(proj_id == null) {
     noProject();
   }
@@ -85,8 +81,6 @@ $(document).ready(function(){
 });
 
 function saveQuote() {
-  console.log("types " + JSON.stringify(amountDict));
-
   $.ajax({
       type: 'POST',
       url: '/finalizeQuote/',
@@ -98,7 +92,6 @@ function saveQuote() {
       },
       dataType: "json",
       success: function(response){
-        console.log('good')
         window.location.href = '/projectinfo/?proj_id=' + proj_id;
       },
       error: function(result){

@@ -193,7 +193,6 @@ def updateProject():
         updateProjectInfo(project_id = project_id, project_name = project_name,
             address = address, status = status, note = note, customer = customer, end_date = end_date)
 
-        print("done")
         return jsonify(project_id)
 
 @projectBlueprint.route('/deleteproject/', methods = ['POST'])
@@ -202,7 +201,6 @@ def updateProject():
 def deleteproject():
     """Deletes project from database"""
     proj_id = request.values.get("proj_id")
-    print(proj_id)
     removeProject(proj_id)
 
     return created_request("Good")

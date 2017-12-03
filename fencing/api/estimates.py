@@ -88,7 +88,6 @@ def uploadEstimates():
             return bad_request('Invalid estimate values file uploaded')
         stream = io.StringIO(estimateFile.stream.read().decode("UTF8"), newline=None)
         csv_input = csv.reader(stream)
-        print(csv_input)
         # Clear materials list? This will cause issues for appearances due to ForeignKeys
         dbSession.query(Style).filter(Style.company_name == current_user.company_name).delete()
         dbSession.query(Colour).filter(Colour.company_name == current_user.company_name).delete()
@@ -97,7 +96,6 @@ def uploadEstimates():
 
         category = ''
         for row in csv_input:
-            print(category)
             #TODO: Parse the csv file
             # Change the category in which the data is saved into
             if row[0] == 'Style':
