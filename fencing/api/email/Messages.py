@@ -75,6 +75,10 @@ class Messages:
 			border-bottom: 5px solid #919191;
 		}
 
+		.tableBreakTop {
+			border-top: 5px solid #919191;
+		}
+
 		.greyCell {
 			background-color: #DDD;
 			border: none !important;
@@ -206,7 +210,7 @@ class Messages:
 						<th>PRICE</th> 
 					</tr>
 					{prices}
-					<tr class="bordered">
+					<tr class="tableBreakTop bordered">
 						<td class="right bordered bordered-right">Subtotal</td>
 						<td class="right bordered"><b>$ {subtotal}</b></td>
 					</tr>
