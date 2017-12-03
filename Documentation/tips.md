@@ -22,6 +22,10 @@ OR
 
 * Right click the layout/appearance tab to rename
 
+## Delete All Layouts/Appearances Except One
+
+* Right click on the layout/appearance tab to keep
+
 ## View a Project's Address on Google Maps
 
 * When viewing a project, click on the project's address
