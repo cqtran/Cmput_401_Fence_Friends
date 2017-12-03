@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Supplier</h1>
+<h1>{{ company }}</h1>
 
-<form id="supplier-form" action="javascript:void(0);">
-  <label for="email">Supplier Email</label>
-  <input placeholder="Supplier Email" onchange="markDirty()" value="{{ email }}" type="text" class="form-control" id="email">
+<form id="company-form" action="javascript:void(0);">
+  <label for="supplier-email">Supplier Email</label>
+  <input placeholder="Supplier Email" onchange="markDirty()" value="{{ supplierEmail }}" type="text" class="form-control" id="supplier-email">
+  <label for="office">Office</label>
+  <textarea onchange="markDirty()" class="form-control mb-lg-2" id="office" name="office" rows="3" cols="30" placeholder="Office Address" maxlength="350">{{ office }}</textarea>
+  <label for="phone">Phone</label>
+  <input placeholder="Phone Number" onchange="markDirty()" value="{{ phone }}" type="text" class="form-control" id="phone">
+  <label for="web">Website</label>
+  <input placeholder="Website" onchange="markDirty()" value="{{ web }}" type="text" class="form-control" id="web">
+  <label for="disclaimer">Disclaimer</label>
+  <textarea onchange="markDirty()" class="form-control mb-lg-2" id="disclaimer" name="disclaimer" rows="3" cols="30" placeholder="Disclaimer" maxlength="1000">{{ disclaimer }}</textarea>
   <input id="save" onclick="markClean()" class="btn btn-primary btn-block bottom-margin mt-1" type="submit" value = "Save Information">
 </form>
 
@@ -28,5 +36,5 @@
 
 {% endblock %}
 {% block content2 %}
-<script src="../static/js/editsupplier.js"></script>
+<script src="../static/js/editcompany.js"></script>
 {% endblock %}

@@ -17,8 +17,14 @@ function markClean() {
 function save() {
 	$.ajax({
 		type: 'POST',
-		url: "/updatesupplier/",
-		data: JSON.stringify({email: $("#email").val()}),
+		url: "/updatecompany/",
+		data: JSON.stringify({
+			supplier_email: $("#supplier-email").val(),
+			office: $("#office").val(),
+			phone: $("#phone").val(),
+			web: $("#web").val(),
+			disclaimer: $("#disclaimer").val()
+		}),
 		contentType: "application/json;charset=UTF-8",
 		dataType: "json",
 		error: function(xhr, textStatus, error) {
@@ -51,7 +57,7 @@ $(document).ready(function() {
 		$("#confirmDiscard").modal("show");
 	});
 
-	$('#supplier-form').submit(function(e) {
+	$('#company-form').submit(function(e) {
 		e.preventDefault();
 		save();
 		window.location.replace("/");

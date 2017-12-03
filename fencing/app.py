@@ -537,27 +537,48 @@ def accounting():
     info = Accounting.getQuoteInfo()
     return render_template("accounting.html", company = current_user.company_name)
 
-@app.route('/editsupplier/', methods = ['GET'])
+@app.route('/editcompany/', methods = ['GET'])
 @login_required
 @roles_required('primary')
-def editsupplier():
+def editcompany():
     company = dbSession.query(Company).filter(
         Company.company_name == current_user.company_name).one()
-    email = company.supplier_email
+    supplierEmail = company.supplier_email
+    office = company.office
+    phone = company.phone
+    web = company.web
+    disclaimer = company.disclaimer
 
-    if email is None:
-        email = ""
+    if supplierEmail is None:
+        supplierEmail = ""
+    
+    if office is None:
+        office = ""
+    
+    if phone is None:
+        phone = ""
+    
+    if web is None:
+        web = ""
+    
+    if disclaimer is None:
+        disclaimer = ""
 
-    return render_template("editsupplier.html",
-        company = company.company_name, email = email)
+    return render_template("editcompany.html",
+        company = company.company_name, supplierEmail = supplierEmail,
+        office = office, phone = phone, web = web, disclaimer = disclaimer)
 
-@app.route('/updatesupplier/', methods = ['POST'])
+@app.route('/updatecompany/', methods = ['POST'])
 @login_required
 @roles_required('primary')
-def updatesupplier():
+def updatecompany():
     company = dbSession.query(Company).filter(
         Company.company_name == current_user.company_name).one()
-    company.supplier_email = request.json["email"]
+    company.supplier_email = request.json["supplier_email"]
+    company.office = request.json["office"]
+    company.phone = request.json["phone"]
+    company.web = request.json["web"]
+    company.disclaimer = request.json["disclaimer"]
     dbSession.commit()
     return "{}"
 

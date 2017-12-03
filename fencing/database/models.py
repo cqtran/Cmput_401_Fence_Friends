@@ -52,6 +52,10 @@ class Company(Base):
     company_name = Column(String(255), primary_key=True)
     email = Column(String(255), unique=True)
     supplier_email = Column(String(255))
+    office = Column(String(255))
+    phone = Column(String(255))
+    web = Column(String(255))
+    disclaimer = Column(String(1000))
 
 class Customer(Base):
     __tablename__ = 'customer'

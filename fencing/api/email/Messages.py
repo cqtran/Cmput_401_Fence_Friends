@@ -120,16 +120,31 @@ class Messages:
 			""".format(company_email=company.email)
 	
 	def _sideBar(company):
+		office = company.office.replace("\n", "<br>")
+
 		return """
 			<div style="float:left; width:30%;">
 				<p class="greyText bold companyName">{name}</p>
 				<br>
 				<p class="greyText">
+					<span class="bold">Office</span><br>
+					{office}
+				</p>
+				<p class="greyText">
+					<span class="bold">Phone</span><br>
+					{phone}
+				</p>
+				<p class="greyText">
 					<span class="bold">Email</span><br>
 					{email}
 				</p>
+				<p class="greyText">
+					<span class="bold">Web</span><br>
+					{web}
+				</p>
 			</div>
-		""".format(name=company.company_name.upper(), email=company.email)
+		""".format(name=company.company_name.upper(), email=company.email,
+			office=office, phone=company.phone, web=company.web)
 
 	def quoteAttachment(project, customer=None, parsed=None, misc=None,
 		notes=None, misc_modifier_label=None, payment=None, description=None,
@@ -263,7 +278,7 @@ class Messages:
 			<div style="float:left; width:70%;">
 				<p class="bold">Site Map:</p>
 				<img src="{diagram}"><br>
-				<p class="bold">Payment is due on day installation is completed. 2 Year Workmanship Warranty does not include: damage done to fence product by homeowner, pedestrians, or act of God, nor damage due to frost heave on posts and concrete; coverage of the Westech Product Lifetime Warranty. Cavalry Fence Inc. reserves the right to alter pricing for any requested changes or alterations to this quote above. In the event Cavalry Fence Inc. is required to hand expose: gas lines, electrical lines, water lines, etc. after government inspection, Cavalry Fence Inc. reserves the right to charge an additional $50 per hour until exposure is complete. In this event, Cavalry Fence Inc. will notify the homeowner and request permission to proceed with exposure of the line with the additional charge.</p>
+				<p class="bold" style="padding-top: 2in;">{disclaimer}</p>
 				<b><span class="bottom">
 					Signature:_____________________________________________
 				</span></b>
@@ -284,7 +299,8 @@ class Messages:
 				notes=notes,
 				payment=payment,
 				description=description,
-				sideBar=sideBar)
+				sideBar=sideBar,
+				disclaimer=company.disclaimer)
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}
