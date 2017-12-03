@@ -70,3 +70,19 @@ OR
 ## Disabled draw.io Features
 
 * Our modified version of draw.io has the tap to rotate feature disabled because it changes the length of the rotated shape. Instead, drag to rotate.
+
+## Tips Jar
+
+```
+_                      _
+ |                    |
+ |                    |
+ |                    |
+ |                    |
+ |                    |
+ |                    |
+ |                    |
+ |                    |
+ |                    |
+ |____________________|
+```
