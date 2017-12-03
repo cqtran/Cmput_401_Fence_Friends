@@ -54,7 +54,7 @@ def deletePDFHelper(filename):
     return
 
 def generateQuote(project, material_types, material_amounts,
-    misc_modifier):
+    misc_modifier, notes, misc_modifier_label):
 
     project_id = project.project_id
 
@@ -63,7 +63,8 @@ def generateQuote(project, material_types, material_amounts,
     material_expense, material_expense_gst, material_expense_total = calculateExpense(material_types, material_amounts, gst_rate)
     profit = amount - material_expense_total
 
-    quoteRecord = Messages.quoteAttachment(project, misc=misc_modifier)
+    quoteRecord = Messages.quoteAttachment(project, misc=misc_modifier,
+        notes=notes, misc_modifier_label=misc_modifier_label)
     materialRecord = Messages.materialListAttachment(project, material_types,
         material_amounts)
     quotePath = Email.makeAttachment("finalized/quotes", quoteRecord)
@@ -91,6 +92,7 @@ def finalizeQuote():
         material_types = json.loads(request.values.get('material_types'))
         # A dictionary with keywords and values of the amount of material needed
         material_amounts = json.loads(request.values.get('material_amounts'))
+        misc_modifier_label = request.values.get('misc_modifier_label')
 
         # A flat rate which allows the user to alter the subtotal of the quote
         misc_modifier = request.values.get('misc_modifier')
@@ -98,6 +100,8 @@ def finalizeQuote():
             misc_modifier = 0
         else:
             misc_modifier = int(misc_modifier)
+        
+        notes = request.values.get('notes')
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
@@ -116,7 +120,7 @@ def finalizeQuote():
 
         try:
             newQuote = generateQuote(project, material_types, material_amounts,
-                misc_modifier)
+                misc_modifier, notes, misc_modifier_label)
             dbSession.add(newQuote)
             dbSession.commit()
         except BaseException as e:

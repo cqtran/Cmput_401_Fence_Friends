@@ -119,7 +119,8 @@ class Messages:
 			{company_email}
 			""".format(company_email=company.email)
 
-	def quoteAttachment(project, customer=None, parsed=None, misc=None):
+	def quoteAttachment(project, customer=None, parsed=None, misc=None,
+		notes=None, misc_modifier_label=None):
 		"""Generate the content of a quote attachment and return it"""
 		if customer is None:
 			customer = dbSession.query(Customer).filter(
@@ -129,6 +130,9 @@ class Messages:
 			layout = dbSession.query(Layout).filter(
 				Layout.layout_id == project.layout_selected).one().layout_info
 			parsed = DiagramParser.parse(layout)
+		
+		if notes is None:
+			notes = ""
 		
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected).one()
@@ -155,11 +159,18 @@ class Messages:
 			)
 		
 		if misc:
+			if misc_modifier_label is None:
+				misc_modifier_label = ""
+
+			if misc_modifier_label.strip() == "":
+				misc_modifier_label = "Adjustments"
+
 			priceStrings.append(
 				'''<tr class="bordered">
-					<td class="bordered">Adjustments</td>
+					<td class="bordered bordered-right">{label}</td>
 					<td class="right bordered">$ {price}</td>
-				</tr>'''.format(price=PriceCalculation.priceString(misc))
+				</tr>'''.format(price=PriceCalculation.priceString(misc),
+					label=misc_modifier_label)
 			)
 
 		diagram = dbSession.query(Layout).filter(
@@ -223,6 +234,7 @@ class Messages:
 						<td class="right"><b>$ {total}</b></td>
 					</tr>
 				</table>
+				<p class="bold">{notes}</p>
 				<b><span class="bottom">
 					Signature:_____________________________________________
 				</span></b>
@@ -256,7 +268,8 @@ class Messages:
 				customerAddress=project.address,
 				customerPhone=customer.cellphone,
 				projectName=project.project_name,
-				projectId=project.project_id)
+				projectId=project.project_id,
+				notes=notes)
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}
