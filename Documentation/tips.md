@@ -14,6 +14,14 @@ OR
 
 * Right click (long press on a touch screen) on the project's/customer's card when viewing projects/customers in a list
 
+## Rename a Layout/Appearance
+
+* Click the edit (pencil) button under the layout/appearance tabs
+
+OR
+
+* Right click the layout/appearance tab to rename
+
 ## View a Project's Address on Google Maps
 
 * When viewing a project, click on the project's address
