@@ -120,7 +120,7 @@ class Messages:
 			""".format(company_email=company.email)
 
 	def quoteAttachment(project, customer=None, parsed=None, misc=None,
-		notes=None, misc_modifier_label=None):
+		notes=None, misc_modifier_label=None, payment=None):
 		"""Generate the content of a quote attachment and return it"""
 		if customer is None:
 			customer = dbSession.query(Customer).filter(
@@ -133,6 +133,9 @@ class Messages:
 		
 		if notes is None:
 			notes = ""
+		
+		if payment is None:
+			payment = ""
 		
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected).one()
@@ -213,7 +216,7 @@ class Messages:
 					<span class="greyText">INVOICE NUMBER: </span>
 					{projectId}<br>
 					<span class="greyText">PAYMENT: </span>
-					Cash Cheque
+					{payment}
 				</p><br>
 				<table>
 					<tr>
@@ -269,7 +272,8 @@ class Messages:
 				customerPhone=customer.cellphone,
 				projectName=project.project_name,
 				projectId=project.project_id,
-				notes=notes)
+				notes=notes,
+				payment=payment)
 	
 	def makeMaterialDictionary(material_types, material_amounts):
 		amounts = {}
