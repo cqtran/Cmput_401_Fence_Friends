@@ -584,7 +584,7 @@ def updatecompany():
 
 @app.route('/editgst/', methods = ['GET'])
 @login_required
-@roles_required('primary')
+@roles_required('admin')
 def editgst():
     company = dbSession.query(Company).filter(
         Company.company_name == current_user.company_name).one()
@@ -595,7 +595,7 @@ def editgst():
 
 @app.route('/updategst/', methods = ['POST'])
 @login_required
-@roles_required('primary')
+@roles_required('admin')
 def updategst():
     PriceCalculation.updateGst(request.json["gst"])
     return "{}"

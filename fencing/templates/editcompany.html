@@ -4,11 +4,11 @@
 
 <form id="company-form" action="javascript:void(0);">
   <label for="supplier-email">Supplier Email</label>
-  <input placeholder="Supplier Email" onchange="markDirty()" value="{{ supplierEmail }}" type="text" class="form-control" id="supplier-email">
+  <input pattern=".+@.+\..+" placeholder="Supplier Email" onchange="markDirty()" value="{{ supplierEmail }}" type="text" class="form-control" id="supplier-email">
   <label for="office">Office</label>
   <textarea onchange="markDirty()" class="form-control mb-lg-2" id="office" name="office" rows="3" cols="30" placeholder="Office Address" maxlength="350">{{ office }}</textarea>
   <label for="phone">Phone</label>
-  <input placeholder="Phone Number" onchange="markDirty()" value="{{ phone }}" type="text" class="form-control" id="phone">
+  <input pattern="(?:\+\d+ )?[(]{0,1}[0-9]{3}[)]{0,1}[-\s]{0,1}[0-9]{3}[-\s]{0,1}[0-9]{4}" placeholder="Phone Number" onchange="markDirty()" value="{{ phone }}" type="text" class="form-control" id="phone">
   <label for="web">Website</label>
   <input placeholder="Website" onchange="markDirty()" value="{{ web }}" type="text" class="form-control" id="web">
   <label for="disclaimer">Disclaimer</label>
