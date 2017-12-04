@@ -63,7 +63,7 @@ class Email:
 				attachmentName = kind.title() + ".pdf"
 
 				with app.open_resource(attachmentPath) as fp:
-					m.attach(attachmentName, "image/png", fp.read())
+					m.attach(attachmentName, "application/pdf", fp.read())
 
 			async_email(m, app, mail)
 		

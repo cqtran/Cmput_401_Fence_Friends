@@ -133,7 +133,12 @@ class Messages:
 			""".format(company_email=company.email)
 	
 	def _sideBar(company):
-		office = company.office.replace("\n", "<br>")
+		office = company.office
+
+		if office is None:
+			office = ""
+
+		office = office.replace("\n", "<br>")
 
 		return """
 			<div style="float:left; width:30%;">
