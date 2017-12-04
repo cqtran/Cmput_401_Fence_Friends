@@ -4,13 +4,13 @@
 
 <form id="company-form" action="javascript:void(0);">
   <label for="supplier-email">Supplier Email</label>
-  <input pattern=".+@.+\..+" placeholder="Supplier Email" onchange="markDirty()" value="{{ supplierEmail }}" type="text" class="form-control" id="supplier-email">
+  <input maxlength="50" pattern=".+@.+\..+" placeholder="Supplier Email" onchange="markDirty()" value="{{ supplierEmail }}" type="text" class="form-control" id="supplier-email">
   <label for="office">Office</label>
-  <textarea onchange="markDirty()" class="form-control mb-lg-2" id="office" name="office" rows="3" cols="30" placeholder="Office Address" maxlength="350">{{ office }}</textarea>
+  <textarea onchange="markDirty()" class="form-control mb-lg-2" id="office" name="office" rows="3" cols="30" placeholder="Office Address" maxlength="100">{{ office }}</textarea>
   <label for="phone">Phone</label>
   <input pattern="(?:\+\d+ )?[(]{0,1}[0-9]{3}[)]{0,1}[-\s]{0,1}[0-9]{3}[-\s]{0,1}[0-9]{4}" placeholder="Phone Number" onchange="markDirty()" value="{{ phone }}" type="text" class="form-control" id="phone">
   <label for="web">Website</label>
-  <input placeholder="Website" onchange="markDirty()" value="{{ web }}" type="text" class="form-control" id="web">
+  <input maxlength="50" placeholder="Website" onchange="markDirty()" value="{{ web }}" type="text" class="form-control" id="web">
   <label for="disclaimer">Disclaimer</label>
   <textarea onchange="markDirty()" class="form-control mb-lg-2" id="disclaimer" name="disclaimer" rows="3" cols="30" placeholder="Disclaimer" maxlength="1000">{{ disclaimer }}</textarea>
   <input id="save" onclick="markClean()" class="btn btn-primary btn-block bottom-margin mt-1" type="submit" value = "Save Information">
