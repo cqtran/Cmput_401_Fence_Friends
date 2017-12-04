@@ -9,7 +9,7 @@ $(document).ready(function(){
   label.append(' <i id="remember-box" class="fa fa-square-o" aria-hidden="true"></i>');
 
   label.click(function() {
-    remember.click();
+    remember.on();
     checked = !checked;
     var rememberBox = $("#remember-box");
 
