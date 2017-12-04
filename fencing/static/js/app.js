@@ -119,25 +119,6 @@ function dealStatuses(statuses){
   $('.selectpicker').selectpicker('refresh'); 
 }
 
-var toggled = false;
-
-function toggleSearch() {
-    if (toggled) {
-        toggled = false;
-        return true;
-    }
-
-    if ($('#search-bar').hasClass('remove')) {
-        toggled = true;
-        focusSearch();
-    }
-
-    else {
-        toggled = true;
-        $('#search-typeahead').focusout();
-    }
-}
-
 function focusSearch() {
   if($(window).width() < 768){
     $('#companyNameNav').addClass('small-hide');
