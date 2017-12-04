@@ -301,7 +301,7 @@ class Messages:
 				diagram=diagram,
 				prices="".join(priceStrings),
 				subtotal=PriceCalculation.priceString(subtotal),
-				gstPercent=round(gstPercent * Decimal("100"), 0),
+				gstPercent=round(gstPercent * Decimal("100"), 1),
 				gst=PriceCalculation.priceString(gst),
 				total=PriceCalculation.priceString(total),
 				date=date,
