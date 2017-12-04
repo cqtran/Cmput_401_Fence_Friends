@@ -165,8 +165,7 @@ class Messages:
 			office=office, phone=company.phone, web=company.web)
 
 	def quoteAttachment(project, customer=None, parsed=None, misc=None,
-		notes=None, misc_modifier_label=None, payment=None, description=None,
-		invoice=None):
+		notes=None, misc_modifier_label=None, payment=None, description=None):
 		"""Generate the content of a quote attachment and return it"""
 		if customer is None:
 			customer = dbSession.query(Customer).filter(
@@ -185,9 +184,6 @@ class Messages:
 		
 		if description is None:
 			description = ""
-		
-		if invoice is None:
-			invoice = project.project_id
 		
 		appearance = dbSession.query(Appearance).filter(
 			Appearance.appearance_id == project.appearance_selected).one()
@@ -262,8 +258,6 @@ class Messages:
 					{projectName}<br>
 					<span class="greyText">DESCRIPTION: </span>
 					{description}<br>
-					<span class="greyText">INVOICE NUMBER: </span>
-					{invoice}<br>
 					<span class="greyText">PAYMENT: </span>
 					{payment}
 				</p><br>
@@ -315,7 +309,6 @@ class Messages:
 				customerAddress=project.address,
 				customerPhone=customer.cellphone,
 				projectName=project.project_name,
-				invoice=invoice,
 				notes=notes,
 				payment=payment,
 				description=description,

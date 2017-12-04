@@ -54,7 +54,7 @@ def deletePDFHelper(filename):
     return
 
 def generateQuote(project, material_types, material_amounts,
-    misc_modifier, payment, notes, misc_modifier_label, description, invoice):
+    misc_modifier, payment, notes, misc_modifier_label, description):
 
     project_id = project.project_id
 
@@ -65,7 +65,7 @@ def generateQuote(project, material_types, material_amounts,
 
     quoteRecord = Messages.quoteAttachment(project, misc=misc_modifier,
         notes=notes, misc_modifier_label=misc_modifier_label, payment=payment,
-        description=description, invoice=invoice)
+        description=description)
     materialRecord = Messages.materialListAttachment(project, material_types,
         material_amounts)
     quotePath = Email.makeAttachment("finalized/quotes", quoteRecord)
@@ -105,7 +105,6 @@ def finalizeQuote():
         payment = request.values.get('payment')
         notes = request.values.get('notes')
         description = request.values.get('description')
-        invoice = request.values.get('invoice')
 
         project = dbSession.query(Project).filter(Project.project_id == project_id).one()
         if project is None:
@@ -124,8 +123,7 @@ def finalizeQuote():
 
         try:
             newQuote = generateQuote(project, material_types, material_amounts,
-                misc_modifier, payment, notes, misc_modifier_label, description,
-                invoice)
+                misc_modifier, payment, notes, misc_modifier_label, description)
             dbSession.add(newQuote)
             dbSession.commit()
         except BaseException as e:

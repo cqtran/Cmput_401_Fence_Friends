@@ -170,14 +170,8 @@
       <textarea class="form-control mb-lg-2" id="notes" name="notes" rows="3" cols="30" maxlength="350"></textarea>
     </div>
   </div>
-  <h4>Invoice Number</h4>
-  <div class="row">
-    <div class="col-12">
-      <input id="invoice" type="number" class="form-control mb-2">
-    </div>
-  </div>
 </div>
-<p>To add company details or a disclaimer to a quote, update company information using the settings menu</p>
+<p>To add company details or a disclaimer to a quote, <a class="text-primary" href="{{ url_for('editcompany') }}">update company information</a> using the settings menu</p>
 <button onclick="markClean()" id="submit" class="btn btn-primary btn-block mb-2">Save Quote</button>
 <div class="modal fade" id="message" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">

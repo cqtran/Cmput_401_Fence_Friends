@@ -88,8 +88,6 @@ $(document).ready(function(){
   }
   getProjectInfo();
 
-  $('#invoice').val(proj_id);
-
   $("#confirmDiscardSave").click(function() {
     $("#submit").trigger("click");
   });
@@ -124,8 +122,7 @@ function saveQuote() {
           misc_modifier: $('#adjustment').val(),
           payment: $('#payment').val(),
           description: $('#description').val(),
-          notes: $('#notes').val(),
-          invoice: $('#invoice').val()
+          notes: $('#notes').val()
       },
       dataType: "json",
       success: function(response){
