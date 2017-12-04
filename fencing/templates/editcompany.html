@@ -8,7 +8,7 @@
   <label for="office">Office</label>
   <textarea onchange="markDirty()" class="form-control mb-lg-2" id="office" name="office" rows="3" cols="30" placeholder="Office Address" maxlength="100">{{ office }}</textarea>
   <label for="phone">Phone</label>
-  <input pattern="(?:\+\d+ )?(?:\([0-9]{3}\)|[0-9]{3})[-\s]{0,1}[0-9]{3}[-\s]{0,1}[0-9]{4}" placeholder="Phone Number" onchange="markDirty()" value="{{ phone }}" type="text" class="form-control" id="phone">
+  <input maxlength="50" pattern="(?:\+\d+ )?(?:\([0-9]{3}\)|[0-9]{3})[-\s]{0,1}[0-9]{3}[-\s]{0,1}[0-9]{4}" placeholder="Phone Number" onchange="markDirty()" value="{{ phone }}" type="text" class="form-control" id="phone">
   <label for="web">Website</label>
   <input maxlength="50" placeholder="Website" onchange="markDirty()" value="{{ web }}" type="text" class="form-control" id="web">
   <label for="disclaimer">Disclaimer</label>

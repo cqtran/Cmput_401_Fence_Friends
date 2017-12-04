@@ -61,6 +61,10 @@ OR
 
 * Use "View Quote" or "View Material List" to download a PDF
 
+## View a Project from Accounting
+
+* Click the project ID in the table to view it
+
 ## Troubleshooting
 
 * Ensure (correct) CSV files have been uploaded for both prices and estimations
