@@ -65,6 +65,13 @@ OR
 
 * Click the project ID in the table to view it
 
+## Quotes and Material Lists
+
+* Unfinalized quotes are generated from the currently selected layout and appearance each time "View Quote" is clicked
+* Finalized quotes are generated from the currently selected layout and appearance on finalization, and this is the quote that is viewed or sent each time "View Quote" or "Send Quote" is clicked
+* The above points also apply to material lists
+* When a layout or appearance is selected, that selection is saved so that the same tabs are open the next time the page is loaded
+
 ## Troubleshooting
 
 * Ensure (correct) CSV files have been uploaded for both prices and estimations
