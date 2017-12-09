@@ -6,8 +6,8 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#requirements">Requirements</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run">Run</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-in-debug-mode">Run in Debug Mode</a><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#server-hosting">Server Hosting</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-tests">Run Tests</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#server-hosting">Server Hosting</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#help">Help</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#tips">Tips</a><br>
 &bull; <a href="#drawio">draw.io</a><br>
