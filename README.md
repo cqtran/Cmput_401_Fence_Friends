@@ -217,3 +217,5 @@ http://0.0.0.0:8000/index.html?offline=1&https=0
 * Apache License 2.0
 * https://github.com/jgraph/drawio/blob/master/LICENSE
   - Accessed December 9, 2017
+* Local copy: https://github.com/gdbaker/CMPUT401-FenceFriends/blob/master/drawio/LICENSE
+  - Path: drawio/LICENSE
