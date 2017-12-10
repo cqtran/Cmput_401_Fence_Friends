@@ -76,9 +76,9 @@ $('#search-bar .typeahead').typeahead({
         header: Handlebars.compile("<div class='container-fluid'><h3 class='text-grey'>Projects</h3><hr class='mt-2'></div>"),
         suggestion: Handlebars.compile("\
         {{#if address}}\
-            <div class='container-fluid'><p class='top-bot-pad'>{{value}}<span class='no-highlight'> - Status - {{status}} - Address {{address}} </span></p></div>\
+            <div class='container-fluid'><p class='top-bot-pad'>{{value}}<span class='no-highlight'> - Status {{status}} - Address </span>{{address}} </p></div>\
         {{else}}\
-            <div class='container-fluid'><p class='top-bot-pad'>{{value}}<span class='no-highlight'> - Status - {{status}} </span></p></div>\
+            <div class='container-fluid'><p class='top-bot-pad'>{{value}}<span class='no-highlight'> - Status {{status}} </span></p></div>\
         {{/if}}")
     }
   }).on('typeahead:selected', function(event, selection) {
