@@ -1,5 +1,9 @@
 # Tips
 
+## Linking to External Resources
+
+* If a full URL (including the "https" or "http" at the beginning) is entered into the notes of a project, it will be rendered as a clickable link that opens in a new tab/window
+
 ## Find a Project/Customer
 
 * Use the search bar to find a project or customer
