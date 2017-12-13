@@ -80,7 +80,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'testing'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 # change to true after implemented
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = False
 app.config['SECURITY_CHANGEABLE'] = True
 app.config['SECURITY_FLASH_MESSAGES'] = False
 
@@ -123,13 +123,7 @@ def setup_db():
     init_db()
     userDatastore.find_or_create_role(name = 'admin')
     userDatastore.find_or_create_role(name = 'primary')
-    userDatastore.find_or_create_role(name = 'secondary')
 
-    if not fieldExists(dbSession, Company.company_name, "Fence"):
-        newCompany = Company(company_name = "Fence", email = "test@test.null")
-        dbSession.add(newCompany)
-
-    dbSession.commit()
     if not fieldExists(dbSession, Company.company_name, "Admin"):
         newCompany = Company(company_name = "Admin", email = "admin@cavalryfence.ca")
         dbSession.add(newCompany)
@@ -137,19 +131,9 @@ def setup_db():
     dbSession.commit()
 
 
-    # Test data
     if not fieldExists(dbSession, User.id, 1):
         #primary
-        newUser = User(id = 1, email = 'test@test.null', username = 'test',
-            password = 'password', company_name = 'Fence', active = 1)
-        dbSession.add(newUser)
-        userDatastore.add_role_to_user(newUser, 'primary')
-        userDatastore.activate_user(newUser)
-        dbSession.commit()
-
-    if not fieldExists(dbSession, User.id, 2):
-        #primary
-        newUser = User(id = 2, email = 'admin@cavalryfence.ca', username = 'Admin',
+        newUser = User(id = 1, email = 'admin@cavalryfence.ca', username = 'Admin',
             password = 'password', company_name = 'Admin', active = 1)
         dbSession.add(newUser)
         userDatastore.add_role_to_user(newUser, 'admin')
