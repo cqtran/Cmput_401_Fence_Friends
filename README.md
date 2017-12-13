@@ -7,13 +7,15 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run">Run</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-in-debug-mode">Run in Debug Mode</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-tests">Run Tests</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#server-hosting">Server Hosting</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#help">Help</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#tips">Tips</a><br>
 &bull; <a href="#drawio">draw.io</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#url-1">URL</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#required-for-building">Required for Building</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#build">Build</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run-1">Run</a><br>
-&bull; <a href="#tips">Tips</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#drawio-license">draw.io License</a><br>
 </details>
 
 # Cavalry Fence Builder
@@ -137,12 +139,14 @@ python3 testingapp.py
 ```bash
 python3 -m unittest discover
 ```
+
 ## Server Hosting
+
 The app is hosted using apache2 with the app.conf file in Documentation/Server.  
 The server uses mod_wsgi-express to help interact between apache2 and Flask.  
 The server uses certbot to generate and maintain ssl certificates.  
 The server files are stored at /var/www/CMPUT401-FenceFriends on the server.  
-The server config file is store at /etc/apache2/sites-available  
+The server config file is stored at /etc/apache2/sites-available  
   
 The server required these to be installed: 
 ```
@@ -168,6 +172,10 @@ In the "fencing" folder, run:
 ```bash
 python3 app.py --help
 ```
+
+## Tips
+
+[View tips](Documentation/tips.md)
 
 # draw.io
 
@@ -204,6 +212,10 @@ python3 -m http.server 8000
 
 http://0.0.0.0:8000/index.html?offline=1&https=0
 
-## Tips
+## draw.io License
 
-[View tips](Documentation/tips.md)
+* Apache License 2.0
+* https://github.com/jgraph/drawio/blob/master/LICENSE
+  - Accessed December 9, 2017
+* Local copy: https://github.com/gdbaker/CMPUT401-FenceFriends/blob/master/drawio/LICENSE
+  - Path: drawio/LICENSE

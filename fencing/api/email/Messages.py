@@ -43,7 +43,6 @@ class Messages:
 		}
 
 		.bordered {
-			border-top: 1px solid black;
 			border-bottom: 1px solid black;
 		}
 
@@ -301,7 +300,7 @@ class Messages:
 				diagram=diagram,
 				prices="".join(priceStrings),
 				subtotal=PriceCalculation.priceString(subtotal),
-				gstPercent=round(gstPercent * Decimal("100"), 0),
+				gstPercent=round(gstPercent * Decimal("100"), 2),
 				gst=PriceCalculation.priceString(gst),
 				total=PriceCalculation.priceString(total),
 				date=date,

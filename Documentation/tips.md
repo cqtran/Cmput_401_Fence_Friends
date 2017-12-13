@@ -1,5 +1,9 @@
 # Tips
 
+## Linking to External Resources
+
+* If a full URL (including the "https" or "http" at the beginning) is entered into the notes of a project, it will be rendered as a clickable link that opens in a new tab/window
+
 ## Find a Project/Customer
 
 * Use the search bar to find a project or customer
@@ -50,6 +54,10 @@ OR
 
 * Navigate to the "Edit Company" page using the settings menu
 
+## Update GST
+
+* GST can be updated in the admin account
+
 ## Finalize a Project
 
 * Finalize a project to generate quote and material list PDFs that are not affected by changes in prices, estimations, or GST
@@ -65,11 +73,25 @@ OR
 
 * Click the project ID in the table to view it
 
+## Quotes and Material Lists
+
+* Unfinalized quotes are generated from the currently selected layout and appearance each time "View Quote" is clicked
+* Finalized quotes are generated from the currently selected layout and appearance on finalization, and this is the quote that is viewed or sent each time "View Quote" or "Send Quote" is clicked
+* The above points also apply to material lists
+* When a layout or appearance is selected, that selection is saved so that the same tabs are open the next time the page is loaded
+
+## Ignored Shapes
+
+* All non-fencing draw.io shapes (including text boxes) are ignored by the parser, and so can be added freely
+* Text inside of a shape (entered by double-clicking the shape) is also ignored
+
 ## Troubleshooting
 
 * Ensure (correct) CSV files have been uploaded for both prices and estimations
 * Use the settings menu to correct information
 * Ensure you are signed in
+* Putting fence shapes in groups can lead to incorrect results by the parser
+* Directly editing the XML representation of a drawing can lead to incorrect results by the parser
 
 ## Disabled draw.io Features
 
