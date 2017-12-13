@@ -114,7 +114,7 @@ def async_security_email(msg):
     send_security_email(msg)
 
 test = 0
-# TODO: implement fresh login for password change
+
 
 @app.before_first_request
 def setup_db():
