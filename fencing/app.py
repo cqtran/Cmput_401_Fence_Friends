@@ -98,8 +98,7 @@ app.config['MAIL_SUPPRESS_SEND'] = False
 mail = Mail(app)
 
 # Setup Flask-Security
-userDatastore = SQLAlchemySessionUserDatastore(dbSession,
-                                                User, Role)
+userDatastore = SQLAlchemySessionUserDatastore(dbSession, User, Role)
 
 dbSession.commit()
 
