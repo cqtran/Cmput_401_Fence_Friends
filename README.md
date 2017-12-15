@@ -2,6 +2,7 @@
 <summary>Contents</summary>
 &bull; <a href="#cavalry-fence-builder">Cavalry Fence Builder</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#url">URL</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#video">Video</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#core-features">Core Features</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#requirements">Requirements</a><br>
   &nbsp;&nbsp;&nbsp;&nbsp;&#9702; <a href="#run">Run</a><br>
@@ -25,6 +26,10 @@ Cavalry Fence Builder is a web app for fence installation companies. It allows a
 ## URL
 
 https://app.cavalryfence.ca/
+
+## Video
+
+https://youtu.be/8YIqtiUu9Xk
 
 ## Core Features
 
