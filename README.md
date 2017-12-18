@@ -153,6 +153,8 @@ The server uses certbot to generate and maintain ssl certificates.
 The server files are stored at /var/www/CMPUT401-FenceFriends on the server.  
 The server config file is stored at /etc/apache2/sites-available  
   
+The mysql db is currently called testdata. The db must be created before the app is run but the app will create the tables.  
+The name can be changed in user.txt  
 The server required these to be installed: 
 ```
 sudo apt-get install apache2  
